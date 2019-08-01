@@ -1,0 +1,17 @@
+{
+	"Action01":
+	{
+		"uuid": "Action01",
+		"Action": "Töm"
+	},
+	"Action02":
+	{
+		"uuid": "Action02",
+		"Action": "Sätt i ny plastpåse"
+	},
+	"Action03":
+	{
+		"uuid": "Action03",
+		"Action": "Släng sak i"
+	}
+}

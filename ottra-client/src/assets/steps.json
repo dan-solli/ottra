@@ -1,0 +1,108 @@
+{
+	"Step01": 
+	{
+		"uuid": "Step01",
+		"Description": "Klä på dig",
+		"Options": {
+			"SuggestClothes": 1
+		},
+		"Where":
+		{
+			"Type": "Room",
+			"uuid": "Room10"
+		},
+		"Duration": "PT03M"
+	},
+	"Step02": 
+	{
+		"uuid": "Step02",
+		"Description": "Gå till soprummet",
+		"Where":
+		{
+			"Type": "Room",
+			"uuid": "Room10"
+		},
+		"Destination": 
+		{
+			"Type": "Room",
+			"uuid": "Room01"
+		},
+		"Duration": "PT02M",
+		"Equipment":
+		[
+			"Eq05"
+		]
+	},
+	"Step03":
+	{
+		"uuid": "Step03",
+		"Description": "Släng påse i kontainer för hushållssopor",
+		"Duration": "PT30S",
+		"Target": "Storage03",
+		"Where": 
+		{
+			"Type": "Room",
+			"uuid": "Room01"
+		}
+	},
+	"Step04":
+	{
+		"Description": "Återvänd hem och klä av dig",
+		"Where":
+		{
+			"Type": "Room",
+			"uuid": "Room01"
+		},
+		"Duration": "PT02M",
+		"Destination":
+		{
+			"Type": "Room",
+			"uuid": "Room10"
+		},
+		"Equipment":
+		[
+			"Eq05"
+		]
+	},
+	"Step05":
+	{
+		"uuid": "Step05",
+		"Description": "Hämta plastpåse",
+		"Where":
+		{
+			"Type": "Storage",
+			"uuid": "Storage09"
+		},
+		"Equipment":
+		[
+			"Eq03"
+		],
+		"Duration": "PT01M"
+	},
+	"Step06":
+	{
+		"uuid": "Step06",
+		"Description": "Ta upp och knyt ihop soppåse",
+		"Where":
+		{
+			"Type": "Storage",
+			"uuid": "Storage07"
+		},
+		"Duration": "PT02M"
+	},
+	"Step07":
+	{
+		"uuid": "Step07",
+		"Description": "Sätt i ny plastpåse",
+		"Where":
+		{
+			"Type": "Storage",
+			"uuid": "Storage07"
+		},
+		"Equipment":
+		[
+			"Eq03"
+		],
+		"Duration": "PT01M"
+	}
+}

@@ -1,0 +1,33 @@
+
+[Task]: Sortera otvättade kläder [Kan planeras och utföras stand-alone]
+Eventuell paus
+Task: Tvätta kläder (variabelbox)
+    Step: Samla ihop tvättkemikalier
+    Step: Frakta smutsiga kläder till tvättmaskin
+    [Task]: Förbehandla fläckigt plagg
+        Step: Hitta plagg som behöver fläckbehandlas
+        Step: Samla ihop fläckborttagningsmedel
+        Step: Förbehandla fläck enligt instruktion
+        Step: Återställ plagg till tvätthög
+        [Step]: Paus för verkningstid
+    Step: Lasta tvättmaskin
+    Step: Ställa in tvättmaskinsprogram (huvudprogram samt delinställningar inkl fördröjning)
+    Step: Dosera tvättkemikalier
+    Step: Starta tvättmaskin
+    Step: Återställ tvättkemikalier
+Forcerad paus <Tvättmaskinprogrammets längd>
+Task: Hänga tvätt
+    [Step]: Montera tvättställning
+    Step: Hämta behållare för frakt av kläder
+    Step: Lasta behållare med tvättade kläder
+    Step: Frakta kläder till torkställning/torkskåp
+    Step: Hänga kläder
+    Step: Återställ behållare för klädfrakt
+[Task]: Starta torkskåp/torkrum
+Forcerad paus <Hur lång tid torkskåp/torkrum/klädställning behöver ha på sig>
+Task: Vika tvätt
+    Step: Vik plagg
+    Step: Demontera tvättställning
+Task: Hänga undan kläder
+    Step: Frakta kläder till dess hemvist.
+    Step: Lägg/Häng undan kläder

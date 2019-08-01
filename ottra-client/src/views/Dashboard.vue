@@ -1,0 +1,133 @@
+<template>
+	<div id="dashboard">
+
+    <v-container fluid grid-list-xl>
+      
+      <v-layout row wrap>
+
+        <v-flex md3>
+          <v-spacer></v-spacer>
+          <v-btn icon>
+            <v-icon>keyboard_arrow_left</v-icon>
+          </v-btn>
+          <v-btn icon>
+            <v-icon>keyboard_arrow_right</v-icon>
+          </v-btn>
+          <v-sheet height="700">
+            <v-calendar 
+              color="primary" 
+              type="day"
+              :start="currentDate">
+              <template v-slot:dayHeader="{ present }">
+                <template v-if="present" class="text-xs-center">
+                  (*) Today
+                </template>
+              </template>
+              <template v-slot:interval="{ hour }">
+                <div class="text-xs-center">
+                  {{ hour }} o'clock
+                </div>
+              </template>
+            </v-calendar>
+          </v-sheet>
+        </v-flex>
+        <v-flex md9>
+
+          <v-layout row wrap>
+
+            <v-flex md4>
+              <OttraWidget type="info">
+                <template slot="title">
+                  (*) Dagens hållpunkter {{ todaysDate }} 
+                </template>
+                <p v-for="e in getEventsByDate">
+                  {{ e.start.dateTime.slice(0, 5) }}: 
+                  <v-avatar color="light-blue" size="18px">
+                    <span> {{ getEventType(e.type) }} </span>
+                  </v-avatar>
+                  {{ e.description }}
+                </p>
+              </OttraWidget>
+            </v-flex>
+
+            <v-flex v-if="getMessageUnreadCount" md4>
+              <OttraWidget type="info">
+                <template slot="title">
+                  (*) Olästa meddelanden 
+                </template>
+                <p v-for="m in getMessagesUnread">
+                  {{ m.dateTime }}: 
+                  {{ m.from }}: 
+                  {{ m.subject }}
+                </p>
+              </OttraWidget>
+            </v-flex>
+
+          </v-layout>
+
+        </v-flex>
+      </v-layout>
+    </v-container>
+
+<!--
+	  <HelloWorld />
+	  Sup? {{ $t('message') }} Sup?
+	 	<HelloLocal />
+-->
+	 </div>
+</template>
+
+<script>
+
+import { mapGetters } from "vuex";
+
+import OttraWidget from '@/components/OttraWidget'
+
+export default {
+  name: 'dashboard',
+  components: {
+    OttraWidget
+  },
+  data: function() {
+    return {
+      currentDate: ''
+    }
+  },
+  computed: {
+    ...mapGetters([
+      "todaysDate",
+      "getEvents",
+      "getMessagesUnread",
+      "getMessageUnreadCount"
+    ]),
+    getEventsByDate: function() {
+      let theDate = this.currentDate
+
+      return Object.values(this.getEvents)
+        .filter(ob => ob.start.date === theDate)
+        .sort((a, b) => b.start.dateTime - a.start.dateTime)
+        .reverse()
+    },
+  },
+  methods: {
+    getEventType: function(event_type) {
+      // console.log(event_type)
+      let arr = event_type.split('#')
+      return arr[1].slice(0,1).toUpperCase()
+    }    
+  },
+  created: function() {
+    // Set up context sensitive stuff.
+    // For each widget, load data from backend:
+    // - Userdata
+    // - Plans
+    // - Calendar
+    // - Todo
+    // - Tasks
+    // - Maybe a weather-blob
+  },
+  mounted: function() {
+    this.currentDate = this.todaysDate
+  }
+}
+</script>

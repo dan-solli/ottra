@@ -1,0 +1,27 @@
+{
+	"Eq01":
+	{
+		"uuid": "Eq01",
+		"Name": "Gummistövlar"
+	},
+	"Eq02":
+	{
+		"uuid": "Eq02",
+		"Name": "Gummihandskar"
+	},
+	"Eq03":
+	{
+		"uuid": "Eq03",
+		"Name": "Plastpåse"
+	},
+	"Eq04":
+	{
+		"uuid": "Eq04",
+		"Name": "Skruvmejsel"
+	},
+	"Eq05":
+	{
+		"uuid": "Eq05",
+		"Name": "Husnyckel"
+	}
+}

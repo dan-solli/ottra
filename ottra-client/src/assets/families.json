@@ -1,0 +1,14 @@
+{
+	"Family01": 
+	{
+		"uuid": "Family01",
+		"Residency": "Loc02",
+		"Name": "Sollisarna",
+		"FamilyMembers": 
+		[
+			"User01",
+			"User02",
+			"User03"
+		]
+	}
+}

@@ -1,0 +1,48 @@
+{
+	"ui.navbar.create": "Skapa",
+	"ui.navbar.plan": "Planera",
+	"ui.navbar.do": "Gör",
+	"ui.navbar.check": "Utvärdera",
+	"ui.navbar.login": "Logga in",
+	"ui.navbar.inbox.tooltip": "Meddelanden",
+	"ui.navbar.weather.tooltip": "Nuvarande väder",
+	"ui.dialog.login.title": "Inloggning",
+	"ui.dialog.login.passwordfield.hint": "Minst 10 tecken",
+	"ui.dialog.login.passwordfield.label": "Lösenord",
+	"ui.dialog.login.passwordconfirmfield.label": "Upprepa lösenord",
+	"ui.dialog.login.userfield.label": "Epostadress",
+	"ui.dialog.login.registernewuserbutton": "Ny användare",
+	"ui.dialog.login.cancelregistrationbutton": "Avbryt registrering",
+  "ui.dialog.login.loginbutton": "Logga in",
+	"ui.dialog.login.loginbutton.register": "Registrera",
+  "ui.dialog.login.registernewuserbutton.tooltip": "Klicka här för att skapa en ny användare",
+  "ui.dialog.login.registernewuserbutton.tooltip.alt": "Avbryt registrering",
+
+  "message": "hejsan i18n !!",
+
+  "validation": {
+  	"required": "Fältet med {attribute} är obligatoriskt",
+  	"email": "Fältet med {attribute} är inte en riktig epostadress",
+  	"minLength": "Fältet med {attribute} är för kort",
+  	"sameAsPassword": "Lösenorden stämmer inte överens",
+	  "attributes": {
+	  	"email": "epostadress",
+	  	"passwd1": "lösenordet",
+	  	"passwd2": "bekräftande lösenord"
+	  }  	
+  },
+  "ui.tour.buttonSkip": "Skippa",
+  "ui.tour.buttonPrevious": "Föregående",
+  "ui.tour.buttonNext": "Nästa",
+  "ui.tour.buttonStop": "Avsluta",
+	"ui.tour.loginuser.step1": "Din epostadress skriver du här. Det är ditt inloggningsnamn och den adress vi skickar meddelanden till om vi vill dig något.",
+	"ui.tour.loginuser.step2": "Här anger du ditt passord. Det måste vara 10 tecken långt och det ska vara lätt att minnas men svårt att lista ut.",
+	"ui.tour.loginuser.step3": "Om du inte har registrerat en användare sedan tidigare klickar du här. Då får du också ange ditt lösenord en gång till för att bekräfta.",
+	"ui.tour.loginuser.step4": "Avslutningsvis, för att registrera den nya användaren eller logga in med dina befintliga uppgifter, klickar du på den här knappen.",
+
+	"ui.toasts.login.createuser": "Skapar ny användare",
+	"ui.toasts.login.registeruser": "Loggar in",
+	"ui.toasts.login.createuser": "Ny användare skapad",
+	"ui.toasts.login.registeruser": "Inloggning lyckades"
+
+}

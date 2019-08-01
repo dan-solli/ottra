@@ -1,0 +1,44 @@
+https://api.openweathermap.org/data/2.5/weather?id=2670776&APPID=1ea08f4b637fb8feb7a149a44bf0e9c8&units=metric&lang=se
+
+{
+  "coord": {
+    "lon": 17.3,
+    "lat": 62.38
+  },
+  "weather": [
+    {
+      "id": 804,
+      "main": "Clouds",
+      "description": "mulet",
+      "icon": "04d"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": -4,
+    "pressure": 1028,
+    "humidity": 68,
+    "temp_min": -4,
+    "temp_max": -4
+  },
+  "visibility": 10000,
+  "wind": {
+    "speed": 2.1,
+    "deg": 70
+  },
+  "clouds": {
+    "all": 90
+  },
+  "dt": 1550758800,
+  "sys": {
+    "type": 1,
+    "id": 1767,
+    "message": 0.003,
+    "country": "SE",
+    "sunrise": 1550729935,
+    "sunset": 1550764260
+  },
+  "id": 2670776,
+  "name": "Sundsvalls Kommun",
+  "cod": 200
+}

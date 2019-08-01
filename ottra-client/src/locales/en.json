@@ -1,0 +1,51 @@
+{
+	"ui.navbar.create": "Create",
+	"ui.navbar.plan": "Plan",
+	"ui.navbar.do": "Do",
+	"ui.navbar.check": "Check",
+	"ui.navbar.login": "Login",
+	"ui.navbar.inbox.tooltip": "Messages",
+	"ui.navbar.weather.tooltip": "Current weather",  
+	"ui.dialog.login.title": "Login form",
+	"ui.dialog.login.passwordfield.hint": "At least 10 characters",
+	"ui.dialog.login.passwordfield.label": "Password",
+	"ui.dialog.login.passwordconfirmfield.label": "Confirm password",
+	"ui.dialog.login.userfield.label": "Email address",
+	"ui.dialog.login.registernewuserbutton": "Register new user",
+	"ui.dialog.login.cancelregistrationbutton": "Cancel registration",
+
+  "ui.dialog.login.loginbutton": "Login",
+	"ui.dialog.login.loginbutton.register": "Registrer",
+
+  "ui.dialog.login.registernewuserbutton.tooltip": "Click this button to register a new user",
+  "ui.dialog.login.registernewuserbutton.tooltip.alt": "Cancel registration",
+
+  "validation": {
+	  "required": "Field {attribute} is required",
+	  "email": "Field {attribute} is not a proper email address",
+	  "minLength": "Field {attribute} is not long enough",
+	  "sameAs": "Passwords does not match",
+	  "attributes": {
+	  	"email": "email address",
+	  	"passwd1": "password",
+	  	"passwd2": "confirming password"
+	  }
+  },
+  "ui.tour.buttonSkip": "Skip tour",
+  "ui.tour.buttonPrevious": "Previous",
+  "ui.tour.buttonNext": "Next",
+  "ui.tour.buttonStop": "Finish",
+
+	"ui.tour.loginuser.step1": "Add your email address here. This is the address we will use when we need to contact you.",
+	"ui.tour.loginuser.step2": "Add a new password here, easy to remember, hard to figure out. At least 10 character long.",
+	"ui.tour.loginuser.step3": "If you don't have a user already, click this button to add a password confirmation field, to register a new user.",
+	"ui.tour.loginuser.step4": "Finally, click this button to create a new user or login with your email address and password.",
+
+	"ui.toasts.login.createuser": "Creating user",
+	"ui.toasts.login.usercreated": "New user created",
+	"ui.toasts.login.registeruser": "Logging in",
+	"ui.toasts.login.userregistered": "Login successful",
+
+  "flurb": "flurb",
+  "message": "hello i18n !!"
+}

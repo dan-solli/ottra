@@ -1,0 +1,318 @@
+{
+	"Family": [
+		{
+			"Residency": "Hemma",
+			"Name": "Sollisarna",
+			"FamilyMembers": 
+			[
+				{
+					"username": "emeliev@gmail.com",
+					"name": "Emelie Solli",
+					"password": ""
+				},
+				{
+					"username": "dan.solli@gmail.com",
+					"name": "Dan Solli",
+					"password": ""
+				},
+				{
+					"username": "tea.solli@gmail.com",
+					"name": "Tea Solli",
+					"password": ""
+				}		
+			]
+		}
+	],
+	"Locations": 
+	[
+		{
+			"Name": "Soprum",
+			"Geolocation": 
+			{
+				"Latitude": 62.385985,
+				"Longitude": 17.3099
+			},
+			"Address":
+			{
+				"Street": "Östra Långgatan 7",
+				"Postal Code": "85236",
+				"City": "Sundsvall",
+				"Country": "Sweden"
+			},
+			"Rooms":
+			[
+				{ 
+					"Name": "Soprummet",
+					"Storages":
+					[
+						{
+							"Name": "Pappersåtervinning"
+						},
+						{
+							"Name": "Plaståtervinning"
+						},
+						{
+							"Name": "Hushållssopor"
+						},
+						{
+							"Name": "Kompost"
+						},
+						{
+							"Name": "Färgat glas"
+						},
+						{
+							"Name": "Genomskinligt glas"
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "Hemma",
+			"Geolocation": 
+			{
+				"Latitude": 62.385974,
+				"Longitude": 17.310661
+			},
+			"Address": 
+			{
+				"Street": "Östra Långgatan 7B",
+				"Postal Code": "85236",
+				"City": "Sundsvall",
+				"Country": "Sweden"
+			},
+			"Rooms": 
+			[
+				{
+					"Name": "Sovrum"					
+				},
+				{
+					"Name": "Badrum"					
+				},
+				{
+					"Name": "Duschrum"					
+				},
+				{
+					"Name": "Pysselrum"					
+				},
+				{
+					"Name": "Kök",
+					"Storages":
+					[
+						{
+							"Name": "Sopkorg",
+							"Actions": 
+							[
+								{
+									"Action": "Töm"
+								},
+								{
+									"Action": "Sätt i ny plastpåse"
+								},
+								{
+									"Action": "Släng sak i"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Name": "Teas rum"					
+				},
+				{
+					"Name": "Klädkammare",
+					"Storages":
+					[
+						{
+							"Name": "Skohylla",
+							"Equipment":
+							[
+								{
+									"Name": "Gummistövlar"
+								}
+							]
+						}
+					]
+
+				},
+				{
+					"Name": "Förråd"					
+				},
+				{
+					"Name": "Hall",					
+					"Storages":
+					[
+						{
+							"Name": "Städskåp",
+							"Equipment":
+							[
+								{
+									"Name": "Gummihandskar"
+								},
+								{
+									"Name": "Plastpåse"
+								}
+							]
+						},
+						{
+							"Name": "Hallskåp",
+							"Equipment":
+							[
+								{
+									"Name": "Skruvmejsel"
+								}
+							]
+						},
+						{
+							"Name": "Nyckelskåp",
+							"Equipment":
+							[
+								{
+									"Name": "Husnyckel"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"Tasks":
+	[
+		{
+			"Task": 
+			{
+				"Name": "Hantera hushållssopor",
+				"Creator": "emeliev@gmail.com",
+				"Tasks":
+				[
+					{
+						"Task":
+						{
+							"Name": "Byt soppåse",
+							"Creator": "emeliev@gmail.com",
+							"Steps":
+							[
+								{
+									"Description": "Hämta plastpåse",
+									"Where":
+									{
+										"Location": "Hemma",
+										"Room": "Hall",
+										"Storage": "Städskåp"
+									},
+									"Equipment":
+									[
+										{
+											"LocationImage": "01.jpg",
+											"Name": "Plastpåse"
+										}
+									],
+									"Duration": "PT01M"
+								},
+								{
+									"Description": "Ta upp och knyt ihop soppåse",
+									"Where":
+									{
+										"Location": "Hemma",
+										"Room": "Kök",
+										"Storage": "Sopkorg"
+									},
+									"Duration": "PT02M"
+								},
+								{
+									"Description": "Sätt i ny plastpåse",
+									"Where":
+									{
+										"Location": "Hemma",
+										"Room": "Kök",
+										"Storage": "Sopkorg"
+									},
+									"Equipment":
+									[
+										{
+											"Name": "Plastpåse"
+										}
+									],
+									"Duration": "PT01M"
+								}
+							]
+						}
+					},
+					{
+						"Task":
+						{
+							"Name": "Gå ut med hushållssopor",
+							"Creator": "emeliev@gmail.com",
+							"Steps":
+							[
+								{
+									"Description": "Klä på dig",
+									"Options": {
+										"SuggestClothes": 1
+									},
+									"Where":
+									{
+										"Location": "Hemma",
+										"Room": "Hall"
+									},
+									"Duration": "PT03M"
+								},
+								{
+									"Description": "Gå till soprummet",
+									"Where":
+									{
+										"Location": "Hemma",
+										"Room": "Hall"
+									},
+									"Destination":
+									{
+										"Location": "Soprum",
+										"Room": "Soprummet"
+									},
+									"Duration": "PT02M",
+									"Equipment":
+									[
+										{
+											"Name": "Husnyckel"
+										}
+									]
+								},
+								{
+									"Description": "Släng påse i kontainer för hushållssopor",
+									"Duration": "PT30S",
+									"Target": "Hushållssopor",
+									"Where":
+									{
+										"Location": "Soprum",
+										"Room": "Soprummet"
+									}
+								},
+								{
+									"Description": "Återvänd hem och klä av dig",
+									"Where":
+									{
+										"Location": "Soprum",
+										"Room": "Soprummet"
+									},
+									"Duration": "PT02M",
+									"Destination":
+									{
+										"Location": "Hemma",
+										"Room": "Hall"
+									},
+									"Equipment":
+									[
+										{
+											"Name": "Husnyckel"
+										}
+									]
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+}

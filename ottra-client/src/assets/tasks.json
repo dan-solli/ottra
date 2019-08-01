@@ -1,0 +1,21 @@
+{
+	"Task02": {
+		"Name": "Byt soppåse",
+		"Creator": "emeliev@gmail.com",
+		"Steps": [
+			"Step05",
+			"Step06",
+			"Step07"
+		]
+	},
+	"Task03": {
+		"Name": "Gå ut med hushållssopor",
+		"Creator": "emeliev@gmail.com",
+		"Steps": [
+			"Step01",
+			"Step02",
+			"Step03",
+			"Step04"
+		]
+	}
+}

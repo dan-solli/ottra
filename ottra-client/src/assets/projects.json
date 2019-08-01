@@ -1,0 +1,11 @@
+{
+	"Project01": {
+		"uuid": "Project01",
+		"Name": "Gå ut med hushållssopor",
+		"Creator": "emeliev@gmail.com",
+		"Tasks": [
+			"Task02", 
+			"Task03"
+		]
+	}
+}
