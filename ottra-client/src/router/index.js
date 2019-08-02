@@ -13,6 +13,8 @@ import SettingsView from './../views/SettingsView'
 
 import LocationNewView from './../views/creation/CreateLocation'
 
+import store from '../store'
+
 Vue.use(Router);
 
 export default new Router({
@@ -34,13 +36,27 @@ export default new Router({
       path: '/login',
       name: 'login',
       meta: { noAuthRequired: true },
-      component: LoginUser
+      component: LoginUser,
+      beforeEnter: (to, from, next) => {
+        if (store.state.isAuthenticated) {
+          next("/dashboard")
+        } else {
+          next()
+        }
+      }
     },
     {
       path: '/register',
       name: 'register',
       meta: { noAuthRequired: true },
-      component: RegisterUser
+      component: RegisterUser,
+      beforeEnter: (to, from, next) => {
+        if (store.state.isAuthenticated) {
+          next("/dashboard")
+        } else {
+          next()
+        }
+      }
     },    
     {
       path: '/location',

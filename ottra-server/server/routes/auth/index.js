@@ -1,7 +1,9 @@
 var express = require('express')
 var bcrypt = require('bcrypt')
 const config = require('./../../config')
-var jwt = require('jwt-simple');
+//var jwt = require('jwt-simple');
+
+var jwt = require('jsonwebtoken')
 
 const helper = require('./../../helpers/create_error')
 
@@ -49,8 +51,25 @@ module.exports = function(app, driver)
 					username: username,
 					id: uuid,
 				};
+/*				
 				response.accessToken = jwt.encode(response, config.JWT_SECRET_ACCESS)
 				response.refreshToken = jwt.encode(response, config.JWT_SECRET_REFRESH)
+*/
+
+				response.accessToken = jwt.sign(
+					response, 
+					config.JWT_SECRET_ACCESS,
+					{
+						expiresIn: config.JWT_ACCESS_TOKEN_LIFE
+					}
+				)
+				response.refreshToken = jwt.sign(
+					response, 
+					config.JWT_SECRET_REFRESH,
+					{
+						expiresIn: config.JWT_REFRESH_TOKEN_LIFE
+					}
+				)
 
 				tokenList[response.refreshToken] = response
 				console.log("Tokenlist is now: ")
@@ -127,8 +146,25 @@ module.exports = function(app, driver)
 					id: uuid
 				};
 
+/*				
 				response.accessToken = jwt.encode(response, config.JWT_SECRET_ACCESS)
 				response.refreshToken = jwt.encode(response, config.JWT_SECRET_REFRESH)
+*/
+
+				response.accessToken = jwt.sign(
+					response, 
+					config.JWT_SECRET_ACCESS,
+					{
+						expiresIn: config.JWT_ACCESS_TOKEN_LIFE
+					}
+				)
+				response.refreshToken = jwt.sign(
+					response, 
+					config.JWT_SECRET_REFRESH,
+					{
+						expiresIn: config.JWT_REFRESH_TOKEN_LIFE
+					}
+				)
 
 				tokenList[response.refreshToken] = response
 				console.log("Tokenlist is now: ")
@@ -152,7 +188,13 @@ module.exports = function(app, driver)
 				username: postData.username,
 				id: postData.uuid
 			}
-			const token = jwt.encode(user, config.JWT_SECRET_ACCESS)
+			const token = jwt.sign(
+				response, 
+				config.JWT_SECRET_REFRESH,
+				{
+					expiresIn: config.JWT_REFRESH_TOKEN_LIFE
+				}
+			)
 			const response = {
 				"token": token
 			}
@@ -197,10 +239,6 @@ function getUserID(username) {
 
 	return session.run("MATCH (n:User { username: {username} }) return n.uuid as id",
 		{ username: username })
-}
-
-function encodeJWTToken(payload) {
-	return jwt.encode(payload, config.JWT_SECRET)
 }
 
 function authenticateUser(username, password) {
