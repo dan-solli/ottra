@@ -27,6 +27,12 @@ const Message = {
         directive: 'new-directive',
         text: '(*) Create your home now',
         typeText: '(*) Todo'
+      },
+      "system#usertodo#creategroup": {
+        route: 'group',
+        directive: 'new-directive',
+        text: '(*) Create a group now',
+        typeText: '(*) Todo'
       }
     }
 	},

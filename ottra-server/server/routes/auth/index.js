@@ -106,6 +106,14 @@ module.exports = function(app, driver)
 						'(*) Time to create your home, populate it with rooms etc!',
 						-1,
 						'system#usertodo#createlocation'
+					),
+					Msg.createNewMessage(
+						'System',
+						uuid,
+						'(*) Create a group.',
+						'(*) If you belong to a group of people who share tasks, you can create one here!',
+						-1,
+						'system#usertodo#creategroup'
 					)
 				])
 				.then((response) => {

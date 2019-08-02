@@ -10,8 +10,10 @@ import LocationView from './../views/LocationView'
 import MessageView from './../views/MessageView'
 import SingleMessageView from './../views/SingleMessageView'
 import SettingsView from './../views/SettingsView'
+import GroupView from './../views/GroupView'
 
 import LocationNewView from './../views/creation/CreateLocation'
+import CreateGroup from './../views/creation/CreateGroup'
 
 import store from '../store'
 
@@ -62,6 +64,16 @@ export default new Router({
       path: '/location',
       name: 'location',
       component: LocationView
+    },
+    {
+      path: '/group',
+      name: 'group',
+      component: GroupView
+    },    
+    {
+      path: '/group/new',
+      name: 'new_group',
+      component: CreateGroup
     },
     {
       path: '/messages',
