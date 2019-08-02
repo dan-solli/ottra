@@ -22,14 +22,18 @@ const User = {
       state.userdata = userdata
     },
     LOGOUT_USER(state) {
-      JwtService.destroyToken();
+      JwtService.destroyTokens();
       state.isAuthenticated = false
-      Vue.$log.debug("store.user.module.LOGOUT_USER: Removing Token, clearing variables")
+      Vue.$log.debug("store.user.module.LOGOUT_USER: Removing Tokens, clearing variables")
     },
-    SET_AUTH(state, token) {
+    SET_ACCESS_AUTH(state, token) {
       JwtService.saveToken(token);
       state.isAuthenticated = true
-      Vue.$log.debug("store.user.module.SET_AUTH: setting isAuthenticated and saving JWTToken")
+      Vue.$log.debug("store.user.module.SET_ACCESS_AUTH: setting isAuthenticated and saving JWTToken")
+    },
+    SET_REFRESH_AUTH(state, token) {
+      JwtService.saveRefreshToken(token);
+      Vue.$log.debug("store.user.module.SET_REFRESH_AUTH: saving refresh JWTToken")
     },
     CLEAR_STORE(state) {
       state.userdata = {},
@@ -50,8 +54,10 @@ const User = {
           Vue.$log.debug("store.user.module.createNewUser: ... Possible success ... ")
           Vue.$log.debug("store.user.module.createNewUser: Reponse is: ")
           Vue.$log.debug(response)
-          const jwtToken = response.data.token
-          commit("SET_AUTH", jwtToken)
+          const jwtAccessToken = response.data.accessToken
+          const jwtRefreshToken = response.data.refreshToken
+          commit("SET_ACCESS_AUTH", jwtAccessToken)
+          commit("SET_REFRESH_AUTH", jwtRefreshToken)
           commit("SET_USER", response.data.id)
           console.log("Dispatching store.module.*.loadUserData")
           dispatch("loadUserData")
@@ -83,8 +89,10 @@ const User = {
           Vue.$log.debug("store.user.module.loginUser: Response is: ")
           Vue.$log.debug(response)
 
-          const jwtToken = response.data.token
-          commit("SET_AUTH", jwtToken)
+          const jwtAccessToken = response.data.accessToken
+          const jwtRefreshToken = response.data.refreshToken
+          commit("SET_ACCESS_AUTH", jwtAccessToken)
+          commit("SET_REFRESH_AUTH", jwtRefreshToken)
           commit("SET_USER", response.data.id)
           console.log("Dispatching store.module.*.loadUserData")
           dispatch("loadUserData")

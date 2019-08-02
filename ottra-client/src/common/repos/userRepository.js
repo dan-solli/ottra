@@ -1,21 +1,22 @@
 import Repository from "../repository";
 
-const resource = "/user";
+const user_resource = "/user";
+const auth_resource = "/auth";
 
 export default {
 	get() {
-		return Repository.get(`${resource}`);
+		return Repository.get(`${user_resource}`);
 	},
 	getUser(uuid) {
-		return Repository.get(`${resource}/${uuid}`);
+		return Repository.get(`${user_resource}/${uuid}`);
 	},
 	createUser(payload) {
-		return Repository.post(`${resource}`, payload);
+		return Repository.post(`${auth_resource}`, payload);
 	},
 	authenticateUser(payload) {
-		return Repository.post(`${resource}/authenticate`, payload);
+		return Repository.post(`${auth_resource}/authenticate`, payload);
 	},
 	getSettings(uuid) {
-		return Repository.get(`${resource}/${uuid}/settings`)
+		return Repository.get(`${user_resource}/${uuid}/settings`)
 	}
 };

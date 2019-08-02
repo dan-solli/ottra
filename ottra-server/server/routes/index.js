@@ -1,8 +1,16 @@
 var express = require('express')
+const config = require('./../config')
+
+const jwtMiddleware = require('express-jwt-middleware')
+var jwtCheck = jwtMiddleware(config.JWT_SECRET_ACCESS)
 
 module.exports = function(app, driver)
 {
 	let r = express.Router();
+
+	r.use('/1/auth', (require('./auth')(app, driver)))
+
+	r.use(jwtCheck)
 
 	r.use('/1/geography', (require('./geography')(app, driver)));
 	r.use('/1/location', (require('./location')(app, driver)));
@@ -12,5 +20,3 @@ module.exports = function(app, driver)
 
 	return r;
 }
-
-//express;

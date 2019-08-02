@@ -1,17 +1,13 @@
 var express = require('express')
-const config = require('./../../config')
 const helper = require('./../../helpers/create_error')
-
-const jwtMiddleware = require('express-jwt-middleware')
-var jwtCheck = jwtMiddleware(config.JWT_SECRET)
 
 module.exports = function(app, driver) 
 {
 	let r = express.Router();
 	let session = driver.session();
 
-	r.get('/', jwtCheck, function (req, res) {
-		console.log("Token data: ")
+	r.get('/', function (req, res) {
+		console.log("Token data (does it still exist?!): ")
 		console.log(req.tokenData)
 		session
 		.run(`
