@@ -17,6 +17,7 @@ module.exports = function(app, driver)
 	r.use('/1/task', (require('./task')(app, driver)));
 	r.use('/1/user', (require('./user')(app, driver)));
 	r.use('/1/message', (require('./message')(app, driver)));
+	r.use('/1/group', (require('./group')(app, driver)));
 
 	return r;
 }

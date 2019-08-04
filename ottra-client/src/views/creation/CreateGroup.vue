@@ -115,8 +115,6 @@ export default {
           }
         })
       }
-
-/*      
       return this.$store.dispatch("createGroup", payload)
       .then((data) => {
         this.$router.push('/group')
@@ -125,7 +123,6 @@ export default {
         console.log("THIS IS A FUCKING ERROR FOR NO GOD DAMNED REASON!")
         console.log("Error is: " + err)
       })
-*/      
     },
     removeFromList: function(index) {
       this.invitees.splice(index, 1)
