@@ -40,6 +40,9 @@ const Message = {
     SET_MESSAGES(state, payload) {
       state.messages = Object.assign({}, payload)
     },
+    CLEAR_STORE(state) {
+      state.messages = {}
+    }      
 	},
 	getters: {
   	getMessages: state => state.messages,
@@ -80,6 +83,9 @@ const Message = {
           reject(err)
         })
       })
+    },
+    clearStore({ commit }) {
+      commit("CLEAR_STORE")
     }
 	}
 }
