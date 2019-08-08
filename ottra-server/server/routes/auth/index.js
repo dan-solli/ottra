@@ -1,6 +1,6 @@
 var express = require('express')
 var bcrypt = require('bcrypt')
-const config = require('./../../config')
+//const config = require('./../../config')
 //var jwt = require('jwt-simple');
 
 var jwt = require('jsonwebtoken')
@@ -8,7 +8,11 @@ var jwt = require('jsonwebtoken')
 const helper = require('./../../helpers/create_error')
 
 var neo4j = require('neo4j-driver').v1;
-const driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j', config.NEO4J), {disableLosslessIntegers: true});
+const driver = neo4j.driver(
+	'bolt://localhost', 
+	neo4j.auth.basic('neo4j', process.env.NEO4J), {
+		disableLosslessIntegers: true
+	});
 
 let session = driver.session();
 
@@ -16,7 +20,7 @@ const Msg = require('./../../helpers/messages')(driver)
 
 const tokenList = {}
 
-module.exports = function(app, driver) 
+module.exports = function(app) 
 {
 	let r = express.Router();
 	let session = driver.session();
@@ -58,16 +62,16 @@ module.exports = function(app, driver)
 
 				response.accessToken = jwt.sign(
 					response, 
-					config.JWT_SECRET_ACCESS,
+					process.env.JWT_SECRET_ACCESS,
 					{
-						expiresIn: config.JWT_ACCESS_TOKEN_LIFE
+						expiresIn: process.env.JWT_ACCESS_TOKEN_LIFE
 					}
 				)
 				response.refreshToken = jwt.sign(
 					response, 
-					config.JWT_SECRET_REFRESH,
+					process.env.JWT_SECRET_REFRESH,
 					{
-						expiresIn: config.JWT_REFRESH_TOKEN_LIFE
+						expiresIn: process.env.JWT_REFRESH_TOKEN_LIFE
 					}
 				)
 
@@ -161,16 +165,16 @@ module.exports = function(app, driver)
 
 				response.accessToken = jwt.sign(
 					response, 
-					config.JWT_SECRET_ACCESS,
+					process.env.JWT_SECRET_ACCESS,
 					{
-						expiresIn: config.JWT_ACCESS_TOKEN_LIFE
+						expiresIn: process.env.JWT_ACCESS_TOKEN_LIFE
 					}
 				)
 				response.refreshToken = jwt.sign(
 					response, 
-					config.JWT_SECRET_REFRESH,
+					process.env.JWT_SECRET_REFRESH,
 					{
-						expiresIn: config.JWT_REFRESH_TOKEN_LIFE
+						expiresIn: process.env.JWT_REFRESH_TOKEN_LIFE
 					}
 				)
 
@@ -198,9 +202,9 @@ module.exports = function(app, driver)
 			}
 			const token = jwt.sign(
 				response, 
-				config.JWT_SECRET_REFRESH,
+				process.env.JWT_SECRET_REFRESH,
 				{
-					expiresIn: config.JWT_REFRESH_TOKEN_LIFE
+					expiresIn: process.env.JWT_REFRESH_TOKEN_LIFE
 				}
 			)
 			const response = {
@@ -226,7 +230,7 @@ function comparePassword(password, hash)
 }
 
 function createPassword(passwd) {
-	var salt = bcrypt.genSaltSync(config.BCRYPT_ROUNDS);
+	var salt = bcrypt.genSaltSync(process.env.BCRYPT_ROUNDS);
 	var hash = 	bcrypt.hashSync(passwd, salt);
 
 	return hash;

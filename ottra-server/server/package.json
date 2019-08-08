@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --fix api helpers models services index.js"
   },
   "repository": {
     "type": "git",
@@ -14,11 +15,16 @@
   "license": "ISC",
   "dependencies": {
     "@google/maps": "^0.5.5",
+    "awilix": "^4.2.2",
+    "awilix-express": "^2.1.1",
     "axios-auth-refresh": "^1.0.7",
     "bcrypt": "^3.0.4",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
-    "cypher-query-builder": "^3.2.0",
+    "cypher-query-builder": "^3.8.5",
+    "dotenv": "^8.0.0",
+    "eslint-plugin-node": "^9.1.0",
+    "esm": "^3.2.25",
     "express": "^4.16.3",
     "express-jwt-middleware": "^1.0.3",
     "jsonwebtoken": "^8.5.1",
@@ -35,6 +41,11 @@
     "cookie-session": "^2.0.0-beta.3",
     "countries-list": "^2.4.2",
     "country-flags-svg": "^0.2.12",
+    "eslint": "^6.1.0",
+    "eslint-plugin-fp": "^2.3.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-security": "^1.4.0",
+    "express-list-endpoints": "^4.0.1",
     "jwt-simple": "^0.5.5",
     "neo4j-parser": "^2.0.5",
     "openweathermap-apis": "^2.1.1"

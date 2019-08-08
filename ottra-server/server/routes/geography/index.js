@@ -1,10 +1,10 @@
 var express = require('express')
-var config = require('./../../config')
+//var config = require('./../../config')
 var CountriesList = require('countries-list')
 var Flags = require('country-flags-svg')
 var Cities = require('./city.list.json')
 let googleMapsClient = require('@google/maps').createClient({
-	key: config.GMAPS
+	key: process.env.GMAPS
 })
 let gmc = require('@google/maps').util
 
