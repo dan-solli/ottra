@@ -7,22 +7,24 @@ const Connection = Neo4J.driver(process.env.NEO4J_URL,
 															)
 
 const Database = {
-	run: async function(cypher, payload) {
+	run: async function(cypher, payload, gettable = null) {
 		let session = Connection.session()
-		let returnValue = null
 
+		//console.debug("%s: run called with:\n%s\nAnd payload:\n%O", __filename, cypher, payload)
 		try {
 			const result = await session.run(cypher, payload)
-			session.close()
-
-			returnValue = result.records
-		} 
+			if (gettable !== null) {
+				console.debug("%s: run result (%s): %O", __filename, gettable, result.records[0].get(gettable))
+				return result.records[0].get(gettable)
+			} else {
+				return result.records
+			}
+		}
 		catch (err) {
-			console.error(err)
+			console.error("%s: run failed: %s", __filename, err)
 		}
 		finally {
 			session.close()
-			return returnValue
 		}
 	}
 }

@@ -17,15 +17,15 @@ const AuthService = {
 			console.debug("%s: refreshToken is emitting event eUserTokenRefreshed with: %O",
 				__filename, userInfo)
 			process.emit('eUserTokenRefreshed', userInfo)
-			return {
+			return [ {
 				"token": userInfo.accessToken
-			}
+			}, null ]
 		}	else {
-			return {
+			return [ null, {
 				status: 'failed',
 				message: 'Token could not be refreshed',
 				code: 404
-			}
+			} ]
 		}
 	},
 	generateAccessToken: async function(payload) {

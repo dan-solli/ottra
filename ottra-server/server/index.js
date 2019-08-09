@@ -1,24 +1,22 @@
-require('dotenv').config()
 
+console.debug("Server starting up!")
+console.debug("Parsing configuration...")
+
+const result = require('dotenv').config()
+if (result.error) {
+	console.error("Failed to parse configuration file")
+}
+
+console.debug("Importing basic modules...")
 const express = require('express')
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 //const cookieSession = require('cookie-session')
 
-
-const neo4j = require('neo4j-driver').v1;
-const driver = neo4j.driver(
-	process.env.NEO4J_URL, 
-	neo4j.auth.basic(
-		process.env.NEO4J_USERNAME, 
-		process.env.NEO4J_PASSWORD
-	), {
-		disableLosslessIntegers: true
-	}
-);
-
+console.debug("Creating express application...")
 const app = express();
 
+console.debug("Set express configuration...")
 app.use(logger('dev'));
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: false })); 
@@ -35,10 +33,11 @@ app.use(cookieSession({
 /// Routing here
 /////////////////////////////////////////////////////////////////////////////
 
-const routes = require('./routes')(app, driver);
+console.debug("Setting up routes...")
+
+const routes = require('./routes');
 
 app.use('/api', routes);
-
 
 module.exports = app;
 

@@ -14,7 +14,7 @@ const MessageModel = {
 		if (!sender || !recipient)
 			return false
 
-		const result = await DB.run(`
+		await DB.run(`
 	MATCH (u:User { uuid : {recipient} })					
 	CREATE (u)-[:HAS]->(n:Message { 
 						from: {sender},
@@ -30,8 +30,6 @@ const MessageModel = {
 						sender, recipient, subject, body, timeToLive, type
 					}
 		)
-		console.debug("%s: saveMessage returns: %O", __filename, result)
-		return result
 	},
 	getMessages: async function(uuid) {
 		console.debug("%s: getMessages called with uuid = %s", __filename, uuid)
@@ -39,7 +37,7 @@ const MessageModel = {
 		const result = await DB.run(`
 	MATCH (:User { uuid: { uuid }})-[:HAS]->(m:Message)
 	RETURN COLLECT (m { .*, dateTime: apoc.date.format(m.sent) }) AS messages`,
-		{ uuid: uuid })
+		{ uuid: uuid }, "messages")
 
 		console.debug("%s: getMessages returns: %O", __filename, result)
 		return result

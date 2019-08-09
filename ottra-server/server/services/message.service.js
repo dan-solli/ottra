@@ -1,18 +1,18 @@
 const MessageModel = require('./../models/message.model')
 
 const MessageService = {
-	getMessages: async function(payload) {
-		console.debug("%s: getMessages is called with payload: %O", __filename, payload)
+	getMessages: async function(user_id) {
+		console.debug("%s: getMessages is called with payload: %O", __filename, user_id)
 
-		const uuid = payload.tokenData.id
-		if (!uuid) {
-			return {
+		if (!user_id) {
+			return [ null, {
 				status: 'failed',
-				message: 'Missing accessToken',
+				message: 'Missing user id',
 				code: 404
-			}
+			} ]
 		}	else {
-			return await MessageModel.getMessages(uuid)
+			// TODO: Need to enhance this one.
+			return [ await MessageModel.getMessages(user_id), null ]
 		}
 	}
 }

@@ -9,48 +9,69 @@ const UserService = {
 	authenticateUser: async function(payload) {
 		console.debug("%s: authenticateUser called with payload: %O", __filename, payload)
 
-		let { stored_hash, uuid } = await UserModel.getUserAuthInfo(payload.username)
-		if (await Crypt.comparePassword(payload.password, stored_hash)) {
-			const response = {
-				username: payload.username,
-				id: uuid,
-			}
-			response.accessToken = await AuthService.generateAccessToken(response)
-			response.refreshToken = await AuthService.generateRefreshToken(response)
+		const returnValue =  await UserModel.getUserInfoByName(payload.username)
 
-			console.debug("%s: authenticateUser: Emitting eUserLogin with: %O", 
-				__filename, response.id)
-			process.emit('eUserLogin', response.id)
+		console.debug("%s: authenticateUser returnValue is %O", __filename, returnValue)
 
-			console.debug("%s: authenticateUser is returning: %O", __filename, response)
-			return response
+		if (!returnValue) {
+			return [ null, {
+					status: 'failed',
+					message: 'No such user',
+					code: 401
+				} 
+			]
 		} else {
-			process.emit('eUserLoginFailed', { payload })
-			return { 
-				status: 'failed',
-				message: 'Login could not happen',
-				code: 201
+
+			const { password: stored_hash = null, uuid = null	} = returnValue[0]
+
+			console.debug("%s: authenticateUser local variables are %s and %s", __filename, stored_hash, uuid)
+			if (stored_hash === null || uuid === null) {
+				return [ null, {
+						status: 'failed',
+						message: 'No such user',
+						code: 401
+					} 
+				]
+			}
+
+			if (await Crypt.comparePassword(payload.password, stored_hash)) {
+				const response = {
+					username: payload.username,
+					id: uuid,
+				}
+				response.accessToken = await AuthService.generateAccessToken(response)
+				response.refreshToken = await AuthService.generateRefreshToken(response)
+
+				console.debug("%s: authenticateUser: Emitting eUserLogin with: %O", 
+					__filename, response.id)
+				process.emit('eUserLogin', response.id)
+
+				console.debug("%s: authenticateUser is returning: %O", __filename, response)
+				return [ response, null ]
+			} else {
+				process.emit('eUserLoginFailed', { payload })
+				return [ null, { 
+					status: 'failed',
+					message: 'Login could not happen',
+					code: 401
+				} ]
 			}
 		}
 	},
 	createUser: async function(payload) {
 		console.debug("%s: createUser called with payload: %O", __filename, payload)
 
-		let authInfo = await UserModel.getUserAuthInfo(payload.username)
-		if (authInfo) {
-			return {
+		let authInfo = await UserModel.getUserInfoByName(payload.username)
+		if (!authInfo.length) {
+			return [ null, {
 				status: 'failed',
 				message: 'User already exist',
 				code: 403
-			}
+			} ]
 		}
 
-		await UserModel.createUser(payload.username, payload.password)
-		let { uuid } = await UserModel.getUserAuthInfo(payload.username)
-		let response = {
-			username: payload.username,
-			id: uuid
-		}
+		const response = await UserModel.createUser(payload.username, payload.password)
+
 		response.accessToken = await AuthService.generateAccessToken(response)
 		response.refreshToken = await AuthService.generateRefreshToken(response)
 
@@ -58,11 +79,12 @@ const UserService = {
 		process.emit('eNewUser', response.id)
 
 		console.debug("%s: createUser is returning: %O", __filename, response)
-		return response
+		return [ response, null ]
 	},
 	refreshToken: async function(payload) {
 		console.debug("%s: refreshToken called with payload: %O", __filename, payload)
-		return await this.db('refreshToken', this.loginInfo)
+		// TODO: Need to enhance this one... 
+		return [ await this.db('refreshToken', this.loginInfo), null ]
 	}
 }
 
