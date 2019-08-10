@@ -49,33 +49,38 @@ assignees: ''
 - [ ] Add to repository factory
 
 ### Create Views for CRUD
-- Create
-- - [ ] I18n
-- - [ ] Tour
-- - [ ] Tooltips
-- - [ ] Hotkeys
-- - [ ] Right click context menu
-- Read: Collection
-- - [ ] I18n
-- - [ ] Tour
-- - [ ] Tooltips
-- - [ ] Hotkeys
-- - [ ] Right click context menu
-- Read: Single Item
-- - [ ] I18n
-- - [ ] Tour
-- - [ ] Tooltips
-- - [ ] Hotkeys
-- - [ ] Right click context menu
-- Update
-- - [ ] I18n
-- - [ ] Tour
-- - [ ] Tooltips
-- - [ ] Hotkeys
-- - [ ] Right click context menu
-- Delete
-- - [ ] I18n
-- - [ ] Tour
-- - [ ] Tooltips
-- - [ ] Hotkeys
-- - [ ] Right click context menu
+
+#### Create
+- [ ] I18n
+- [ ] Tour
+- [ ] Tooltips
+- [ ] Hotkeys
+- [ ] Right click context menu
+
+#### Read: Collection
+- [ ] I18n
+- [ ] Tour
+- [ ] Tooltips
+- [ ] Hotkeys
+- [ ] Right click context menu
+
+#### Read: Single Item
+- [ ] I18n
+- [ ] Tour
+- [ ] Tooltips
+- [ ] Hotkeys
+- [ ] Right click context menu
+
+#### Update
+- [ ] I18n
+- [ ] Tour
+- [ ] Tooltips
+- [ ] Hotkeys
+- [ ] Right click context menu
+
+#### Delete
+- [ ] I18n
+- [ ] Tour
+- [ ] Tooltips
+- [ ] Hotkeys
+- [ ] Right click context menu
