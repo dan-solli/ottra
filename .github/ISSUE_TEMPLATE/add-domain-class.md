@@ -2,7 +2,7 @@
 name: Add domain class
 about: Checklist for adding domain classes
 title: "[Domain Class] <Enter name here>"
-labels: Requirement, server, client
+labels: Requirement, client, server
 assignees: ''
 
 ---
@@ -49,7 +49,33 @@ assignees: ''
 - [ ] Add to repository factory
 
 ### Create Views for CRUD
-- [ ] C + I18n + Tour + Tooltips
-- [ ] R + I18n + Tour + Tooltips
-- [ ] U + I18n + Tour + Tooltips
-- [ ] D + I18n + Tour + Tooltips
+- Create
+- - [ ] I18n
+- - [ ] Tour
+- - [ ] Tooltips
+- - [ ] Hotkeys
+- - [ ] Right click context menu
+- Read: Collection
+- - [ ] I18n
+- - [ ] Tour
+- - [ ] Tooltips
+- - [ ] Hotkeys
+- - [ ] Right click context menu
+- Read: Single Item
+- - [ ] I18n
+- - [ ] Tour
+- - [ ] Tooltips
+- - [ ] Hotkeys
+- - [ ] Right click context menu
+- Update
+- - [ ] I18n
+- - [ ] Tour
+- - [ ] Tooltips
+- - [ ] Hotkeys
+- - [ ] Right click context menu
+- Delete
+- - [ ] I18n
+- - [ ] Tour
+- - [ ] Tooltips
+- - [ ] Hotkeys
+- - [ ] Right click context menu
