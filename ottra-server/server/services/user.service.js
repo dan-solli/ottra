@@ -22,7 +22,7 @@ const UserService = {
 			]
 		} else {
 
-			const { password: stored_hash = null, uuid = null	} = returnValue[0]
+			const { password: stored_hash = null, uuid = null	} = returnValue
 
 			console.debug("%s: authenticateUser local variables are %s and %s", __filename, stored_hash, uuid)
 			if (stored_hash === null || uuid === null) {
@@ -62,7 +62,7 @@ const UserService = {
 		console.debug("%s: createUser called with payload: %O", __filename, payload)
 
 		let authInfo = await UserModel.getUserInfoByName(payload.username)
-		if (!authInfo.length) {
+		if (authInfo.length) {
 			return [ null, {
 				status: 'failed',
 				message: 'User already exist',

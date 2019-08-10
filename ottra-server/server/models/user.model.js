@@ -9,7 +9,7 @@ const UserModel = {
 
 		await DB.run('CREATE (:User { password: {hash}, username: {username} })', 
 			{ username: username, hash: hash })
-		const { id, username: new_username } = await UserModel.getUserInfoByName(username)
+		const { uuid: id, username: new_username } = await UserModel.getUserInfoByName(username)
 		console.debug("%s: createUser is returning: %s", __filename, id)
 		return {
 			id: id,
@@ -29,7 +29,7 @@ const UserModel = {
 			console.debug("%s: getUserInfoByName found no matches for %s", __filename, username)
 			return 0
 		}
-		return result
+		return result[0]
 	},
 	getUserInfoById: async function(id) {
 		console.debug("%s: getUserInfoById is called with id: %s", __filename, id)
@@ -44,7 +44,7 @@ const UserModel = {
 			console.debug("%s: getUserInfoById found no matches for %s", __filename, id)
 			return 0
 		}
-		return result
+		return result[0]
 	}
 }
 

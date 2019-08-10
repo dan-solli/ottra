@@ -9,6 +9,7 @@ r.use('/1/auth', (require('./../api/auth.controller')))
 r.use(jwtCheck)
 
 r.use('/1/message', (require('./../api/message.controller')));
+r.use('/1/group', (require('./../api/group.controller')));
 
 module.exports = r
 

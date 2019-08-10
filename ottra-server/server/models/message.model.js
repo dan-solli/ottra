@@ -3,12 +3,8 @@ const DB = require('./../infra/db')
 const MessageModel = {
 	saveMessage: async function(payload) {
 		console.debug("%s: saveMessage is called with payload: %O", __filename, payload)
-		const { sender = false, 
-					recipient = false, 
-					subject = 'No subject', 
-					body = 'Empty message', 
-					timeToLive = -1, 
-					type = 'system#undefined' 
+		const { sender = false, recipient = false, subject = 'No subject', 
+						body = 'Empty message', timeToLive = -1, type = 'system#undefined' 
 		} = payload
 
 		if (!sender || !recipient)
@@ -17,18 +13,9 @@ const MessageModel = {
 		await DB.run(`
 	MATCH (u:User { uuid : {recipient} })					
 	CREATE (u)-[:HAS]->(n:Message { 
-						from: {sender},
-						recipient: {recipient},
-						subject: {subject},
-						body: {body},
-						timeToLive: {timeToLive},
-						type: {type},
-						status: 'unread',
-						sent: TIMESTAMP()
-					}) return id(n)`, 
-					{
-						sender, recipient, subject, body, timeToLive, type
-					}
+						from: {sender}, recipient: {recipient}, subject: {subject}, body: {body},
+						timeToLive: {timeToLive}, type: {type}, status: 'unread',	sent: TIMESTAMP()
+					}) return id(n)`, { sender, recipient, subject, body, timeToLive, type }
 		)
 	},
 	getMessages: async function(uuid) {
