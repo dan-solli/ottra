@@ -17,7 +17,7 @@
               </v-layout>
 
             </v-container>
-          <v-btn color="primary" @click="current_step = current_step + 1">(*) Continue</v-btn>
+          <v-btn color="primary" @click="SaveGroup">(*) Create group and continue</v-btn>
           <v-btn text>(*) Cancel</v-btn>
         </v-stepper-content>
 
@@ -29,17 +29,17 @@
                 <v-list-item 
                   v-for="(inviteeRow, index) in invitees"
                   :key="index">
+                  <v-list-item-content >
+                    <v-list-item-title> 
+                      {{ inviteeRow.username }} 
+                    </v-list-item-title>
+                    <v-list-item-subtitle> 
+                      {{ inviteeRow.role.text }} 
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
                   <v-list-item-icon>
                     <v-icon @click="removeFromList(index)" color="red">cancel</v-icon>
                   </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-title> {{ inviteeRow.username }} </v-list-item-title>
-<!--
-                    <v-list-item-subtitle> {{ roleLookup[inviteeRow.role] }} 
--->
-                    <v-list-item-subtitle> {{ inviteeRow.role.text }} 
-                    </v-list-item-subtitle>
-                  </v-list-item-content>
                 </v-list-item>
               </v-flex>
             </v-layout>
@@ -63,7 +63,7 @@
           </v-container>
           <v-divider horizontal></v-divider>
           <v-btn text @click="current_step = 1">(*) Restart</v-btn>
-          <v-btn text @click="saveGroup">(*) Save Group and send invites</v-btn>
+          <v-btn text @click="sendInvites">(*) Save Group and send invites</v-btn>
         </v-stepper-content>
       </v-form>
     </v-stepper>
@@ -71,6 +71,8 @@
 </template>
 
 <script>
+
+import { LOADING, OK, ERROR } from '@/types/loadstate.type'
 
 export default {
   name: "create-group",
@@ -100,14 +102,22 @@ export default {
     ],
   	group_name: '',
     valid: false,
+    group_id: null,
     stringRules: [
       v => !!v || 'Required'
     ],
+    controlStates: {}
   }),
   methods: {
-    saveGroup: function() {
+    saveGroup: async function() {
       const payload = {
         groupName: this.group_name,
+      }
+      this.group_id = await this.$store.dispatch("createGroup", payload)
+      this.current_step++
+    },
+    sendInvites: async function() {
+      const payload = {
         invitees: this.invitees.map(x => {
           return {
             username: x.username,
@@ -115,19 +125,21 @@ export default {
           }
         })
       }
-      return this.$store.dispatch("createGroup", payload)
-      .then((data) => {
-        this.$router.push('/group')
-      })
-      .catch(function(err) {
-        console.log("THIS IS A FUCKING ERROR FOR NO GOD DAMNED REASON!")
-        console.log("Error is: " + err)
-      })
+      await this.$store.dispatch("sendGroupInvites", payload)
+      this.$router.push('/group')
     },
     removeFromList: function(index) {
       this.invitees.splice(index, 1)
     },
     addInvitee: function() {
+      this.controlStates[this.inviteeUserName] = LOADING
+      this.$store.dispatch("userExist", this.inviteeUserName)
+      .then(function(response) {
+        this.controlStates[this.inviteeUserName] = response ? OK : FAIL
+      })
+      .catch(function(err) {
+        this.controlStates[this.inviteeUserName] = FAIL
+      })
       this.invitees.push({ 
         username: this.inviteeUserName, 
         role: this.roles.find(x => x.value == this.inviteeRole)

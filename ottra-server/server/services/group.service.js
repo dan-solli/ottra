@@ -1,30 +1,36 @@
 const GroupModel = require('./../models/group.model')
+const UserModel = require('./../models/user.model')
+
+const to = require('./../infra/await-to')
 
 const GroupService = {
 	getGroups: async function(user_id) {
 		console.debug("%s: getGroups called with user_id: %s", __filename, user_id)
-
-		const response = await GroupModel.getGroups(user_id)
-		return [ response, null ]
+		return to(await GroupModel.getGroups(user_id))
 	},
-	createGroup: async function(payload) {
+	createGroup: async function(payload, user_id) {
 		console.debug("%s: createGroup called with payload: %O", __filename, payload)
+		return to(await GroupModel.createGroup(payload, user_id))
+	},
+	inviteUsers: async function(payload, user_id) {
+		console.debug("%s: inviteUsers called with userid: %s and payload: %O", __filename, user_id, payload)
 
-		// TODO: I think there's a huge refactoring requiring try/catch everywhere...
-		const response = await GroupModel.createGroup(payload)
-		// TODO: I think this belongs in the model, where it is actually created.
+		const group_id = payload.groupId
+		const users_id = payload.userList.map(async function(u) {
+			const [ user, err ] = await to(UserService.getUserByName(u))
+			if (user !== null) {
+				return user.uuid
+			} else {
+				return null
+			}
+		}).filter(u => u !== null) 
 
+		const responses = []
 
-		// TODO: Seriously, what piece of code is reponsible for what here? 
-		// It is not a part of the Group Complex either way. You invite A USER to A GROUP. 
-		// It's not a group inviting users. 
-		if (payload.invitees.length) {
-			payload.invitees.forEach(function(invitee) {
-				const invitation = await GroupModel.inviteUser(invitee, response.uuid, payload)
-				process.emit('inviteUser', { invited: invitee, inviter: response.uuid, })
-			})
-		}
-		return [ response, null ]
+		users_id.forEach(async function(u) {
+			responses.push(await to(GroupModel.inviteUser(group_id, user_id, u, payload.roleName )))
+		})
+		return responses
 	}
 }
 

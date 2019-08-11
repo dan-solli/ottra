@@ -10,6 +10,7 @@ r.use(jwtCheck)
 
 r.use('/1/message', (require('./../api/message.controller')));
 r.use('/1/group', (require('./../api/group.controller')));
+r.use('/1/geography', (require('./../api/geography.controller')));
 
 module.exports = r
 

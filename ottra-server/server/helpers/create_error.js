@@ -1,3 +1,4 @@
+/* DEPRECATED. KEEPING FILE TO SEE IF SOMETHING IS MISSING IT
 const Helpers = {
 	createError(msg) {
 		return {
@@ -9,3 +10,4 @@ const Helpers = {
 };
 
 module.exports = Helpers;
+*/
