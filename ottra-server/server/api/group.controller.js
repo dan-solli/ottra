@@ -16,7 +16,7 @@ r.post("/", async function(req, res) {
 })
 
 r.post("/invite", async function(req, res) {
-	console.debug("%s: POST /invite: called with req.body: %O", __filename, rec.body)
+	console.debug("%s: POST /invite: called with req.body: %O", __filename, req.body)
 	SendResponse.response(res, await GroupService.inviteUsers(req.body, req.tokenData.id))
 })
 

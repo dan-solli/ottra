@@ -1,5 +1,5 @@
 const GroupModel = require('./../models/group.model')
-const UserModel = require('./../models/user.model')
+const UserService = require('./user.service')
 
 const to = require('./../infra/await-to')
 
@@ -17,7 +17,7 @@ const GroupService = {
 
 		const group_id = payload.groupId
 		const users_id = payload.userList.map(async function(u) {
-			const [ user, err ] = await to(UserService.getUserByName(u))
+			const [ user, ] = await to(UserService.getUserByName(u))
 			if (user !== null) {
 				return user.uuid
 			} else {

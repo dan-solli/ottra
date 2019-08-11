@@ -1,5 +1,3 @@
-const to = require('./../infra/await-to')
-
 const googleMapsClient = require('@google/maps').createClient({
 	key: process.env.GMAPS
 })

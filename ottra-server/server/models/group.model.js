@@ -43,9 +43,17 @@ const GroupModel = {
 		console.debug("%s: inviteUser is called: %s is inviting %s to group %s",
 			inviter_uuid, invited_uuid, group_id)
 		const result = await DB.run(`
-			MATCH (g:Group { uuid : { group_id } }), (i:User { uuid: { invited_uuid }})
-			CREATE (g)-[:INVITE { inviter: inviter_uuid, role: roleName }]->(i)
-		`)
+			MATCH (g:Group { uuid : {group_id} }), (i:User { uuid: {invited_uuid} })
+			CREATE (g)-[:INVITE { inviter: {inviter_uuid}, role: {roleName} }]->(i)
+		`, 
+			{ 
+				group_id: group_id,
+				invited_uuid: invited_uuid,
+				inviter_uuid: inviter_uuid,
+				roleName: role_name
+			}
+		)
+		return result
 	}
 }
 
