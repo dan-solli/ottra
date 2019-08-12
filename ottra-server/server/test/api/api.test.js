@@ -61,12 +61,78 @@ describe("API", () => {
 				}
 			})
 		})
+		it("should fail on wrong password", () => {
+			return axios.post(apiBase + "/auth/authenticate", { 
+				username: defaultUser.username, 
+				password: 'wrongpassword'
+			}).then(res => {
+				console.log(res.status)
+				console.log(res.data)
+			}).catch(function(err) {
+				err.response.status.should.equal(401)
+				err.response.data.status.should.equal('failed')
+				err.response.data.code.should.equal(401)
+			})
+		})
+		it("should fail on non-existing user", () => {
+			return axios.post(apiBase + "/auth/authenticate", {
+				username: "notregistereduser@nowhere.com",
+				password: "thisisrandom"
+			}).then(res => {
+				console.log(res.status)
+				console.log(res.data)
+			}).catch(function(err) {
+				err.response.status.should.equal(401)
+				err.response.data.status.should.equal('failed')
+				err.response.data.code.should.equal(401)
+			})
+		})
+		it("should fail trying to create user with empty parameters", () => {
+			return axios.post(apiBase + "/auth/authenticate", { }).then(res => {
+				console.log(res.status)
+				console.log(res.data)
+			}).catch(function(err) {
+				err.response.status.should.equal(422)
+				err.response.data.status.should.equal('failed')
+				err.response.data.code.should.equal(422)
+			})
+		})
+		it("should fail trying to authenticate user with empty parameters", () => {
+			return axios.post(apiBase + "/auth/authenticate", { }).then(res => {
+				console.log(res.status)
+				console.log(res.data)
+			}).catch(function(err) {
+				err.response.status.should.equal(422)
+				err.response.data.status.should.equal('failed')
+				err.response.data.code.should.equal(422)
+			})
+		})
+		it("should fail trying to create user with missing postData", () => {
+			return axios.post(apiBase + "/auth/authenticate").then(res => {
+				console.log(res.status)
+				console.log(res.data)
+			}).catch(function(err) {
+				err.response.status.should.equal(422)
+				err.response.data.status.should.equal('failed')
+				err.response.data.code.should.equal(422)
+			})
+		})
+		it("should fail trying to authenticate user with missing postData", () => {
+			return axios.post(apiBase + "/auth/authenticate").then(res => {
+				console.log(res.status)
+				console.log(res.data)
+			}).catch(function(err) {
+				err.response.status.should.equal(422)
+				err.response.data.status.should.equal('failed')
+				err.response.data.code.should.equal(422)
+			})
+		})
 		it("should refresh tokens at request ")
 	})
 
 	describe("Geography", () => { 
-		it("should look up predictions for an address when asked ")
-		it("should find the Google Place for an address ")
+		it("(perma-skip due to cost) should look up predictions for an address when asked ")
+		it("(perma-skip due to cost) should find the Google Place for an address ")
 	})
 
 	describe("Group", () => {
@@ -78,18 +144,24 @@ describe("API", () => {
 		it("should fetch all groups for a user ")
 		it("should send an invite to a group to a certain user ")
 		it("should fail to send an invite to an unknown user ")
-		it("should withdraw an invitation" )
-		it("should change the role of a member of a group" )
-		it("should change the permissions of a member of a group" )
+		it("should withdraw an invitation")
+		it("should change the role of a member of a group")
+		it("should change the permissions of a member of a group")
 	})
 
 	describe("Message", () => { 
 		it("should create a new message ")
+		it("should fail creating a new message with params missing")
 		it("should fetch all messages ")
 		it("should fetch a single message")
+		it("should not return a message if there is none with that id")
 		it("should delete a message ")
+		it("should not delete a message if there is an id missing")
 		it("should snooze a message ")
+		it("should fail snoozing a message if there is no id")
 		it("should archive a message ")
+		it("should not archive a message with random id")
+		it("should not archive a message not owned by the user")
 	})
 
 	after('End tests. Clearing database from testdata.', function() {
