@@ -1,4 +1,4 @@
-SendResponse = {
+const SendResponse = {
 	response: function(res, result) {
 		const [ reply, error ] = result
 

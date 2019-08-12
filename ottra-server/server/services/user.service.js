@@ -62,7 +62,8 @@ const UserService = {
 		console.debug("%s: createUser called with payload: %O", __filename, payload)
 
 		let authInfo = await UserModel.getUserInfoByName(payload.username)
-		if (authInfo.length) {
+		console.debug("%s: createUser: authInfo is: %O", __filename, authInfo)
+		if (authInfo) {
 			return [ null, {
 				status: 'failed',
 				message: 'User already exist',
