@@ -1,4 +1,5 @@
 const DB = require('./../infra/db')
+const uuidv4 = require('uuid/v4')
 
 const MessageModel = {
 	saveMessage: async function(payload) {
@@ -10,23 +11,32 @@ const MessageModel = {
 		if (!sender || !recipient)
 			return false
 
-		await DB.run(`
-	MATCH (u:User { uuid : {recipient} })					
+		return await DB.fetchRow(`
+	MATCH (u:User { uuid: {recipient} })					
 	CREATE (u)-[:HAS]->(n:Message { 
+						uuid: {new_uuid}, 
 						from: {sender}, recipient: {recipient}, subject: {subject}, body: {body},
 						timeToLive: {timeToLive}, type: {type}, status: 'unread',	sent: TIMESTAMP()
-					}) return id(n)`, { sender, recipient, subject, body, timeToLive, type }
+					}) return n { .* } as Message`, { 
+						new_uuid: uuidv4(), 
+						sender, 
+						recipient, 
+						subject, 
+						body, 
+						timeToLive, 
+						type 
+					}, "Message"
 		)
 	},
 	getMessages: async function(uuid) {
 		console.debug("%s: getMessages called with uuid = %s", __filename, uuid)
 
-		const result = await DB.run(`
+		const result = await DB.fetchAll(`
 	MATCH (:User { uuid: { uuid }})-[:HAS]->(m:Message)
-	RETURN COLLECT (m { .*, dateTime: apoc.date.format(m.sent) }) AS messages`,
-		{ uuid: uuid }, "messages")
+	RETURN COLLECT (m { .*, dateTime: apoc.date.format(m.sent) }) AS Messages`,
+		{ uuid: uuid }, "Messages")
 
-		console.debug("%s: getMessages returns: %O", __filename, result)
+		//console.debug("%s: getMessages returns: %O", __filename, result)
 		return result
 	}
 }

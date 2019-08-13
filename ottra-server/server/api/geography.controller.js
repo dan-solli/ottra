@@ -16,7 +16,7 @@ r.get("/place/:place_id", async function(req, res) {
 	const place_id = req.params.place_id
 
 	console.debug("%s: GET /place: called with param %s", __filename, place_id)
-	SendResponse.response(res, await GeographyService.getPlaceById(req.tokenData.id))	
+	SendResponse.response(res, await GeographyService.getPlaceById(place_id))	
 })
 
 module.exports = r

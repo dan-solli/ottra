@@ -8,7 +8,7 @@ const r = express.Router();
 
 r.get('/', async function(req, res) {
 	console.debug("%s: GET /: called", __filename)	
-	SendResponse.response(res, await MessageService.getMessages(req.tokenData.id))
+	SendResponse.response(res, await MessageService.getMessages(req.tokenData.uuid))
 })
 
 module.exports = r

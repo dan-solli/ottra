@@ -10,7 +10,9 @@ const GroupService = {
 	},
 	createGroup: async function(payload, user_id) {
 		console.debug("%s: createGroup called with payload: %O", __filename, payload)
-		return await GroupModel.createGroup(payload, user_id)
+		const response = await GroupModel.createGroup(payload, user_id)
+		console.debug("%s: createGroup will return: %O", __filename, response)
+		return [ response, null ]
 	},
 	inviteUsers: async function(payload, user_id) {
 		console.debug("%s: inviteUsers called with userid: %s and payload: %O", __filename, user_id, payload)

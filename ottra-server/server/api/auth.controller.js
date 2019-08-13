@@ -21,8 +21,9 @@ r.post('/', [
 				code: 422
 			}
 		])
+	} else {
+		SendResponse.response(res, await UserService.createUser(req.body))
 	}
-	SendResponse.response(res, await UserService.createUser(req.body))
 })
 
 r.post("/authenticate", [
@@ -38,8 +39,9 @@ r.post("/authenticate", [
 				code: 422
 			}
 		])
+	} else {
+		SendResponse.response(res, await UserService.authenticateUser(req.body))
 	}
-	SendResponse.response(res, await UserService.authenticateUser(req.body))
 })
 		
 r.post("/token", async function(req, res) {

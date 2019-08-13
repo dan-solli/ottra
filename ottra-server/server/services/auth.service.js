@@ -9,7 +9,7 @@ const AuthService = {
 		if (payload.refreshToken && await AuthModel.refreshTokenExist(payload.refreshToken)) {
 			const userInfo = {
 				username: payload.username,
-				id: payload.uuid
+				uuid: payload.uuid
 			}
 			userInfo.accessToken = await AuthService.generateAccessToken(userInfo)
 			userInfo.refreshToken = payload.refreshToken

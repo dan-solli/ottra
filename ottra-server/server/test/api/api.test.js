@@ -22,6 +22,11 @@ const axios = require('axios')
 
 const apiBase = 'http://192.168.1.200:8081/api/1'
 
+let storage = {
+	accessToken: '',
+	uuid: ''
+}
+
 describe("API", () => {
 
 	before('Starting up tests. Clearing database from testdata.', function() {
@@ -31,18 +36,18 @@ describe("API", () => {
 	describe("Auth", () => {
 
 		it("should create user ", () => {
-			return axios.post(apiBase + "/auth", defaultUser).then(res => {
+			return axios.post(apiBase + "/auth", defaultUser)
+			.then(res => {
 				res.status.should.equal(200)
-				res.data.id.should.be.a('string')
+				res.data.uuid.should.be.a('string')
 				res.data.username.should.equal(defaultUser.username)
+
+				storage.uuid = res.data.uuid
 			})
 		})
-
-/*		
 		it("should not be able to recreate the same user ", () => {
 			return axios.post(apiBase + "/auth", defaultUser).then(res => {
-				// console.log(res)
-				res.status.should.equal(403)
+				// foo
 			}).catch(function(err) {
 				// console.log(err)
 				err.response.status.should.equal(403)
@@ -51,12 +56,10 @@ describe("API", () => {
 				err.response.data.code.should.equal(403)
 			})
 		})
-*/		
 		it("should be able to login the created user ", () => {
 			return axios.post(apiBase + "/auth/authenticate", defaultUser).then(res => {
-				//console.log(res)
 				res.data.username.should.equal(defaultUser.username)
-				res.data.id.should.be.a('string')
+				res.data.uuid.should.be.a('string')
 				res.data.accessToken.should.be.a('string')
 				res.data.refreshToken.should.be.a('string')
 
@@ -65,14 +68,12 @@ describe("API", () => {
 				}
 			})
 		})
-/*		
 		it("should fail on wrong password", () => {
 			return axios.post(apiBase + "/auth/authenticate", { 
 				username: defaultUser.username, 
 				password: 'wrongpassword'
 			}).then(res => {
-				console.log(res.status)
-				console.log(res.data)
+				// foo
 			}).catch(function(err) {
 				err.response.status.should.equal(401)
 				err.response.data.status.should.equal('failed')
@@ -112,28 +113,7 @@ describe("API", () => {
 				err.response.data.code.should.equal(422)
 			})
 		})
-		it("should fail trying to create user with missing postData", () => {
-			return axios.post(apiBase + "/auth/authenticate").then(res => {
-				console.log(res.status)
-				console.log(res.data)
-			}).catch(function(err) {
-				err.response.status.should.equal(422)
-				err.response.data.status.should.equal('failed')
-				err.response.data.code.should.equal(422)
-			})
-		})
-		it("should fail trying to authenticate user with missing postData", () => {
-			return axios.post(apiBase + "/auth/authenticate").then(res => {
-				console.log(res.status)
-				console.log(res.data)
-			}).catch(function(err) {
-				err.response.status.should.equal(422)
-				err.response.data.status.should.equal('failed')
-				err.response.data.code.should.equal(422)
-			})
-		})
 		it("should refresh tokens at request ")
-*/		
 	})
 
 	describe("Geography", () => { 
@@ -142,11 +122,11 @@ describe("API", () => {
 	})
 
 	describe("Group", () => {
-		it("should create a group ", (done) => {
-			axios.post(apiBase + "/group", defaultGroup).then(res => {
-				console.log("This should happen")
-				console.log(res.data)
-			}).finally(done)
+		it("should create a group ", () => {
+			return axios.post(apiBase + "/group", defaultGroup).then(res => {
+				res.data.name.should.equal(defaultGroup.groupName)
+				res.data.creator.should.equal(storage.uuid)
+			})
 		})
 		it("should fail to create a group with data missing")
 		it("should edit a groups properties")
@@ -159,11 +139,15 @@ describe("API", () => {
 		it("should change the role of a member of a group")
 		it("should change the permissions of a member of a group")
 	})
-
 	describe("Message", () => { 
 		it("should create a new message ")
 		it("should fail creating a new message with params missing")
-		it("should fetch all messages ")
+		it("should fetch all messages ", () => {
+			return axios.get(apiBase + "/message").then(res => {
+				res.data.should.be.an('array', "so what is it?")
+				res.data.should.have.lengthOf.within(1, 5)
+			})
+		})
 		it("should fetch a single message")
 		it("should not return a message if there is none with that id")
 		it("should delete a message ")
@@ -175,6 +159,7 @@ describe("API", () => {
 		it("should not archive a message not owned by the user")
 	})
 
+
 	after('End tests. Clearing database from testdata.', function() {
 		clearTestData()
 	})
@@ -183,8 +168,13 @@ describe("API", () => {
 function clearTestData() {
 	const session = Connection.session()
 
-	session.run("MATCH (u:User { username: {username} }) DETACH DELETE u", 
+	session.run(`MATCH (u:User { username: {username} }) DETACH DELETE u`, 
 		{ username: defaultUser.username })
+	.then(function() {
+		// foo
+	})
+	session.run(` MATCH (g:Group { name: {groupname} })	DETACH DELETE g`, 
+		{ groupname: defaultGroup.groupName })
 	.then(function() {
 		Connection.close()
 	})
