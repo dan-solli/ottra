@@ -10,7 +10,8 @@ const Database = {
 	run: async function(cypher, payload, gettable = null) {
 		let session = Connection.session()
 
-		//console.debug("%s: run called with:\n%s\nAnd payload:\n%O", __filename, cypher, payload)
+		console.warn("%s: Function 'run' is deprecated. Please replace!", __filename)
+		console.debug("%s: fun called with (%s, %O, %s", __filename, cypher, payload, gettable)
 		try {
 			const result = await session.run(cypher, payload)
 			if (gettable !== null) {
@@ -26,7 +27,33 @@ const Database = {
 		finally {
 			session.close()
 		}
+	},
+	fetchRow: async function(cypher, payload, gettable) {
+		const result = Database.fetchRaw(cypher, payload)
+		if (result.records && result.records.length > 0)
+			return result.records[0].get(gettable)
+		else 
+			return result.records
+	},
+	fetchAll: async function(cypher, payload, gettable = null) {
+	},
+	fetchValue: async function(cypher, payload, gettable, field) {
+	},
+	fetchRaw: async function(cypher, payload) {
+		let session = Connection.session()
+
+		try {
+			return await session.run(cypher, payload) 
+		}
+		catch (err) {
+			console.error("%s: run failed: %s", __filename, err)
+		}
+		finally {
+			session.close()
+		}
 	}
 }
 
 module.exports = Database
+
+

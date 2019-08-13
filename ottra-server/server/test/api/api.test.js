@@ -16,6 +16,7 @@ const should = chai.should()
 const express = require('express')
 
 const defaultUser = { username: 'testsson@testinge.se', password: 'ettpassord'}
+const defaultGroup = { groupName: 'Testgroup 01' }
 
 const axios = require('axios')
 
@@ -36,6 +37,8 @@ describe("API", () => {
 				res.data.username.should.equal(defaultUser.username)
 			})
 		})
+
+/*		
 		it("should not be able to recreate the same user ", () => {
 			return axios.post(apiBase + "/auth", defaultUser).then(res => {
 				// console.log(res)
@@ -48,6 +51,7 @@ describe("API", () => {
 				err.response.data.code.should.equal(403)
 			})
 		})
+*/		
 		it("should be able to login the created user ", () => {
 			return axios.post(apiBase + "/auth/authenticate", defaultUser).then(res => {
 				//console.log(res)
@@ -61,6 +65,7 @@ describe("API", () => {
 				}
 			})
 		})
+/*		
 		it("should fail on wrong password", () => {
 			return axios.post(apiBase + "/auth/authenticate", { 
 				username: defaultUser.username, 
@@ -128,6 +133,7 @@ describe("API", () => {
 			})
 		})
 		it("should refresh tokens at request ")
+*/		
 	})
 
 	describe("Geography", () => { 
@@ -136,7 +142,12 @@ describe("API", () => {
 	})
 
 	describe("Group", () => {
-		it("should create a group ")
+		it("should create a group ", (done) => {
+			axios.post(apiBase + "/group", defaultGroup).then(res => {
+				console.log("This should happen")
+				console.log(res.data)
+			}).finally(done)
+		})
 		it("should fail to create a group with data missing")
 		it("should edit a groups properties")
 		it("should accept an invite and add a member to a group ")

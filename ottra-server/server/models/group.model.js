@@ -18,25 +18,28 @@ const GroupModel = {
 		return result		
 	},
 	createGroup: async function(payload, user_id) {
-		console.debug("%s: createUser is called with payload: %O", __filename, payload)
+		console.debug("%s: createGroup is called with payload: %O", __filename, payload)
 
-		const result = await DB.run(`
+		const tmpID = await DB.run(`
 			MATCH (u:User { uuid : {creator} })
-			CREATE (u)-[:BELONG_TO { role: roleName } ]->(g:Group {
+			CREATE (u)-[:BELONG_TO { role: 'admin' } ]->(g:Group {
 				creator: {creator},
 				created: TIMESTAMP(),
 				name: {group_name} 
 			}) return id(g) as internalGroupID`, { 
 				creator: user_id, 
 				group_name: payload.groupName,
-				role_name: payload.roleName 
-			}
+			}, "internalGroupID"
 		)
-		const tmpID = result.records[0].get('internalGroupID')
+
+		console.debug("%s: createGroup creation result is: %O", __filename, tmpID)
+
+		console.debug("%s: createGroup trying to find uuid for group with id %s", __filename, tmpID)
 		const response = await DB.run(`
-			MATCH (g:Group) WHERE id(g) = { id } 
-			RETURN COLLECT (g { .* } as Group`, { id: tmpID }, "Group")
-		return response[0]
+			MATCH (g:Group) WHERE id(g) = {id} 
+			RETURN COLLECT (g { .* }) as Group`, { id: tmpID }, "Group")
+		console.debug("%s: createGroup excavation results in %O", __filename, response)
+		return response
 	},
 	inviteUser: async function({ group_id, inviter_uuid, invited_uuid, role_name }) {
 		// Yes, one at the time. 
