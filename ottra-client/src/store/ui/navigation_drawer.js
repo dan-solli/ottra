@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+//import Vue from 'vue'
+//import Vuex from 'vuex'
 
 const UIState = {
   state: {
@@ -52,51 +52,41 @@ const UIState = {
     getCurrentView: state => state.current_view
   },
   actions: {
-    setModeItems({ dispatch, commit }, items) {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          commit("saveModeItems", items)
-          resolve()
-        }, 1000)
+    setModeItems({ commit }, items) {
+      return new Promise((resolve) => {
+        commit("saveModeItems", items)
+        resolve()
       })
     },
-    setViewItems({ dispatch, commit }, items) {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          commit("saveViewItems", items)
-          resolve()
-        }, 1000)
+    setViewItems({ commit }, items) {
+      return new Promise((resolve) => {
+        commit("saveViewItems", items)
+        resolve()
       })
     },
-    setExtraItems({ dispatch, commit }, items) {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          commit("saveExtraItems", items)
-          resolve()
-        }, 1000)
+    setExtraItems({ commit }, items) {
+      return new Promise((resolve) => {
+        commit("saveExtraItems", items)
+        resolve()
       })
     },
     clearItems({ dispatch }) {
-      return new Promise.all([ 
+      return Promise.all([ 
         dispatch('setModeItems', []),
         dispatch('setViewItems', []),
         dispatch('setExtraItems', [])
       ])
     },
-    setMode({ dispatch, commit }, mode) {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          commit("saveMode", mode)
-          resolve()
-        }, 1000)
+    setMode({ commit }, mode) {
+      return new Promise((resolve) => {
+        commit("saveMode", mode)
+        resolve()
       })
     },
-    setView({ dispatch, commit }, view) {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          commit("saveView", view)
-          resolve()
-        }, 1000)
+    setView({ commit }, view) {
+      return new Promise((resolve) => {
+        commit("saveView", view)
+        resolve()
       })
     }  
   },

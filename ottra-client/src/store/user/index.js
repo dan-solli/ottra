@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
+//import Vuex from 'vuex'
 
 import JwtService from '@/common/jwt.service'
 import { RepositoryFactory } from '@/common/repos/RepositoryFactory'
@@ -9,15 +9,14 @@ const UserRepo = RepositoryFactory.get('user')
 const User = {
 	state: {
     userid: '',
-		userdata : {
-    },
+    userdata : {},
     isAuthenticated: !!JwtService.getToken()
 	},
 	mutations: {
 		SET_USER(state, userid) {
       Vue.$log.debug("store.user.module.SET_USER: setting userid: " + userid)
-  		state.userid = userid
-  	},
+      state.userid = userid
+    },
     SET_USERDATA(state, userdata) {
       state.userdata = userdata
     },
@@ -42,69 +41,59 @@ const User = {
     }    
 	},
 	getters: {
-  	getUser: state => state.userdata,
+    getUser: state => state.userdata,
     getUserID: state => state.userid,
     isAuthenticated: state => state.isAuthenticated
 	},
 	actions: {
-    createNewUser ({ commit, dispatch }, payload) {
-      return new Promise((resolve, reject) => {
-        return UserRepo.createUser(payload)
-        .then(function(response) {
-          Vue.$log.debug("store.user.module.createNewUser: ... Possible success ... ")
-          Vue.$log.debug("store.user.module.createNewUser: Reponse is: ")
-          Vue.$log.debug(response)
-          const jwtAccessToken = response.data.accessToken
-          const jwtRefreshToken = response.data.refreshToken
-          commit("SET_ACCESS_AUTH", jwtAccessToken)
-          commit("SET_REFRESH_AUTH", jwtRefreshToken)
-          commit("SET_USER", response.data.id)
-          console.log("Dispatching store.module.*.loadUserData")
-          dispatch("loadUserData")
-          .then(resolve())
-          .catch(reject())
-          resolve(response.data)
-        })
-        .catch(function(err) {
-          Vue.$log.error("store.user.module.createNewUser: ... Definite failure ... " + err)
-          reject(err)
-        })
-      })
+    createNewUser: async function ({ commit, dispatch }, payload) {
+      try {
+        const response = await UserRepo.createUser(payload)
+        Vue.$log.debug("store.user.module.createNewUser: ... Possible success ... ")
+        Vue.$log.debug("store.user.module.createNewUser: Reponse is: ")
+        Vue.$log.debug(response)
+        const jwtAccessToken = response.data.accessToken
+        const jwtRefreshToken = response.data.refreshToken
+        commit("SET_ACCESS_AUTH", jwtAccessToken)
+        commit("SET_REFRESH_AUTH", jwtRefreshToken)
+        commit("SET_USER", response.data.id)
+        console.log("Dispatching store.module.*.loadUserData")
+        await dispatch("loadUserData")
+        return response.data
+      }
+      catch (err) {
+        Vue.$log.error("store.user.module.createNewUser: ... Definite failure ... " + err)
+      }
     },    
-    loadUserdata ({ commit }, uuid) {
-      UserRepo.getUser(uuid)
-      .then(function(response) {
+    loadUserdata: async function ({ commit }, uuid) {
+      try {
+        const response = await UserRepo.getUser(uuid)
         commit("SET_USERDATA", response.data)
-      })
-      .catch(function(err) {
+      }
+      catch (err) {
         Vue.$log.error("store.user.module.loadUserdata: UserRepo.getUser failed: " + err)
-      })
+      }
     },
-    loginUser ({ commit, dispatch }, payload) {
+    loginUser: async function ({ commit, dispatch }, payload) {
       Vue.$log.debug("store.user.module.loginUser is being called")
 
-      return new Promise((resolve, reject) => {
-        return UserRepo.authenticateUser(payload)
-        .then(function(response) {
-          Vue.$log.debug("store.user.module.loginUser: Response is: ")
-          Vue.$log.debug(response)
+      try {
+        const response = await UserRepo.authenticateUser(payload)
+        Vue.$log.debug("store.user.module.loginUser: Response is: ")
+        Vue.$log.debug(response)
 
-          const jwtAccessToken = response.data.accessToken
-          const jwtRefreshToken = response.data.refreshToken
-          commit("SET_ACCESS_AUTH", jwtAccessToken)
-          commit("SET_REFRESH_AUTH", jwtRefreshToken)
-          commit("SET_USER", response.data.id)
-          console.log("Dispatching store.module.*.loadUserData")
-          dispatch("loadUserData")
-          .then(resolve())
-          .catch(reject())
-          resolve(response.data)
-        })
-        .catch(function(err) {
-          Vue.$log.error("store.user.module.loginUser: ... Definite failure ... " + err)
-          reject(err)
-        })
-      })
+        const jwtAccessToken = response.data.accessToken
+        const jwtRefreshToken = response.data.refreshToken
+        commit("SET_ACCESS_AUTH", jwtAccessToken)
+        commit("SET_REFRESH_AUTH", jwtRefreshToken)
+        commit("SET_USER", response.data.id)
+        console.log("Dispatching store.module.*.loadUserData")
+        await dispatch("loadUserData")
+        return response.data
+      }
+      catch (err) {
+        Vue.$log.error("store.user.module.loginUser: ... Definite failure ... " + err)
+      }
     },
     logoutUser ({ commit, dispatch }) {
       Vue.$log.debug("store.user.index.js: logoutUser has been called.")

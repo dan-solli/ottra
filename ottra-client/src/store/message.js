@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
+//import Vuex from 'vuex'
 
 import { RepositoryFactory } from '@/common/repos/RepositoryFactory'
 
@@ -45,7 +45,7 @@ const Message = {
     }      
 	},
 	getters: {
-  	getMessages: state => state.messages,
+    getMessages: state => state.messages,
     getMessageTypes: state => state.message_types,
     getMessageCount: state => Object.keys(state.messages).length,
     getMessageByID: (state) => (id) => { 
@@ -59,30 +59,26 @@ const Message = {
     getMessageUnreadCount: (state, getters) => getters.getMessagesUnread.length
 	},
 	actions: {
+/*    
     createMessage({ commit }, msgID)
     {
-
     },
-    loadUserData({ commit }) {
-      return new Promise((resolve, reject) => {
-        return MsgRepo.get()
-        .then(function(response) {
-          console.log("store.message.loadUserData: Response is: ")
-          console.log(response)
+*/    
+    loadUserData: async function({ commit }) {
+      try {
+        const response = await MsgRepo.get()
+        Vue.$log.debug("%s: loadUserData: Response is %O", __filename, response)
 
-          let new_msg = {} 
+        let new_msg = {} 
 
-          response.data.forEach(function(msg) {
-            new_msg[msg.uuid] = msg
-          })
-          commit("SET_MESSAGES", new_msg)
-          resolve(response.data)
+        response.data.forEach(function(msg) {
+          new_msg[msg.uuid] = msg
         })
-        .catch(function(err) {
-          Vue.$log.error("store.message.module.loadUserData")
-          reject(err)
-        })
-      })
+        commit("SET_MESSAGES", new_msg)
+      }
+      catch (err) {
+        Vue.$log.error("store.message.module.loadUserData")
+      }
     },
     clearStore({ commit }) {
       commit("CLEAR_STORE")

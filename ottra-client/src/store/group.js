@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
+//import Vuex from 'vuex'
 
 import { RepositoryFactory } from '@/common/repos/RepositoryFactory'
 
@@ -21,51 +21,42 @@ const Group = {
     }
 	},
 	getters: {
-  	getGroups: state => state.groups,
+    getGroups: state => state.groups,
     getGroupByID: (state) => (id) => { 
       return state.groups[id]
     },
 	},
 	actions: {
-    createGroup({ commit }, payload)
+    createGroup: async function({ commit }, payload)
     {
-      return new Promise((resolve, reject) => {
-        return GroupRepo.createGroup(payload)
-        .then(function(response) {
-          Vue.$log.debug("store.group.createGroup: ... Possible success ... ")
-          Vue.$log.debug("store.group.createGroup: Reponse is: ")
-          Vue.$log.debug(response)
-          commit("ADD_GROUP", response.data)
-          resolve(response.data)          
-        })
-        .catch(function(err) {
+      try {
+        const response = await GroupRepo.createGroup(payload)
+        Vue.$log.debug("store.group.createGroup: ... Possible success ... ")
+        Vue.$log.debug("store.group.createGroup: Reponse is: ")
+        Vue.$log.debug(response)
+        commit("ADD_GROUP", response.data)
+      }
+      catch (err) {
           Vue.$log.error("store.group.createGroup: ... Definite failure ... " + err)
-          reject(err)
-        })
-      })
+      }
     },
-    loadUserData({ commit }) {
-      return new Promise((resolve, reject) => {
-        return GroupRepo.get()
-        .then(function(response) {
-          console.log("store.group.loadUserData: Response is: ")
-          console.log(response)
+    loadUserData: async function({ commit }) {
+      try {
+        const response = await GroupRepo.get()
+        Vue.$log.debug("store.group.loadUserData: Response is: %O", response)
 
-          let new_groups = {} 
+        let new_groups = {} 
 
-          response.data.forEach(function(grp) {
-            new_msg[grp.uuid] = grp
-          })
-          commit("SET_GROUP", new_groups)
-          resolve(response.data)
+        response.data.forEach(function(grp) {
+          new_groups[grp.uuid] = grp
         })
-        .catch(function(err) {
-          Vue.$log.error("store.group.module.loadUserData")
-          reject(err)
-        })
-      })
+        commit("SET_GROUP", new_groups)
+      }        
+      catch (err) {
+        Vue.$log.error("store.group.module.loadUserData")
+      }
     }
 	}
 }
 
-export default Message
+export default Group

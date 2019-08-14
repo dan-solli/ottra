@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+//import Vue from 'vue'
+//import Vuex from 'vuex'
 
 const UserSettings = {
 	state: {
@@ -14,7 +14,7 @@ const UserSettings = {
     }  
 	},
 	getters: {
-  	getSettings: state => state.settings,
+    getSettings: state => state.settings,
 	},
 	actions: {
     addOptions({ commit }, payload) {

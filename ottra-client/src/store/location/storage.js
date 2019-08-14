@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
+//import Vuex from 'vuex'
 
 /*
 import { RepositoryFactory } from '@/common/repos/RepositoryFactory'
@@ -93,9 +93,9 @@ const Storage = {
 	mutations: {
 	},
 	getters: {
-  	getStorages: state => Object.keys(state.storages),
+    getStorages: state => Object.keys(state.storages),
     getStorageByID: (state) => (id) => { 
-      return state.storages.id
+      return state.storages[id]
     }
 	},
 	actions: {

@@ -16,13 +16,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
-  	Event,
-  	Location,
-  	Message,
-  	Room,
-  	Storage,
- 		UIState,
- 		User,
- 		UserSettings
+		Event,
+		Location,
+		Message,
+		Room,
+		Storage,
+		UIState,
+		User,
+		UserSettings
   },
 });

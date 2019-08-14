@@ -1,11 +1,11 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
+//import Vuex from 'vuex'
 
-
+/*
 import { RepositoryFactory } from '@/common/repos/RepositoryFactory'
 
 const LocationRepo = RepositoryFactory.get('location')
-
+*/
 
 const Location = {
 	state: {
@@ -63,9 +63,9 @@ const Location = {
 	mutations: {
 	},
 	getters: {
-  	getLocations: state => state.locations,
+    getLocations: state => state.locations,
     getLocationByID: (state) => (id) => { 
-      return state.locations.id
+      return state.locations[id]
     },
 	},
 	actions: {

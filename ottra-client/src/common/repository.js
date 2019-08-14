@@ -15,12 +15,14 @@ instance.interceptors.request.use(getLiveToken, AxiosLogger.errorLogger)
 //instance.interceptors.response.use(AxiosLogger.responseLogger, AxiosLogger.errorLogger)
 
 const refreshAuthLogic = failedRequest => 
-	instance.post('/auth/token', { refreshToken: JwtService.getRefreshToken() })
+	instance.post('/auth/token', { 
+		refreshToken: JwtService.getRefreshToken() 
+	})
 	.then(tokenRefreshResponse => {
-		JwtService.saveRefreshToken(tokenRefreshResponse.data.token)
 		failedRequest.response.config.headers['Authentication'] = 
 			'Token ' + tokenRefreshResponse.data.token
-		return Promise.resolve()			
+		return JwtService.saveRefreshToken(tokenRefreshResponse.data.token)
+
 	})
 
 createAuthRefreshInterceptor(instance, refreshAuthLogic)
@@ -30,7 +32,7 @@ function getLiveToken(config) {
 
 	console.log("Repository.Interceptor: Fetching token: " + token)
 
-	if (token != null)
+	if (token != null) // eslint-disable-line
 		config.headers.Authorization = `Token ${token}`
 
 	return config
