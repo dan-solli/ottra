@@ -121,7 +121,6 @@ export default {
   },  
 	methods: {
 		loginUser: function() {
-      console.log("Woohoo")
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.submitStatus = "ERROR"
