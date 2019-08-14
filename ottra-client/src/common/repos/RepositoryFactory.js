@@ -12,5 +12,5 @@ const repositories = {
 };
 
 export const RepositoryFactory = {
-	get: name => repositories[name]
+	get: name => repositories[name] // eslint-disable-line security/detect-object-injection
 };

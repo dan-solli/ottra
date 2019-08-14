@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
+//import Vuex from 'vuex'
 
 /*
 import { RepositoryFactory } from '@/common/repos/RepositoryFactory'
@@ -106,11 +106,11 @@ const Event = {
 	mutations: {
 	},
 	getters: {
-  	getEvents: state => state.events,
+    getEvents: state => state.events,
     getEventByID: (state) => (id) => { 
-      return state.events.id
+      return state.events[id]
     },
-    todaysDate: state => new Date().toISOString().slice(0, 10)
+    todaysDate: () => new Date().toISOString().slice(0, 10)
 	},
 	actions: {
 	}
