@@ -20,12 +20,12 @@
               :start="currentDate">
               <template v-slot:dayHeader="{ present }">
                 <template v-if="present" class="text-xs-center">
-                  (*) Today
+                  {{ $t('ui.calendar.today') }}
                 </template>
               </template>
               <template v-slot:interval="{ hour }">
                 <div class="text-xs-center">
-                  {{ hour }} o'clock
+                  {{ hour }} 
                 </div>
               </template>
             </v-calendar>
@@ -38,7 +38,7 @@
             <v-flex md4>
               <OttraWidget type="info">
                 <template slot="title">
-                  (*) Dagens hållpunkter {{ todaysDate }} 
+                  {{ $t('ui.dashboard.todaysagenda') }}: {{ todaysDate }} 
                 </template>
                 <p v-for="e in getEventsByDate">
                   {{ e.start.dateTime.slice(0, 5) }}: 
@@ -53,7 +53,7 @@
             <v-flex v-if="getMessageUnreadCount" md4>
               <OttraWidget type="info">
                 <template slot="title">
-                  (*) Olästa meddelanden 
+                  {{ $t('domobj.messages.unread') }}
                 </template>
                 <p v-for="m in getMessagesUnread">
                   {{ m.dateTime }}: 
@@ -68,12 +68,6 @@
         </v-flex>
       </v-layout>
     </v-container>
-
-<!--
-	  <HelloWorld />
-	  Sup? {{ $t('message') }} Sup?
-	 	<HelloLocal />
--->
 	 </div>
 </template>
 

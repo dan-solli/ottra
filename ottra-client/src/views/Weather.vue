@@ -1,6 +1,8 @@
 <template>
   <div class="weather">
-     <h1 class="subheading">Weather</h1>
+     <h1 class="subheading">
+      {{ $t('ui.view.weatherview.heading') }}
+    </h1>
 
      <v-container class="my-5">
      	<v-layout row wrap>

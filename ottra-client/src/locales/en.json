@@ -6,13 +6,25 @@
 	"ui.navbar.login": "Login",
 	"ui.navbar.inbox.tooltip": "Messages",
 	"ui.navbar.weather.tooltip": "Current weather",  
+
+	"ui.navigation_drawer.default.dashboard": "Dashboard",
+	"ui.navigation_drawer.default.mode.project": "Project",
+	"ui.navigation_drawer.default.mode.task": "Task",
+	"ui.navigation_drawer.default.view.linktoschedule": "Link project to schedule",
+	"ui.navigation_drawer.default.extra.mailoutline": "Mail project outline",
+
 	"ui.dialog.login.title": "Login form",
+	"ui.dialog.register.title": "Register new user",
 	"ui.dialog.login.passwordfield.hint": "At least 10 characters",
 	"ui.dialog.login.passwordfield.label": "Password",
 	"ui.dialog.login.passwordconfirmfield.label": "Confirm password",
 	"ui.dialog.login.userfield.label": "Email address",
 	"ui.dialog.login.registernewuserbutton": "Register new user",
 	"ui.dialog.login.cancelregistrationbutton": "Cancel registration",
+	"ui.dialog.login.nouser": "Don't have a user",
+	"ui.dialog.login.signoneup": "Sign one up instead",
+	"ui.dialog.login.haveuser": "Already have a user",
+	"ui.dialog.login.logininstead": "Log in instead!",
 
   "ui.dialog.login.loginbutton": "Login",
 	"ui.dialog.login.loginbutton.register": "Registrer",
@@ -45,6 +57,66 @@
 	"ui.toasts.login.usercreated": "New user created",
 	"ui.toasts.login.registeruser": "Logging in",
 	"ui.toasts.login.userregistered": "Login successful",
+
+	"ui.view.creategroup.heading": "Create Group",
+	"ui.view.creategroup.namethegroup": "Name the group",
+	"ui.view.creategroup.btncreateandcontinue": "Create group and continue",
+	"ui.view.creategroup.invitemembers": "Invite members",
+	"ui.view.creategroup.ottrausername": "Ottra username",
+	"ui.view.creategroup.asrole": "As role",
+	"ui.view.creategroup.addinvitation": "Add user",
+	"ui.view.creategroup.sendinvites": "Send invites",
+
+	"ui.view.createlocation.heading": "Create Location",
+	"ui.view.createlocation.chooselocation": "Choose location",
+	"ui.view.createlocation.starttyping": "Start typing the address",
+	"ui.view.createlocation.savelocation": "Save Location",
+
+	"ui.calendar.today": "Today",
+	"ui.dashboard.todaysagenda": "Todays' agenda",
+	
+	"domobj.messages.unread": "Unread messages",
+	"domobj.messages.from": "From",
+	"domobj.messages.subject": "Subject",
+	"domobj.messages.type": "Type",
+
+	"ui.view.groupview.heading": "Groups",
+	"ui.view.groupview.newgroup": "New Group",
+
+	"ui.view.locationview.heading": "Locations",
+	"ui.view.locationview.newlocation": "New Location",
+
+	"ui.view.messageview.heading": "Inbox",
+	"ui.view.messageview.newmessage": "New Message",
+	"ui.view.messageview.editmessage": "Edit Message",
+
+	"ui.view.settingsview.heading": "Settings",
+
+	"ui.view.weatherview.heading": "Weather",
+
+	"ui.dialog.confirmdelete": "Are you sure you want to delete this item?",
+
+	"ui.group.rolename.admin": "Admin",
+	"ui.group.rolename.family": "Family",
+	"ui.group.rolename.ombud": "Ombudsman",
+	"ui.group.rolename.helper": "Helper",
+
+	"ui.text.cancel": "Cancel",
+	"ui.text.restart": "Restart",
+	"ui.text.required": "Required",
+	"ui.text.name": "Name",
+	"ui.text.address": "Address",
+	"ui.text.continue": "Continue",
+	"ui.text.save": "Save",
+	"ui.text.street": "Street",
+	"ui.text.postalcode": "Postal code",
+	"ui.text.city": "City",
+	"ui.text.country": "Country",
+	"ui.text.nodata": "No data",
+	"ui.text.rooms": "Rooms",
+	"ui.text.actions": "Actions",
+	"ui.text.newitem": "New Item",
+	"ui.text.edititem": "Edit Item",
 
   "flurb": "flurb",
   "message": "hello i18n !!"

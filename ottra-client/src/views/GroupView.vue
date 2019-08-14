@@ -1,11 +1,13 @@
 <template>
   <div>
     <v-toolbar flat color="white">
-      <v-toolbar-title>(*) Groups </v-toolbar-title>
+      <v-toolbar-title> 
+        {{ $t('ui.view.groupview.heading') }} 
+      </v-toolbar-title>
       <v-spacer></v-spacer>
 
       <v-btn color="primary" class="mb-2" :to="{ name: 'new_group'}">
-        (*) New Group 
+        {{ $t('ui.view.groupview.newgroup') }}  
       </v-btn>
 <!-- I like this dialog, but it's not appropriate all the time. Like now.       
       <v-dialog v-model="dialog" max-width="500px">

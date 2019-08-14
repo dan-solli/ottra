@@ -1,41 +1,12 @@
-//import Vue from 'vue'
+import Vue from 'vue'
 //import Vuex from 'vuex'
 
 const UIState = {
   state: {
-    sidebar_default_items: [
-      { 
-        title: '(*) Dashboard', // $t('ui.navigation_drawer.title.home'), 
-        route: '/dashboard',
-        icon: 'dashboard'
-      }
-    ],
-    sidebar_mode_items: [
-      {
-        title: '(*) Project',
-        route: '/create/project',
-        icon: 'work'
-      },
-      {
-        title: '(*) Task',
-        route: '/create/task',
-        icon: 'playlist_add'
-      }
-    ],
-    sidebar_view_items: [
-      {
-        title: '(*) Link project to schedule',
-        route: '/create/project/link',
-        icon: 'link'
-      }
-    ],
-    sidebar_extra_items: [
-      {
-        title: '(*) Mail project outline',
-        route: '/create/project/mail',
-        icon: 'mail'
-      }
-    ],
+    sidebar_default_items: [],
+    sidebar_mode_items: [],
+    sidebar_view_items: [],
+    sidebar_extra_items: [],
     current_mode: "No Mode",
     current_view: "Start"
   },
@@ -52,42 +23,27 @@ const UIState = {
     getCurrentView: state => state.current_view
   },
   actions: {
-    setModeItems({ commit }, items) {
-      return new Promise((resolve) => {
-        commit("saveModeItems", items)
-        resolve()
-      })
+    setModeItems: function({ commit }, items) {
+      commit("saveModeItems", items)
     },
-    setViewItems({ commit }, items) {
-      return new Promise((resolve) => {
-        commit("saveViewItems", items)
-        resolve()
-      })
+    setViewItems: function({ commit }, items) {
+      commit("saveViewItems", items)
     },
-    setExtraItems({ commit }, items) {
-      return new Promise((resolve) => {
-        commit("saveExtraItems", items)
-        resolve()
-      })
+    setExtraItems: function({ commit }, items) {
+      commit("saveExtraItems", items)
     },
-    clearItems({ dispatch }) {
+    clearItems: function({ dispatch }) {
       return Promise.all([ 
         dispatch('setModeItems', []),
         dispatch('setViewItems', []),
         dispatch('setExtraItems', [])
       ])
     },
-    setMode({ commit }, mode) {
-      return new Promise((resolve) => {
-        commit("saveMode", mode)
-        resolve()
-      })
+    setMode: function({ commit }, mode) {
+      commit("saveMode", mode)
     },
-    setView({ commit }, view) {
-      return new Promise((resolve) => {
-        commit("saveView", view)
-        resolve()
-      })
+    setView: function({ commit }, view) {
+      commit("saveView", view)
     }  
   },
   mutations: {

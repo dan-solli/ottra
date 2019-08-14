@@ -111,4 +111,48 @@ new Vue({
 }).$mount('#app')
 
 
+/*
+    sidebar_default_items: [
+      { 
+        title: $t('ui.navigation_drawer.default.dashboard'), 
+        route: '/dashboard',
+        icon: 'dashboard'
+      }
+    ],
+*/
+
+const sidebar_mode_items = [ 
+	{
+    title: $t('ui.navigation_drawer.mode.project'),
+    route: '/create/project',
+    icon: 'work'
+  },
+  {
+    title: $t('ui.navigation_drawer.mode.task'),
+    route: '/create/task',
+    icon: 'playlist_add'
+  }
+]
+
+const sidebar_view_items = [
+  {
+    title: $t('ui.navigation_drawer.view.linktoschedule'),
+    route: '/create/project/link',
+    icon: 'link'
+  }
+]
+
+const sidebar_extra_items = [
+  {
+    title: $t('ui.navigation_drawer.extra.mailoutline'),
+    route: '/create/project/mail',
+    icon: 'mail'
+  }
+]
+
+Promise.all([ 
+  store.dispatch('setModeItems', sidebar_mode_items),
+  store.dispatch('setViewItems', sidebar_view_items),
+  store.dispatch('setExtraItems', sidebar_extra_items)
+])
 

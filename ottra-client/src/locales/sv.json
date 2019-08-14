@@ -6,7 +6,15 @@
 	"ui.navbar.login": "Logga in",
 	"ui.navbar.inbox.tooltip": "Meddelanden",
 	"ui.navbar.weather.tooltip": "Nuvarande väder",
+
+	"ui.navigation_drawer.default.dashboard": "Översikt",
+	"ui.navigation_drawer.default.mode.project": "Projekt",
+	"ui.navigation_drawer.default.mode.task": "Uppgift",
+	"ui.navigation_drawer.default.view.linktoschedule": "Länka projekt till aktiivtet",
+	"ui.navigation_drawer.default.extra.mailoutline": "Skicka projektöversikt",
+
 	"ui.dialog.login.title": "Inloggning",
+	"ui.dialog.register.title": "Registrera ny användare",
 	"ui.dialog.login.passwordfield.hint": "Minst 10 tecken",
 	"ui.dialog.login.passwordfield.label": "Lösenord",
 	"ui.dialog.login.passwordconfirmfield.label": "Upprepa lösenord",
@@ -17,6 +25,10 @@
 	"ui.dialog.login.loginbutton.register": "Registrera",
   "ui.dialog.login.registernewuserbutton.tooltip": "Klicka här för att skapa en ny användare",
   "ui.dialog.login.registernewuserbutton.tooltip.alt": "Avbryt registrering",
+	"ui.dialog.login.nouser": "Har du ingen användare",
+	"ui.dialog.login.signoneup": "Registrera en här",
+	"ui.dialog.login.haveuser": "Har du redan en användare",
+	"ui.dialog.login.logininstead": "Logga in här",
 
   "message": "hejsan i18n !!",
 
@@ -43,6 +55,64 @@
 	"ui.toasts.login.createuser": "Skapar ny användare",
 	"ui.toasts.login.registeruser": "Loggar in",
 	"ui.toasts.login.createuser": "Ny användare skapad",
-	"ui.toasts.login.registeruser": "Inloggning lyckades"
+	"ui.toasts.login.registeruser": "Inloggning lyckades",
 
+	"ui.view.creategroup.heading": "Skapa grupp",
+	"ui.view.creategroup.namethegroup": "Namnge gruppen",
+	"ui.view.creategroup.btncreateandcontinue": "Skapa grupp och fortsätt",
+	"ui.view.creategroup.invitemembers": "Bjud in användare",
+	"ui.view.creategroup.ottrausername": "Ottra användarnamn",
+	"ui.view.creategroup.asrole": "Roll",
+	"ui.view.creategroup.addinvitation": "Lägg till användare",
+	"ui.view.creategroup.sendinvites": "Skicka inbjudningar",
+
+	"ui.view.createlocation.heading": "Skapa plats",
+	"ui.view.createlocation.chooselocation": "Välj adress",
+	"ui.view.createlocation.starttyping": "Skriv adressen här",
+	"ui.view.createlocation.savelocation": "Spara plats",
+
+	"ui.view.groupview.heading": "Grupper",
+	"ui.view.groupview.newgroup": "Ny grupp",
+
+	"ui.view.locationview.heading": "Platser",
+	"ui.view.locationview.newlocation": "Ny Plats",
+
+	"ui.view.messageview.heading": "Inbox",
+	"ui.view.messageview.newmessage": "Nytt meddelande",
+	"ui.view.messageview.editmessage": "Ändra meddelande",
+
+	"ui.view.settingsview.heading": "Inställningar",
+
+	"ui.view.weatherview.heading": "Weather",
+
+	"ui.dialog.confirmdelete": "Är du säker på att du vill radera denna?",
+
+	"ui.calendar.today": "Idag",
+	"ui.dashboard.todaysagenda": "Dagens agenda",
+	"domobj.messages.unread": "Olästa meddelanden",
+	"domobj.messages.from": "Från",
+	"domobj.messages.subject": "Rubrik",
+	"domobj.messages.type": "Typ",
+
+	"ui.group.rolename.admin": "Administratör",
+	"ui.group.rolename.family": "Familj",
+	"ui.group.rolename.ombud": "Ombud",
+	"ui.group.rolename.helper": "Hjälpreda",
+
+	"ui.text.cancel": "Avbryt",
+	"ui.text.restart": "Börja om",
+	"ui.text.required": "Obligatorisk",
+	"ui.text.name": "Namn",
+	"ui.text.address": "Adress",
+	"ui.text.continue": "Fortsätt",
+	"ui.text.save": "Spara",
+	"ui.text.street": "Gatuadress",
+	"ui.text.postalcode": "Postnummer",
+	"ui.text.city": "Stad",
+	"ui.text.country": "Land",
+	"ui.text.nodata": "Data saknas",
+	"ui.text.rooms": "Rum",
+	"ui.text.actions": "Handlingar",
+	"ui.text.newitem": "Ny",
+	"ui.text.edititem": "Ändra"
 }

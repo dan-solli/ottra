@@ -1,12 +1,16 @@
 <template>
   <div>
     <v-toolbar flat color="white">
-      <v-toolbar-title>(*) Inbox </v-toolbar-title>
+      <v-toolbar-title>
+        {{ $t('ui.view.messageview.heading') }}
+      </v-toolbar-title>
   
       <v-spacer></v-spacer>
       <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ on }">
-          <v-btn color="primary" dark class="mb-2" v-on="on"> (*) New Message</v-btn>
+          <v-btn color="primary" dark class="mb-2" v-on="on">
+            {{ $t('ui.view.messageview.newmessage')}}
+          </v-btn>
         </template>
         <v-card>
           <v-card-title>
@@ -17,16 +21,24 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.from" label="(*) From"></v-text-field>
+                  <v-text-field v-model="editedItem.from" 
+                    :label="$t('domobj.messages.from')">
+                  </v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.subject" label="(*) Subject"></v-text-field>
+                  <v-text-field v-model="editedItem.subject" 
+                    :label="$t('domobj.messages.subject')">
+                  </v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.dateTime" label="(*) Date"></v-text-field>
+                  <v-text-field v-model="editedItem.dateTime"
+                    :label="$t('ui.text.date')">
+                  </v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.type" label="(*) Type"></v-text-field>
+                  <v-text-field v-model="editedItem.type"
+                    :label="$t('domobj.messages.type')">
+                  </v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -34,8 +46,12 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-            <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+            <v-btn color="blue darken-1" flat @click="close">
+              {{ $t('ui.text.cancel') }} 
+            </v-btn>
+            <v-btn color="blue darken-1" flat @click="save">
+              {{ $t('ui.text.save') }}
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -79,31 +95,31 @@ import { mapGetters, mapActions } from "vuex";
       dialog: false,
       headers: [
         { 
-          text: '(*) From',
+          text: $t('domobj.messages.from'),
           align: 'left',
           sortable: true,
           value: 'from'
         },
         {
-          text: '(*) Subject',
+          text: $t('domobj.messages.subject'),
           align: 'left',
           sortable: true,
           value: 'subject'
         },
         {
-          text: '(*) Date',
+          text: $t('ui.text.date'),
           align: 'left',
           sortable: true,
           value: 'sent'
         },
         {
-          text: '(*) Type',
+          text: $t('domobj.messages.type'),
           align: 'left',
           sortable: true,
           value: 'type'
         }, 
         { 
-          text: '(*) Actions',
+          text: $t('ui.text.actions'),
           align: 'left',
           value: 'type'
         },
@@ -126,7 +142,9 @@ import { mapGetters, mapActions } from "vuex";
 
     computed: {
       formTitle () {
-        return this.editedIndex === -1 ? '(*) New Message' : '(*) Edit Message'
+        return this.editedIndex === -1 ? 
+          $t('ui.view.messageview.newmessage') : 
+          $t('ui.view.messageview.editmessage')
       },
       ...mapGetters([
         "getMessages",
@@ -154,7 +172,7 @@ import { mapGetters, mapActions } from "vuex";
       },
       deleteItem (item) {
         const index = this.messages.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && 
+        confirm($t('ui.dialog.confirmdelete')) && 
                 this.messages.splice(index, 1)
       },
       close () {

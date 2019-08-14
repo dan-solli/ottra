@@ -1,11 +1,13 @@
 <template>
   <div>
     <v-toolbar flat color="white">
-      <v-toolbar-title>(*) Locations </v-toolbar-title>
+      <v-toolbar-title>
+        {{ $t('ui.view.locationview.heading') }}
+      </v-toolbar-title>
       <v-spacer></v-spacer>
 
       <v-btn color="primary" class="mb-2" :to="{ name: 'new_location'}">
-        (*) New Location 
+        {{ $t('ui.view.locationview.newlocation') }}
       </v-btn>
 <!-- I like this dialog, but it's not appropriate all the time. Like now.       
       <v-dialog v-model="dialog" max-width="500px">
@@ -68,7 +70,7 @@
         </tr>
       </template>
       <template v-slot:no-data>
-        (*) No data.
+        {{ $t('ui.text.nodata') }}
       </template>
     </v-data-table>
   </div>
@@ -83,31 +85,31 @@ import { mapGetters } from "vuex";
       dialog: false,
       headers: [
         { 
-          text: '(*) Name',
+          text: $t('ui.text.name'),
           align: 'left',
           sortable: true,
           value: 'Name'
         },
         {
-          text: '(*) Street',
+          text: $t('ui.text.street'),
           align: 'left',
           sortable: true,
           value: 'Street'
         },
         {
-          text: '(*) City',
+          text: $t('ui.text.city'),
           align: 'left',
           sortable: true,
           value: 'City'
         },
         {
-          text: '(*) Rooms',
+          text: $t('ui.text.rooms'),
           align: 'left',
           sortable: true,
           value: 'Rooms'
         }, 
         {
-          text: '(*) Actions',
+          text: $t('ui.text.actions'),
           align: 'left',
           value: 'Actions'
         }
@@ -134,7 +136,7 @@ import { mapGetters } from "vuex";
 
     computed: {
       formTitle () {
-        return this.editedIndex === -1 ? '(*) New Item' : '(*) Edit Item'
+        return this.editedIndex === -1 ? $t('ui.text.newitem') : $t('ui.text.edititem')
       },
       ...mapGetters([
         "getLocations"
@@ -164,7 +166,7 @@ import { mapGetters } from "vuex";
 
       deleteItem (item) {
         const index = this.locations.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && this.locations.splice(index, 1)
+        confirm($t('ui.dialog.confirmdelete')) && this.locations.splice(index, 1)
       },
 
       close () {

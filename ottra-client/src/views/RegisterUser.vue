@@ -7,7 +7,7 @@
             <v-card class="elevation-12">
               <v-toolbar>
                 <v-toolbar-title> 
-                  {{ $t('ui.dialog.login.title') }} 
+                  {{ $t('ui.dialog.register.title') }} 
                   ({{ submitStatus }}) 
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
@@ -73,8 +73,11 @@
                 </v-form>
               </v-card-text>
               <v-card-actions>
-                Already have a user?&nbsp; 
-                <router-link :to="{ path: '/login' }">Log in instead!</router-link>
+                {{ $t('ui.dialog.login.haveuser') }}?&nbsp; 
+                <router-link :to="{ path: '/register' }">
+                  {{ $t('ui.dialog.login.logininstead') }}
+                </router-link>
+
   							<v-spacer></v-spacer>
                 <v-btn 
                   color="primary" 

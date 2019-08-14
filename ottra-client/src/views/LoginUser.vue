@@ -56,8 +56,10 @@
                 </v-form>
               </v-card-text>
               <v-card-actions>
-                No user?&nbsp; 
-                <router-link :to="{ path: '/register' }">Sign up instead!</router-link>
+                {{ $t('ui.dialog.login.nouser') }}?&nbsp; 
+                <router-link :to="{ path: '/register' }">
+                  {{ $t('ui.dialog.login.signoneup') }}
+                </router-link>
   							<v-spacer></v-spacer>
                 <v-btn 
                   color="primary" 

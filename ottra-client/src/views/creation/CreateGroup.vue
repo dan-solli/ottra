@@ -1,27 +1,27 @@
 <template>
 	<div class="create_group">
-		<h1 class="subheading"> (*) Create Group </h1>
+		<h1 class="subheading"> {{ $t('ui.view.creategroup.heading')}} </h1>
 
     <v-stepper v-model="current_step" vertical>
       <v-form ref="form" v-model="valid">
-        <v-stepper-step step="1" :complete="current_step > 1">(*) Name the group</v-stepper-step>
+        <v-stepper-step step="1" :complete="current_step > 1">{{$t('ui.view.creategroup.namethegroup') }}</v-stepper-step>
 
         <v-stepper-content step="1">
             <v-container>
               <v-layout row>
                 <v-flex xs12 md4>
                   <v-text-field v-model="group_name" :rules="stringRules" 
-                    label="Name" type="text" required>
+                    :label="$t('ui.text.name')" type="text" required>
                   </v-text-field>
                 </v-flex>
               </v-layout>
 
             </v-container>
-          <v-btn color="primary" @click="SaveGroup">(*) Create group and continue</v-btn>
-          <v-btn text>(*) Cancel</v-btn>
+          <v-btn color="primary" @click="SaveGroup">{{ $t('ui.view.creategroup.btncreateandcontinue')}}</v-btn>
+          <v-btn text> {{ $t('ui.text.cancel') }} </v-btn>
         </v-stepper-content>
 
-        <v-stepper-step step="2" :complete="current_step > 2">(*) Invite members</v-stepper-step>
+        <v-stepper-step step="2" :complete="current_step > 2"> {{ $t('ui.view.creategroup.invitemembers') }}</v-stepper-step>
         <v-stepper-content step="2">
           <v-container>
             <v-layout row>
@@ -45,25 +45,26 @@
             </v-layout>
             <v-layout row>
               <v-flex xs12 md3>
-                <v-text-field label="(*) Ottra username" type="text" required 
+                <v-text-field :label="$t('ui.view.creategroup.ottrausername')" type="text" required 
                   v-model="inviteeUserName">
                 </v-text-field>
               </v-flex>
               <v-flex xs12 md3 mx-2>
                 <v-select 
-                  label="(*) As user role" 
+                  :label="$t('ui.view.creategroup.asrole')" 
                   :items="roles"
                   v-model="inviteeRole">
                 </v-select>
               </v-flex>
               <v-flex xs12 md3>
-                <v-btn @click="addInvitee">(*) Add user</v-btn>
+                <v-btn @click="addInvitee">
+                {{ $t("ui.view.creategroup.addinvitation") }} </v-btn>
               </v-flex>
             </v-layout>
           </v-container>
           <v-divider horizontal></v-divider>
-          <v-btn text @click="current_step = 1">(*) Restart</v-btn>
-          <v-btn text @click="sendInvites">(*) Save Group and send invites</v-btn>
+          <v-btn text @click="current_step = 1">{{ $t('ui.text.restart') }}</v-btn>
+          <v-btn text @click="sendInvites">{{ $t('ui.view.creategroup.sendinvites') }}</v-btn>
         </v-stepper-content>
       </v-form>
     </v-stepper>
@@ -82,19 +83,19 @@ export default {
     inviteeRole: 'helper',
     roles: [ 
       {
-        text: '(*) Admin',
+        text: $t('ui.group.rolename.admin'),
         value: 'admin'
       },
       {
-        text: '(*) Family',
+        text: $t('ui.group.rolename.family'),
         value: 'family'
       },
       {
-        text: '(*) Ombud',
+        text: $t('ui.group.rolename.ombud'),
         value: 'ombud'
       },
       {
-        text: '(*) Helper',
+        text: $t('ui.group.rolename.helper'),
         value: 'helper'
       }
     ],
@@ -104,7 +105,7 @@ export default {
     valid: false,
     group_id: null,
     stringRules: [
-      v => !!v || 'Required'
+      v => !!v || $t('ui.text.required')
     ],
     controlStates: {}
   }),
@@ -146,7 +147,7 @@ export default {
       })
       this.inviteeUserName = ''
       this.inviteeRole = {
-        text: '(*) Helper',
+        text: $t('ui.group.rolename.helper'),
         value: 'helper'
       }
       console.log(this.invitees)

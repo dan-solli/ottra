@@ -1,9 +1,11 @@
 <template>
 	<div class="create_location">
-		<h1 class="subheading"> Create Location </h1>
+		<h1 class="subheading"> {{ $t('ui.view.createlocation.heading') }} </h1>
 
     <v-stepper v-model="current_step" vertical>
-      <v-stepper-step step="1" :complete="current_step > 1">Choose Location</v-stepper-step>
+      <v-stepper-step step="1" :complete="current_step > 1">
+        {{ $t('ui.view.createlocation.chooselocation') }}
+      </v-stepper-step>
 
       <v-stepper-content step="1">
         <v-form ref="form" v-model="valid">
@@ -11,7 +13,7 @@
             <v-layout row>
               <v-flex xs12 md4>
                 <v-text-field v-model="loc_name" :rules="stringRules" 
-                  label="Name" type="text" required>
+                  :label="$t('ui.text.name')" type="text" required>
                 </v-text-field>
               </v-flex>
             </v-layout>
@@ -28,19 +30,24 @@
                     hide-no-data
                     no-filter
                     :rules="stringRules"
-                    label="Address"
-                    placeholder="Start typing the address"
+                    :label="$t('ui.text.address')"
+                    :placeholder="$t('ui.view.createlocation.starttyping')"
                 >
                 </v-autocomplete>
               </v-flex>
             </v-layout>
           </v-container>
         </v-form>
-        <v-btn color="primary" @click="fetchMoreInformation">Continue</v-btn>
-        <v-btn text>Cancel</v-btn>
+        <v-btn color="primary" @click="fetchMoreInformation">
+          {{ $t('ui.text.continue') }} </v-btn>
+        <v-btn text>
+          {{ $t('ui.text.cancel') }}
+        </v-btn>
       </v-stepper-content>
 
-      <v-stepper-step step="2" :complete="current_step > 2">Save information</v-stepper-step>
+      <v-stepper-step step="2" :complete="current_step > 2">
+        {{ $t('ui.text.save') }}
+      </v-stepper-step>
 
       <v-stepper-content step="2">
         <v-form ref="form" v-model="valid">
@@ -48,33 +55,37 @@
             <v-layout row>
               <v-flex xs12 md4>
                 <v-text-field v-model="loc_street" :rules="stringRules" 
-                  label="Street" type="text" required>
+                  :label="$t('ui.text.street')" 
+                  type="text" required>
                 </v-text-field>
               </v-flex>
             </v-layout>
             <v-layout row>
               <v-flex md4>
                 <v-text-field v-model="loc_postal_code" :rules="stringRules" 
-                  label="Postal code" type="text" required>
+                  :label="$t('ui.text.postalcode')" 
+                  type="text" required>
                 </v-text-field>
               </v-flex>
               <v-flex md8>
                 <v-text-field v-model="loc_city" :rules="stringRules" 
-                  label="City" type="text" required>
+                  :label="$t('ui.text.city')" 
+                  type="text" required>
                 </v-text-field>
               </v-flex>
             </v-layout>
             <v-layout row>
               <v-flex xs12 md4>
                 <v-text-field v-model="loc_country" :rules="stringRules" 
-                  label="Country" type="text" required>
+                  :label="$t('ui.text.country')" 
+                  type="text" required>
                 </v-text-field>
               </v-flex>
             </v-layout>
           </v-container>
         </v-form>
-        <v-btn text @click="current_step = 1">Restart</v-btn>
-        <v-btn text @click="saveLocation">Save Location</v-btn>
+        <v-btn text @click="current_step = 1">{{ $t('ui.text.restart') }}</v-btn>
+        <v-btn text @click="saveLocation">{{ $t('ui.view.createlocation.savelocation') }}</v-btn>
       </v-stepper-content>
     </v-stepper>
   </div>
@@ -104,7 +115,7 @@ export default {
     search: null,
     message: '',
     stringRules: [
-      v => !!v || 'Required'
+      v => !!v || $t('ui.text.required')
     ],
   }),
   computed: {
