@@ -105,7 +105,7 @@ export default {
     valid: false,
     group_id: null,
     stringRules: [
-      v => !!v || $t('ui.text.required')
+      v => !!v || this.$t('ui.text.required')
     ],
     controlStates: {}
   }),
@@ -150,7 +150,7 @@ export default {
         text: $t('ui.group.rolename.helper'),
         value: 'helper'
       }
-      console.log(this.invitees)
+      this.$log.debug(this.invitees)
     }
   }
 };

@@ -120,7 +120,7 @@ export default {
     submitStatus: 'Indetermined',
 	}),
   mounted: function() {
-    console.log(this.$route.params)
+    this.$log.debug(this.$route.params)
     this[this.$route.params.directive] = true
   },
   validations: {
@@ -144,7 +144,7 @@ export default {
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.submitStatus = "ERROR"
-        console.log("LoginUser.vue: Form is invalid...")
+        this.$log.debug("LoginUser.vue: Form is invalid...")
       } else {
         const payload = {
           username: this.form.email,
@@ -152,12 +152,12 @@ export default {
         }
         return this.$store.dispatch("createNewUser", payload)
         .then((data) => {
-          console.log("In then after createNewUser call in LoginUser.vue: ")
+          this.$log.debug("In then after createNewUser call in LoginUser.vue: ")
           this.$router.push('/dashboard')
         })
         .catch(function(err) {
-          console.log("Error after createNewUser call in LoginUser.vue: ")
-          console.log(err)
+          this.$log.debug("Error after createNewUser call in LoginUser.vue: ")
+          this.$log.debug(err)
           this.$log.error("Another failing: " + err)
         })
       }

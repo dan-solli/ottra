@@ -101,7 +101,7 @@ export default {
     submitStatus: 'Indetermined',
 	}),
   mounted: function() {
-    console.log(this.$route.params)
+    this.$log.debug(this.$route.params)
     this[this.$route.params.directive] = true
   },
   validations: function() {
@@ -124,7 +124,7 @@ export default {
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.submitStatus = "ERROR"
-        console.log("LoginUser.vue: Form is invalid...")
+        this.$log.error("LoginUser.vue: Form is invalid...")
       } else {
         const payload = {
           username: this.form.email,
@@ -135,8 +135,8 @@ export default {
           this.$router.push('/dashboard')
         })
         .catch(function(err) {
-          console.log("THIS IS A FUCKING ERROR FOR NO GOD DAMNED REASON!")
-          console.log("Error is: " + err)
+          this.$log.error("THIS IS A FUCKING ERROR FOR NO GOD DAMNED REASON!")
+          this.$log.error("Error is: " + err)
         })
       }
 		},

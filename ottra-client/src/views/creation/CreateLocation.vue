@@ -115,7 +115,7 @@ export default {
     search: null,
     message: '',
     stringRules: [
-      v => !!v || $t('ui.text.required')
+      v => !!v || this.$t('ui.text.required')
     ],
   }),
   computed: {
@@ -125,29 +125,29 @@ export default {
   },
   watch: {
     search (val) {
-      console.log("CreateLocation.search: called with val = " + val)
+      this.$log.debug("CreateLocation.search: called with val = " + val)
       if (this.isLoading) 
         return
 
-      console.log("CreateLocation.search: passed first obstacle")
+      this.$log.debug("CreateLocation.search: passed first obstacle")
       this.isLoading = true
 
-      console.log("CreateLocation.search: Trying to fetch data")
+      this.$log.debug("CreateLocation.search: Trying to fetch data")
       LocRepo.searchLocation(val)
       .then(res => {
-        console.log(res.data)
+        this.$log.debug(res.data)
         this.search_hits = res.data
       })
       .catch(err => {
-        console.log("Error in watch: " + err)
+        this.$log.error("Error in watch: " + err)
       })
       .finally(() => (this.isLoading = false))
     }
   },
   methods: {
     saveLocation: function() {
-    	console.log("SaveLocation called");
-      console.log("Constructing payload: ")
+    	this.$log.debug("SaveLocation called");
+      this.$log.debug("Constructing payload: ")
 
       let payload = {
         name: this.loc_name,
@@ -158,22 +158,22 @@ export default {
         place_id: this.loc_place_id,
         geoloc: this.geolocation,
       }
-      console.log(payload)
+      this.$log.debug(payload)
       this.$store.dispatch("createLocation", payload)
       .then(() => {
         this.snackbar = true
       })
       .catch((error) => {
-        console.error("Call to createLocation failed: " + error)
+        this.$log.error("Call to createLocation failed: " + error)
       })
     }, 
     fetchMoreInformation: function() {
-      console.log("Trying to fetch more information")
+      this.$log.debug("Trying to fetch more information")
       LocRepo.findPlace(this.search_string)
       .then((result) => {
         // Parse address_components - should be broken out.
 
-        console.log(result.data)
+        this.$log.debug(result.data)
         let ac = result.data.address_components
         for (let i = 0; i < ac.length; i++) {
           if (ac[i].types.includes('postal_town')) {
@@ -190,10 +190,10 @@ export default {
         this.loc_street = result.data.name
         this.geolocation = result.data.geometry.location
         this.current_step = 2
-        console.log(result)
+        this.$log.debug(result)
       })
       .catch((err) => {
-        console.log("CreateLocation: LocRepo.findPlace failed: " + err)
+        this.$log.debug("CreateLocation: LocRepo.findPlace failed: " + err)
       })
     }
   }

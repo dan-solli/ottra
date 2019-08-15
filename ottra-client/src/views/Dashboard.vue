@@ -105,8 +105,8 @@ export default {
   },
   methods: {
     getEventType: function(event_type) {
-      // console.log(event_type)
-      let arr = event_type.split('#')
+      // this.$log.debug(event_type)
+      const arr = event_type.split('#')
       return arr[1].slice(0,1).toUpperCase()
     }    
   },
