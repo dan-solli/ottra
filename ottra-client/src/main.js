@@ -30,7 +30,7 @@ import VueTour from 'vue-tour'
 import VuetifyToast from 'vuetify-toast-snackbar'
 import VueLogger from 'vuejs-logger'
 
-//const isProduction = process.env.NODE_ENV === 'production'
+const isProduction = process.env.NODE_ENV === 'production'
 
 require('vue-tour/dist/vue-tour.css')
 
@@ -60,38 +60,36 @@ Vue.use(VuetifyToast, {
 
 Vue.use(VueLogger, {
 	isEnabled: true,
-/*	
 	logLevel: isProduction ? 'error' : 'debug',
 	stringifyArguments: true,
 	showLogLevel: true,
 	showMethodName: true,
 	separator: '|',
 	showConsoleColors: true
-*/	
 })
 
 router.beforeEach((to, from, next) => {
 	
-	console.log("main.js: Entering router.beforeEach")
+	Vue.$log.debug("main.js: Entering router.beforeEach")
 	
 	if (to.matched.some(record => record.meta.noAuthRequired)) {
-		console.log("main.js: router.beforeEach: Route requires no authentication")
+		Vue.$log.debug("main.js: router.beforeEach: Route requires no authentication")
 		next()
 	}	else {
-		console.log("main.js: router.beforeEach: Route requires authentication")
+		Vue.$log.debug("main.js: router.beforeEach: Route requires authentication")
 		next()
 /*		
 		Promise.all([ store.dispatch("checkAuth") ])
 		.then(function() {
 			
-			console.log("main.js: router.beforeEach: checkAuth success.")
+			Vue.$log.debug("main.js: router.beforeEach: checkAuth success.")
 			
 			next()
 		})
 		.catch(function(error) {
 			
-			console.log("main.js: router.beforeEach: checkAuth failed, somehow")
-			console.log("main.js: router.beforeEach: Redirecting to /login")
+			Vue.$log.debug("main.js: router.beforeEach: checkAuth failed, somehow")
+			Vue.$log.debug("main.js: router.beforeEach: Redirecting to /login")
 			
 			next({
 				path: '/login',
@@ -123,12 +121,12 @@ new Vue({
 
 const sidebar_mode_items = [ 
 	{
-    title: $t('ui.navigation_drawer.mode.project'),
+    title: "Project", // this.$t('ui.navigation_drawer.mode.project'),
     route: '/create/project',
     icon: 'work'
   },
   {
-    title: $t('ui.navigation_drawer.mode.task'),
+    title: "Task", //this.$t('ui.navigation_drawer.mode.task'),
     route: '/create/task',
     icon: 'playlist_add'
   }
@@ -136,7 +134,7 @@ const sidebar_mode_items = [
 
 const sidebar_view_items = [
   {
-    title: $t('ui.navigation_drawer.view.linktoschedule'),
+    title: "Link", //this.$t('ui.navigation_drawer.view.linktoschedule'),
     route: '/create/project/link',
     icon: 'link'
   }
@@ -144,7 +142,7 @@ const sidebar_view_items = [
 
 const sidebar_extra_items = [
   {
-    title: $t('ui.navigation_drawer.extra.mailoutline'),
+    title: "Mail", //this.$t('ui.navigation_drawer.extra.mailoutline'),
     route: '/create/project/mail',
     icon: 'mail'
   }

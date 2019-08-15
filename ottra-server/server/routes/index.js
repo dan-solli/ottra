@@ -6,6 +6,10 @@ const jwtCheck = jwtMiddleware(process.env.JWT_SECRET_ACCESS)
 
 r.use('/1/auth', (require('./../api/auth.controller')))
 
+r.get('/1/showstuff', function (req, res) {
+	res.send(req.headers)
+})
+
 r.use(jwtCheck)
 
 r.use('/1/message', (require('./../api/message.controller')));

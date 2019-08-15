@@ -114,5 +114,6 @@
 	"ui.text.rooms": "Rum",
 	"ui.text.actions": "Handlingar",
 	"ui.text.newitem": "Ny",
-	"ui.text.edititem": "Ändra"
+	"ui.text.edititem": "Ändra",
+	"ui.text.date": "Datum"
 }

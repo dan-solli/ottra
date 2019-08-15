@@ -47,19 +47,19 @@ const UIState = {
     }  
   },
   mutations: {
-    saveModeItems({ state, data }) {
+    saveModeItems(state, data) {
       state.sidebar_mode_items = data
     },
-    saveViewItems({ state, data }) {
+    saveViewItems(state , data) {
       state.sidebar_view_items = data
     },
-    saveExtraItems({ state, data }) {
+    saveExtraItems(state, data) {
       state.sidebar_view_items = data
     },
-    saveMode({ state, data }) {
+    saveMode(state, data) {
       state.sidebar_mode_items = data
     },
-    saveView({ state, data }) {
+    saveView(state, data) {
       state.sidebar_view_items = data
     }
   }

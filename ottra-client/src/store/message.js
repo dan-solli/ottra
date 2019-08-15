@@ -52,8 +52,8 @@ const Message = {
       return state.messages[id]
     },
     getMessagesUnread: (state) => {
-      console.log("State.messages is: ")
-      console.log(state.messages)
+      console.debug("State.messages is: ")
+      console.debug(state.messages)
       return Object.values(state.messages).filter(x => x.status === "unread")
     },
     getMessageUnreadCount: (state, getters) => getters.getMessagesUnread.length
@@ -64,10 +64,10 @@ const Message = {
     {
     },
 */    
-    loadUserData: async function({ commit }) {
+    loadMessages: async function({ commit }) {
       try {
         const response = await MsgRepo.get()
-        Vue.$log.debug("%s: loadUserData: Response is %O", __filename, response)
+        console.debug("%s: loadUserData: Response is %O", __filename, response)
 
         let new_msg = {} 
 
@@ -77,8 +77,11 @@ const Message = {
         commit("SET_MESSAGES", new_msg)
       }
       catch (err) {
-        Vue.$log.error("store.message.module.loadUserData")
+        console.error("MsgRepo failed to get messages")
       }
+    },
+    loadUserData: async function({ dispatch }) {
+      dispatch("loadMessages")
     },
     clearStore({ commit }) {
       commit("CLEAR_STORE")

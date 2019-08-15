@@ -93,38 +93,6 @@ import { mapGetters, mapActions } from "vuex";
     data: () => ({
       expand: true,
       dialog: false,
-      headers: [
-        { 
-          text: $t('domobj.messages.from'),
-          align: 'left',
-          sortable: true,
-          value: 'from'
-        },
-        {
-          text: $t('domobj.messages.subject'),
-          align: 'left',
-          sortable: true,
-          value: 'subject'
-        },
-        {
-          text: $t('ui.text.date'),
-          align: 'left',
-          sortable: true,
-          value: 'sent'
-        },
-        {
-          text: $t('domobj.messages.type'),
-          align: 'left',
-          sortable: true,
-          value: 'type'
-        }, 
-        { 
-          text: $t('ui.text.actions'),
-          align: 'left',
-          value: 'type'
-        },
-      ],
-      //messages: [],
       editedIndex: -1,
       editedItem: {
         subject: '',
@@ -141,10 +109,43 @@ import { mapGetters, mapActions } from "vuex";
     }),
 
     computed: {
+      headers() {
+        return [
+          { 
+            text: this.$t('domobj.messages.from'),
+            align: 'left',
+            sortable: true,
+            value: 'from'
+          },
+          {
+            text: this.$t('domobj.messages.subject'),
+            align: 'left',
+            sortable: true,
+            value: 'subject'
+          },
+          {
+            text: this.$t('ui.text.date'),
+            align: 'left',
+            sortable: true,
+            value: 'sent'
+          },
+          {
+            text: this.$t('domobj.messages.type'),
+            align: 'left',
+            sortable: true,
+            value: 'type'
+          }, 
+          { 
+            text: this.$t('ui.text.actions'),
+            align: 'left',
+            value: 'type'
+          },
+        ]
+      },
       formTitle () {
         return this.editedIndex === -1 ? 
-          $t('ui.view.messageview.newmessage') : 
-          $t('ui.view.messageview.editmessage')
+          this.$t('ui.view.messageview.newmessage') : 
+          this.$t('ui.view.messageview.editmessage')
       },
       ...mapGetters([
         "getMessages",
@@ -152,6 +153,9 @@ import { mapGetters, mapActions } from "vuex";
       ]),
       messages() {
         return Object.values(this.getMessages)
+      },
+      confirmDeleteMessage() {
+        return this.$t('ui.dialog.confirmdelete')
       }
     },
 
@@ -162,7 +166,7 @@ import { mapGetters, mapActions } from "vuex";
     },
     methods: {
       gotoMessage(uuid) {
-        console.log("Trying to move over...")
+        this.$log.debug("Trying to move over...")
         this.$router.push("/messages/" + uuid)
       },
       editItem (item) {
@@ -172,7 +176,7 @@ import { mapGetters, mapActions } from "vuex";
       },
       deleteItem (item) {
         const index = this.messages.indexOf(item)
-        confirm($t('ui.dialog.confirmdelete')) && 
+        confirm(this.confirmDeleteMessage) && 
                 this.messages.splice(index, 1)
       },
       close () {
@@ -191,6 +195,9 @@ import { mapGetters, mapActions } from "vuex";
         }
         this.close()
       }
+    },
+    mounted() {
+      this.$store.dispatch("loadUserData")
     }
   }
 </script>
