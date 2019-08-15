@@ -12,6 +12,7 @@
 	"ui.navigation_drawer.default.mode.task": "Uppgift",
 	"ui.navigation_drawer.default.view.linktoschedule": "Länka projekt till aktiivtet",
 	"ui.navigation_drawer.default.extra.mailoutline": "Skicka projektöversikt",
+	"ui.navigation_drawer.default.mail": "Meddelanden",
 
 	"ui.dialog.login.title": "Inloggning",
 	"ui.dialog.register.title": "Registrera ny användare",

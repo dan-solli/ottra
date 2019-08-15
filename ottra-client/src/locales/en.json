@@ -12,6 +12,7 @@
 	"ui.navigation_drawer.default.mode.task": "Task",
 	"ui.navigation_drawer.default.view.linktoschedule": "Link project to schedule",
 	"ui.navigation_drawer.default.extra.mailoutline": "Mail project outline",
+	"ui.navigation_drawer.default.mail": "Messages",
 
 	"ui.dialog.login.title": "Login form",
 	"ui.dialog.register.title": "Register new user",

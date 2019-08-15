@@ -23,6 +23,9 @@ const UIState = {
     getCurrentView: state => state.current_view
   },
   actions: {
+    setDefaultItems: function({ commit }, items) {
+      commit("saveDefaultItems", items)
+    },
     setModeItems: function({ commit }, items) {
       commit("saveModeItems", items)
     },
@@ -47,6 +50,9 @@ const UIState = {
     }  
   },
   mutations: {
+    saveDefaultItems(state, data) {
+      state.sidebar_default_items = data
+    },
     saveModeItems(state, data) {
       state.sidebar_mode_items = data
     },

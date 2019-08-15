@@ -109,20 +109,8 @@
 
 	  </nav>
 
-		<v-navigation-drawer v-model="navigation_drawer" app>
-	    <v-list v-for="(section, s) in getNavigationDrawerItems" :key="s">
-	    	<v-list-item v-for="(list, l) in section" :key="l" router :to="list.route">
-	    		<v-list-item-action>
-	    			<v-icon> {{ list.icon }} </v-icon>
-	    		</v-list-item-action>
-	    		<v-list-item-content>
-	    			<v-list-item-title> {{ list.title }} </v-list-item-title>
-	    		</v-list-item-content>
-	    	</v-list-item>
-	    	<v-divider></v-divider>
-		  </v-list>
-		</v-navigation-drawer>
-
+	  <OttraNavigationDrawer v-model="navigation_drawer" app>
+	  </OttraNavigationDrawer>
   </div>
 </template>
 
@@ -130,15 +118,15 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 
-
+import OttraNavigationDrawer from '@/components/OttraNavigationDrawer'
 
 export default {
   name: "ottra-navbar",
   components: {
+  	OttraNavigationDrawer
   },
   computed: {
   		...mapGetters([ 
-  			"getNavigationDrawerItems",
   			"isAuthenticated",
   			"getMessageUnreadCount"
   		])
