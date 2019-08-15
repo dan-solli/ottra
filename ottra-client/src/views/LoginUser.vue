@@ -14,7 +14,7 @@
                 <v-btn text icon @click="startTour">
                   <v-icon>help_outline</v-icon>
                 </v-btn>
-                <v-btn text icon>
+                <v-btn text icon @click="closeDialog">
                   <v-icon>clear</v-icon>
                 </v-btn>
               </v-toolbar>
@@ -142,6 +142,9 @@ export default {
 		},
     startTour: function() {
       this.$tours['LoginUserTour'].start()
+    },
+    closeDialog: function() {
+      this.$router.push('/')
     }
 	},
   computed: {
