@@ -7,12 +7,22 @@
 
         <v-flex md3>
           <v-spacer></v-spacer>
-          <v-btn icon>
-            <v-icon>keyboard_arrow_left</v-icon>
-          </v-btn>
-          <v-btn icon>
-            <v-icon>keyboard_arrow_right</v-icon>
-          </v-btn>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn v-on="on" icon>
+                <v-icon>keyboard_arrow_left</v-icon>
+              </v-btn>
+            </template>
+            {{ $t('ui.text.previous') }}
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn v-on="on" icon>
+                <v-icon>keyboard_arrow_right</v-icon>
+              </v-btn>
+            </template>
+            {{ $t('ui.text.next') }}
+          </v-tooltip>
           <v-sheet height="700">
             <v-calendar 
               color="primary" 

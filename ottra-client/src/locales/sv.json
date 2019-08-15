@@ -31,6 +31,18 @@
 	"ui.dialog.login.haveuser": "Har du redan en användare",
 	"ui.dialog.login.logininstead": "Logga in här",
 
+	"ui.tooltip.starttour": "Visa funktioner på sidan",
+	"ui.tooltip.reply": "Svara",
+	"ui.tooltip.forward": "Vidarebefordra",
+	"ui.tooltip.snooze": "Pausa",
+	"ui.tooltip.delete": "Ta bort",
+	"ui.tooltip.add": "Lägg till",
+	"ui.tooltip.weather": "Väder",
+	"ui.tooltip.moveup": "Flytta upp",
+	"ui.tooltip.movedown": "Flytta ned",
+
+	"ui.text.close": "Stäng",
+
   "message": "hejsan i18n !!",
 
   "validation": {
@@ -84,7 +96,7 @@
 
 	"ui.view.settingsview.heading": "Inställningar",
 
-	"ui.view.weatherview.heading": "Weather",
+	"ui.view.weatherview.heading": "Väder",
 
 	"ui.dialog.confirmdelete": "Är du säker på att du vill radera denna?",
 
@@ -116,5 +128,7 @@
 	"ui.text.actions": "Handlingar",
 	"ui.text.newitem": "Ny",
 	"ui.text.edititem": "Ändra",
+	"ui.text.previous": "Föregående",
+	"ui.text.next": "Nästa",
 	"ui.text.date": "Datum"
 }

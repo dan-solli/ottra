@@ -69,10 +69,30 @@
           <td class="text-xs-left">{{ props.item.dateTime }}</td>
           <td class="text-xs-left">{{ getMessageTypes[props.item.type].typeText }}</td>
           <td class="justify-center layout px-0">
-            <v-icon small class="mr-2" @click.stop="editItem(props.item)">reply</v-icon>
-            <v-icon small class="mr-2" @click.stop="editItem(props.item)">forward</v-icon>
-            <v-icon small class="mr-2" @click.stop="editItem(props.item)">snooze</v-icon>
-            <v-icon small @click.stop="deleteItem(props.item)">delete</v-icon>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on" small class="mr-2" @click.stop="editItem(props.item)">reply</v-icon>
+              </template>
+              {{ $t('ui.tooltip.reply') }}
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on" small class="mr-2" @click.stop="editItem(props.item)">forward</v-icon>
+              </template>
+              {{ $t('ui.tooltip.forward') }}
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on" small class="mr-2" @click.stop="editItem(props.item)">snooze</v-icon>
+              </template>
+              {{ $t('ui.tooltip.snooze') }}
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on" small @click.stop="deleteItem(props.item)">delete</v-icon>
+              </template>
+              {{ $t('ui.tooltip.delete') }}
+            </v-tooltip>
           </td>
         </tr>
       </template>

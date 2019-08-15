@@ -81,7 +81,7 @@ const Message = {
       }
     },
     loadUserData: async function({ dispatch }) {
-      dispatch("loadMessages")
+      await dispatch("loadMessages")
     },
     clearStore({ commit }) {
       commit("CLEAR_STORE")

@@ -11,12 +11,22 @@
                   ({{ submitStatus }}) 
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-btn text icon @click="startTour">
-                  <v-icon>help_outline</v-icon>
-                </v-btn>
-                <v-btn text icon @click="closeDialog">
-                  <v-icon>clear</v-icon>
-                </v-btn>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn text icon @click="startTour" v-on="on">
+                      <v-icon>help_outline</v-icon>
+                    </v-btn>
+                  </template>
+                  {{ $t('ui.tooltip.starttour') }}
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn text icon @click="closeDialog">
+                      <v-icon>clear</v-icon>
+                    </v-btn>
+                  </template>
+                  {{ $t('ui.text.close') }}
+                </v-tooltip>
               </v-toolbar>
               <!-- <form-summary></form-summary> -->
               <v-card-text>

@@ -38,7 +38,12 @@
                     </v-list-item-subtitle>
                   </v-list-item-content>
                   <v-list-item-icon>
-                    <v-icon @click="removeFromList(index)" color="red">cancel</v-icon>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on }">
+                        <v-icon v-on="on" @click="removeFromList(index)" color="red">cancel</v-icon>
+                      </template>
+                      {{ $t('ui.tooltip.delete')}}
+                    </v-tooltip>
                   </v-list-item-icon>
                 </v-list-item>
               </v-flex>

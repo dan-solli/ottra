@@ -60,7 +60,9 @@ Vue.use(VuetifyToast, {
 
 Vue.use(VueLogger, {
 	isEnabled: true,
-	logLevel: isProduction ? 'error' : 'debug',
+	logLevel: isProduction 
+		? 'error' 
+		: 'debug',
 	stringifyArguments: true,
 	showLogLevel: true,
 	showMethodName: true,

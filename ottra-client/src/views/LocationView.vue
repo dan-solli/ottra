@@ -62,10 +62,30 @@
           <td class="text-xs-left">{{ props.item.Address.City }}</td>
           <td class="text-xs-left">{{ props.item.Rooms.length }}</td>
           <td class="justify-center layout px-0">
-            <v-icon small class="mr-2" @click.stop="editItem(props.item)">add</v-icon>
-            <v-icon small class="mr-2" @click.stop="editItem(props.item)">cloud</v-icon>
-            <v-icon small class="mr-2" @click.stop="editItem(props.item)">edit</v-icon>
-            <v-icon small @click.stop="deleteItem(props.item)">delete</v-icon>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on" small class="mr-2" @click.stop="editItem(props.item)">add</v-icon>
+              </template>
+              {{ $t('ui.tooltip.add') }}
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on" small class="mr-2" @click.stop="editItem(props.item)">cloud</v-icon>
+              </template>
+              {{ $t('ui.tooltip.weather') }}
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on" small class="mr-2" @click.stop="editItem(props.item)">edit</v-icon>
+              </template>
+              {{ $t('ui.text.edititem') }}
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on" small @click.stop="deleteItem(props.item)">delete</v-icon>
+              </template>
+              {{ $t('ui.tooltip.delete') }}
+            </v-tooltip>
           </td>
         </tr>
       </template>

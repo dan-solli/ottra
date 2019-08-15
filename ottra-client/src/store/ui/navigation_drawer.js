@@ -56,7 +56,7 @@ const UIState = {
     saveModeItems(state, data) {
       state.sidebar_mode_items = data
     },
-    saveViewItems(state , data) {
+    saveViewItems(state, data) {
       state.sidebar_view_items = data
     },
     saveExtraItems(state, data) {

@@ -8,14 +8,24 @@
 							<v-stepper-step :key="index" editable :step="index+1">
 								<v-toolbar dense flat color="white">
 									<v-toolbar-items>
-										<v-btn icon flat v-if="index >= 1"
-											@click.capture.stop="moveStepUp(index)">
-											<v-icon>arrow_upward</v-icon>
-										</v-btn>
-										<v-btn icon flat v-if="index+1 < stepCount"
-											@click.capture.stop="moveStepDown(index)">
-											<v-icon>arrow_downward</v-icon>
-										</v-btn>
+										<v-tooltip top>
+											<template v-slot:activator="{ on }">
+												<v-btn v-on="on" icon flat v-if="index >= 1"
+													@click.capture.stop="moveStepUp(index)">
+													<v-icon>arrow_upward</v-icon>
+												</v-btn>
+											</template>
+											{{ $t('ui.tooltip.moveup')}}
+										</v-tooltip>
+										<v-tooltip top>
+											<template v-slot:activator="{ on }">
+												<v-btn v-on="on" icon flat v-if="index+1 < stepCount"
+													@click.capture.stop="moveStepDown(index)">
+													<v-icon>arrow_downward</v-icon>
+												</v-btn>
+											</template>
+											{{ $t('ui.tooltip.movedown')}}
+										</v-tooltip>
 									</v-toolbar-items>
 									<v-toolbar-title> {{ step.title }} </v-toolbar-title>
 								</v-toolbar>
@@ -62,16 +72,38 @@
         </v-time-picker>
       </v-dialog>
 							
-									<v-btn 
-										color="primary" 
-										v-if="currentStep != stepCount"
-										@click="nextStep(currentStep)">Continue</v-btn>
-									<v-btn 
-										color="green" 
-										v-if="currentStep == stepCount"
-										@click="addStep">Add Step</v-btn>
-									<v-btn flat>Cancel</v-btn>
-									<v-btn icon flat> <v-icon>delete</v-icon> </v-btn>
+									<v-tooltip bottom>
+										<template v-slot:activator="{ on }">
+											<v-btn 
+												v-on="on"
+												color="primary" 
+												v-if="currentStep != stepCount"
+												@click="nextStep(currentStep)">Continue</v-btn>
+										</template>
+										{{ $t('ui.text.continue') }}
+									</v-tooltip>
+									<v-tooltip bottom>
+										<template v-slot:activator="{ on }">
+											<v-btn 
+												v-on="on"
+												color="green" 
+												v-if="currentStep == stepCount"
+												@click="addStep">Add Step</v-btn>
+										</template>
+										{{ $t('ui.text.newitem') }}
+									</v-tooltip>
+									<v-tooltip bottom>
+										<template v-slot:activator="{ on }">
+											<v-btn v-on="on" flat>Cancel</v-btn>
+										</template>
+										{{ $t('ui.text.cancel') }}
+									</v-tooltip>
+									<v-tooltip bottom>
+										<template v-slot:activator="{ on }">
+											<v-btn v-on="on" icon flat> <v-icon>delete</v-icon> </v-btn>
+										</template>
+										{{ $t('ui.tooltip.delete') }}
+									</v-tooltip>
 								</v-stepper-content>
 							</v-stepper-items>
 

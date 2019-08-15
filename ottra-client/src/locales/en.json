@@ -33,6 +33,17 @@
   "ui.dialog.login.registernewuserbutton.tooltip": "Click this button to register a new user",
   "ui.dialog.login.registernewuserbutton.tooltip.alt": "Cancel registration",
 
+	"ui.tooltip.starttour": "Start tour",
+	"ui.tooltip.reply": "Reply",
+	"ui.tooltip.forward": "Forward",
+	"ui.tooltip.snooze": "Snooze",
+	"ui.tooltip.delete": "Delete",
+	"ui.text.close": "Close",
+	"ui.tooltip.add": "Add",
+	"ui.tooltip.weather": "Weather",
+	"ui.tooltip.moveup": "Move up",
+	"ui.tooltip.movedown": "Move down",
+
   "validation": {
 	  "required": "Field {attribute} is required",
 	  "email": "Field {attribute} is not a proper email address",
@@ -119,6 +130,8 @@
 	"ui.text.newitem": "New Item",
 	"ui.text.edititem": "Edit Item",
 	"ui.text.date": "Date",
+	"ui.text.previous": "Previous",
+	"ui.text.next": "Next",
 
   "flurb": "flurb",
   "message": "hello i18n !!"
