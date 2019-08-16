@@ -17,5 +17,12 @@ const AuthModel = {
 	}
 }
 
-process.on('eUserLogin', (payload) => { AuthModel.updateTokenList(payload) })
-process.on('eUserTokenRefreshed', (userInfo) => { AuthModel.updateTokenList(userInfo) })
+process.on('eUserLogin', function(payload) { 
+	console.debug("%s: eUserLogin caught: TokenList before update: %O", __filename, tokenList)
+	AuthModel.updateTokenList(payload) 
+	console.debug("%s: eUserLogin caught: TokenList after update: %O", __filename, tokenList)
+})
+process.on('eUserTokenRefreshed', function(userInfo) { 
+})
+
+module.exports = AuthModel

@@ -43,8 +43,8 @@ const UserService = {
 				response.refreshToken = await AuthService.generateRefreshToken(response)
 
 				console.debug("%s: authenticateUser: Emitting eUserLogin with: %O", 
-					__filename, response.uuid)
-				process.emit('eUserLogin', response.uuid)
+					__filename, response)
+				process.emit('eUserLogin', response)
 
 				console.debug("%s: authenticateUser is returning: %O", __filename, response)
 				return [ response, null ]
@@ -76,8 +76,8 @@ const UserService = {
 		response.accessToken = await AuthService.generateAccessToken(response)
 		response.refreshToken = await AuthService.generateRefreshToken(response)
 
-		console.debug("%s: createUser: Emitting eNewUser with: %O", __filename, response.uuid)
-		process.emit('eNewUser', response.uuid)
+		console.debug("%s: createUser: Emitting eNewUser with: %O", __filename, response)
+		process.emit('eNewUser', response)
 
 		console.debug("%s: createUser is returning: %O", __filename, response)
 		return [ response, null ]

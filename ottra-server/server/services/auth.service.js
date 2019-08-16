@@ -6,21 +6,32 @@ const AuthService = {
 	refreshToken: async function(payload) {
 		console.debug("%s: refreshToken is called with payload: %O", __filename, payload)
 
-		if (payload.refreshToken && await AuthModel.refreshTokenExist(payload.refreshToken)) {
-			const userInfo = {
-				username: payload.username,
-				uuid: payload.uuid
-			}
-			userInfo.accessToken = await AuthService.generateAccessToken(userInfo)
-			userInfo.refreshToken = payload.refreshToken
+		// TODO: Actually control if the refreshToken is valid. Somehow.
+		if (payload.refreshToken) {
+			try {
+				const decoded = JWT.verify(payload.refreshToken, process.env.JWT_SECRET_REFRESH)
 
-			console.debug("%s: refreshToken is emitting event eUserTokenRefreshed with: %O",
-				__filename, userInfo)
-			process.emit('eUserTokenRefreshed', userInfo)
-			return [ {
-				"token": userInfo.accessToken
-			}, null ]
-		}	else {
+				console.log("%s: refreshToken: Decoded token is: %O", __filename, decoded)
+
+				const userInfo = {
+					uuid: decoded.uuid,
+					username: decoded.username
+				}
+				const accessToken = await AuthService.generateAccessToken(userInfo)
+
+				return [ { 
+					token: accessToken 
+				}, null]
+
+			}
+			catch (err) {
+				return [ null, {
+					status: 'failed',
+					message: 'Token could not be refreshed',
+					code: 404
+				} ]
+			}
+		} else {
 			return [ null, {
 				status: 'failed',
 				message: 'Token could not be refreshed',
