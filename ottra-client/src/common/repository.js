@@ -26,7 +26,7 @@ const refreshAuthLogic = function(failedRequest) {
 	})
 }
 
-createAuthRefreshInterceptor(instance, refreshAuthLogic, { statusCodes: [ 401, 403 ] } )
+createAuthRefreshInterceptor(instance, refreshAuthLogic, { statusCodes: [ 401, 403 ] })
 
 function getLiveToken(config) {
 	const token = JwtService.getToken()

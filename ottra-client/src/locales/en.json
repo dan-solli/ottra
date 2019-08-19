@@ -40,6 +40,7 @@
 	"ui.tooltip.delete": "Delete",
 	"ui.text.close": "Close",
 	"ui.tooltip.add": "Add",
+	"ui.tooltip.addroom": "Add Room",
 	"ui.tooltip.weather": "Weather",
 	"ui.tooltip.moveup": "Move up",
 	"ui.tooltip.movedown": "Move down",

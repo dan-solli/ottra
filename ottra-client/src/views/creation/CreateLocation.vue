@@ -97,27 +97,29 @@ const LocRepo  = RepositoryFactory.get('location');
 
 export default {
   name: "create-location",
-  data: () => ({
-    snackbar: false,
-    current_step: 1,
-  	loc_name: '',
-  	loc_street: '',
-    loc_street_number: '',
-  	loc_postal_code: '',
-  	loc_city: '',
-  	loc_country: '',
-  	loc_place_id: '',
-  	address: '',
-    search_string: '', // Contains Google place_id
-    isLoading: false,
-    valid: false,
-    search_hits: [],
-    search: null,
-    message: '',
-    stringRules: [
-      v => !!v || this.$t('ui.text.required')
-    ],
-  }),
+  data: function() {
+    return {
+      snackbar: false,
+      current_step: 1,
+      loc_name: '',
+      loc_street: '',
+      loc_street_number: '',
+      loc_postal_code: '',
+      loc_city: '',
+      loc_country: '',
+      loc_place_id: '',
+      address: '',
+      search_string: '', // Contains Google place_id
+      isLoading: false,
+      valid: false,
+      search_hits: [],
+      search: null,
+      message: '',
+      stringRules: [
+        v => !!v || this.$i18n.t('ui.text.required')
+      ],
+    }
+  },
   computed: {
     items() {
       return this.search_hits
@@ -126,7 +128,7 @@ export default {
   watch: {
     search (val) {
       this.$log.debug("CreateLocation.search: called with val = " + val)
-      if (this.isLoading) 
+      if (this.isLoading || !val) 
         return
 
       this.$log.debug("CreateLocation.search: passed first obstacle")
@@ -135,8 +137,8 @@ export default {
       this.$log.debug("CreateLocation.search: Trying to fetch data")
       LocRepo.searchLocation(val)
       .then(res => {
-        this.$log.debug(res.data)
-        this.search_hits = res.data
+        this.$log.debug(__filename + ": Populating search_hits with ", res.data.predictions)
+        this.search_hits = res.data.predictions
       })
       .catch(err => {
         this.$log.error("Error in watch: " + err)
@@ -173,8 +175,10 @@ export default {
       .then((result) => {
         // Parse address_components - should be broken out.
 
+        this.$log.debug(__filename + ": fetchMoreInformation: ")
         this.$log.debug(result.data)
-        let ac = result.data.address_components
+        const ac = result.data.result.address_components
+        console.log("%s: fetchMoreInformation - ac is %O", __filename, ac)
         for (let i = 0; i < ac.length; i++) {
           if (ac[i].types.includes('postal_town')) {
             this.loc_city = ac[i].long_name
@@ -186,16 +190,17 @@ export default {
             this.loc_postal_code = ac[i].long_name
           }
         }
-        this.loc_place_id = result.data.place_id
-        this.loc_street = result.data.name
-        this.geolocation = result.data.geometry.location
+        this.loc_place_id = result.data.result.place_id
+        this.loc_street = result.data.result.name
+        this.geolocation = result.data.result.geometry.location
         this.current_step = 2
         this.$log.debug(result)
       })
       .catch((err) => {
         this.$log.debug("CreateLocation: LocRepo.findPlace failed: " + err)
       })
-    }
+    },
+
   }
 };
 </script>
