@@ -11,6 +11,8 @@ const GeographyService = {
 			input: search_str,
 			sessiontoken: GMC.placesAutoCompleteSessionToken()
 		}, function(err, result) {
+			console.debug("%s: searchPlace result %O", __filename, result)
+			console.debug("%s: searchPlace error %O", __filename, err)
 			return [ result, err ]
 		})
 	},

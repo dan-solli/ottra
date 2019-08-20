@@ -4,6 +4,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import i18n from './i18n'
+import vuetify_sv from './locales/vuetify.sv'
+import vuetify_en from 'vuetify/es5/locale/en'
 
 import 'vuetify/dist/vuetify.min.css'
 
@@ -16,6 +18,10 @@ const vuetify_opts = {
 	},
 	icons: {
 		iconfont: 'md',
+	},
+	lang: {
+		locales: { vuetify_sv, vuetify_en },
+		current: 'vuetify_' + (navigator.language.split('-')[0] || 'en')
 	}
 }
 

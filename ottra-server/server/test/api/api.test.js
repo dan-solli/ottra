@@ -27,15 +27,15 @@ let storage = {
 	uuid: ''
 }
 
-describe("API", () => {
+describe("API", function() {
 
 	before('Starting up tests. Clearing database from testdata.', function() {
 		clearTestData()
 	})
 
-	describe("Auth", () => {
+	describe("Auth", function() {
 
-		it("should create user ", () => {
+		it("should create user ", function() {
 			return axios.post(apiBase + "/auth", defaultUser)
 			.then(res => {
 				res.status.should.equal(200)
@@ -45,7 +45,7 @@ describe("API", () => {
 				storage.uuid = res.data.uuid
 			})
 		})
-		it("should not be able to recreate the same user ", () => {
+		it("should not be able to recreate the same user ", function() {
 			return axios.post(apiBase + "/auth", defaultUser).then(res => {
 				// foo
 			}).catch(function(err) {
@@ -56,7 +56,7 @@ describe("API", () => {
 				err.response.data.code.should.equal(403)
 			})
 		})
-		it("should be able to login the created user ", () => {
+		it("should be able to login the created user ", function() {
 			return axios.post(apiBase + "/auth/authenticate", defaultUser).then(res => {
 				res.data.username.should.equal(defaultUser.username)
 				res.data.uuid.should.be.a('string')
@@ -68,7 +68,7 @@ describe("API", () => {
 				}
 			})
 		})
-		it("should fail on wrong password", () => {
+		it("should fail on wrong password", function() {
 			return axios.post(apiBase + "/auth/authenticate", { 
 				username: defaultUser.username, 
 				password: 'wrongpassword'
@@ -80,7 +80,7 @@ describe("API", () => {
 				err.response.data.code.should.equal(401)
 			})
 		})
-		it("should fail on non-existing user", () => {
+		it("should fail on non-existing user", function() {
 			return axios.post(apiBase + "/auth/authenticate", {
 				username: "notregistereduser@nowhere.com",
 				password: "thisisrandom"
@@ -93,7 +93,7 @@ describe("API", () => {
 				err.response.data.code.should.equal(401)
 			})
 		})
-		it("should fail trying to create user with empty parameters", () => {
+		it("should fail trying to create user with empty parameters", function() {
 			return axios.post(apiBase + "/auth/authenticate", { }).then(res => {
 				console.log(res.status)
 				console.log(res.data)
@@ -103,7 +103,7 @@ describe("API", () => {
 				err.response.data.code.should.equal(422)
 			})
 		})
-		it("should fail trying to authenticate user with empty parameters", () => {
+		it("should fail trying to authenticate user with empty parameters", function() {
 			return axios.post(apiBase + "/auth/authenticate", { }).then(res => {
 				console.log(res.status)
 				console.log(res.data)
@@ -116,13 +116,13 @@ describe("API", () => {
 		it("should refresh tokens at request ")
 	})
 
-	describe("Geography", () => { 
+	describe("Geography", function() { 
 		it("(perma-skip due to cost) should look up predictions for an address when asked ")
 		it("(perma-skip due to cost) should find the Google Place for an address ")
 	})
 
-	describe("Group", () => {
-		it("should create a group ", () => {
+	describe("Group", function() {
+		it("should create a group ", function() {
 			return axios.post(apiBase + "/group", defaultGroup).then(res => {
 				res.data.name.should.equal(defaultGroup.groupName)
 				res.data.creator.should.equal(storage.uuid)
@@ -139,10 +139,10 @@ describe("API", () => {
 		it("should change the role of a member of a group")
 		it("should change the permissions of a member of a group")
 	})
-	describe("Message", () => { 
+	describe("Message", function() { 
 		it("should create a new message ")
 		it("should fail creating a new message with params missing")
-		it("should fetch all messages ", () => {
+		it("should fetch all messages ", function() {
 			return axios.get(apiBase + "/message").then(res => {
 				res.data.should.be.an('array', "so what is it?")
 				res.data.should.have.lengthOf.within(1, 5)

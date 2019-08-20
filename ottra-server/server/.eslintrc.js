@@ -6,12 +6,14 @@ module.exports = {
     },
     "plugins": [
         "security",
+        "mocha"
     ],
     "extends": [
         "eslint:recommended",
         "plugin:node/recommended",
         "plugin:promise/recommended",
         "plugin:security/recommended",
+        "plugin:mocha/recommended"
     ],
     "globals": {
         "Atomics": "readonly",

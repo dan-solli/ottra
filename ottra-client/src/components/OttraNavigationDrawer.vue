@@ -9,7 +9,7 @@
     			<v-list-item-title> {{ list.title }} </v-list-item-title>
     		</v-list-item-content>
     	</v-list-item>
-    	<v-divider></v-divider>
+    	<v-divider v-if="section.length > 0"></v-divider>
 	  </v-list>
 	</v-navigation-drawer>	
 </template>

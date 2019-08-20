@@ -82,6 +82,13 @@
                 </v-text-field>
               </v-flex>
             </v-layout>
+            <v-layout row>
+              <v-flex xs12 md4>
+                <v-file-input prepend-icon="mdi-camera" chips multiple 
+                  :label="$t('ui.text.uploadfile')">
+                </v-file-input>
+              </v-flex>
+            </v-layout>
           </v-container>
         </v-form>
         <v-btn text @click="current_step = 1">{{ $t('ui.text.restart') }}</v-btn>
@@ -97,27 +104,29 @@ const LocRepo  = RepositoryFactory.get('location');
 
 export default {
   name: "create-location",
-  data: () => ({
-    snackbar: false,
-    current_step: 1,
-  	loc_name: '',
-  	loc_street: '',
-    loc_street_number: '',
-  	loc_postal_code: '',
-  	loc_city: '',
-  	loc_country: '',
-  	loc_place_id: '',
-  	address: '',
-    search_string: '', // Contains Google place_id
-    isLoading: false,
-    valid: false,
-    search_hits: [],
-    search: null,
-    message: '',
-    stringRules: [
-      v => !!v || this.$t('ui.text.required')
-    ],
-  }),
+  data: function()  {
+    return {
+      snackbar: false,
+      current_step: 1,
+      loc_name: '',
+      loc_street: '',
+      loc_street_number: '',
+      loc_postal_code: '',
+      loc_city: '',
+      loc_country: '',
+      loc_place_id: '',
+      address: '',
+      search_string: '', // Contains Google place_id
+      isLoading: false,
+      valid: false,
+      search_hits: [],
+      search: null,
+      message: '',
+      stringRules: [
+        v => !!v || this.$i18n.t('ui.text.required')
+      ],
+    }
+  },
   computed: {
     items() {
       return this.search_hits

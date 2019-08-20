@@ -24,16 +24,16 @@ const UIState = {
   },
   actions: {
     setDefaultItems: function({ commit }, items) {
-      commit("saveDefaultItems", items)
+      commit("SAVE_DEFAULT_ITEMS", items)
     },
     setModeItems: function({ commit }, items) {
-      commit("saveModeItems", items)
+      commit("SAVE_MODE_ITEMS", items)
     },
     setViewItems: function({ commit }, items) {
-      commit("saveViewItems", items)
+      commit("SAVE_VIEW_ITEMS", items)
     },
     setExtraItems: function({ commit }, items) {
-      commit("saveExtraItems", items)
+      commit("SAVE_EXTRA_ITEMS", items)
     },
     clearItems: function({ dispatch }) {
       return Promise.all([ 
@@ -43,29 +43,29 @@ const UIState = {
       ])
     },
     setMode: function({ commit }, mode) {
-      commit("saveMode", mode)
+      commit("SAVE_MODE", mode)
     },
     setView: function({ commit }, view) {
-      commit("saveView", view)
+      commit("SAVE_VIEW", view)
     }  
   },
   mutations: {
-    saveDefaultItems(state, data) {
+    SAVE_DEFAULT_ITEMS(state, data) {
       state.sidebar_default_items = data
     },
-    saveModeItems(state, data) {
+    SAVE_MODE_ITEMS(state, data) {
       state.sidebar_mode_items = data
     },
-    saveViewItems(state, data) {
+    SAVE_VIEW_ITEMS(state, data) {
       state.sidebar_view_items = data
     },
-    saveExtraItems(state, data) {
+    SAVE_EXTRA_ITEMS(state, data) {
       state.sidebar_view_items = data
     },
-    saveMode(state, data) {
+    SAVE_MODE(state, data) {
       state.sidebar_mode_items = data
     },
-    saveView(state, data) {
+    SAVE_VIEW(state, data) {
       state.sidebar_view_items = data
     }
   }
