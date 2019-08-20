@@ -11,17 +11,9 @@ const GeographyService = {
 		const result = await googleMapsClient.placesAutoComplete({
 			input: search_str,
 			sessiontoken: GMC.placesAutoCompleteSessionToken()
-<<<<<<< HEAD
-		}, function(err, result) {
-			console.debug("%s: searchPlace result %O", __filename, result)
-			console.debug("%s: searchPlace error %O", __filename, err)
-			return [ result, err ]
-		})
-=======
 		}).asPromise()
 		console.debug("%s: searchPlace got result: %O", __filename, result)
 		return [ result.json, null ]
->>>>>>> Ottra#76
 	},
 	getPlaceById: async function(place_id) {
 		console.debug("%s: getPlaceById called with place_id: %s", __filename, place_id)
