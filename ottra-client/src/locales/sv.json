@@ -37,6 +37,7 @@
 	"ui.tooltip.snooze": "Pausa",
 	"ui.tooltip.delete": "Ta bort",
 	"ui.tooltip.add": "Lägg till",
+	"ui.tooltip.addroom": "Lägg till rum",
 	"ui.tooltip.weather": "Väder",
 	"ui.tooltip.moveup": "Flytta upp",
 	"ui.tooltip.movedown": "Flytta ned",

@@ -28,7 +28,12 @@ const LocationModel = {
 MATCH (l:Location { uuid: {uuid}})-->(r:Room), (l)-->(g:Geolocation), (l)-->(a:Address)
 WITH collect(r.uuid) as rm, a, g, l
 RETURN apoc.map.groupBy(collect(l { .*, Rooms: rm, 
+<<<<<<< HEAD
 	Address: a { .* }, 	Geolocation: g { .* } } ), "uuid") as Locations`, { 
+=======
+	Address: a { .* }, 
+	Geolocation: g { .* } } ), "uuid") as Locations`, { 
+>>>>>>> Ottra#76
 				uuid: user_id 
 			}, "Locations")
 
