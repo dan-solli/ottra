@@ -82,13 +82,15 @@
                 </v-text-field>
               </v-flex>
             </v-layout>
+<!-- This piece of crap is not working...            
             <v-layout row>
               <v-flex xs12 md4>
-                <v-file-input prepend-icon="mdi-camera" chips multiple 
+                <v-file-input prepend-icon="image" chips v-model="image_filename" 
                   :label="$t('ui.text.uploadfile')">
                 </v-file-input>
               </v-flex>
             </v-layout>
+-->            
           </v-container>
         </v-form>
         <v-btn text @click="current_step = 1">{{ $t('ui.text.restart') }}</v-btn>
@@ -104,12 +106,9 @@ const LocRepo  = RepositoryFactory.get('location');
 
 export default {
   name: "create-location",
-<<<<<<< HEAD
-  data: function()  {
-=======
   data: function() {
->>>>>>> Ottra#76
     return {
+      //image_filename: '',
       snackbar: false,
       current_step: 1,
       loc_name: '',
