@@ -33,12 +33,13 @@ describe("Auth", function() {
 			result.data.username.should.equal(defaultUser.username)
 		}
 		catch (err) {
-		}
+			throw new Error(err)
+		} 
 	})
 
 	it("should not be able to recreate the same user ", async function() {
 		try {
-			const result = await createUser(defaultUser)
+			return await createUser(defaultUser)
 		}
 		catch(err) {
 			err.response.status.should.equal(403)
@@ -51,21 +52,21 @@ describe("Auth", function() {
 	it("should be able to login the created user ", async function() {
 		try {
 			const result = await authenticateUser(defaultUser)
-			res.data.username.should.equal(defaultUser.username)
-			res.data.uuid.should.be.a('string')
-			res.data.accessToken.should.be.a('string')
-			res.data.refreshToken.should.be.a('string')
+			result.data.username.should.equal(defaultUser.username)
+			result.data.uuid.should.be.a('string')
+			result.data.accessToken.should.be.a('string')
+			result.data.refreshToken.should.be.a('string')
 
 			setAuthToken(result.data.accessToken)
 		}
 		catch (err) {
-
+			throw new Error(err)
 		}
 	})
 
 	it("should fail on wrong password", async function() {
 		try {
-			const result = await authenticateUser(userWithWrongPassword)
+			return await authenticateUser(userWithWrongPassword)
 		}
 		catch(err) {
 			err.response.status.should.equal(401)
@@ -76,7 +77,7 @@ describe("Auth", function() {
 
 	it("should fail on non-existing user", async function() {
 		try {
-			const result = await authenticateUser(noSuchUser)
+			return await authenticateUser(noSuchUser)
 		}
 		catch (err) {
 			err.response.status.should.equal(401)
@@ -87,7 +88,7 @@ describe("Auth", function() {
 
 	it("should fail trying to create user with empty parameters", async function() {
 		try {
-			const result = await createUser({})
+			return await createUser({})
 		}
 		catch(err) {
 			err.response.status.should.equal(422)
@@ -98,7 +99,7 @@ describe("Auth", function() {
 
 	it("should fail trying to authenticate user with empty parameters", async function() {
 		try {
-			const result = await authenticateUser({})
+			return await authenticateUser({})
 		}
 		catch(err) {
 			err.response.status.should.equal(422)

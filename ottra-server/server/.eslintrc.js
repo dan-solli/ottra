@@ -39,5 +39,11 @@ module.exports = {
         "max-depth": [ "warn", 3 ],
         "no-param-reassign": "warn",
         "max-params": [ "warn", 2 ],
-  }
+        "node/no-extraneous-require": ["error", {
+            "allowModules": ["axios"]
+        }],
+        "node/no-unpublished-require": ["error", {
+            "allowModules": ["chai"]
+        }]
+    }
 };

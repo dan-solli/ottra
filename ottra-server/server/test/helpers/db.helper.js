@@ -17,12 +17,19 @@ function clearTestData() {
 	session.run(`MATCH (u:User { username: {username} }) DETACH DELETE u`, 
 		{ username: 'testsson@test.se' })
 	.then(function() {
-		// foo
+		return true
+	})
+	.catch(function(err) {
+		console.error("%s: Cleaning users in test failed. %s", __filename, err)
 	})
 	session.run(` MATCH (g:Group { name: {groupname} })	DETACH DELETE g`, 
 		{ groupname: 'Groupname01' })
 	.then(function() {
 		Connection.close()
+		return true
+	})
+	.catch(function(err) {
+		console.error("%s: Cleaning groups in test failed. %s", __filename, err)
 	})
 }
 

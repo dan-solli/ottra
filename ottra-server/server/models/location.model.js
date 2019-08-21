@@ -28,12 +28,7 @@ const LocationModel = {
 MATCH (l:Location { uuid: {uuid}})-->(r:Room), (l)-->(g:Geolocation), (l)-->(a:Address)
 WITH collect(r.uuid) as rm, a, g, l
 RETURN apoc.map.groupBy(collect(l { .*, Rooms: rm, 
-<<<<<<< HEAD
 	Address: a { .* }, 	Geolocation: g { .* } } ), "uuid") as Locations`, { 
-=======
-	Address: a { .* }, 
-	Geolocation: g { .* } } ), "uuid") as Locations`, { 
->>>>>>> Ottra#76
 				uuid: user_id 
 			}, "Locations")
 
@@ -92,7 +87,7 @@ RETURN apoc.map.groupBy(collect(l { .*, Rooms: rm, Address: a { .* }, Geolocatio
 	updateLocation: async function(payload) {
 		console.debug("%s: updateLocation is called with payload: %O", __filename, payload)
 
-		const result = await DB.fetchRow(`
+		return await DB.fetchRow(`
 			MATCH (l:Location { uuid: {loc_id} })
 
 		`)

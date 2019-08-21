@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 
-const { clearTestData } = require('./../helpers/db.helper')
+//const { clearTestData } = require('./../helpers/db.helper')
 
-const chai = require('chai')
-const should = chai.should()
+//const chai = require('chai')
+//const should = chai.should()
 
 describe("Group", function() {
 	it("should create a group ")

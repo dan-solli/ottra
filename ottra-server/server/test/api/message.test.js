@@ -1,11 +1,11 @@
 /* eslint-env mocha */
 
-const { clearTestData } = require('./../helpers/db.helper')
+// const { clearTestData } = require('./../helpers/db.helper')
 
-const chai = require('chai')
-const should = chai.should()
+//const chai = require('chai')
+//const should = chai.should()
 
-describe("Message", function() { 
+describe("Message", function() { // eslint-disable-line max-lines-per-function
 	it("should create a new message ")
 	it("should fail creating a new message with params missing")
 	it("should fetch all messages ")

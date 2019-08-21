@@ -1,5 +1,3 @@
-const AuthModel = require('./../models/auth.model')
-
 const JWT = require('jsonwebtoken')
 
 const AuthService = {

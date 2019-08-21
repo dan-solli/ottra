@@ -22,7 +22,9 @@ process.on('eUserLogin', function(payload) {
 	AuthModel.updateTokenList(payload) 
 	console.debug("%s: eUserLogin caught: TokenList after update: %O", __filename, tokenList)
 })
+
 process.on('eUserTokenRefreshed', function(userInfo) { 
+	console.debug("%s: eUserTokenRefreshed caught: userInfo is: %O", __filename, userInfo)
 })
 
 module.exports = AuthModel
