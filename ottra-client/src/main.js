@@ -36,6 +36,7 @@ import VueTour from 'vue-tour'
 import VuetifyToast from 'vuetify-toast-snackbar'
 import VueLogger from 'vuejs-logger'
 
+
 const isProduction = process.env.NODE_ENV === 'production'
 
 require('vue-tour/dist/vue-tour.css')
@@ -75,6 +76,9 @@ Vue.use(VueLogger, {
 	separator: '|',
 	showConsoleColors: true
 })
+
+Vue.use(require('vue-shortkey'))
+
 
 router.beforeEach((to, from, next) => {
 	

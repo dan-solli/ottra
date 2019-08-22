@@ -72,6 +72,7 @@
                 </router-link>
   							<v-spacer></v-spacer>
                 <v-btn 
+                  v-shortkey.push="['enter']" @shortkey="loginUser"
                   color="primary" 
                   class="tour-step-4"
                   @click="loginUser">

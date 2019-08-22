@@ -90,6 +90,7 @@
 
   							<v-spacer></v-spacer>
                 <v-btn 
+                  v-shortkey.push="['enter']" @shortkey="registerUser"                
                   color="primary" 
                   class="tour-step-4"
                   @click="registerUser">
