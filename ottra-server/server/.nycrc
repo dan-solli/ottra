@@ -1,0 +1,11 @@
+{
+  "register": "babel-register",
+  "include": [
+    "api/**/*.js",
+    "infra/**/*.js"
+  ],
+  "all": true,
+  "sourceMap": false,
+  "instrument": true,
+  "check-coverage": true
+}
