@@ -5,7 +5,10 @@ const LocationModel = {
 	createLocation: async function(payload, user_id) {
 		console.debug("%s: createLocation is called with payload: %O", __filename, payload)
 
-		const result = await DB.fetchRow(`
+		const newLocationUUID = uuidv4()
+
+/*
+		const result = await DB.fetchRow(`			
 			MATCH (u:User { uuid : {creator} })
 			CREATE (u)-[:BELONG_TO { role: 'admin' } ]->(g:Group {
 				uuid: {uuid},
@@ -20,6 +23,44 @@ const LocationModel = {
 		)
 		console.debug("%s: createLocation creation result is: %O", __filename, result)
 		return result
+*/	
+/*
+
+{ 'images[]':
+   [ { uuid: '1d8f4415-5f41-4a57-822e-4d21bddc73c0',
+       field: 'images[]',
+       file:
+        '/home/dsi/projects/ottra/ottra-server/server/content/1d8f4415-5f41-4a57-822e-4d21bddc73c0/images[]/kontoinfo.JPG',
+       filename: 'kontoinfo.JPG',
+       encoding: '7bit',
+       mimetype: 'image/jpeg',
+       truncated: false,
+       done: true },
+     { uuid: 'a77eead9-bfd4-496a-9ef2-9f222509f11a',
+       field: 'images[]',
+       file:
+        '/home/dsi/projects/ottra/ottra-server/server/content/a77eead9-bfd4-496a-9ef2-9f222509f11a/images[]/lynda.PNG',
+       filename: 'lynda.PNG',
+       encoding: '7bit',
+       mimetype: 'image/png',
+       truncated: false,
+       done: true },
+     { uuid: '79804d84-7e5f-4fef-9d51-6f23af9c1151',
+       field: 'images[]',
+       file:
+        '/home/dsi/projects/ottra/ottra-server/server/content/79804d84-7e5f-4fef-9d51-6f23af9c1151/images[]/menta.PNG',
+       filename: 'menta.PNG',
+       encoding: '7bit',
+       mimetype: 'image/png',
+       truncated: false,
+       done: true 
+     } 
+   ] 
+}
+
+
+*/	
+		return { uuid: "01" }
 	},
 	getLocations: async function(user_id) {
 		console.debug("%s: getLocations is called with user_id: %s", __filename, user_id)
@@ -95,3 +136,4 @@ RETURN apoc.map.groupBy(collect(l { .*, Rooms: rm, Address: a { .* }, Geolocatio
 }
 
 module.exports = LocationModel
+

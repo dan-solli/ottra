@@ -82,15 +82,18 @@
                 </v-text-field>
               </v-flex>
             </v-layout>
-<!-- This piece of crap is not working...            
             <v-layout row>
               <v-flex xs12 md4>
-                <v-file-input prepend-icon="image" chips v-model="image_filename" 
-                  :label="$t('ui.text.uploadfile')">
+                <v-file-input 
+                  prepend-icon="image"
+                  v-model="files"
+                  chips
+                  multiple
+                  :label="$t('ui.text.uploadfile')" 
+                  v-on:change="printFileObjects">
                 </v-file-input>
               </v-flex>
             </v-layout>
--->            
           </v-container>
         </v-form>
         <v-btn text @click="current_step = 1">{{ $t('ui.text.restart') }}</v-btn>
@@ -108,7 +111,7 @@ export default {
   name: "create-location",
   data: function() {
     return {
-      //image_filename: '',
+      files: [],
       snackbar: false,
       current_step: 1,
       loc_name: '',
@@ -157,10 +160,37 @@ export default {
     }
   },
   methods: {
+    printFileObjects: function(data) {
+      console.log("%s: printFileObjects data: %O", __filename, data)
+    },
     saveLocation: function() {
     	this.$log.debug("SaveLocation called");
-      this.$log.debug("Constructing payload: ")
+      this.$log.debug("Constructing payload/formData: ")
 
+      let payload = new FormData()
+
+      payload.append('name', this.loc_name)
+      payload.append('street', this.loc_street)
+      payload.append('postal_code', this.loc_postal_code)
+      payload.append('city', this.loc_city)
+      payload.append('country', this.loc_country)
+      payload.append('place_id', this.loc_place_id)
+      payload.append('geoloc', this.geolocation)
+
+      switch (this.files.length) {
+        case 0: 
+          // Do nothing
+          break;
+        case 1: 
+          payload.append('images', this.files[0])
+          break;
+        default:
+          for (const img of this.files) {
+            payload.append('images', img)
+          }
+      }
+
+/*
       let payload = {
         name: this.loc_name,
         street: this.loc_street,
@@ -169,8 +199,13 @@ export default {
         country: this.loc_country,
         place_id: this.loc_place_id,
         geoloc: this.geolocation,
+        fileObjects: this.files
       }
-      this.$log.debug(payload)
+*/      
+      for (var pair of payload.entries())
+      {
+        console.log("%s: %s -> %O", __filename, pair[0], pair[1]); 
+      }
       this.$store.dispatch("createLocation", payload)
       .then(() => {
         this.snackbar = true

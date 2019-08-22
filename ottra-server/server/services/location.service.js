@@ -9,10 +9,11 @@ const LocationService = {
 	},
 	createLocation: async function(payload, user_id) {
 		console.debug("%s: createLocation called with payload: %O", __filename, payload)
-		const response = await LocationModel.createLocaton(payload, user_id)
+		const response = await LocationModel.createLocation(payload, user_id)
 		console.debug("%s: createLocation will return: %O", __filename, response)
 		return [ response, null ]
 	},
 }
 
 module.exports = LocationService
+

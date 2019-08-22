@@ -10,11 +10,15 @@ r.get('/1/showstuff', function (req, res) {
 	res.send(req.headers)
 })
 
+//r.use('/1/upload', (require('./../api/upload.controller')))
+
+
 r.use(jwtCheck)
 
-r.use('/1/message', (require('./../api/message.controller')));
-r.use('/1/group', (require('./../api/group.controller')));
-r.use('/1/geography', (require('./../api/geography.controller')));
+r.use('/1/message', (require('./../api/message.controller')))
+r.use('/1/group', (require('./../api/group.controller')))
+r.use('/1/geography', (require('./../api/geography.controller')))
+r.use('/1/location', (require('./../api/location.controller')))
 
 module.exports = r
 

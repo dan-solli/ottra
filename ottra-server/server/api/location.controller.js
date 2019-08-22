@@ -16,14 +16,19 @@ r.get("/", async function(req, res) {
 })
 
 r.post("/", [
-		check('loc_place_id').isString().isLength({ min: 10 }),
-		check('loc_street').isString().isLength({ min: 3 }),
-		check('loc_city').isString().isLength({ min: 1 }),
-		check('loc_country').isString().isLength({ min: 2 }),
-		check('loc_postal_code').isPostalCode('any'),
+		check('place_id').isString().isLength({ min: 10 }),
+		check('name').isString().isLength({ min: 1 }),
+		check('street').isString().isLength({ min: 3 }),
+		check('city').isString().isLength({ min: 1 }),
+		check('country').isString().isLength({ min: 2 }),
+		check('postal_code').isPostalCode('any'),
 		checkTokenData('uuid').isUUID()
 	], async function(req, res) {
 	console.debug("%s: POST /: called with req.body: %O", __filename, req.body)
+
+	console.debug("20 000 kr frågan. Finns det några filer?!?!?!")
+	console.debug("%s: FILES ARE: %O", __filename, req.files)
+
 	const errors = validationResult(req) 
 
 	console.error("%s: POST / errors: %O", __filename, errors)

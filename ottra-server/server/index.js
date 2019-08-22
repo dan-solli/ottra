@@ -10,16 +10,23 @@ if (result.error) {
 console.debug("Importing basic modules...")
 const express = require('express')
 const logger = require('morgan');
-const bodyParser = require('body-parser');
+
+const busboy = require('express-busboy')
+//const bodyParser = require('body-parser');
 //const cookieSession = require('cookie-session')
 
 console.debug("Creating express application...")
 const app = express();
 
+busboy.extend(app, {
+	upload: true,
+	path: process.env.UPLOAD_CONTENT_PATH,
+})
+
 console.debug("Set express configuration...")
 app.use(logger('dev'));
-app.use(bodyParser.json()); 
-app.use(bodyParser.urlencoded({ extended: false })); 
+//app.use(bodyParser.json()); 
+//app.use(bodyParser.urlencoded({ extended: false })); 
 
 /*
 app.use(cookieSession({ 

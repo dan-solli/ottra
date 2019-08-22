@@ -1,11 +1,10 @@
 import Vue from 'vue'
 //import Vuex from 'vuex'
 
-/*
+
 import { RepositoryFactory } from '@/common/repos/RepositoryFactory'
 
 const LocationRepo = RepositoryFactory.get('location')
-*/
 
 const Location = {
 	state: {
@@ -61,6 +60,9 @@ const Location = {
     }
 	},
 	mutations: {
+    ADD_LOCATION(state, payload) {
+      state.locations[payload.uuid] = payload
+    }
 	},
 	getters: {
     getLocations: state => state.locations,
@@ -69,6 +71,18 @@ const Location = {
     },
 	},
 	actions: {
+    createLocation: async function({ commit }, payload) {
+      console.debug("%s: createLocation: Payload is: %O", __filename, payload)
+      // Display the key/value pairs
+
+      try {
+        const response = await LocationRepo.createLocation(payload)
+        commit("ADD_LOCATION", response.data)
+      }
+      catch (err) {
+        Vue.$log.error("store.location.createLocation: Definite failure: " + err)
+      }
+    }
 	}
 }
 
