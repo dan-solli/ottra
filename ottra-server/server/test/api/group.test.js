@@ -5,15 +5,14 @@
 //const chai = require('chai')
 //const should = chai.should()
 
-describe("Group", function() {
-	it("should create a group ")
 /*
-		, function() {
+describe("Group", function() {
+	it("should create a group ", function() {
 		return axios.post(apiBase + "/group", defaultGroup).then(res => {
 			res.data.name.should.equal(defaultGroup.groupName)
 			res.data.creator.should.equal(storage.uuid)
 		})
-*/		
+	})
 	it("should fail to create a group with data missing")
 	it("should edit a groups properties")
 	it("should accept an invite and add a member to a group ")
@@ -26,3 +25,4 @@ describe("Group", function() {
 	it("should change the permissions of a member of a group")
 })
 
+*/

@@ -1,5 +1,6 @@
 /* eslint-env mocha */
 
+/*
 const result = require('dotenv').config({ path: '/home/dsi/projects/ottra/ottra-server/server/.env' })
 if (result.error) {
 	console.error("Failed to parse configuration file")
@@ -25,3 +26,4 @@ describe('Infra/Crypt', function() {
 		expect(await Crypt.comparePassword('wrongpassword', hash)).to.be.false
 	})
 })
+*/

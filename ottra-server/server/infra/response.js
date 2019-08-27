@@ -1,6 +1,6 @@
 const SendResponse = {
 	response: function(res, result) {
-		console.debug("%s: response(response-object, %O)", __filename, result)
+		//console.debug("%s: response(response-object, %O)", __filename, result)
 		const [ reply, error ] = result
 
 		if (reply !== null) {

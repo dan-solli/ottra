@@ -75,6 +75,7 @@ const Database = {
 			return await session.run(cypher, payload) 
 		}
 		catch (err) {
+			throw new Error(err)
 			console.error("%s: fetchRaw failed: %s", __filename, err)
 		}
 		finally {

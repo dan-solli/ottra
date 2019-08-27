@@ -11,28 +11,30 @@ const Connection = Neo4J.driver(process.env.NEO4J_URL,
 																}
 															)
 
-function clearTestData() {
+function deleteUserByName(username) {
 	const session = Connection.session()
 
-	session.run(`MATCH (u:User { username: {username} }) DETACH DELETE u`, 
-		{ username: 'testsson@test.se' })
-	.then(function() {
-		return true
+	//console.debug("Deleting existing user NOW!")
+	return session.run(`MATCH (u:User { username: {username} }) DETACH DELETE u`, { username: username })
+	.then(function(result) {
+		// Foo 
 	})
 	.catch(function(err) {
-		console.error("%s: Cleaning users in test failed. %s", __filename, err)
+		throw new Error(err)
+	}) 
+	.finally(function() {
+		//console.debug("Deletion done! Closing Session NOW!")
+		session.close()
 	})
-	session.run(` MATCH (g:Group { name: {groupname} })	DETACH DELETE g`, 
-		{ groupname: 'Groupname01' })
-	.then(function() {
-		Connection.close()
-		return true
-	})
-	.catch(function(err) {
-		console.error("%s: Cleaning groups in test failed. %s", __filename, err)
-	})
+
+}
+
+function closeDatabaseConnection() {
+	//console.debug("Closing database connection NOW!")
+	return Promise.resolve(Connection.close())
 }
 
 module.exports = {
-	clearTestData,
+	deleteUserByName,
+	closeDatabaseConnection
 }
