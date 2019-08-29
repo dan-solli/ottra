@@ -5,4 +5,17 @@ function to(promise) {
 	.catch(err => [null, err])
 }
 
-module.exports = to
+function aSureThing(promise) {
+	return promise
+	.then(function(data) {
+		return { ok: true, data }
+	})
+	.catch(function(error) {
+		return { ok: false, error }
+	})
+}
+
+module.exports = {
+	to,
+	aSureThing
+}

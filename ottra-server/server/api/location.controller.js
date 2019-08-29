@@ -26,8 +26,10 @@ r.post("/", [
 	], async function(req, res) {
 	console.debug("%s: POST /: called with req.body: %O", __filename, req.body)
 
+/*
 	console.debug("20 000 kr frågan. Finns det några filer?!?!?!")
 	console.debug("%s: FILES ARE: %O", __filename, req.files)
+*/
 
 	const errors = validationResult(req) 
 
@@ -46,3 +48,12 @@ r.post("/", [
 })
 
 module.exports = r
+
+// Controller accepts the connection and:
+// -- Check valid parameters
+// -- Extracts and bundles information into some sort of internal Data Object
+// -- Calls ONE service expecting a result.
+
+// -- The return-value IS a Promise and
+//      if resolved - the response object will be returned with a 2XX status
+// 			if rejected - will return a 4XX or 5XX status with some complementary information - as returned by the service.

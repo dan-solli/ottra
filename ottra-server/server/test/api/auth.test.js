@@ -32,6 +32,8 @@ describe("Auth", function() {
 		.then(function(result) {
 			result.status.should.equal(200)
 			result.data.uuid.should.be.a('string')
+			result.data.accessToken.should.be.a('string')
+			result.data.refreshToken.should.be.a('string')
 			result.data.username.should.equal(defaultUser.username)
 		})
 	})

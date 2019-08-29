@@ -1,35 +1,43 @@
 const axios = require('axios')
 const apiBase = 'http://192.168.1.200:8081/api/1/location'
-// const uuidv4 = require('uuid/v4')
+const authBase = 'http://192.168.1.200:8081/api/1/auth'
 
-const { deleteUserByName, closeDatabaseConnection } = require('./../helpers/db.helper.js')
+const { 
+	deleteUserByName, 
+	closeDatabaseConnection 
+} = require('./../helpers/db.helper.js')
 
-const result = require('dotenv').config()
-if (result.error) {
-	console.error("Failed to parse configuration file")
+var accessToken = null
+
+function createUser(payload) {
+	return axios.post(authBase, payload)
+		.then(function(response) {
+			accessToken = response.data.accessToken
+		})
 }
 
-module.exports = {
-	createLocation: async function(payload) {
-		return await axios.post(apiBase, payload)
-	},
-	updateLocation: async function(payload) {
-		return await axios.patch(apiBase, payload)
-	},
-	getLocation: async function(payload) {
-		return await axios.get(apiBase + "/:uuid", payload)
-	},
- 	getLocations: async function() {
- 		return await axios.get(apiBase)
-	},
-	deleteLocation: async function(payload) {
-		return await axios.delete(apiBase + "/:uuid", payload)
-	},
-	deleteLocationUser: async function(payload) {
-		return await deleteUserByName(payload.username)
-	},
-	completeTearDown: function() {
-		closeDatabaseConnection()
+axios.interceptors.request.use(function(config) {
+	if (accessToken != null) {
+		config.headers.Authorization = `Token ${accessToken}`
 	}
+	return config
+})
 
+module.exports = {
+	createUser: createUser,
+	createLocation: function(payload) {
+		return axios.post(apiBase, payload)
+	},
+	updateLocation: function(payload) {
+		return axios.patch(apiBase, payload)
+	},
+	getLocation: function(payload) {
+		return axios.get(apiBase + "/:uuid", payload)
+	},
+ 	getLocations: function() {
+ 		return axios.get(apiBase)
+	},
+	deleteLocation: function(payload) {
+		return axios.delete(apiBase + "/:uuid", payload)
+	}
 }
