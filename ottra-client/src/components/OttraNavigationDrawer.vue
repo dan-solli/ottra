@@ -42,6 +42,11 @@ export default {
         title: this.$t('ui.navigation_drawer.default.mail'), 
         route: '/messages',
         icon: 'mail'
+      },
+      { 
+        title: this.$t('ui.navbar.filebrowser.tooltip'), 
+        route: '/filebrowser',
+        icon: 'mdi-file-document-outline'
       }
     ])
 	}

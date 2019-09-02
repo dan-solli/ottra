@@ -7,7 +7,7 @@ const checkTokenData = buildCheckFunction([ 'tokenData' ])
 
 
 const GroupService = require('./../services/group.service')
-const SendResponse = require('./../infra/response.js')
+const { sendResponse } = require('./../infra/response.js')
 
 const r = express.Router()
 
@@ -22,26 +22,23 @@ r.post("/", [
 		check('groupName').isString().isLength({ min: 3 }),
 		checkTokenData('uuid').isUUID()
 	], async function(req, res) {
-	console.debug("%s: POST /: called with req.body: %O", __filename, req.body)
 	const errors = validationResult(req) 
 
-	console.error("%s: POST / errors: %O", __filename, errors)
-
 	if (!errors.isEmpty()) {
-		SendResponse.response(res, [ null, {
+		sendResponse(res, { ok: false, 
+			error: {
 				status: 'failed',
 				message: 'Invalid arguments',
 				code: 422
 			}
-		])
+		})
 	} else {
-		SendResponse.response(res, await GroupService.createGroup(req.body, req.tokenData.uuid))
+		sendResponse(res, await GroupService.createGroup(req.body, req.tokenData.uuid))
 	}
 })
 
 r.post("/invite", async function(req, res) {
-	console.debug("%s: POST /invite: called with req.body: %O", __filename, req.body)
-	SendResponse.response(res, await GroupService.inviteUsers(req.body, req.tokenData.uuid))
+	sendResponse(res, await GroupService.inviteUsers(req.body, req.tokenData.uuid))
 })
 
 

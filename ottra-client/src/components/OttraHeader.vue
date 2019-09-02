@@ -91,6 +91,15 @@
 			    	<span> {{ $t('ui.navbar.weather.tooltip') }} </span>
 					</v-tooltip>
 
+		    	<v-tooltip v-if="isAuthenticated" bottom>
+		    		<template v-slot:activator="{ on }">
+					    <v-btn text to="/filebrowser" v-on="on">
+						    <v-icon>mdi-file-document-outline</v-icon>
+							</v-btn>		
+			    	</template>
+			    	<span> {{ $t('ui.navbar.filebrowser.tooltip') }} </span>
+					</v-tooltip>
+
 			    <v-btn v-if="!isAuthenticated" text to='/login'>
 			      <span>
 			      	{{ $t('ui.navbar.login') }}

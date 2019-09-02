@@ -2,27 +2,32 @@ const googleMapsClient = require('@google/maps').createClient({
 	key: process.env.GMAPS,
 	Promise: Promise
 })
+
 const GMC = require('@google/maps').util
 
 const GeographyService = {
-	searchPlace: async function(search_str) {
-		console.debug("%s: searchPlace called with: %s", __filename, search_str)
-
-		const result = await googleMapsClient.placesAutoComplete({
+	searchPlace: function(search_str) {
+		googleMapsClient.placesAutoComplete({
 			input: search_str,
 			sessiontoken: GMC.placesAutoCompleteSessionToken()
 		}).asPromise()
-		console.debug("%s: searchPlace got result: %O", __filename, result)
-		return [ result.json, null ]
+		.then(function(response) {
+			return { ok: true, data: response.json }
+		})
+		.catch(function(err) {
+			return { ok: false, error: err }
+		})
 	},
-	getPlaceById: async function(place_id) {
-		console.debug("%s: getPlaceById called with place_id: %s", __filename, place_id)
-
-		const result = await googleMapsClient.place({
+	getPlaceById: function(place_id) {
+		googleMapsClient.place({
 			placeid: place_id
 		}).asPromise()
-		console.debug("%s: getPlaceById got result: %O", __filename, result)
-		return [ result.json, null ]
+		.then(function(response) {
+			return { ok: true, data: response.json }
+		})
+		.catch(function(err) {
+			return { ok: false, error: err }
+		})
 	}
 }
 

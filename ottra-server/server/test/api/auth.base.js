@@ -3,6 +3,8 @@ const apiBase = 'http://192.168.1.200:8081/api/1'
 
 function createUser(payload) {
 	return axios.post(apiBase + "/auth", payload)
+		.then(result => Promise.resolve(result))
+		.catch(err => Promise.reject(err))
 }
 
 

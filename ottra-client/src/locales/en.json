@@ -6,7 +6,8 @@
 	"ui.navbar.login": "Login",
 	"ui.navbar.inbox.tooltip": "Messages",
 	"ui.navbar.weather.tooltip": "Current weather",  
-
+	"ui.navbar.filebrowser.tooltip": "Document manager",
+	
 	"ui.navigation_drawer.default.dashboard": "Dashboard",
 	"ui.navigation_drawer.default.mode.project": "Project",
 	"ui.navigation_drawer.default.mode.task": "Task",

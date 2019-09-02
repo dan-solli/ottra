@@ -10,6 +10,7 @@
     "lint": "eslint --fix src"
   },
   "dependencies": {
+    "@mdi/font": "^4.2.95",
     "@vuex-orm/core": "^0.32.1",
     "@vuex-orm/plugin-axios": "^0.5.1",
     "axios": "^0.19.0",

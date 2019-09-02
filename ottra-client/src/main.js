@@ -17,7 +17,7 @@ const vuetify_opts = {
 		VIcon, VSnackbar, VBtn
 	},
 	icons: {
-		iconfont: 'md',
+		iconfont: 'mdi',
 	},
 	lang: {
 		locales: { vuetify_sv, vuetify_en },

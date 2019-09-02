@@ -106,7 +106,7 @@ const updatedLocation = {
 	name: 'Hemma (test - updated)'
 }
 
-
+/*
 describe("Location", function() {
 
 	before("Starting up tests. Clearing database from testdata and create local user", function() {
@@ -252,13 +252,14 @@ describe("Location", function() {
 			err.response.data.code.should.equal(403)
 		})
 	})
+	
+	after("Closing down tests. Teardown database", function() {
+		return Promise.resolve(deleteUserByName(locationUser.username).then(function() {
+			closeDatabaseConnection()
+		}))
+	})	
 })
-
-after("Closing down tests. Teardown database", function() {
-	return Promise.resolve(deleteUserByName(locationUser.username).then(function() {
-		closeDatabaseConnection()
-	}))
-})
+*/
 
 
 /*

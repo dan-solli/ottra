@@ -3,9 +3,30 @@ const uuidv4 = require('uuid/v4')
 
 const LocationModel = {
 	createLocation: async function(payload, user_id) {
-		console.debug("%s: createLocation is called with payload: %O", __filename, payload)
-
 		const newLocationUUID = uuidv4()
+
+		return { ok: true, data: { user_id: user_id, payload: payload, uuid: newLocationUUID } }
+	},
+	getLocations: async function(user_id) {
+		return await DB.fetchAll(`
+			MATCH (l:Location { uuid: {uuid}})-->(r:Room), (l)-->(g:Geolocation), (l)-->(a:Address)
+			WITH collect(r.uuid) as rm, a, g, l
+			RETURN apoc.map.groupBy(collect(l { .*, Rooms: rm, 
+				Address: a { .* }, 	Geolocation: g { .* } } ), "uuid") as Locations`, { 
+				uuid: user_id 
+			}, "Locations"
+		)
+	},
+	updateLocation: async function(payload) {
+		return await DB.fetchRow(`
+			MATCH (l:Location { uuid: {loc_id} })
+		`)
+	}
+}
+
+
+module.exports = LocationModel
+
 
 /*
 		const result = await DB.fetchRow(`			
@@ -60,25 +81,6 @@ const LocationModel = {
 
 
 */	
-		return { uuid: "01" }
-	},
-	getLocations: async function(user_id) {
-		console.debug("%s: getLocations is called with user_id: %s", __filename, user_id)
-
-		const result = await DB.fetchAll(`
-MATCH (l:Location { uuid: {uuid}})-->(r:Room), (l)-->(g:Geolocation), (l)-->(a:Address)
-WITH collect(r.uuid) as rm, a, g, l
-RETURN apoc.map.groupBy(collect(l { .*, Rooms: rm, 
-	Address: a { .* }, 	Geolocation: g { .* } } ), "uuid") as Locations`, { 
-				uuid: user_id 
-			}, "Locations")
-
-		console.debug("%s: getLocations db-fetch returns: %O", __filename, result)
-
-		if (result.length == 0) {
-			console.debug("%s: getLocations found no matches for %s", __filename, user_id)
-			return 0
-		}
 
 /*
 
@@ -123,17 +125,4 @@ RETURN apoc.map.groupBy(collect(l { .*, Rooms: rm, Address: a { .* }, Geolocatio
 
 */
 
-		return result		
-	},
-	updateLocation: async function(payload) {
-		console.debug("%s: updateLocation is called with payload: %O", __filename, payload)
-
-		return await DB.fetchRow(`
-			MATCH (l:Location { uuid: {loc_id} })
-
-		`)
-	}
-}
-
-module.exports = LocationModel
 

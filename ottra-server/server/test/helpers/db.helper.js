@@ -17,7 +17,7 @@ function deleteUserByName(username) {
 	//console.debug("Deleting existing user NOW!")
 	return session.run(`MATCH (u:User { username: {username} }) DETACH DELETE u`, { username: username })
 	.then(function(result) {
-		// Foo 
+		Promise.resolve(result)
 	})
 	.catch(function(err) {
 		throw new Error(err)

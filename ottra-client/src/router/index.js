@@ -6,6 +6,7 @@ import LoginUser from './../views/LoginUser'
 import RegisterUser from './../views/RegisterUser'
 import Dashboard from './../views/Dashboard'
 
+import FileBrowserView from './../views/FileBrowserView'
 import LocationView from './../views/LocationView'
 import MessageView from './../views/MessageView'
 import SingleMessageView from './../views/SingleMessageView'
@@ -60,6 +61,11 @@ export default new Router({
         }
       }
     },    
+    {
+      path: '/filebrowser',
+      name: 'filebrowser',
+      component: FileBrowserView
+    },
     {
       path: '/location',
       name: 'location',

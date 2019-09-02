@@ -1,61 +1,65 @@
 const JWT = require('jsonwebtoken')
+const { aSureThing } = require('./../infra/await-to')
 
 const AuthService = {
 	refreshToken: async function(payload) {
-		console.debug("%s: refreshToken is called with payload: %O", __filename, payload)
-
 		// TODO: Actually control if the refreshToken is valid. Somehow.
-		if (payload.refreshToken) {
-			try {
-				const decoded = JWT.verify(payload.refreshToken, process.env.JWT_SECRET_REFRESH)
-
-				console.log("%s: refreshToken: Decoded token is: %O", __filename, decoded)
-
-				const userInfo = {
-					uuid: decoded.uuid,
-					username: decoded.username
+		return new Promise(function(success, failure) {
+			JWT.verify(payload.refreshToken, process.env.JWT_SECRET_REFRESH,
+				async function(error, decoded) {
+					if (error) {
+						failure(error)
+					} else {
+						const userInfo = {
+							uuid: decoded.uuid,
+							username: decoded.username
+						}
+						success(await aSureThing(AuthService.generateAccessToken(userInfo)))
+					}
 				}
-				const accessToken = await AuthService.generateAccessToken(userInfo)
+			)
+		})
+	},
+	generateToken: function(type, payload) {
+		var secret, tokenLife
 
-				return [ { 
-					token: accessToken 
-				}, null]
-
-			}
-			catch (err) {
-				return [ null, {
-					status: 'failed',
-					message: 'Token could not be refreshed',
-					code: 404
-				} ]
-			}
+		if (type === process.env.JWT_ACCESS_TOKEN_TYPE) {
+			secret = process.env.JWT_SECRET_ACCESS
+			tokenLife = process.env.JWT_ACCESS_TOKEN_LIFE
+		} else if (type === process.env.JWT_REFRESH_TOKEN_TYPE) {
+			secret = process.env.JWT_SECRET_REFRESH
+			tokenLife = process.env.JWT_REFRESH_TOKEN_LIFE
 		} else {
-			return [ null, {
-				status: 'failed',
-				message: 'Token could not be refreshed',
-				code: 404
-			} ]
+			return { ok: false, error: { code: 401, status: 'failed', message: 'No such token type' } }
+		}
+		try {
+			const token = JWT.sign(payload, secret, { expiresIn: tokenLife })
+			return { ok: true, data: token }
+		} catch(err) {
+			return { ok: false, error: err }		
 		}
 	},
-	generateAccessToken: async function(payload) {
-		console.debug("%s: generateAccessToken is called with payload: %O", __filename, payload)
-		return await JWT.sign(
-			payload,
-			process.env.JWT_SECRET_ACCESS,
-			{
-				expiresIn: process.env.JWT_ACCESS_TOKEN_LIFE
-			}
-		)
+	generateAccessToken: function(payload) {
+		console.warn("%s: Function generateAccessToken is deprecated, use generateToken instead")
+		return new Promise(function(resolve, reject) {
+			JWT.sign(payload, process.env.JWT_SECRET_ACCESS, 
+				{ expiresIn: process.env.JWT_ACCESS_TOKEN_LIFE }, 
+				function(error, token) {
+					return error ? resolve(token) : reject(error)
+				}
+			)
+		})
 	},
-	generateRefreshToken: async function(payload) {
-		console.debug("%s: generateRefreshToken is called with payload: %O", __filename, payload)
-		return await JWT.sign(
-			payload,
-			process.env.JWT_SECRET_REFRESH,
-			{
-				expiresIn: process.env.JWT_REFRESH_TOKEN_LIFE
-			}
-		)
+	generateRefreshToken: function(payload) {
+		console.warn("%s: Function generateRefreshToken is deprecated, use generateToken instead")
+		return new Promise(function(resolve, reject) {
+			JWT.sign(payload, process.env.JWT_SECRET_REFRESH, 
+				{ expiresIn: process.env.JWT_REFRESH_TOKEN_LIFE }, 
+				function(error, token) {
+					return error ? resolve(token) : reject(error)
+				}
+			)
+		})
 	},
 }
 

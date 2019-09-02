@@ -12,7 +12,6 @@ r.get('/1/showstuff', function (req, res) {
 
 //r.use('/1/upload', (require('./../api/upload.controller')))
 
-
 r.use(jwtCheck)
 
 r.use('/1/message', (require('./../api/message.controller')))

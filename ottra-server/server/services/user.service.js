@@ -7,86 +7,93 @@ const Crypt = require('./../infra/crypt')
 
 const UserService = {
 	authenticateUser: async function(payload) {
-		console.debug("%s: authenticateUser called with payload: %O", __filename, payload)
+		const getUserResult = await UserModel.getUserInfoByName(payload.username)
 
-		const returnValue =  await UserModel.getUserInfoByName(payload.username)
-
-		console.debug("%s: authenticateUser returnValue is %O", __filename, returnValue)
-
-		if (!returnValue) {
-			return [ null, {
-					status: 'failed',
-					message: 'No such user',
-					code: 401
+		if (!getUserResult.ok || (getUserResult.ok && getUserResult.data === null)) {
+			return { ok: false, error: {
+					status: 'failed', message: 'No such user', code: 401
 				} 
-			]
+			}
 		} else {
+			const { password: stored_hash = null, uuid = null	} = getUserResult.data
 
-			const { password: stored_hash = null, uuid = null	} = returnValue
-
-			console.debug("%s: authenticateUser local variables are %s and %s", __filename, stored_hash, uuid)
 			if (stored_hash === null || uuid === null) {
-				return [ null, {
-						status: 'failed',
-						message: 'No such user',
-						code: 401
+				return { ok: false, error: {
+						status: 'failed', message: 'No such user', code: 401
 					} 
-				]
+				}
 			}
 
-			if (await Crypt.comparePassword(payload.password, stored_hash)) {
+			const { ok, error } = await Crypt.comparePassword(payload.password, stored_hash)
+			if (ok) {
 				const response = {
 					username: payload.username,
 					uuid: uuid,
 				}
-				response.accessToken = await AuthService.generateAccessToken(response)
-				response.refreshToken = await AuthService.generateRefreshToken(response)
 
-				console.debug("%s: authenticateUser: Emitting eUserLogin with: %O", 
-					__filename, response)
+				const accessTokenResult = await AuthService.generateToken(process.env.JWT_ACCESS_TOKEN_TYPE, response)
+				if (accessTokenResult.ok) {
+					response.accessToken = accessTokenResult.data
+				} else {
+					return { ok: false, error } 
+				}
+
+				const refreshTokenResult = await AuthService.generateToken(process.env.JWT_REFRESH_TOKEN_TYPE, response)
+				if (refreshTokenResult.ok) {
+					response.refreshToken = refreshTokenResult.data
+				} else {
+					return { ok: false, error }
+				}
 				// TODO: process.emit('eUserLogin', response)
-
-				console.debug("%s: authenticateUser is returning: %O", __filename, response)
-				return [ response, null ]
+				return { ok: true, data: response }
 			} else {
 				process.emit('eUserLoginFailed', { payload })
-				return [ null, { 
-					status: 'failed',
-					message: 'Login could not happen',
-					code: 401
-				} ]
+				return { ok: false, error: { status: 'failed', message: 'Login could not happen',	code: 401
+					} 
+				}
 			}
 		}
 	},
 	createUser: async function(payload) {
-		console.debug("%s: createUser called with payload: %O", __filename, payload)
+		const getAuthInfo = await UserModel.getUserInfoByName(payload.username)
 
-		let authInfo = await UserModel.getUserInfoByName(payload.username)
-		console.debug("%s: createUser: authInfo is: %O", __filename, authInfo)
-		if (authInfo) {
-			return [ null, {
-				status: 'failed',
-				message: 'User already exist',
-				code: 403
-			} ]
+		console.debug("%s: getAuthInfo is: %O", __filename, getAuthInfo)
+
+		if (getAuthInfo.ok && getAuthInfo.data != null) {
+			return { ok: false, error: {
+					status: 'failed', message: 'User already exist', code: 403
+				} 
+			}
 		}
 
-		const response = await UserModel.createUser(payload.username, payload.password)
 
-		response.accessToken = await AuthService.generateAccessToken(response)
-		response.refreshToken = await AuthService.generateRefreshToken(response)
+		const { ok, error, data } = await UserModel.createUser(payload.username, payload.password)
 
-		console.debug("%s: createUser: Emitting eNewUser with: %O", __filename, response)
+		console.debug("%s: createUserResult is: %O", __filename, { ok: ok, error: error, data: data })
+
+		if (!ok) {
+			return { ok, error }
+		} else {
+			const accessTokenResult = await AuthService.generateToken(process.env.JWT_ACCESS_TOKEN_TYPE, data)
+			if (accessTokenResult.ok) {
+				data.accessToken = accessTokenResult.data
+			} else {
+				return { ok: false, error: accessTokenResult.error } 
+			}
+
+			const refreshTokenResult = await AuthService.generateToken(process.env.JWT_REFRESH_TOKEN_TYPE, data)
+			if (refreshTokenResult.ok) {
+				data.refreshToken = refreshTokenResult.data
+			} else {
+				return { ok: false, error: refreshTokenResult.error }
+			}
+		}
 		// TODO: process.emit('eNewUser', response.uuid)
 
-		console.debug("%s: createUser is returning: %O", __filename, response)
-		return [ response, null ]
+		console.debug("%s: createUser returns is: %O", __filename, { ok: true, data: data })
+
+		return { ok: true, data: data }
 	},
-	refreshToken: async function(payload) {
-		console.debug("%s: refreshToken called with payload: %O", __filename, payload)
-		// TODO: Need to enhance this one... 
-		return [ await this.db('refreshToken', this.loginInfo), null ]
-	}
 }
 
 process.on('eNewUser', async function(uuid) {

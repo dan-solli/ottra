@@ -1,21 +1,15 @@
-function to(promise) {
-	return promise.then(data => {
-		return [data, null]
-	})
-	.catch(err => [null, err])
-}
-
-function aSureThing(promise) {
-	return promise
+async function aSureThing(promise) {
+	return await promise
 	.then(function(data) {
+		//console.debug("%s: aSureThing has data: %O", __filename, data)
 		return { ok: true, data }
 	})
 	.catch(function(error) {
-		return { ok: false, error }
+		Promise.resolve({ ok: false, error })
 	})
 }
 
 module.exports = {
-	to,
 	aSureThing
 }
+

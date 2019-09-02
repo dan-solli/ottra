@@ -6,6 +6,7 @@
 	"ui.navbar.login": "Logga in",
 	"ui.navbar.inbox.tooltip": "Meddelanden",
 	"ui.navbar.weather.tooltip": "Nuvarande väder",
+	"ui.navbar.filebrowser.tooltip": "Dokumenthanterare",
 
 	"ui.navigation_drawer.default.dashboard": "Översikt",
 	"ui.navigation_drawer.default.mode.project": "Projekt",
