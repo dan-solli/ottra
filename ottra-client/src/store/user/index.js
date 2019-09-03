@@ -56,7 +56,7 @@ const User = {
         const jwtRefreshToken = response.data.refreshToken
         commit("SET_ACCESS_AUTH", jwtAccessToken)
         commit("SET_REFRESH_AUTH", jwtRefreshToken)
-        commit("SET_USER", response.data.id)
+        commit("SET_USER", response.data.uuid)
         console.log("Dispatching store.module.*.loadUserData")
         await dispatch("loadUserData")
         return response.data
@@ -86,7 +86,7 @@ const User = {
         const jwtRefreshToken = response.data.refreshToken
         commit("SET_ACCESS_AUTH", jwtAccessToken)
         commit("SET_REFRESH_AUTH", jwtRefreshToken)
-        commit("SET_USER", response.data.id)
+        commit("SET_USER", response.data.uuid)
         console.log("Dispatching store.module.*.loadUserData")
         await dispatch("loadUserData")
         return response.data

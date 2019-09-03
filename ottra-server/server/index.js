@@ -9,11 +9,9 @@ if (result.error) {
 
 console.debug("Importing basic modules...")
 const express = require('express')
-const logger = require('morgan');
 
+const logger = require('morgan');
 const busboy = require('express-busboy')
-//const bodyParser = require('body-parser');
-//const cookieSession = require('cookie-session')
 
 console.debug("Creating express application...")
 const app = express();
@@ -25,10 +23,9 @@ busboy.extend(app, {
 
 console.debug("Set express configuration...")
 app.use(logger('dev'));
-//app.use(bodyParser.json()); 
-//app.use(bodyParser.urlencoded({ extended: false })); 
 
 /*
+//const cookieSession = require('cookie-session')
 app.use(cookieSession({ 
 	name: process.env.COOKIE_SESSION_NAME,
 	secret: process.env.COOKIE_SESSION_SECRET,
@@ -44,9 +41,12 @@ console.debug("Setting up routes...")
 
 const routes = require('./routes');
 
+console.debug("... setting up static routes...")
+
+app.use('/content', express.static(__dirname + "/content"))
 app.use('/api', routes);
 
 module.exports = app;
 
-app.listen(process.env.SERVER_PORT);
-console.log("Server listening to port " + process.env.SERVER_PORT);
+app.listen(process.env.HTTP_SERVER_PORT);
+console.log("Server listening to ports " + process.env.HTTP_SERVER_PORT);

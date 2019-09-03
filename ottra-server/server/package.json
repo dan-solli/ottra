@@ -49,6 +49,7 @@
     "express-list-endpoints": "^4.0.1",
     "jwt-simple": "^0.5.6",
     "mocha": "^6.2.0",
+    "move-file": "^1.2.0",
     "neo4j-parser": "^2.0.5"
   }
 }

@@ -14,7 +14,7 @@ const AuthService = {
 							uuid: decoded.uuid,
 							username: decoded.username
 						}
-						success(await aSureThing(AuthService.generateAccessToken(userInfo)))
+						success(await aSureThing(AuthService.generateToken(process.env.JWT_SECRET_TYPE_TOKEN, userInfo)))
 					}
 				}
 			)

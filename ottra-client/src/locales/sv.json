@@ -100,6 +100,11 @@
 
 	"ui.view.weatherview.heading": "Väder",
 
+	"ui.view.filebrowser.heading": "Filhanterare",
+	"ui.view.filebrowser.uploadbutton": "Ladda upp",
+	"ui.text.search": "Sök",
+	"ui.dialog.uploadfiles.heading": "Ladda upp dokument",
+	
 	"ui.dialog.confirmdelete": "Är du säker på att du vill radera denna?",
 
 	"ui.calendar.today": "Idag",
