@@ -4,8 +4,10 @@
 			<v-toolbar-title> {{ $t('ui.view.filebrowser.heading') }} </v-toolbar-title>
 
 			<div class="flex-grow-1"></div>
-			<v-toolbar-items>
+				<v-toolbar-items>
 
+				<OttraFileUploadDialog></OttraFileUploadDialog>
+<!--				
 				<v-dialog v-model="dialog" persistent max-width="600px">
 		      <template v-slot:activator="{ on }">
 		        <v-btn text v-on="on">
@@ -42,7 +44,7 @@
 		        </v-card-actions>
 		      </v-card>
 		    </v-dialog>
-
+-->
 				<v-text-field v-model="search" solo flat 
 						:label="$t('ui.text.search')" hide-details prepend-inner-icon="mdi-magnify"
 						clearable clear-icon="mdi-close-circle-outline">
@@ -84,13 +86,18 @@
 
 import { mapGetters } from 'vuex'
 
+import OttraFileUploadDialog from '@/components/documentmanager/OttraFileUploadButtonAndDialog.vue'
+
 export default {
 	name: 'file-browser-view',
+  components: {
+    OttraFileUploadDialog
+  },
 	data: function() {
 		return {
-			dialog: false,
+			//dialog: false,
 			search: '',
-			files: [],
+			//files: [],
 		}
 	},
 	computed: {
@@ -100,6 +107,7 @@ export default {
 		])
 	},
 	methods: {
+/*		
 		printFileObjects: function(data) {
       console.log("%s: printFileObjects data: %O", __filename, data)
     },
@@ -108,6 +116,7 @@ export default {
     	this.$store.dispatch("uploadDocuments", this.files)
     	this.dialog = false
     }
+*/    
 	}
 }	
 </script>
