@@ -17,8 +17,7 @@
               <v-file-input 
                 v-model="files"
                 chips multiple
-                :label="$t('ui.text.uploadfile')"
-                v-on:change="updatePreview">
+                :label="$t('ui.text.uploadfile')">
                </v-file-input>
              </v-col>
           </v-row>

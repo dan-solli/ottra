@@ -35,20 +35,21 @@ DocumentService = {
 			const returnData = []
 
 			console.debug("%s: Documents: %O", __filename, documents)
-			for ({ file, filename } of documents) {
+			for ({ file, filename, mimetype } of documents) {
 
-				console.debug("%s: File and filename are", __filename, file, filename)
+				//console.debug("%s: File and filename are:\n%s\n%s", __filename, file, filename)
 
-				const fileData = await DocumentModel.createDocument(user_id, filename)
+				const filenameExtension = filename.split('.').pop()
+				const fileData = await DocumentModel.createDocument(user_id, filename, filenameExtension, mimetype)
 
-				console.debug("%s: Filedata is: %O", __filename, fileData)
+				//console.debug("%s: Filedata is: %O", __filename, fileData)
 
 				if (!fileData.ok) {
 					return { ok: false, error: fileData.error }
 				} else {
 					const { 
 						ok, error, data 
-					} = await aSureThing(moveFile(file, process.env.OTTRA_CONTENT_PATH + "/" + user_id + "/" + fileData.data.uuid))
+					} = await aSureThing(moveFile(file, process.env.OTTRA_CONTENT_PATH + "/" + user_id + "/" + fileData.data.filename))
 					if (ok) {
 						returnData.push(fileData)
 					} else {
@@ -59,6 +60,7 @@ DocumentService = {
 			return { ok: true, data: returnData }
 		}
 		catch (err) {
+			console.error("%s: Error is: %O", __filename, err)
 			return { ok: false, error: { code: 500, status: 'failed', message: 'Could not upload file' } }
 		}
 	}

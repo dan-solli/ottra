@@ -9,6 +9,8 @@ if (result.error) {
 
 console.debug("Importing basic modules...")
 const express = require('express')
+const https = require('https')
+const fs = require('fs')
 
 const logger = require('morgan');
 const busboy = require('express-busboy')
@@ -33,6 +35,7 @@ app.use(cookieSession({
 }))
 */
 
+
 /////////////////////////////////////////////////////////////////////////////
 /// Routing here
 /////////////////////////////////////////////////////////////////////////////
@@ -40,13 +43,26 @@ app.use(cookieSession({
 console.debug("Setting up routes...")
 
 const routes = require('./routes');
-
-console.debug("... setting up static routes...")
-
-app.use('/content', express.static(__dirname + "/content"))
 app.use('/api', routes);
 
-module.exports = app;
 
-app.listen(process.env.HTTP_SERVER_PORT);
-console.log("Server listening to ports " + process.env.HTTP_SERVER_PORT);
+const content_route = require('./routes/content_route')
+app.use('/', content_route)
+
+//app.listen(process.env.HTTP_SERVER_PORT);
+//console.log("Server listening to ports " + process.env.HTTP_SERVER_PORT);
+
+/////////////////////////////////////////////////////////////////////////////
+/// Setting up https.
+/////////////////////////////////////////////////////////////////////////////
+
+console.debug("Setting up https")
+
+https.createServer({
+	key: fs.readFileSync(process.env.HTTPS_SERVER_KEY),
+	cert: fs.readFileSync(process.env.HTTPS_SERVER_CERT)
+}, app).listen(process.env.HTTPS_SERVER_PORT, function() {
+	console.log("Server listening to port " + process.env.HTTPS_SERVER_PORT)
+})
+
+module.exports = app;

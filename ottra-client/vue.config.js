@@ -4,8 +4,12 @@ module.exports = {
   devServer: {
     proxy: {
       "/api/*": {
-        target: "http://localhost:8081",
+        target: "https://localhost:8888",
         secure: false
+      },
+      "/content/*": {
+        target: "https://localhost:8888",
+        secure: true
       }
     },
     open: process.platform === 'darwin',

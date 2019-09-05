@@ -12,7 +12,14 @@ const Document = {
 	},
 	mutations: {
     ADD_DOCUMENTS(state, response) {
-      // Should add something here.
+      console.debug("%s.ADD_DOCUMENTS received response: %O", __filename, response)
+      for (const result of response) {
+        console.debug("%s.ADD_DOCUMENTS result is: %O", __filename, result)
+        if (result.ok) {
+          console.debug("%s.ADD_DOCUMENTS key is: %s, value is: %O", __filename, result.data.uuid, result.data)
+          Vue.set(state.documents, result.data.uuid, result.data)
+        }
+      }
     },
     SET_DOCUMENTS(state, response) {
       state.documents = Object.assign({}, response)
