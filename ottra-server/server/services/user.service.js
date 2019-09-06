@@ -66,7 +66,6 @@ const UserService = {
 			}
 		}
 
-
 		const { ok, error, data } = await UserModel.createUser(payload.username, payload.password)
 
 		console.debug("%s: createUserResult is: %O", __filename, { ok: ok, error: error, data: data })
@@ -94,6 +93,13 @@ const UserService = {
 
 		return { ok: true, data: data }
 	},
+	getUser: async function(user_id) {
+		const userInfo = await UserModel.getUserInfoById(user_id)
+
+		console.debug("%s: getUser is: %O", __filename, userInfo)
+
+		return userInfo
+	}
 }
 
 process.on('eNewUser', async function(uuid) {

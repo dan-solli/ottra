@@ -7,7 +7,7 @@ const GMC = require('@google/maps').util
 
 const GeographyService = {
 	searchPlace: function(search_str) {
-		googleMapsClient.placesAutoComplete({
+		return googleMapsClient.placesAutoComplete({
 			input: search_str,
 			sessiontoken: GMC.placesAutoCompleteSessionToken()
 		}).asPromise()
@@ -19,7 +19,7 @@ const GeographyService = {
 		})
 	},
 	getPlaceById: function(place_id) {
-		googleMapsClient.place({
+		return googleMapsClient.place({
 			placeid: place_id
 		}).asPromise()
 		.then(function(response) {

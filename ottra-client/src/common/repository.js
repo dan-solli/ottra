@@ -22,7 +22,7 @@ const refreshAuthLogic = function(failedRequest) {
 	.then(tokenRefreshResponse => {
 		failedRequest.response.config.headers['Authentication'] = 
 			'Token ' + tokenRefreshResponse.data.token
-		JwtService.saveToken(tokenRefreshResponse.data.token)
+		JwtService.saveToken(tokenRefreshResponse.data)
 	})
 }
 

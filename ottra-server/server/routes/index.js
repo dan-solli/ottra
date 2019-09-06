@@ -19,8 +19,7 @@ r.use('/1/group', (require('./../api/group.controller')))
 r.use('/1/geography', (require('./../api/geography.controller')))
 r.use('/1/location', (require('./../api/location.controller')))
 r.use('/1/document', (require('./../api/document.controller')))
-
-
+r.use('/1/user', (require('./../api/user.controller')))
 
 module.exports = r
 

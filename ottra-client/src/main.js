@@ -80,35 +80,16 @@ Vue.use(VueLogger, {
 Vue.use(require('vue-shortkey'))
 
 
-router.beforeEach((to, from, next) => {
-	
-	Vue.$log.debug("main.js: Entering router.beforeEach")
-	
-	if (to.matched.some(record => record.meta.noAuthRequired)) {
-		Vue.$log.debug("main.js: router.beforeEach: Route requires no authentication")
+router.beforeEach(async function(to, from, next) {
+	if (to.meta.noAuthRequired) {
 		next()
 	}	else {
-		Vue.$log.debug("main.js: router.beforeEach: Route requires authentication")
-		next()
-/*		
-		Promise.all([ store.dispatch("checkAuth") ])
-		.then(function() {
-			
-			Vue.$log.debug("main.js: router.beforeEach: checkAuth success.")
-			
+		if (await store.dispatch("getThisUser")) {
 			next()
-		})
-		.catch(function(error) {
-			
-			Vue.$log.debug("main.js: router.beforeEach: checkAuth failed, somehow")
-			Vue.$log.debug("main.js: router.beforeEach: Redirecting to /login")
-			
-			next({
-				path: '/login',
-				query: { redirect: to.fullPath }
-			})
-		})
-*/		
+		} else {
+			await store.dispatch("clearStore")
+			next('/')
+		}
 	}
 });
 

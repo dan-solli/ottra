@@ -17,7 +17,8 @@
               <v-file-input 
                 v-model="files"
                 chips multiple
-                :label="$t('ui.text.uploadfile')">
+                :label="$t('ui.text.uploadfile')"
+                v-on:change="printFileObjects">
                </v-file-input>
              </v-col>
           </v-row>
@@ -25,8 +26,13 @@
           	<v-col cols="12" align="center" justify="center">
           		<v-carousel v-if="previewFiles.length > 1">
           			<v-carousel-item v-for="(item, i) in previewFiles" :key="i"
-          				:src="item" reverse-transition="fade-transition" transition="fade-transition">
+                  reverse-transition="fade-transition" 
+                  transition="fade-transition">
+                  <OttraImageOrIcon :doc="item"></OttraImageOrIcon>
           			</v-carousel-item>
+<!--
+                  :src="item.filename" 
+-->
           		</v-carousel>
           		<v-img height="500" v-else-if="previewFiles.length === 1" :src="previewFiles[0]"></v-img>
           	</v-col>
@@ -47,8 +53,15 @@
 </template>
 
 <script>
+
+import OttraImageOrIcon from '@/components/documentmanager/OttraImageOrIcon.vue'
+
+
 export default {
 	name: 'ottra-file-upload-dialog',
+  components: {
+    OttraImageOrIcon
+  },  
 	data: function() {
 		return {
 			dialog: false,
@@ -56,6 +69,9 @@ export default {
 		}
 	},
 	methods: {
+    printFileObjects: function() {
+      //console.debug("%s: FileObjects:\n%O", __filename, this.files)
+    },
 		uploadDocument: function() {
     	this.$store.dispatch("uploadDocuments", this.files)
     	this.dialog = false
@@ -65,7 +81,7 @@ export default {
 	computed: {
 		previewFiles: function() {
 			return this.files.map(function(f) {
-				return window.URL.createObjectURL(f)
+				return { mimetype: f.type, filename: window.URL.createObjectURL(f) }
 			}) || []
 		}
 	}

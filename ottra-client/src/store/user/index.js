@@ -64,11 +64,26 @@ const User = {
       catch (err) {
         Vue.$log.error("store.user.module.createNewUser: ... Definite failure ... " + err)
       }
-    },    
+    },
+    getThisUser: async function ({ commit }) {
+      try {
+        const response = await UserRepo.get()
+
+        console.debug("%s: getThisUser has %O", __filename, response)
+
+        commit("SET_USERDATA", response.data)
+        commit("SET_USER", response.data.uuid)
+        return true
+      }
+      catch(err) {
+        console.error("%s: getThisUser failed: %s", __filename, err)
+        return false
+      }
+    },
     loadUserdata: async function ({ commit }, uuid) {
       try {
-        const response = await UserRepo.getUser(uuid)
-        commit("SET_USERDATA", response.data)
+        //const response = await UserRepo.get()
+        //commit("SET_USERDATA", response.data)
       }
       catch (err) {
         Vue.$log.error("store.user.module.loadUserdata: UserRepo.getUser failed: " + err)

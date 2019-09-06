@@ -7,9 +7,6 @@ export default {
 	get() {
 		return Repository.get(`${user_resource}`);
 	},
-	getUser(uuid) {
-		return Repository.get(`${user_resource}/${uuid}`);
-	},
 	createUser(payload) {
 		return Repository.post(`${auth_resource}`, payload);
 	},

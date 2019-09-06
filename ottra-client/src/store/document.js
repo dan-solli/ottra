@@ -75,7 +75,7 @@ const Document = {
     clearStore({ commit }) {
       commit("CLEAR_STORE")
     } 
-	}
+	},
 }
 
 export default Document

@@ -49,6 +49,9 @@ r.post("/authenticate", [
 })
 		
 r.post("/token", async function(req, res) {
+	console.debug("%s: /token called with %O", __filename, req.body)
+	const result = await AuthService.refreshToken(req.body)
+	console.debug("%s: /token returns %O", __filename, result)
 	sendResponse(res, await AuthService.refreshToken(req.body))
 })
 

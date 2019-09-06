@@ -3,22 +3,18 @@ const { aSureThing } = require('./../infra/await-to')
 
 const AuthService = {
 	refreshToken: async function(payload) {
-		// TODO: Actually control if the refreshToken is valid. Somehow.
-		return new Promise(function(success, failure) {
-			JWT.verify(payload.refreshToken, process.env.JWT_SECRET_REFRESH,
-				async function(error, decoded) {
-					if (error) {
-						failure(error)
-					} else {
-						const userInfo = {
-							uuid: decoded.uuid,
-							username: decoded.username
-						}
-						success(await aSureThing(AuthService.generateToken(process.env.JWT_SECRET_TYPE_TOKEN, userInfo)))
-					}
-				}
-			)
-		})
+		try {
+			const decoded = JWT.verify(payload.refreshToken, process.env.JWT_SECRET_REFRESH)
+
+			const userInfo = {
+				uuid: decoded.uuid,
+				username: decoded.username
+			}
+			return AuthService.generateToken(process.env.JWT_ACCESS_TOKEN_TYPE, userInfo)
+		}
+		catch (err) {
+			return { ok: false, error: { code: 401, status: 'failed', message: err } }
+		}
 	},
 	generateToken: function(type, payload) {
 		var secret, tokenLife
@@ -36,7 +32,7 @@ const AuthService = {
 			const token = JWT.sign(payload, secret, { expiresIn: tokenLife })
 			return { ok: true, data: token }
 		} catch(err) {
-			return { ok: false, error: err }		
+			return { ok: false, error: { code: 401, status: 'failed', message: err } }		
 		}
 	},
 	generateAccessToken: function(payload) {

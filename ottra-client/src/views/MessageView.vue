@@ -217,7 +217,7 @@ import { mapGetters, mapActions } from "vuex";
       }
     },
     mounted() {
-      this.$store.dispatch("loadUserData")
+      this.$store.dispatch("loadMessages")
     }
   }
 </script>
