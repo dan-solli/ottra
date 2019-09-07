@@ -43,6 +43,7 @@
         <v-btn text>
           {{ $t('ui.text.cancel') }}
         </v-btn>
+        <OttraHorizDocumentPicker></OttraHorizDocumentPicker>
       </v-stepper-content>
 
       <v-stepper-step step="2" :complete="current_step > 2">
@@ -107,8 +108,13 @@
 import { RepositoryFactory } from '@/common/repos/RepositoryFactory';
 const LocRepo  = RepositoryFactory.get('location');  
 
+import OttraHorizDocumentPicker from '@/components/documentmanager/OttraHorizDocumentPicker.vue'
+
 export default {
   name: "create-location",
+  components: {
+    OttraHorizDocumentPicker
+  },
   data: function() {
     return {
       files: [],

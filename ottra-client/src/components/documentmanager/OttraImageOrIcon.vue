@@ -15,10 +15,17 @@
 			<v-icon v-else x-large class="fill-height ma-0">
 				{{ getIcon(doc.mimetype) }}
 			</v-icon>
+
+			<v-row class="mb-0 pb-0">
+				<span v-if="isPickable">
+					<v-switch class="ma-0 pa-0" v-model="selected"></v-switch>
+				</span>
+				<span v-if="viewFilename" class="caption float-right"> {{ doc.original_filename }} </span>
+			</v-row>
+
 		</v-card-text>
 
-
-		<v-card-actions>
+		<v-card-actions v-if="viewActionButtons">
 
 			<v-btn fab dark small class="blue lighten-4">
 				<v-icon>mdi-pencil</v-icon>
@@ -38,9 +45,6 @@
 	</v-card>
 </template>
 
-<!-- 			:src="`https://192.168.1.200:8888/content/${getUserID}/${doc.filename}`"
--->
-
 <script>
 
 import { mapGetters } from 'vuex'
@@ -48,10 +52,14 @@ import { mapGetters } from 'vuex'
 export default {
 	name: 'ottra-image-or-icon',
 	props: {
-		doc: Object
+		doc: Object,
+		readOnly: Boolean,
+		showFilename: Boolean,
+		pickable: Boolean
 	},
 	data: function() {
 		return {
+			selected: false,
 			fab: false,
 			mimeTypes: {
 				'text/plain': 'mdi-file-document-box',
@@ -91,7 +99,19 @@ export default {
 	computed: {
 		...mapGetters([
 			"getUserID"
-		])
+		]),
+		viewActionButtons: function() {
+			return !this.readOnly
+		},
+		viewFilename: function() {
+			return this.showFilename
+		},
+		viewSelectOption: function() {
+			return this.readOnly
+		},
+		isPickable: function() {
+			return this.pickable
+		}
 	}
 }
 </script>
