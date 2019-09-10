@@ -20,6 +20,7 @@ r.use('/1/geography', (require('./../api/geography.controller')))
 r.use('/1/location', (require('./../api/location.controller')))
 r.use('/1/document', (require('./../api/document.controller')))
 r.use('/1/user', (require('./../api/user.controller')))
+r.use('/1/todo', (require('./../api/todo.controller')))
 
 module.exports = r
 

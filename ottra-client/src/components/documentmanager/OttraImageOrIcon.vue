@@ -36,7 +36,6 @@
 			</v-btn>
 
 			<v-spacer></v-spacer>
-
 			<v-btn fab dark small color="red">
 				<v-icon>mdi-trash-can</v-icon>
 			</v-btn>

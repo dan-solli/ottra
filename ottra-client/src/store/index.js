@@ -15,6 +15,7 @@ import Event from './event'
 import Message from './message'
 
 import Document from './document'
+import Todo from './todo'
 
 /*
 import ActionModel from '@/store/models/action.model'
@@ -64,6 +65,7 @@ export default new Vuex.Store({
 		Message,
 		Room,
 		Storage,
+		Todo,
 		UIState,
 		User,
 		UserSettings

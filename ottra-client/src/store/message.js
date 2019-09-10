@@ -52,22 +52,15 @@ const Message = {
       return state.messages[id]
     },
     getMessagesUnread: (state) => {
-      console.debug("State.messages is: ")
-      console.debug(state.messages)
       return Object.values(state.messages).filter(x => x.status === "unread")
     },
     getMessageUnreadCount: (state, getters) => getters.getMessagesUnread.length
 	},
 	actions: {
-/*    
-    createMessage({ commit }, msgID)
-    {
-    },
-*/    
     loadMessages: async function({ commit }) {
       try {
         const response = await MsgRepo.get()
-        console.debug("%s: loadUserData: Response is %O", __filename, response)
+        console.debug("%s: loadMessages: Response is %O", __filename, response)
 
         let new_msg = {} 
 

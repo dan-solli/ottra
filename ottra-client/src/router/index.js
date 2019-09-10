@@ -15,6 +15,7 @@ import MessageView from './../views/MessageView'
 import SingleMessageView from './../views/SingleMessageView'
 import SettingsView from './../views/SettingsView'
 import GroupView from './../views/GroupView'
+import TodoView from '@/views/TodoView'
 
 import LocationNewView from './../views/creation/CreateLocation'
 import CreateGroup from './../views/creation/CreateGroup'
@@ -104,6 +105,11 @@ const router = new Router({
       path: '/location/new',
       name: 'new_location',
       component: LocationNewView
+    },
+    {
+      path: '/todos',
+      name: 'view_todos',
+      component: TodoView
     },
 
 /*    

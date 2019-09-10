@@ -7,6 +7,9 @@
 	"ui.navbar.inbox.tooltip": "Meddelanden",
 	"ui.navbar.weather.tooltip": "Nuvarande väder",
 	"ui.navbar.filebrowser.tooltip": "Dokumenthanterare",
+	"ui.navbar.newtodo": "Ny att-göra",
+	"ui.navbar.newtodo.hint": "Snabbspara en new att-göra här",
+	"ui.navbar.todos.tooltip": "Oplanerade att-göra",
 
 	"ui.navigation_drawer.default.dashboard": "Översikt",
 	"ui.navigation_drawer.default.mode.project": "Projekt",
@@ -105,6 +108,8 @@
 	"ui.text.search": "Sök",
 	"ui.dialog.uploadfiles.heading": "Ladda upp dokument",
 	
+	"ui.view.todo.heading": "Att-göra",
+
 	"ui.dialog.confirmdelete": "Är du säker på att du vill radera denna?",
 
 	"ui.calendar.today": "Idag",

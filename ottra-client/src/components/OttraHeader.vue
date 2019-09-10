@@ -64,10 +64,48 @@
 					</v-tooltip>
 		    </v-toolbar-items>
 
+		    <v-divider vertical></v-divider>
+
+		    <v-toolbar-items>
+		    	<v-tooltip v-if="isAuthenticated" bottom>
+		    		<template v-slot:activator="{ on }">
+		    			<v-text-field v-on="on" background-color="blue lighten-4" 
+		    					    				clearable solo flat clear-icon="mdi-close-circle-outline"
+		    				:placeholder="$t('ui.navbar.newtodo.hint')"
+		    				v-model="newTodo">
+		    			</v-text-field>
+		    		</template>
+		    		<span> {{ $t('ui.navbar.newtodo')}} </span>
+		    	</v-tooltip>
+    			<v-btn v-if="todoLength" 
+    				text 
+    				v-shortkey.push="['enter']" 
+    				@click="saveTodo" 
+    				@shortkey="saveTodo">
+    				{{ $t('ui.text.save') }}
+    			</v-btn>
+		    </v-toolbar-items>
 
 				<v-spacer></v-spacer>
+		    <v-divider vertical></v-divider>
 
 	      <v-toolbar-items>
+
+		    	<v-tooltip v-if="isAuthenticated" bottom>
+		    		<template v-slot:activator="{ on }">
+	      		  <v-btn text to="/todos" v-on="on">
+							  <v-badge color="blue" overlap>
+							    <template v-slot:badge>
+							      <span> {{ Object.keys(getTodos).length }} </span>
+							    </template>
+							    <v-icon color="black">mdi-inbox</v-icon>
+						  	</v-badge>
+							</v-btn>
+			    	</template>
+			    	<span> {{ $t('ui.navbar.todos.tooltip') }} </span>
+					</v-tooltip>
+
+
 		    	<v-tooltip v-if="isAuthenticated" bottom>
 		    		<template v-slot:activator="{ on }">
 	      		  <v-btn text to="/messages" v-on="on">
@@ -127,6 +165,8 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 
+import { TODO_NEW } from '@/common/todo.types'
+
 import OttraNavigationDrawer from '@/components/OttraNavigationDrawer'
 
 export default {
@@ -137,14 +177,19 @@ export default {
   computed: {
   		...mapGetters([ 
   			"isAuthenticated",
-  			"getMessageUnreadCount"
-  		])
+  			"getMessageUnreadCount",
+  			"getTodos",
+  		]),
+  		todoLength: function() {
+  			return this.newTodo !== null
+  		}
   },
   data() {
   	return {
   		navigation_drawer: false,
       show_toolbar_extension: false,
-      toggle_mode: null
+      toggle_mode: null,
+      newTodo: null
   	}
   },
   methods: {
@@ -152,6 +197,7 @@ export default {
   		this.$store.dispatch("logoutUser")
   		this.$router.push({ name: "start" })
   	},
+/*
     showInputField: function() {
       this.show_toolbar_extension = true
     },
@@ -164,9 +210,17 @@ export default {
       this.show_toolbar_extension = false
       this.newTodo = ''
     },
-    viewSettings: function() {
-      this.$router.push({ name: "settings" })
-    }    
+*/    
+//    viewSettings: function() {
+//      this.$router.push({ name: "settings" })
+//    },
+    saveTodo: function() {
+    	this.$store.dispatch("saveTodo", {
+    		status: TODO_NEW,
+    		subject: this.newTodo
+    	})
+    	this.newTodo = null
+    }
   }
 };
 </script>
