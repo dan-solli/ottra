@@ -1,110 +1,115 @@
 <template>
-	<div class="create_location">
-		<h1 class="subheading"> {{ $t('ui.view.createlocation.heading') }} </h1>
+  <v-card>
+    <v-card-title>
+      {{ $t('ui.view.createlocation.heading') }} 
+      <v-spacer></v-spacer>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" text icon @click="startTour">
+            <v-icon>help_outline</v-icon>
+          </v-btn>
+        </template>
+        {{ $t('ui.tooltip.starttour') }}
+      </v-tooltip>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" text icon @click="closeDialog">
+            <v-icon>clear</v-icon>
+          </v-btn>
+        </template>
+        {{ $t('ui.text.close') }}                  
+      </v-tooltip>
 
-    <v-stepper v-model="current_step" vertical>
-      <v-stepper-step step="1" :complete="current_step > 1">
-        {{ $t('ui.view.createlocation.chooselocation') }}
-      </v-stepper-step>
+    </v-card-title>
 
-      <v-stepper-content step="1">
-        <v-form ref="form" v-model="valid">
-          <v-container>
-            <v-layout row>
-              <v-flex xs12 md4>
-                <v-text-field v-model="loc_name" :rules="stringRules" 
-                  :label="$t('ui.text.name')" type="text" required>
-                </v-text-field>
-              </v-flex>
-            </v-layout>
+    <v-card-text>
 
-            <v-layout row>
-              <v-flex xs12 sm6>
-                <v-autocomplete
-                    v-model="search_string"
-                    :items="items"
-                    item-text="description"
-                    item-value="place_id"
-                    :search-input.sync="search"
-                    :loading="isLoading"
-                    hide-no-data
-                    no-filter
-                    :rules="stringRules"
-                    :label="$t('ui.text.address')"
-                    :placeholder="$t('ui.view.createlocation.starttyping')"
-                >
-                </v-autocomplete>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-form>
-        <v-btn color="primary" @click="fetchMoreInformation">
-          {{ $t('ui.text.continue') }} </v-btn>
-        <v-btn text>
-          {{ $t('ui.text.cancel') }}
-        </v-btn>
-        <OttraHorizDocumentPicker></OttraHorizDocumentPicker>
-      </v-stepper-content>
+      <form-wrapper :validator="$v.payload">
+        <v-container fluid fill-height>
+          <v-row align-center justify-center>
+            <v-col cols="12">
+              <v-stepper v-model="current_step" vertical>
+                <v-stepper-step step="1" :complete="current_step > 1">
+                  {{ $t('ui.view.createlocation.chooselocation') }}
+                </v-stepper-step>
 
-      <v-stepper-step step="2" :complete="current_step > 2">
-        {{ $t('ui.text.save') }}
-      </v-stepper-step>
+                <v-stepper-content step="1">
+                  <v-form ref="form" v-model="valid">
+                    <v-container>
+                      <v-row>
+                        <v-col cols="4">
+                          <v-text-field v-model="payload.name" 
+                            :label="$t('ui.text.name')" type="text" required>
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
 
-      <v-stepper-content step="2">
-        <v-form ref="form" v-model="valid">
-          <v-container>
-            <v-layout row>
-              <v-flex xs12 md4>
-                <v-text-field v-model="loc_street" :rules="stringRules" 
-                  :label="$t('ui.text.street')" 
-                  type="text" required>
-                </v-text-field>
-              </v-flex>
-            </v-layout>
-            <v-layout row>
-              <v-flex md4>
-                <v-text-field v-model="loc_postal_code" :rules="stringRules" 
-                  :label="$t('ui.text.postalcode')" 
-                  type="text" required>
-                </v-text-field>
-              </v-flex>
-              <v-flex md8>
-                <v-text-field v-model="loc_city" :rules="stringRules" 
-                  :label="$t('ui.text.city')" 
-                  type="text" required>
-                </v-text-field>
-              </v-flex>
-            </v-layout>
-            <v-layout row>
-              <v-flex xs12 md4>
-                <v-text-field v-model="loc_country" :rules="stringRules" 
-                  :label="$t('ui.text.country')" 
-                  type="text" required>
-                </v-text-field>
-              </v-flex>
-            </v-layout>
-            <v-layout row>
-              <v-flex xs12 md4>
-                <v-file-input 
-                  prepend-icon="image"
-                  v-model="files"
-                  chips
-                  multiple
-                  :label="$t('ui.text.uploadfile')" 
-                  v-on:change="printFileObjects">
-                </v-file-input>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-form>
-        <v-btn text @click="current_step = 1">{{ $t('ui.text.restart') }}</v-btn>
-        <v-btn text @click="saveLocation">{{ $t('ui.view.createlocation.savelocation') }}</v-btn>
-      </v-stepper-content>
-    </v-stepper>
-  </div>
+                      <v-row>
+                        <v-col cols="6">
+                          <v-autocomplete
+                              v-model="search_string"
+                              :items="items"
+                              item-text="description"
+                              item-value="place_id"
+                              :search-input.sync="search"
+                              :loading="isLoading"
+                              hide-no-data
+                              no-filter
+                              :label="$t('ui.text.address')"
+                              :placeholder="$t('ui.view.createlocation.starttyping')"
+                          >
+                          </v-autocomplete>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-form>
+                  <v-btn color="primary" @click="fetchMoreInformation">
+                    {{ $t('ui.text.continue') }} </v-btn>
+                  <v-btn text>
+                    {{ $t('ui.text.cancel') }}
+                  </v-btn>
+          <!--        
+                  <OttraHorizDocumentPicker></OttraHorizDocumentPicker>
+          -->        
+                </v-stepper-content>
+
+                <v-stepper-step step="2" :complete="current_step > 2">
+                  {{ $t('ui.text.save') }}
+                </v-stepper-step>
+
+                <v-stepper-content step="2">
+                  <v-form ref="form" v-model="valid">
+                    <v-container>
+                      <v-row>
+                        <v-col cols="6">
+                          <v-text-field v-model="payload.address" :label="$t('ui.text.address')">
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-form>
+                  <v-btn text @click="current_step = 1">
+                    {{ $t('ui.text.restart') }}
+                  </v-btn>
+                  <v-btn text @click="saveLocation">
+                    {{ $t('ui.view.createlocation.savelocation') }}
+                  </v-btn>
+                </v-stepper-content>
+              </v-stepper>
+            </v-col>
+          </v-row>
+        </v-container>
+      </form-wrapper>
+    </v-card-text>
+
+    <v-tour name="CreateLocationTour" :steps="tourSteps" :options="tourLabels"></v-tour>
+  </v-card>
 </template>
 
 <script>
+
+import { required, minLength } from 'vuelidate/lib/validators'
+
 import { RepositoryFactory } from '@/common/repos/RepositoryFactory';
 const LocRepo  = RepositoryFactory.get('location');  
 
@@ -117,31 +122,77 @@ export default {
   },
   data: function() {
     return {
-      files: [],
-      snackbar: false,
+      payload: {
+        name: '',
+        address: '',
+        place_id: '',
+        country: '',
+        maps_url: '',
+        phone_nr: '',
+        latitude: 0,
+        longitude: 0
+      },
       current_step: 1,
-      loc_name: '',
-      loc_street: '',
-      loc_street_number: '',
-      loc_postal_code: '',
-      loc_city: '',
-      loc_country: '',
-      loc_place_id: '',
-      address: '',
       search_string: '', // Contains Google place_id
       isLoading: false,
       valid: false,
       search_hits: [],
       search: null,
       message: '',
-      stringRules: [
-        v => !!v || this.$i18n.t('ui.text.required')
-      ],
+    }
+  },
+  validations: function() {
+    return {
+      payload: {
+        name: {
+          required,
+          minLength: minLength(3)
+        },
+        address: {
+          required
+        },
+      }
     }
   },
   computed: {
     items() {
       return this.search_hits
+    },
+    tourLabels: function() {
+      return {
+        labels: {
+          buttonSkip: this.$t('ui.tour.buttonSkip'),
+          buttonPrevious: this.$t('ui.tour.buttonPrevious'),
+          buttonNext: this.$t('ui.tour.buttonNext'),
+          buttonStop: this.$t('ui.tour.buttonStop')
+        }
+      }
+    },
+    tourSteps: function() { 
+      /* This one should have two separate tours. Bonus points if it can simulate the workings and then roll it all back. */
+      return [
+        { 
+          target: '.tour-step-1',
+          content: this.$t('ui.tour.loginuser.step1'),
+          params: {
+            placement: 'left'
+          }
+        },
+        { 
+          target: '.tour-step-2',
+          content: this.$t('ui.tour.loginuser.step2'),
+          params: {
+            placement: 'left'
+          }
+        },
+        { 
+          target: '.tour-step-4',
+          content: this.$t('ui.tour.loginuser.step4'),
+          params: {
+            placement: 'right'
+          }
+        },
+      ]
     }
   },
   watch: {
@@ -166,52 +217,25 @@ export default {
     }
   },
   methods: {
-    printFileObjects: function(data) {
-      console.log("%s: printFileObjects data: %O", __filename, data)
-    },
     saveLocation: function() {
-    	this.$log.debug("SaveLocation called");
-      this.$log.debug("Constructing payload/formData: ")
-
+      this.$store.dispatch("createLocation", this.payload)
+      .then(() => {
+        this.$router.push("/location")
+      })
+      .catch((err) => {
+        console.error("%s: saveLocation failed: %s", __filename, error)
+      })
+    },
+/*      
       let payload = new FormData()
 
-      payload.append('name', this.loc_name)
-      payload.append('street', this.loc_street)
-      payload.append('postal_code', this.loc_postal_code)
-      payload.append('city', this.loc_city)
-      payload.append('country', this.loc_country)
-      payload.append('place_id', this.loc_place_id)
-      payload.append('geoloc', this.geolocation)
+      payload.append('name', this.payload.name)
+      payload.append('address', this.payload.address)
+      payload.append('geoloc', this.payload.geolocation)
+      payload.append('place_id', this.payload.place_id)
+      payload.append('country', this.payload.country)
+      payload.append('maps_url', this.payload.maps_url)
 
-      switch (this.files.length) {
-        case 0: 
-          // Do nothing
-          break;
-        case 1: 
-          payload.append('images', this.files[0])
-          break;
-        default:
-          for (const img of this.files) {
-            payload.append('images', img)
-          }
-      }
-
-/*
-      let payload = {
-        name: this.loc_name,
-        street: this.loc_street,
-        postal_code: this.loc_postal_code,
-        city: this.loc_city,
-        country: this.loc_country,
-        place_id: this.loc_place_id,
-        geoloc: this.geolocation,
-        fileObjects: this.files
-      }
-*/      
-      for (var pair of payload.entries())
-      {
-        console.log("%s: %s -> %O", __filename, pair[0], pair[1]); 
-      }
       this.$store.dispatch("createLocation", payload)
       .then(() => {
         this.snackbar = true
@@ -220,38 +244,38 @@ export default {
         this.$log.error("Call to createLocation failed: " + error)
       })
     }, 
+*/    
     fetchMoreInformation: function() {
-      this.$log.debug("Trying to fetch more information")
       LocRepo.findPlace(this.search_string)
       .then((result) => {
         // Parse address_components - should be broken out.
 
-        this.$log.debug(__filename + ": fetchMoreInformation: ")
-        this.$log.debug(result.data)
+        console.debug("%s: fetchMoreInformation: %O", __filename, result.data)
         const ac = result.data.result.address_components
-        console.log("%s: fetchMoreInformation - ac is %O", __filename, ac)
         for (let i = 0; i < ac.length; i++) {
-          if (ac[i].types.includes('postal_town')) {
-            this.loc_city = ac[i].long_name
-          }
-          else if (ac[i].types.includes('country')) {
-            this.loc_country = ac[i].long_name
-          }
-          else if (ac[i].types.includes('postal_code')) {
-            this.loc_postal_code = ac[i].long_name
+          if (ac[i].types.includes('country')) {
+            this.payload.country = ac[i].long_name
           }
         }
-        this.loc_place_id = result.data.result.place_id
-        this.loc_street = result.data.result.name
-        this.geolocation = result.data.result.geometry.location
+        this.payload.place_id = result.data.result.place_id
+        this.payload.address = result.data.result.formatted_address
+        this.payload.phone_nr = result.data.result.international_phone_number
+        this.payload.latitude = result.data.result.geometry.location.lat
+        this.payload.longitude = result.data.result.geometry.location.lng
+        this.payload.maps_url = result.data.result.url
         this.current_step = 2
-        this.$log.debug(result)
       })
       .catch((err) => {
         this.$log.debug("CreateLocation: LocRepo.findPlace failed: " + err)
       })
+      console.debug("%s: Stored payload is: %O", __filename, this.payload)
     },
-
+    startTour: function() {
+      this.$tours['CreateLocationTour'].start()
+    },
+    closeDialog: function() {
+      this.$router.push('/location')
+    }
   }
 };
 </script>

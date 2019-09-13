@@ -18,6 +18,13 @@
 	"ui.navigation_drawer.default.extra.mailoutline": "Skicka projektöversikt",
 	"ui.navigation_drawer.default.mail": "Meddelanden",
 
+	"ui.navigation_drawer.mode.create.location": "Skapa plats",
+	"ui.navigation_drawer.mode.create.room": "Skapa rum",
+	"ui.navigation_drawer.mode.create.storage": "Skapa förvaring",
+	"ui.navigation_drawer.mode.create.equipment": "Skapa sak",
+
+	"ui.mode.create.view.base.heading": "Skapa och ändra",
+
 	"ui.dialog.login.title": "Inloggning",
 	"ui.dialog.register.title": "Registrera ny användare",
 	"ui.dialog.login.passwordfield.hint": "Minst 10 tecken",
@@ -85,7 +92,7 @@
 	"ui.view.creategroup.sendinvites": "Skicka inbjudningar",
 
 	"ui.view.createlocation.heading": "Skapa plats",
-	"ui.view.createlocation.chooselocation": "Välj adress",
+	"ui.view.createlocation.chooselocation": "Välj namn och hitta adress",
 	"ui.view.createlocation.starttyping": "Skriv adressen här",
 	"ui.view.createlocation.savelocation": "Spara plats",
 

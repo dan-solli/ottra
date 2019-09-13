@@ -93,6 +93,16 @@ router.beforeEach(async function(to, from, next) {
 	}
 });
 
+router.afterEach(async function(to, from) {
+	// Is there a new mode, clear the old mode.
+	// Is there a new view, clear the new view.
+
+	// I have a strong feeling this should be on a lower level than global. 
+	// Can the vuex store handle this by itself. It knows when it has a mode and it is changing.
+	// Same with views. Perhaps not clear it willy-nilly without knowing if it has to be done or not.
+	await store.dispatch('clearItems')
+})
+
 new Vue({
   router,
   store,

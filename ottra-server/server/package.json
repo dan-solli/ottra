@@ -32,7 +32,7 @@
     "neo4j-driver": "^1.7.6",
     "nodemon": "^1.19.2",
     "npm": "^6.11.2",
-    "openweathermap-apis": "^2.1.1",
+    "openweather-apis": "^4.0.0",
     "parse-google-address": "^1.0.4",
     "rxjs": "^5.5.10",
     "uuid": "^3.3.3"

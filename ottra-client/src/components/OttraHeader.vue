@@ -17,7 +17,7 @@
 
 		    	<v-tooltip bottom>
 		    		<template v-slot:activator="{ on }">
-			    		<v-btn text v-on="on">
+			    		<v-btn text v-on="on" to="/create">
 			    			<v-icon>create</v-icon>
 			    			<span class="pl-2 hidden-md-and-down">
 			    				{{ $t('ui.navbar.create') }}

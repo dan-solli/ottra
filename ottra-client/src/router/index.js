@@ -9,6 +9,8 @@ import LoginUser from './../views/LoginUser'
 import RegisterUser from './../views/RegisterUser'
 import Dashboard from './../views/Dashboard'
 
+import CreateBaseView from '@/views/CreateBaseView'
+
 import FileBrowserView from './../views/FileBrowserView'
 import LocationView from './../views/LocationView'
 import MessageView from './../views/MessageView'
@@ -71,11 +73,6 @@ const router = new Router({
       component: FileBrowserView
     },
     {
-      path: '/location',
-      name: 'location',
-      component: LocationView
-    },
-    {
       path: '/group',
       name: 'group',
       component: GroupView
@@ -102,14 +99,26 @@ const router = new Router({
       component: SettingsView
     },
     {
-      path: '/location/new',
-      name: 'new_location',
-      component: LocationNewView
-    },
-    {
       path: '/todos',
       name: 'view_todos',
       component: TodoView
+    },
+    {
+      path: '/create',
+      name: 'base_create',
+      component: CreateBaseView,
+      children: [
+        {
+          path: '/location/new',
+          name: 'new_location',
+          component: LocationNewView
+        },
+        {
+          path: '/location',
+          name: 'location',
+          component: LocationView
+        },
+      ]
     },
 
 /*    

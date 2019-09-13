@@ -53,11 +53,11 @@ const Database = {
 	fetchRaw: async function(cypher, payload) {
 		let session = Connection.session()
 
-		//console.debug("%s: Running Cypher:\n%s\nwith payload:\n%O", __filename, cypher, payload)
+		console.debug("%s: Running Cypher:\n%s\nwith payload:\n%O", __filename, cypher, payload)
 
 		const result = await aSureThing(session.run(cypher, payload))
 
-		//console.debug("%s: fetchRaw result is %O", __filename, result)
+		console.debug("%s: fetchRaw result is %O", __filename, result)
 
 		session.close()
 		return result

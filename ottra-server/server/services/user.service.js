@@ -57,7 +57,7 @@ const UserService = {
 	createUser: async function(payload) {
 		const getAuthInfo = await UserModel.getUserInfoByName(payload.username)
 
-		console.debug("%s: getAuthInfo is: %O", __filename, getAuthInfo)
+		//console.debug("%s: getAuthInfo is: %O", __filename, getAuthInfo)
 
 		if (getAuthInfo.ok && getAuthInfo.data != null) {
 			return { ok: false, error: {
@@ -68,7 +68,7 @@ const UserService = {
 
 		const { ok, error, data } = await UserModel.createUser(payload.username, payload.password)
 
-		console.debug("%s: createUserResult is: %O", __filename, { ok: ok, error: error, data: data })
+		//console.debug("%s: createUserResult is: %O", __filename, { ok: ok, error: error, data: data })
 
 		if (!ok) {
 			return { ok, error }
@@ -96,7 +96,7 @@ const UserService = {
 	getUser: async function(user_id) {
 		const userInfo = await UserModel.getUserInfoById(user_id)
 
-		console.debug("%s: getUser is: %O", __filename, userInfo)
+		//console.debug("%s: getUser is: %O", __filename, userInfo)
 
 		return userInfo
 	}

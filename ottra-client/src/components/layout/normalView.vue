@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<v-toolbar class="mt-5" dense>
+		<v-toolbar class="mt-5" :class="viewColor" dense>
+
 			<v-toolbar-title>
 				<slot name="toolbar-title"></slot>
 			</v-toolbar-title>
@@ -14,6 +15,8 @@
 
 				<slot name="toolbar-rightside"></slot>
 			</v-toolbar-items>
+
+
 		</v-toolbar>
 
 		<v-container>
@@ -31,5 +34,13 @@
 <script>
 
 export default { 
-	name: 'ottra-normal-view'
+	name: 'ottra-normal-view',
+	data: function() {
+		return {
+		}
+	},
+	props: {
+		viewColor: String,
+	},
 }
+</script>

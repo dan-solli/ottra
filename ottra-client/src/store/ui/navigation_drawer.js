@@ -1,5 +1,6 @@
 import Vue from 'vue'
-//import Vuex from 'vuex'
+
+import { APPMODE_GENERAL } from '@/common/appmode.types'
 
 const UIState = {
   state: {
@@ -7,7 +8,7 @@ const UIState = {
     sidebar_mode_items: [],
     sidebar_view_items: [],
     sidebar_extra_items: [],
-    current_mode: "No Mode",
+    current_mode: APPMODE_GENERAL,
     current_view: "Start"
   },
   getters: {
@@ -60,13 +61,13 @@ const UIState = {
       state.sidebar_view_items = data
     },
     SAVE_EXTRA_ITEMS(state, data) {
-      state.sidebar_view_items = data
+      state.sidebar_extra_items = data
     },
     SAVE_MODE(state, data) {
-      state.sidebar_mode_items = data
+      state.current_mode = data
     },
     SAVE_VIEW(state, data) {
-      state.sidebar_view_items = data
+      state.current_view = data
     }
   }
 };

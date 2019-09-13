@@ -1,6 +1,6 @@
 const express = require('express')
 
-const { body, 
+const { check, 
 				validationResult,
 				buildCheckFunction 
 			} = require('express-validator');
@@ -20,12 +20,12 @@ r.get("/", [ autenUser('uuid').isUUID() ],
 )
 
 r.post("/", [
-		body('place_id').isString().isLength({ min: 10 }),
-		body('name').isString().isLength({ min: 1 }),
-		body('street').isString().isLength({ min: 3 }),
-		body('city').isString().isLength({ min: 1 }),
-		body('country').isString().isLength({ min: 2 }),
-		body('postal_code').isPostalCode('any'),
+		check('name').isString().isLength({ min: 3 }),
+		check('address').isString().isLength({ min: 3 }),
+		check('country').isString().isLength({ min: 2 }),
+		check('latitude').isDecimal({ force_decimal: false }),
+		check('longitude').isFloat({ force_decimal: false }),
+		check('place_id').isString().isLength({ min: 10 }),
 		autenUser('uuid').isUUID()
 	], 
 	async function(req, res) {

@@ -10,7 +10,7 @@
     "lint": "eslint --fix src"
   },
   "dependencies": {
-    "@mdi/font": "^4.2.95",
+    "@mdi/font": "^4.4.95",
     "@vuex-orm/core": "^0.32.2",
     "@vuex-orm/plugin-axios": "^0.5.1",
     "axios": "^0.19.0",
@@ -28,7 +28,7 @@
     "vuejs-logger": "1.5.3",
     "vuelidate": "^0.7.4",
     "vuelidate-error-extractor": "^2.4.0",
-    "vuetify": "^2.0.12",
+    "vuetify": "^2.0.15",
     "vuetify-toast-snackbar": "^0.3.1",
     "vuex": "^3.0.1"
   },

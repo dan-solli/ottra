@@ -18,6 +18,14 @@
 	"ui.navigation_drawer.default.extra.mailoutline": "Mail project outline",
 	"ui.navigation_drawer.default.mail": "Messages",
 
+	"ui.navigation_drawer.mode.create.location": "Create location",
+	"ui.navigation_drawer.mode.create.room": "Create room",
+	"ui.navigation_drawer.mode.create.storage": "Create storage",
+	"ui.navigation_drawer.mode.create.equipment": "Create equipment",
+
+	"ui.mode.create.view.base.heading": "Create and edit",
+
+
 	"ui.dialog.login.title": "Login form",
 	"ui.dialog.register.title": "Register new user",
 	"ui.dialog.login.passwordfield.hint": "At least 10 characters",
@@ -85,7 +93,7 @@
 	"ui.view.creategroup.sendinvites": "Send invites",
 
 	"ui.view.createlocation.heading": "Create Location",
-	"ui.view.createlocation.chooselocation": "Choose location",
+	"ui.view.createlocation.chooselocation": "Name and find location",
 	"ui.view.createlocation.starttyping": "Start typing the address",
 	"ui.view.createlocation.savelocation": "Save Location",
 
