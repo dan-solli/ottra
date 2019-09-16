@@ -19,10 +19,12 @@
     >
       <template v-slot:item="props">
         <tr @click="props.expanded = !props.expanded">
-          <td>{{ props.item.Name }}</td>
+          <td>{{ props.item.name }}</td>
+<!--          
           <td class="text-xs-left">{{ props.item.Address.Street }}</td>
           <td class="text-xs-left">{{ props.item.Address.City }}</td>
           <td class="text-xs-left">{{ props.item.Rooms.length }}</td>
+-->          
           <td class="justify-left layout px-0">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
@@ -73,6 +75,7 @@ export default {
           sortable: true,
           value: 'Name'
         },
+/*        
         {
           text: this.$i18n.t('ui.text.street'),
           align: 'left',
@@ -91,11 +94,13 @@ export default {
           sortable: true,
           value: 'Rooms'
         }, 
+*/        
         {
           text: this.$i18n.t('ui.text.actions'),
           align: 'left',
           value: 'Actions'
         }
+
       ],
       locations: [],
     }

@@ -6,18 +6,33 @@ const LocationModel = {
     console.debug("%s: createLocation called with payload: %O", __filename, payload)
 
     const result = await DB.fetchRow(`
-      MATCH (p:Place { place_id: {place_id} })
+      MATCH (u:User { uuid: {creator} })
       CREATE (l:Location {
         uuid: {new_uuid},
         name: {name}, 
         creator: {creator},
-        created: TIMESTAMP()
-      })-[:AT]->(p) RETURN l { .*, dateTime: apoc.date.format(l.created) } AS Location`, 
+        created: TIMESTAMP(),
+        address: {address},
+        place_id: {place_id},
+        country: {country},
+        maps_url: {maps_url},
+        phone_nr: {phone_nr},
+        latitude: {latitude},
+        longitude: {longitude},
+        owm_cityid: {owm_cityid}
+      })<-[:HAS]-(u) RETURN l { .*, dateTime: apoc.date.format(l.created) } AS Location`, 
       {
-        place_id: payload.place_id,
         new_uuid: uuidv4(),
         name: payload.name,
-        creator: user_id
+        creator: user_id,
+        address: payload.address,
+        place_id: payload.place_id,
+        country: payload.country,
+        maps_url: payload.maps_url,
+        phone_nr: payload.phone_nr,
+        owm_cityid: payload.owm_cityid,
+        latitude: payload.latitude,
+        longitude: payload.longitude
       }, "Location")
 
     console.debug("%O: createLocation result is: %O", __filename, result)
