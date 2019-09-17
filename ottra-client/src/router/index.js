@@ -22,6 +22,10 @@ import TodoView from '@/views/TodoView'
 import LocationNewView from './../views/creation/CreateLocation'
 import CreateGroup from './../views/creation/CreateGroup'
 
+import RoomNewView from './../views/creation/CreateRoom'
+import RoomView from './../views/RoomView'
+
+
 import store from '../store'
 
 Vue.use(Router);
@@ -117,6 +121,22 @@ const router = new Router({
           path: '/location',
           name: 'location',
           component: LocationView
+        },
+        {
+          path: '/room/new',
+          name: 'new_room',
+          component: RoomNewView
+        },
+        {
+          path: '/room/new/:location_uuid',
+          name: 'new_room_with_id',
+          props: true,
+          component: RoomNewView
+        },
+        {
+          path: '/room',
+          name: 'room',
+          component: RoomView
         },
       ]
     },

@@ -5,7 +5,13 @@ async function aSureThing(promise) {
 		return { ok: true, data }
 	})
 	.catch(function(error) {
-		Promise.resolve({ ok: false, error })
+		console.error("%s: aSureThing failed: %O", __filename, error)
+		Promise.resolve({ ok: false, error: {
+				code: 500,
+				status: 'server failure',
+				message: error 
+			}
+		})
 	})
 }
 

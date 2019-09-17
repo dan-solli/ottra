@@ -5,7 +5,6 @@ const { WEATHER_FULL } = require('./../infra/types/weather_fetch.types')
 
 const LocationService = {
 	getLocations: async function(user_id) {
-		// TODO: Check arguments.
 		return await LocationModel.getLocations(user_id)
 	},
 	createLocation: async function(payload, user_id) {
@@ -20,8 +19,12 @@ const LocationService = {
 			return createLocationResult
 		}
 		catch (err) {
-			return { ok: false, error: { code: 422, status: 'failed', message: err } }
+			return { ok: false, error: { code: 422, status: 'service failed', message: err } }
 		}
+	},
+	deleteLocation: async function(payload, user_id) {
+		console.debug("%s: deleteLocation got body: %O", __filename, payload)
+		return await LocationModel.deleteLocation(user_id, payload.uuid)
 	}
 }
 

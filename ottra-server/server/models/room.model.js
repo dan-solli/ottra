@@ -1,62 +1,49 @@
 const DB = require('./../infra/db')
 const uuidv4 = require('uuid/v4')
 
-const LocationModel = {
-	createLocation: async function(payload, user_id) {
-    console.debug("%s: createLocation called with payload: %O", __filename, payload)
+const RoomModel = {
+	createRoom: async function(payload, user_id) {
+    console.debug("%s: createRoom called with payload: %O", __filename, payload)
 
-    const cypher = `
-      MATCH (u:User { uuid: {creator} })
-      CREATE (u)-[:HAS]->(l:Location {
-        uuid: {uuid},
+    const result = await DB.fetchRow(`
+      MATCH (l:Location { uuid: {location_uuid} })
+      CREATE (l)-[:CONTAINS]->(r:Room { 
+        uuid: {new_uuid},
         name: {name}, 
         creator: {creator},
-        created: TIMESTAMP(),
-        address: {address},
-        place_id: {place_id},
-        country: {country},
-        maps_url: {maps_url},
-        phone_nr: {phone_nr},
-        latitude: {latitude},
-        longitude: {longitude},
-        owm_cityid: {owm_cityid}
-      }) RETURN l { .*, dateTime: apoc.date.format(l.created) } AS Location`
+        created: TIMESTAMP()
+      }) RETURN r { .*, dateTime: apoc.date.format(r.created) } AS Room`, 
+      {
+        new_uuid: uuidv4(),
+        name: payload.name,
+        location_uuid: payload.location,
+        creator: user_id
+      }, "Room"
+    )
 
-    const data = {
-      uuid: uuidv4(),
-      name: payload.name,
-      creator: user_id,
-      address: payload.address || '',
-      place_id: payload.place_id || '',
-      country: payload.country || '',
-      maps_url: payload.maps_url || '',
-      phone_nr: payload.phone_nr || '',
-      latitude: payload.latitude || 0,
-      longitude: payload.longitude || 0,
-      owm_cityid: payload.owm_cityid || 0,
-    }
-
-    const result = await DB.fetchRow(cypher, data, "Location")
-    console.debug("%O: createLocation result is: %O", __filename, result)
+    console.debug("%O: createRoom result is: %O", __filename, result)
     return result
 	},
-	getLocations: async function(user_id) {
+	getRoomsByLocation: async function(location_id, user_id) {
 		return await DB.fetchAll(`
-      MATCH (u:User { uuid: {user_id} })--(l:Location) 
-      RETURN COLLECT(l { .* }) AS Locations`, { 
-				user_id: user_id 
-			}, "Locations"
+      MATCH (l:Location { uuid: {location_id} })-[:CONTAINS]->(r:Room)
+      RETURN COLLECT(r { .*, dateTime: apoc.date.format(r.created)}) AS Rooms`, {
+      	location_id 
+      }, "Locations"
 		)
 	},
-  deleteLocation: async function(user_id, location_id) {
-    return await DB.fetchRaw(`
-      MATCH (l:Location { uuid: {location_id}, creator: {user_id} }) DETACH DELETE l`, 
-      { user_id, location_id }
+  getRooms: async function(user_id) {
+    return await DB.fetchAll(`
+      MATCH (u:User { uuid: {user_id} })-->(l:Location)-->(r:Room)
+      RETURN COLLECT(r { .*, dateTime: apoc.date.format(r.created), location: l.uuid }) AS Rooms`, {
+        user_id
+      }, "Rooms"
     )
   }
 }
 
-module.exports = LocationModel
+
+module.exports = RoomModel
 
 
 

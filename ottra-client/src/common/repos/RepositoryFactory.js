@@ -4,6 +4,7 @@ import MsgRepo from './messageRepository'
 import GroupRepo from './groupRepository'
 import DocumentRepo from './documentRepository'
 import TodoRepo from './todoRepository'
+import RoomRepo from './roomRepository'
 
 const repositories = {
 	user: UserRepo,
@@ -11,7 +12,8 @@ const repositories = {
 	message: MsgRepo,
 	group: GroupRepo,
 	document: DocumentRepo,
-	todo: TodoRepo
+	todo: TodoRepo,
+	room: RoomRepo
 };
 
 export const RepositoryFactory = {

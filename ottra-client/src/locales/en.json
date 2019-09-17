@@ -97,6 +97,12 @@
 	"ui.view.createlocation.starttyping": "Start typing the address",
 	"ui.view.createlocation.savelocation": "Save Location",
 
+  "ui.view.roomview.heading": "Rooms",
+  "ui.view.roomview.newroom": "New Room",
+  "ui.tooltip.addstorage": "Add Storage",
+  "ui.view.createroom.heading": "Create new room",
+  "ui.view.createroom.saveroom": "Save Room",
+
 	"ui.view.filebrowser.heading": "Document Manager",
 	"ui.view.filebrowser.uploadbutton": "Upload",
 	"ui.text.search": "Search",

@@ -17,6 +17,9 @@ const Location = {
     },
     CLEAR_STORE(state) {
       state.locations = {}
+    },
+    DELETE_LOCATION(state, loc_id) {
+      Vue.delete(state.locations, loc_id)
     }
 	},
 	getters: {
@@ -35,6 +38,17 @@ const Location = {
       }
       catch (err) {
         console.error("%s: createLocation failed: %s", __filename, err)
+      }
+    },
+    deleteLocation: async function({ commit }, location_id) {
+      console.debug("%s: deleteLocation: Payload is: %s", __filename, location_id)
+
+      try {
+        const response = await LocationRepo.deleteLocation(location_id)
+        commit("DELETE_LOCATION", location_id)
+      }
+      catch (err) {
+        console.error("%s: deleteLocation failed: %s", __filename, err)
       }
     },
     loadLocations: async function({ commit }) {

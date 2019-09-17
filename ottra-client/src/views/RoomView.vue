@@ -2,19 +2,21 @@
   <div>
     <v-toolbar flat color="white" class="elevation-1 mt-4">
       <v-toolbar-title>
-        {{ $t('ui.view.locationview.heading') }}
+        {{ $t('ui.view.roomview.heading') }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <v-btn color="primary" class="mb-2" :to="{ name: 'new_location'}">
-        {{ $t('ui.view.locationview.newlocation') }}
+      <v-btn color="primary" class="mb-2" :to="{ name: 'new_room'}">
+        {{ $t('ui.view.roomview.newroom') }}
       </v-btn>
      
     </v-toolbar>
     <v-data-table
       :headers="headers"
-      :items="locations"
+      :items="rooms"
       item-key="uuid"
+      group-by="location"
+      show-group-by
       class="elevation-1"
     >
       <template v-slot:item="props">
@@ -28,15 +30,9 @@
           <td class="justify-left layout px-0">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
-                <v-icon v-on="on" small class="mr-2" @click.stop="addRoom(props.item)">add</v-icon>
+                <v-icon v-on="on" small class="mr-2" @click.stop="addStorage(props.item)">add</v-icon>
               </template>
-              {{ $t('ui.tooltip.addroom') }}
-            </v-tooltip>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-icon v-on="on" small class="mr-2" @click.stop="showWeather(props.item)">cloud</v-icon>
-              </template>
-              {{ $t('ui.tooltip.weather') }}
+              {{ $t('ui.tooltip.addstorage') }}
             </v-tooltip>
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
@@ -64,7 +60,7 @@
 import { mapGetters } from "vuex";
 
 export default {
-  name: 'location-view',
+  name: 'room-view',
   data: function() {
     return {
       dialog: false,
@@ -107,25 +103,21 @@ export default {
 
   computed: {
     ...mapGetters([
-      "getLocations"
+      "getRooms"
     ]),
-    locations: function() {
-      return Object.values(this.getLocations)
+    rooms: function() {
+      return Object.values(this.getRooms)
     }
   },
   methods: {
     editItem (item) {
     },
     deleteItem (item) {
-      const index = this.locations.indexOf(item)
-      confirm(this.$t('ui.dialog.confirmdelete')) && this.locations.splice(index, 1)
-      this.$store.dispatch("deleteLocation", item.uuid)
+      const index = this.rooms.indexOf(item)
+      confirm(this.$t('ui.dialog.confirmdelete')) && this.rooms.splice(index, 1)
     },
-    showWeather(item) {
+    addStorage(item) {
       // foo
-    },
-    addRoom(item) {
-      this.$router.push("/room/new/" + item.uuid)
     },
   }
 }

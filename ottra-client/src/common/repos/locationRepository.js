@@ -4,10 +4,10 @@ const loc_resource = "/location";
 const geo_resource = "/geography";
 
 export default {
-/*
-	get(userid) {
-		return Repository.get(`/user/${userid}${loc_resource}s`);
+	get() {
+		return Repository.get(`${loc_resource}`);
 	},
+/*
 	getLocation(uuid) {
 		return Repository.get(`${loc_resource}/${uuid}`);
 	},
@@ -18,6 +18,9 @@ export default {
 		return Repository.get(`${loc_resource}/room/${roomId}/storages`)
 	},
 */	
+	deleteLocation(location_id) {
+		return Repository.delete(`${loc_resource}`, { data: { uuid: location_id }})
+	},
 	createLocation(payload) {
 		return Repository.post(`${loc_resource}`, payload);
 	},

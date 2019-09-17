@@ -84,9 +84,11 @@
     				@shortkey="saveTodo">
     				{{ $t('ui.text.save') }}
     			</v-btn>
+
 		    </v-toolbar-items>
 
 				<v-spacer></v-spacer>
+   			<v-btn class="mx-2" color="error" @click="loadData">Load Data</v-btn>
 		    <v-divider vertical></v-divider>
 
 	      <v-toolbar-items>
@@ -193,6 +195,9 @@ export default {
   	}
   },
   methods: {
+  	loadData: function() {
+  		this.$store.dispatch("loadUserData")
+  	},
   	logoutUserButton() {
   		this.$store.dispatch("logoutUser")
   		this.$router.push({ name: "start" })
