@@ -1,105 +1,64 @@
 import Vue from 'vue'
-//import Vuex from 'vuex'
 
-/*
 import { RepositoryFactory } from '@/common/repos/RepositoryFactory'
-
 const StorageRepo = RepositoryFactory.get('storage')
-*/
 
 const Storage = {
 	state: {
-    storages : {
-      "Storage01":
-      {
-        "uuid": "Storage01",
-        "Name": "Pappersåtervinning"
-      },
-      "Storage02":
-      {
-        "uuid": "Storage02",
-        "Name": "Plaståtervinning"
-      },
-      "Storage03":
-      {
-        "uuid": "Storage03",
-        "Name": "Hushållssopor"
-      },
-      "Storage04":
-      {
-        "uuid": "Storage04",
-        "Name": "Kompost"
-      },
-      "Storage05":
-      {
-        "uuid": "Storage05",
-        "Name": "Färgat glas"
-      },
-      "Storage06":
-      {
-        "uuid": "Storage06",
-        "Name": "Genomskinligt glas"
-      },
-      "Storage07":
-      {
-        "uuid": "Storage07",
-        "Name": "Sopkorg",
-        "Actions": 
-        [
-          "Action01",
-          "Action02",
-          "Action03"
-        ]
-      },
-      "Storage08":
-      {
-        "Name": "Skohylla",
-        "uuid": "Storage08",
-        "Equipment":
-        [
-          "Eq01"
-        ]
-      },
-      "Storage09":
-      {
-        "Name": "Städskåp",
-        "uuid": "Storage09",
-        "Equipment":
-        [
-          "Eq02",
-          "Eq03"
-        ]
-      },
-      "Storage10":
-      {
-        "Name": "Hallskåp",
-        "uuid": "Storage10",
-        "Equipment":
-        [
-          "Eq04"
-        ]
-      },
-      "Storage11":
-      {
-        "Name": "Nyckelskåp",
-        "uuid": "Storage11",
-        "Equipment":
-        [
-          "Eq05"
-        ]
-      }
+    storages: {
     }
 	},
 	mutations: {
-	},
+    ADD_STORAGE(state, payload) {
+      Vue.set(state.storages, payload.uuid, payload)
+    },
+    SET_STORAGES(state, payload) {
+      state.storages = Object.assign({}, payload)
+    },
+    CLEAR_STORE(state) {
+      state.storages = {}
+    }
+ 	},
 	getters: {
-    getStorages: state => Object.keys(state.storages),
+    getStorages: state => state.storages,
     getStorageByID: (state) => (id) => { 
       return state.storages[id]
     }
 	},
 	actions: {
-	}
+    createStorage: async function({ commit }, payload) {
+      console.debug("%s: createStorage: Payload is: %O", __filename, payload)
+
+      try {
+        const response = await StorageRepo.createStorage(payload)
+        commit("ADD_STORAGE", response.data)
+      }
+      catch (err) {
+        console.error("%s: createStorage failed: %s", __filename, err)
+      }
+    },
+    loadStorages: async function({ commit }) {
+      try {
+        const response = await StorageRepo.getStorages()
+        console.debug("%s: loadStorages: Response is %O", __filename, response)
+
+        let new_storages = {}
+        response.data.forEach(function(item) {
+          new_storages[item.uuid] = item
+        })
+        commit("SET_STORAGES", new_storages)
+      }
+      catch (err) {
+        console.error("%s: StorageRepo failed: %s", __filename, err)
+      }
+    },
+    loadUserData: async function({ dispatch }) {
+      await dispatch("loadStorages")
+    },
+    clearStore: function({ commit }) {
+      commit("CLEAR_STORE")
+    }
+  }
 }
 
 export default Storage

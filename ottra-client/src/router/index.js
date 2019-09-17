@@ -25,6 +25,9 @@ import CreateGroup from './../views/creation/CreateGroup'
 import RoomNewView from './../views/creation/CreateRoom'
 import RoomView from './../views/RoomView'
 
+import StorageNewView from './../views/creation/CreateStorage'
+import StorageView from './../views/StorageView'
+
 
 import store from '../store'
 
@@ -137,6 +140,22 @@ const router = new Router({
           path: '/room',
           name: 'room',
           component: RoomView
+        },
+        {
+          path: '/storage/new',
+          name: 'new_storage',
+          component: StorageNewView
+        },
+        {
+          path: '/storage/new/:room_uuid',
+          name: 'new_storage_with_id',
+          props: true,
+          component: StorageNewView
+        },
+        {
+          path: '/storage',
+          name: 'storage',
+          component: StorageView
         },
       ]
     },

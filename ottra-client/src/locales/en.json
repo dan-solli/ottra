@@ -100,8 +100,15 @@
   "ui.view.roomview.heading": "Rooms",
   "ui.view.roomview.newroom": "New Room",
   "ui.tooltip.addstorage": "Add Storage",
+  "ui.tooltip.addequipment": "Add Equipment",
   "ui.view.createroom.heading": "Create new room",
   "ui.view.createroom.saveroom": "Save Room",
+
+  "ui.view.storageview.newstorage": "New Storage", 
+  "ui.view.storageview.heading": "Storage",
+  "ui.view.createstorage.heading": "Create new Storage",
+  "ui.view.createstorage.savestorage": "Save Storage",
+
 
 	"ui.view.filebrowser.heading": "Document Manager",
 	"ui.view.filebrowser.uploadbutton": "Upload",

@@ -15,8 +15,6 @@
       :headers="headers"
       :items="rooms"
       item-key="uuid"
-      group-by="location"
-      show-group-by
       class="elevation-1"
     >
       <template v-slot:item="props">
@@ -30,7 +28,13 @@
           <td class="justify-left layout px-0">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
-                <v-icon v-on="on" small class="mr-2" @click.stop="addStorage(props.item)">add</v-icon>
+                <v-icon v-on="on" small class="mr-2" @click.stop="addEquipment(props.item)">mdi-toolbox-outline</v-icon>
+              </template>
+              {{ $t('ui.tooltip.addequipment') }}
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on" small class="mr-2" @click.stop="addStorage(props.item)">mdi-package-variant</v-icon>
               </template>
               {{ $t('ui.tooltip.addstorage') }}
             </v-tooltip>
@@ -117,7 +121,7 @@ export default {
       confirm(this.$t('ui.dialog.confirmdelete')) && this.rooms.splice(index, 1)
     },
     addStorage(item) {
-      // foo
+      this.$router.push("/storage/new/" + item.uuid)
     },
   }
 }

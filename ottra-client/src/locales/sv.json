@@ -99,8 +99,14 @@
   "ui.view.roomview.heading": "Rum",
   "ui.view.roomview.newroom": "Nytt rum",
   "ui.tooltip.addstorage": "Lägg till förvaring",
+  "ui.tooltip.addequipment": "Lägg till sak",
   "ui.view.createroom.heading": "Skapa nytt rum",
   "ui.view.createroom.saveroom": "Spara rum",
+
+  "ui.view.storageview.newstorage": "Ny förvaring", 
+  "ui.view.storageview.heading": "Förvaring",
+  "ui.view.createstorage.heading": "Skapa ny förvaring",
+  "ui.view.createstorage.savestorage": "Spara förvaring",
 
 	"ui.view.groupview.heading": "Grupper",
 	"ui.view.groupview.newgroup": "Ny grupp",
