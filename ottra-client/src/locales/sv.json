@@ -108,6 +108,11 @@
   "ui.view.createstorage.heading": "Skapa ny förvaring",
   "ui.view.createstorage.savestorage": "Spara förvaring",
 
+  "ui.view.equipmentview.newequipment": "Nytt föremål", 
+  "ui.view.equipmentview.heading": "Föremål",
+  "ui.view.createequipment.heading": "Skapa nytt föremål",
+  "ui.view.createequipment.saveequipment": "Spara föremål",
+
 	"ui.view.groupview.heading": "Grupper",
 	"ui.view.groupview.newgroup": "Ny grupp",
 
@@ -161,5 +166,25 @@
 	"ui.text.edititem": "Ändra",
 	"ui.text.previous": "Föregående",
 	"ui.text.next": "Nästa",
-	"ui.text.date": "Datum"
+	"ui.text.date": "Datum",
+
+	"ui.view.createequipment.step1.header": "Föremålsnamn",
+	"ui.view.createequipment.step2.header": "Föremålets egenskaper",
+	"ui.view.createequipment.step2.hasactions": "Kan man göra något med föremålet?",
+	"ui.view.createequipment.step2.hassettings": "Kan föremålet ha olika inställningar?",
+	"ui.view.createequipment.step2.isconsumable": "Är föremålet en förbrukningsvara?",
+	"ui.view.createequipment.step3.header": "Användning av föremålet",
+	"ui.component.addaction.name": "Handlingens namn",
+	"ui.component.task.heading": "Uppgift",
+	"ui.text.orcreate": "eller skapa",
+	"ui.button.newtask": "Ny uppgift",
+	"ui.view.createequipment.step4.header": "Inställningar",
+	"ui.component.addconfigurationtemplate.name": "Mallnamn",
+	"ui.button.saveconfigurationtemplate": "Spara inställningsmall",
+	"ui.view.createequipment.step5.header": "Förbrukningsvara",
+	"ui.component.addconsumable.currentamount": "Nuvarande antal",
+	"ui.component.addconsumable.tresholdwarning": "Varning när det blir färre än",
+	"ui.component.addconsumable.goalnumber": "Hur många som behövs",
+	"ui.component.addconsumable.addaction": "Lägg automatiskt till uppgift om att skaffa fler?",
+	"ui.view.createequipment.step6.header": "Bilder eller dokument"
 }

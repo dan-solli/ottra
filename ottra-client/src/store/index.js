@@ -17,6 +17,8 @@ import Message from './message'
 import Document from './document'
 import Todo from './todo'
 
+import Equipment from './equipment'
+
 /*
 import ActionModel from '@/store/models/action.model'
 import AddressModel from '@/store/models/address.model'
@@ -60,6 +62,7 @@ VuexORM.use(VuexORMAxios, {
 export default new Vuex.Store({
   modules: {
   	Document,
+  	Equipment,
 		Event,
 		Location,
 		Message,

@@ -28,6 +28,9 @@ import RoomView from './../views/RoomView'
 import StorageNewView from './../views/creation/CreateStorage'
 import StorageView from './../views/StorageView'
 
+import EquipmentNewView from './../views/creation/CreateEquipment'
+import EquipmentView from './../views/EquipmentView'
+
 
 import store from '../store'
 
@@ -157,48 +160,24 @@ const router = new Router({
           name: 'storage',
           component: StorageView
         },
+        {
+          path: '/equipment/new',
+          name: 'new_equipment',
+          component: EquipmentNewView
+        },
+        {
+          path: '/equipment/new/:container_uuid',
+          name: 'new_equipment_with_id',
+          props: true,
+          component: EquipmentNewView
+        },
+        {
+          path: '/equipment',
+          name: 'equipment',
+          component: EquipmentView
+        },
       ]
     },
-
-/*    
-    {
-      path: "/create",
-      name: 'create',
-      component: Create,
-      children: [
-        {
-          path: 'location',
-          component: CreateLocation
-        }, 
-        {
-          path: 'room',
-          component: CreateRoom
-        }, 
-        {
-          path: 'storage',
-          component: CreateStorage
-        }, 
-        {
-          path: 'task',
-          component: CreateTask
-        }, 
-        {
-          path: 'step',
-          component: CreateStep
-        }, 
-        {
-          path: 'equipment',
-          component: CreateEquipment
-        }
-      ]
-    },
-    {
-      path: '/todo/:uuid',
-      name: 'single_todo',
-      props: true,
-      component: ViewSingleTodo,
-    },
-*/    
     {
       path: '*',
       redirect: '/'

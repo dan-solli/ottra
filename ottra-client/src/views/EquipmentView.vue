@@ -2,18 +2,18 @@
   <div>
     <v-toolbar flat color="white" class="elevation-1 mt-4">
       <v-toolbar-title>
-        {{ $t('ui.view.roomview.heading') }}
+        {{ $t('ui.view.equipmentview.heading') }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <v-btn color="primary" class="mb-2" :to="{ name: 'new_room'}">
-        {{ $t('ui.view.roomview.newroom') }}
+      <v-btn color="primary" class="mb-2" :to="{ name: 'new_equipment'}">
+        {{ $t('ui.view.equipmentview.newequipment') }}
       </v-btn>
      
     </v-toolbar>
     <v-data-table
       :headers="headers"
-      :items="rooms"
+      :items="equipment"
       item-key="uuid"
       class="elevation-1"
     >
@@ -26,18 +26,6 @@
           <td class="text-xs-left">{{ props.item.Rooms.length }}</td>
 -->          
           <td class="justify-left layout px-0">
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-icon v-on="on" small class="mr-2" @click.stop="addEquipment(props.item)">mdi-toolbox-outline</v-icon>
-              </template>
-              {{ $t('ui.tooltip.addequipment') }}
-            </v-tooltip>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-icon v-on="on" small class="mr-2" @click.stop="addStorage(props.item)">mdi-package-variant</v-icon>
-              </template>
-              {{ $t('ui.tooltip.addstorage') }}
-            </v-tooltip>
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-icon v-on="on" small class="mr-2" @click.stop="editItem(props.item)">edit</v-icon>
@@ -64,7 +52,7 @@
 import { mapGetters } from "vuex";
 
 export default {
-  name: 'room-view',
+  name: 'equipment-view',
   data: function() {
     return {
       dialog: false,
@@ -107,24 +95,18 @@ export default {
 
   computed: {
     ...mapGetters([
-      "getRooms"
+      "getEquipment"
     ]),
-    rooms: function() {
-      return Object.values(this.getRooms)
+    equipment: function() {
+      return Object.values(this.getEquipment)
     }
   },
   methods: {
     editItem (item) {
     },
     deleteItem (item) {
-      const index = this.rooms.indexOf(item)
-      confirm(this.$t('ui.dialog.confirmdelete')) && this.rooms.splice(index, 1)
-    },
-    addStorage(item) {
-      this.$router.push("/storage/new/" + item.uuid)
-    },
-    addEquipment(item) {
-      this.$router.push("/equipment/new/" + item.uuid)
+      const index = this.equipment.indexOf(item)
+      confirm(this.$t('ui.dialog.confirmdelete')) && this.equipment.splice(index, 1)
     },
   }
 }

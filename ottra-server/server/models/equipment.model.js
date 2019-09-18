@@ -1,42 +1,42 @@
 const DB = require('./../infra/db')
 const uuidv4 = require('uuid/v4')
 
-const StorageModel = {
-	createStorage: async function(payload, user_id) {
-    console.debug("%s: createStorage called with payload: %O", __filename, payload)
+const EquipmentModel = {
+	createEquipment: async function(payload, user_id) {
+    console.debug("%s: createEquipment called with payload: %O", __filename, payload)
 
     const result = await DB.fetchRow(`
       MATCH (n { uuid: {parent_uuid} })
-      CREATE (n)-[:CONTAINS]->(s:Storage { 
+      CREATE (n)-[:HOLDS]->(e:Equipment { 
         uuid: {new_uuid},
         name: {name}, 
         creator: {creator},
         created: TIMESTAMP()
-      }) RETURN s { .*, dateTime: apoc.date.format(s.created) } AS Storage`, 
+      }) RETURN e { .*, dateTime: apoc.date.format(e.created) } AS Equipment`, 
       {
         new_uuid: uuidv4(),
         name: payload.name,
         parent_uuid: payload.container,
         creator: user_id
-      }, "Storage"
+      }, "Equipment"
     )
 
-    console.debug("%O: createStorage result is: %O", __filename, result)
+    console.debug("%O: createEquipment result is: %O", __filename, result)
     return result
 	},
-  getStorages: async function(user_id) {
+  getEquipment: async function(user_id) {
     return await DB.fetchAll(`
-      MATCH (u:User { uuid: {user_id} })-[*0..15]->(n)-[:CONTAINS]->(s:Storage)
-      RETURN COLLECT(s { .*, dateTime: apoc.date.format(s.created), 
-                        location: { uuid: n.uuid, type: LABELS(n) } }) AS Storages`, {
+      MATCH (u:User { uuid: {user_id} })-[*0..15]->(n)-[:HOLDS]->(e:Equipment)
+      RETURN COLLECT(e { .*, dateTime: apoc.date.format(e.created), 
+                         container: { uuid: n.uuid, type: LABELS(n) } }) AS Equipment`, {
         user_id
-      }, "Storages"
+      }, "Equipment"
     )
   }
 }
 
 
-module.exports = StorageModel
+module.exports = EquipmentModel
 
 
 

@@ -12,7 +12,7 @@
      
     </v-toolbar>
 
-    <v-treeview :items="storages"></v-treeview>
+    <v-treeview dense :items="storages"></v-treeview>
   </div>
 </template>
 
@@ -33,7 +33,6 @@ export default {
     storages: function() {
       return Object.values(this.getStorages)
     },
-    items: []
   },
   methods: {
     editItem (item) {

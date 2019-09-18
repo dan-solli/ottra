@@ -109,6 +109,10 @@
   "ui.view.createstorage.heading": "Create new Storage",
   "ui.view.createstorage.savestorage": "Save Storage",
 
+  "ui.view.equipmentview.newequipment": "New Equipment", 
+  "ui.view.equipmentview.heading": "Equipment",
+  "ui.view.createequipment.heading": "Create new Equipment",
+  "ui.view.createequipment.saveequipment": "Save Equipment",
 
 	"ui.view.filebrowser.heading": "Document Manager",
 	"ui.view.filebrowser.uploadbutton": "Upload",
@@ -170,6 +174,26 @@
 	"ui.text.previous": "Previous",
 	"ui.text.next": "Next",
 	"ui.text.uploadfile": "Upload file",
+
+	"ui.view.createequipment.step1.header": "Equipment name",
+	"ui.view.createequipment.step2.header": "Equipment settings",
+	"ui.view.createequipment.step2.hasactions": "Can you do things with the object?",
+	"ui.view.createequipment.step2.hassettings": "Can the object have different settings?",
+	"ui.view.createequipment.step2.isconsumable": "Is it a consumable?",
+	"ui.view.createequipment.step3.header": "Equipment actions",
+	"ui.component.addaction.name": "Action name",
+	"ui.component.task.heading": "Task",
+	"ui.text.orcreate": "or create",
+	"ui.button.newtask": "New task",
+	"ui.view.createequipment.step4.header": "Configurations",
+	"ui.component.addconfigurationtemplate.name": "Template name",
+	"ui.button.saveconfigurationtemplate": "Save template",
+	"ui.view.createequipment.step5.header": "Consumable",
+	"ui.component.addconsumable.currentamount": "Current amount",
+	"ui.component.addconsumable.tresholdwarning": "Treshold warning at",
+	"ui.component.addconsumable.goalnumber": "Goal amount",
+	"ui.component.addconsumable.addaction": "Automatically add action to require more?",
+	"ui.view.createequipment.step6.header": "Documents",
 
   "flurb": "flurb",
   "message": "hello i18n !!"
