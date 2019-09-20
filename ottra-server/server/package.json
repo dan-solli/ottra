@@ -1,11 +1,11 @@
 {
   "name": "ottra-server",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha ./test --recursive",
-    "lint": "eslint --fix api helpers infra middleware models routes services test index.js"
+    "lint": "eslint --fix api helpers infra middleware models routes services index.js"
   },
   "repository": {
     "type": "git",

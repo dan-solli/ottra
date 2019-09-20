@@ -3,7 +3,7 @@ const StorageModel = require('./../models/storage.model')
 const StorageService = {
 	createStorage: async function(payload, user_id) {
 		try {
-			createStorageResult = await StorageModel.createStorage(payload, user_id)
+			const createStorageResult = await StorageModel.createStorage(payload, user_id)
 			console.debug("%s: createStorage returning: %O", __filename, createStorageResult)
 			return createStorageResult
 		}

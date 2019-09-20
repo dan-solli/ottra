@@ -27,8 +27,8 @@ const EquipmentModel = {
   getEquipment: async function(user_id) {
     return await DB.fetchAll(`
       MATCH (u:User { uuid: {user_id} })-[*0..15]->(n)-[:HOLDS]->(e:Equipment)
-      RETURN COLLECT(e { .*, dateTime: apoc.date.format(e.created), 
-                         container: { uuid: n.uuid, type: LABELS(n) } }) AS Equipment`, {
+      RETURN COLLECT(e { .*, dateTime: apoc.date.format(e.created), type: LABELS(e),
+                         location: { uuid: n.uuid, type: LABELS(n) } }) AS Equipment`, {
         user_id
       }, "Equipment"
     )

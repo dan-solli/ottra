@@ -150,7 +150,7 @@ const router = new Router({
           component: StorageNewView
         },
         {
-          path: '/storage/new/:room_uuid',
+          path: '/storage/new/:container_uuid',
           name: 'new_storage_with_id',
           props: true,
           component: StorageNewView

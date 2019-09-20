@@ -7,7 +7,7 @@ const RoomService = {
 	},
 	createRoom: async function(payload, user_id) {
 		try {
-			createRoomResult = await RoomModel.createRoom(payload, user_id)
+			const createRoomResult = await RoomModel.createRoom(payload, user_id)
 			console.debug("%s: createRoom returning: %O", __filename, createRoomResult)
 			return createRoomResult
 		}

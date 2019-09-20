@@ -14,7 +14,7 @@ const LocationService = {
 			if (weatherResult.ok) { // We got proper data
 				payload.owm_cityid = '' + weatherResult.data.id
 			}
-			createLocationResult = await LocationModel.createLocation(payload, user_id)
+			const createLocationResult = await LocationModel.createLocation(payload, user_id)
 			console.debug("%s: createLocation returning: %O", __filename, createLocationResult)
 			return createLocationResult
 		}
