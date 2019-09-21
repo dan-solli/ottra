@@ -168,6 +168,9 @@
 	"ui.text.next": "Nästa",
 	"ui.text.date": "Datum",
 
+  "ui.view.taskview.heading": "Uppgifter",
+  "ui.view.scheduleview.heading": "Schema",
+
 	"ui.view.createequipment.step1.header": "Föremålsnamn",
 	"ui.view.createequipment.step2.header": "Föremålets egenskaper",
 	"ui.view.createequipment.step2.hasactions": "Kan man göra något med föremålet?",

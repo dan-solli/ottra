@@ -43,27 +43,27 @@ export default {
 			search: '',
 			tabs: [
 				{
-					name: "(*) Location",
+					name: this.$t('ui.view.locationview.heading'),
 					route: "/location"
 				},
 				{
-					name: "(*) Room",
+					name: this.$t('ui.view.roomview.heading'),
 					route: "/room"
 				},
 				{
-					name: "(*) Storage",
+					name: this.$t('ui.view.storageview.heading'),
 					route: "/storage"
 				},
 				{
-					name: "(*) Equipment",
+					name: this.$t('ui.view.equipmentview.heading'),
 					route: "/equipment"
 				},
 				{
-					name: "(*) Task",
+					name: this.$t('ui.view.taskview.heading'),
 					route: "/task"
 				},
 				{
-					name: "(*) Schedule",
+					name: this.$t('ui.view.scheduleview.heading'),
 					route: "/schedule"
 				},
 			]

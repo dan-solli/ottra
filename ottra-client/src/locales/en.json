@@ -120,6 +120,10 @@
 
 	"ui.view.todo.heading": "Todos",
 
+  "ui.view.taskview.heading": "Tasks",
+  "ui.view.scheduleview.heading": "Schedules",
+
+
 
 	"ui.calendar.today": "Today",
 	"ui.dashboard.todaysagenda": "Todays' agenda",
