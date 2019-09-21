@@ -28,6 +28,7 @@ const Database = {
 		const { ok, error, data } = await Database.fetchRaw(cypher, payload)
 		
 		if (!ok) {
+			console.error("%s: fetchRow error: %O", __filename, error)
 			return { ok, error }
 		}
 		else if (!data.records.length) {
@@ -41,6 +42,7 @@ const Database = {
 		const { ok, error, data } = await Database.fetchRaw(cypher, payload)
 
 		if (!ok) {
+			console.error("%s: fetchAll error: %O", __filename, error)
 			return { ok, error }
 		}
 		else if (!data.records.length) {

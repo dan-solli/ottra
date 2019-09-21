@@ -55,6 +55,15 @@
                     </v-col>
                   </v-row>
 
+                  <v-row>
+                    <v-col>
+                      <v-switch
+                        v-model="payload.mobile" 
+                        :label="$t('ui.view.createstorage.ismobile')" 
+                        required>
+                      </v-switch>
+                    </v-col>
+                  </v-row>
 <!--
                   <v-row>
                     <v-col>
@@ -103,6 +112,7 @@ export default {
       payload: {
         name: '',
         container: '', // This can be a room or another storage.
+        mobile: false, // Handbag, purse etc
       },
       valid: false,
       showDocumentPicker: false,
@@ -123,6 +133,9 @@ export default {
         container: {
           required,
           minLength: minLength(5)
+        },
+        mobile: {
+          required
         },
       }
     }

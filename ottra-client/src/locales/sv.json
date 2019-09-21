@@ -105,6 +105,8 @@
 
   "ui.view.storageview.newstorage": "Ny förvaring", 
   "ui.view.storageview.heading": "Förvaring",
+  "ui.view.createstorage.ismobile": "Är förvaringen avsedd att flyttas på (ex handväska, ryggsäck osv)",
+
   "ui.view.createstorage.heading": "Skapa ny förvaring",
   "ui.view.createstorage.savestorage": "Spara förvaring",
 

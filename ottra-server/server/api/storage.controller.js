@@ -26,6 +26,7 @@ r.post("/", [
 	async function(req, res) {
 		const errors = validationResult(req)
 		if (!errors.isEmpty) {
+			console.error("%s: POST / validation error: %O", errors)
 			sendResponse(res, { 
 				ok: false, 
 				error: { 

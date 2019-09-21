@@ -108,6 +108,7 @@
   "ui.view.storageview.heading": "Storage",
   "ui.view.createstorage.heading": "Create new Storage",
   "ui.view.createstorage.savestorage": "Save Storage",
+  "ui.view.createstorage.ismobile": "Is the storage mobile (ie purse, backpack)",
 
   "ui.view.equipmentview.newequipment": "New Equipment", 
   "ui.view.equipmentview.heading": "Equipment",

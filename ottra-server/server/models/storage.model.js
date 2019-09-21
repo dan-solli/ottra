@@ -11,13 +11,17 @@ const StorageModel = {
         uuid: {new_uuid},
         name: {name}, 
         creator: {creator},
-        created: TIMESTAMP()
+        created: TIMESTAMP(),
+        mobile: {mobile},
+        current_container: {current_container}
       }) RETURN s { .*, dateTime: apoc.date.format(s.created) } AS Storage`, 
       {
         new_uuid: uuidv4(),
         name: payload.name,
         parent_uuid: payload.container,
-        creator: user_id
+        creator: user_id,
+        mobile: payload.mobile || false,
+        current_container: payload.current_container || null
       }, "Storage"
     )
 
