@@ -14,7 +14,7 @@ const User = {
 	},
 	mutations: {
 		SET_USER(state, userid) {
-      Vue.$log.debug("store.user.module.SET_USER: setting userid: " + userid)
+      console.debug("%s: SET_USER setting userid: %s", __filename, userid)
       state.userid = userid
     },
     SET_USERDATA(state, userdata) {
@@ -23,16 +23,16 @@ const User = {
     LOGOUT_USER(state) {
       JwtService.destroyTokens();
       state.isAuthenticated = false
-      Vue.$log.debug("store.user.module.LOGOUT_USER: Removing Tokens, clearing variables")
+      console.debug("%s: LOGOUT_USER Removing Tokens, clearing variables", __filename)
     },
     SET_ACCESS_AUTH(state, token) {
       JwtService.saveToken(token);
       state.isAuthenticated = true
-      Vue.$log.debug("store.user.module.SET_ACCESS_AUTH: setting isAuthenticated and saving JWTToken")
+      console.debug("%s: SET_ACCESS_AUTH: setting isAuthenticated and saving JWTToken", __filename)
     },
     SET_REFRESH_AUTH(state, token) {
       JwtService.saveRefreshToken(token);
-      Vue.$log.debug("store.user.module.SET_REFRESH_AUTH: saving refresh JWTToken")
+      console.debug("%s: SET_REFRESH_AUTH: saving refresh JWTToken", __filename)
     },
     CLEAR_STORE(state) {
       state.userdata = {},
@@ -49,9 +49,8 @@ const User = {
     createNewUser: async function ({ commit, dispatch }, payload) {
       try {
         const response = await UserRepo.createUser(payload)
-        Vue.$log.debug("store.user.module.createNewUser: ... Possible success ... ")
-        Vue.$log.debug("store.user.module.createNewUser: Reponse is: ")
-        Vue.$log.debug(response)
+        console.debug("%s: createNewUser: ... Possible success ... ", __filename)
+        console.debug("%s: createNewUser: Reponse is: %O", __filename, response)
         const jwtAccessToken = response.data.accessToken
         const jwtRefreshToken = response.data.refreshToken
         commit("SET_ACCESS_AUTH", jwtAccessToken)
@@ -62,7 +61,7 @@ const User = {
         return response.data
       }
       catch (err) {
-        Vue.$log.error("store.user.module.createNewUser: ... Definite failure ... " + err)
+        console.error("%s: createNewUser: ... Definite failure: %s", __filename, err)
       }
     },
     getThisUser: async function ({ commit }) {
@@ -86,16 +85,15 @@ const User = {
         //commit("SET_USERDATA", response.data)
       }
       catch (err) {
-        Vue.$log.error("store.user.module.loadUserdata: UserRepo.getUser failed: " + err)
+        console.error("%s: loadUserdata: UserRepo.getUser failed: %s", __filename, err)
       }
     },
     loginUser: async function ({ commit, dispatch }, payload) {
-      Vue.$log.debug("store.user.module.loginUser is being called")
+      console.debug("%s: loginUser is being called", __filename)
 
       try {
         const response = await UserRepo.authenticateUser(payload)
-        Vue.$log.debug("store.user.module.loginUser: Response is: ")
-        Vue.$log.debug(response)
+        console.debug("%s: loginUser: Response is: %O", __filename, response)
 
         const jwtAccessToken = response.data.accessToken
         const jwtRefreshToken = response.data.refreshToken
@@ -107,11 +105,11 @@ const User = {
         return response.data
       }
       catch (err) {
-        Vue.$log.error("store.user.module.loginUser: ... Definite failure ... " + err)
+        console.error("%s: loginUser: ... Definite failure: %s", __filename, err)
       }
     },
     logoutUser ({ commit, dispatch }) {
-      Vue.$log.debug("store.user.index.js: logoutUser has been called.")
+      console.debug("%s: logoutUser has been called.", __filename)
       commit("LOGOUT_USER")
       dispatch("clearStore")
     },

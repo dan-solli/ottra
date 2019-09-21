@@ -34,8 +34,6 @@ import FormSummary from "./components/FormSummary.vue";
 
 import VueTour from 'vue-tour'
 import VuetifyToast from 'vuetify-toast-snackbar'
-import VueLogger from 'vuejs-logger'
-
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -63,18 +61,6 @@ Vue.use(VuetifyToast, {
 	timeout: 4000,
 	queueable: true,
 	showClose: true
-})
-
-Vue.use(VueLogger, {
-	isEnabled: true,
-	logLevel: isProduction 
-		? 'error' 
-		: 'debug',
-	stringifyArguments: true,
-	showLogLevel: true,
-	showMethodName: true,
-	separator: '|',
-	showConsoleColors: true
 })
 
 Vue.use(require('vue-shortkey'))

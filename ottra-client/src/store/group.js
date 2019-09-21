@@ -15,8 +15,7 @@ const Group = {
       state.groups = Object.assign({}, payload)
     },
     ADD_GROUP(state, payload) {
-      Vue.$log.info("In Group Mutation: This is what we should add.")
-      Vue.$log.info(payload)
+      console.info("%s: ADD_GROUP: This is what we should add: %O", __filename, payload)
       state.groups[payload.uuid] = payload
     }
 	},
@@ -31,19 +30,17 @@ const Group = {
     {
       try {
         const response = await GroupRepo.createGroup(payload)
-        Vue.$log.debug("store.group.createGroup: ... Possible success ... ")
-        Vue.$log.debug("store.group.createGroup: Reponse is: ")
-        Vue.$log.debug(response)
+        console.debug("%s: createGroup: Response is %O", __filename, response)
         commit("ADD_GROUP", response.data)
       }
       catch (err) {
-          Vue.$log.error("store.group.createGroup: ... Definite failure ... " + err)
+        console.error("%s: createGroup: Fail: %s", __filename, err)
       }
     },
     loadUserData: async function({ commit }) {
       try {
         const response = await GroupRepo.get()
-        Vue.$log.debug("store.group.loadUserData: Response is: %O", response)
+        console.debug("%s: loadUserData: Response is: %O", response)
 
         let new_groups = {} 
 
@@ -53,7 +50,7 @@ const Group = {
         commit("SET_GROUP", new_groups)
       }        
       catch (err) {
-        Vue.$log.error("store.group.module.loadUserData")
+        console.error("%s: loadUserData failed: %s", __filename, err)
       }
     }
 	}
