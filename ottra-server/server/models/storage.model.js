@@ -31,14 +31,37 @@ const StorageModel = {
   getStorages: async function(user_id) {
     return await DB.fetchAll(`
       MATCH (u:User { uuid: {user_id} })-[*0..15]->(n)-[:CONTAINS]->(s:Storage)
-      RETURN COLLECT(s { .*, dateTime: apoc.date.format(s.created), type: LABELS(s),
-                        location: { uuid: n.uuid, type: LABELS(n) } }) AS Storages`, {
+      OPTIONAL MATCH (s)-[:CONTAINS]->(ss:Storage)
+      OPTIONAL MATCH (s)-[:HOLDS]->(e:Equipment)
+      WITH COLLECT(ss.uuid) AS SubStorages, 
+           COLLECT(e.uuid) AS Equipments, n, s
+      RETURN COLLECT(s { .*, 
+                 storages: SubStorages,
+                 equipment: Equipments,
+                 dateTime: apoc.date.format(s.created), 
+                 type: LABELS(s),
+                 location: { uuid: n.uuid, type: LABELS(n) } }) 
+       AS Storages`, {
         user_id
       }, "Storages"
     )
   }
 }
 
+/* Put this in getStorages!
+MATCH (u:User { uuid: {user_id} })-[*0..15]->(n)-[:CONTAINS]->(s:Storage)
+OPTIONAL MATCH (s)-[:CONTAINS]->(ss:Storage)
+OPTIONAL MATCH (s)-[:HOLDS]->(e:Equipment)
+WITH COLLECT(ss.uuid) AS SubStorages, 
+     COLLECT(e.uuid) AS Equipments, n, s
+RETURN COLLECT(s { .*, 
+           storages: SubStorages,
+                   equipment: Equipments,
+                   dateTime: apoc.date.format(s.created), 
+                   type: LABELS(s),
+                   location: { uuid: n.uuid, type: LABELS(n) } }) 
+       AS Storages
+*/
 
 module.exports = StorageModel
 

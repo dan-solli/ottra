@@ -35,12 +35,25 @@ const RoomModel = {
   getRooms: async function(user_id) {
     return await DB.fetchAll(`
       MATCH (u:User { uuid: {user_id} })-->(l:Location)-->(r:Room)
-      RETURN COLLECT(r { .*, dateTime: apoc.date.format(r.created), type: LABELS(r),
-                    location: { uuid: l.uuid, type: LABELS(l) } }) AS Rooms`, {
+      OPTIONAL MATCH (r)-[:CONTAINS]->(s:Storage)
+      OPTIONAL MATCH (r)-[:HOLDS]->(e:Equipment)
+      WITH COLLECT(s.uuid) AS Storages, COLLECT(e.uuid) AS Equipments, l, r
+      RETURN COLLECT(r { .*, 
+                storages: Storages, equipment: Equipments,
+                dateTime: apoc.date.format(r.created), 
+                type: LABELS(r),
+                location: { uuid: l.uuid, type: LABELS(l) } }) AS Rooms`, {
         user_id
       }, "Rooms"
     )
-  }
+  },
+/*
+
+
+      MATCH (u:User { uuid: {user_id} })-->(l:Location)-->(r:Room)
+      RETURN COLLECT(r { .*, dateTime: apoc.date.format(r.created), type: LABELS(r),
+                    location: { uuid: l.uuid, type: LABELS(l) } }) AS Rooms          
+*/       
 }
 
 

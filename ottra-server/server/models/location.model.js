@@ -42,8 +42,11 @@ const LocationModel = {
 	},
 	getLocations: async function(user_id) {
 		return await DB.fetchAll(`
-      MATCH (u:User { uuid: {user_id} })--(l:Location) 
-      RETURN COLLECT(l { .* }) AS Locations`, { 
+      MATCH (u:User { uuid: {user_id} })-->(l:Location) 
+      OPTIONAL MATCH (l)-->(r:Room)
+      WITH COLLECT (r.uuid) as theRooms, l
+      RETURN COLLECT(l { .*, dateTime: apoc.date.format(l.created), 
+          rooms: theRooms }) AS Locations`, { 
 				user_id: user_id 
 			}, "Locations"
 		)
