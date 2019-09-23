@@ -59,7 +59,7 @@ VuexORM.use(VuexORMAxios, {
 })
 */ 
 
-export default new Vuex.Store({
+const OttraStore = new Vuex.Store({
   modules: {
   	Document,
   	Equipment,
@@ -75,3 +75,14 @@ export default new Vuex.Store({
   },
 //  plugins: [VuexORM.install(database)]
 });
+
+/*
+const unsubscribeFunc = OttraStore.subscribe((mutation, state) => {
+	if (['ADD_EQUIPMENT', 'ADD_STORAGE'].includes(mutation.type)) {
+		console.debug("%s: Vuex Subscription hit by type %s and payload %O", 
+			__filename, mutation.type, mutation.payload)
+	}
+})
+*/
+
+export default OttraStore

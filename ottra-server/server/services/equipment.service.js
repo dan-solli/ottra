@@ -4,8 +4,7 @@ const EquipmentService = {
 	createEquipment: async function(payload, user_id) {
 		try {
 			result = await EquipmentModel.createEquipment(payload, user_id)
-			console.debug("%s: createEquipment returning: %O", __filename, result)
-			return result
+			return await EquipmentModel.getEquipmentById(user_id, result.data.uuid)
 		}
 		catch (err) {
 			return { ok: false, error: { code: 422, status: 'failed', message: err } }
@@ -13,6 +12,9 @@ const EquipmentService = {
 	},
 	getEquipment: async function(user_id) {
 		return await EquipmentModel.getEquipment(user_id)
+	},
+	getEquipmentById: async function(user_id, eq_id) {
+		return await EquipmentModel.getEquipmentById(user_id, eq_id)
 	}
 }
 

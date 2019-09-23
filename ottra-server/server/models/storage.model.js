@@ -45,6 +45,24 @@ const StorageModel = {
         user_id
       }, "Storages"
     )
+  },
+  getStorageById: async function(user_id, storage_id) {
+    return await DB.fetchRow(`
+      MATCH (u:User { uuid: {user_id} })-[*0..15]->(n)-[:CONTAINS]->(s:Storage { uuid: {storage_id} })
+      OPTIONAL MATCH (s)-[:CONTAINS]->(ss:Storage)
+      OPTIONAL MATCH (s)-[:HOLDS]->(e:Equipment)
+      WITH COLLECT(ss.uuid) AS SubStorages, 
+           COLLECT(e.uuid) AS Equipments, n, s
+      RETURN s { .*, 
+                 storages: SubStorages,
+                 equipment: Equipments,
+                 dateTime: apoc.date.format(s.created), 
+                 type: LABELS(s),
+                 location: { uuid: n.uuid, type: LABELS(n) } } 
+       AS Storage`, {
+        user_id, storage_id
+      }, "Storage"
+    )
   }
 }
 

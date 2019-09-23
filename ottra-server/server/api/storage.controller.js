@@ -18,6 +18,14 @@ r.get("/", [ autenUser('uuid').isUUID() ],
 	}
 )
 
+r.get("/:storage_id", [ 
+		autenUser('uuid').isUUID(),
+		check('storage_id').isUUID() 
+	], async function(req, res) {
+		sendResponse(res, await StorageService.getStorageById(req.tokenData.uuid, req.param.storage_id))
+	}
+)
+
 r.post("/", [
 		check('name').isString().isLength({ min: 3 }),
 		check('container').isUUID(),

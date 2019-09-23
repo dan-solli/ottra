@@ -24,6 +24,15 @@ r.get("/", [ autenUser('uuid').isUUID() ],
 	}
 )
 
+r.get("/:room_id", [ 
+		autenUser('uuid').isUUID(),
+		check('room_id').isUUID() 
+	],
+	async function(req, res) {
+		sendResponse(res, await RoomService.getRoomById(req.tokenData.uuid, req.param.room_id))
+	}
+)
+
 r.post("/", [
 		check('name').isString().isLength({ min: 3 }),
 		check('location').isUUID(),

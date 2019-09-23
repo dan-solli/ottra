@@ -7,8 +7,7 @@ const StorageService = {
 				payload.current_container = payload.container
 			}
 			const createStorageResult = await StorageModel.createStorage(payload, user_id)
-			console.debug("%s: createStorage returning: %O", __filename, createStorageResult)
-			return createStorageResult
+			return await StorageModel.getStorageById(user_id, createStorageResult.data.uuid)
 		}
 		catch (err) {
 			return { ok: false, error: { code: 422, status: 'failed', message: err } }
@@ -16,6 +15,9 @@ const StorageService = {
 	},
 	getStorages: async function(user_id) {
 		return await StorageModel.getStorages(user_id)
+	},
+	getStorageById: async function(user_id, storage_id) {
+		return await StorageModel.getStorageById(user_id, storage_id)
 	}
 }
 

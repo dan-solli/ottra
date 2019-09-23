@@ -41,6 +41,14 @@ r.post("/", [
 	}
 )
 
+r.get('/:eq_id', [
+		autenUser('uuid').isUUID(),
+		check('eq_id').isUUID() 
+	], async function(res, req) {
+		sendResponse(res, await EquipmentService.getEquipmentById(req.tokenData.uuid, req.param.eq_id))
+	}
+)
+
 module.exports = r
 
 // Controller accepts the connection and:
