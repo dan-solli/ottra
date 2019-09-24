@@ -25,6 +25,7 @@
 
 	"ui.mode.create.view.base.heading": "Create and edit",
 
+	"ui.dashboard.unattended.new.todos": "Unhandled todos",
 
 	"ui.dialog.login.title": "Login form",
 	"ui.dialog.register.title": "Register new user",
@@ -179,6 +180,14 @@
 	"ui.text.previous": "Previous",
 	"ui.text.next": "Next",
 	"ui.text.uploadfile": "Upload file",
+
+	"ui.text.checkdone": "Done",
+	"ui.text.edit": "Edit",
+	"ui.text.plan": "Plan",
+	"ui.text.forward": "Forward",
+	"ui.text.delete": "Delete",
+
+
 
 	"ui.view.createequipment.step1.header": "Equipment name",
 	"ui.view.createequipment.step2.header": "Equipment settings",

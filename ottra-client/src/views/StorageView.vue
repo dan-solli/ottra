@@ -77,7 +77,7 @@ export default {
             id: item.uuid,
             name: item.name,
             type: item.type,
-            icon: 'mdi-home-import-outline',
+            icon: 'mdi-floor-plan',
             children: []
           }
           return struct

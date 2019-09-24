@@ -25,6 +25,8 @@
 
 	"ui.mode.create.view.base.heading": "Skapa och ändra",
 
+	"ui.dashboard.unattended.new.todos": "Ohanterade att-göra",
+
 	"ui.dialog.login.title": "Inloggning",
 	"ui.dialog.register.title": "Registrera ny användare",
 	"ui.dialog.login.passwordfield.hint": "Minst 10 tecken",
@@ -169,6 +171,12 @@
 	"ui.text.previous": "Föregående",
 	"ui.text.next": "Nästa",
 	"ui.text.date": "Datum",
+
+	"ui.text.checkdone": "Klarmarkera",
+	"ui.text.edit": "Redigera",
+	"ui.text.plan": "Planera",
+	"ui.text.forward": "Vidarebefordra",
+	"ui.text.delete": "Ta bort",
 
   "ui.view.taskview.heading": "Uppgifter",
   "ui.view.scheduleview.heading": "Schema",

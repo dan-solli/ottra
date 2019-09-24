@@ -1,6 +1,7 @@
 import Vue from 'vue'
 
 import { RepositoryFactory } from '@/common/repos/RepositoryFactory'
+import { TODO_NEW } from '@/common/todo.types'
 
 const TodoRepo = RepositoryFactory.get('todo')
 
@@ -11,6 +12,13 @@ const Todo = {
 	},
 	getters: {
 		getTodos: state => state.todos,
+		getUnattendedNewTodos: state => Object.values(state.todos).filter(function(todo) {
+			if (todo.status === TODO_NEW) {
+				return todo
+			} else {
+				return null
+			}
+		})
 	},
 	mutations: {
 		SET_TODOS(state, payload) {

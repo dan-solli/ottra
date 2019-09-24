@@ -3,9 +3,9 @@
 
     <v-container fluid grid-list-xl>
       
-      <v-layout row wrap>
+      <v-row row wrap>
 
-        <v-flex md3>
+        <v-col md3>
           <v-spacer></v-spacer>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
@@ -40,12 +40,12 @@
               </template>
             </v-calendar>
           </v-sheet>
-        </v-flex>
-        <v-flex md9>
+        </v-col>
+        <v-col md9>
 
-          <v-layout row wrap>
+          <v-row row wrap>
 
-            <v-flex md4>
+            <v-col md4>
               <OttraWidget type="info">
                 <template slot="title">
                   {{ $t('ui.dashboard.todaysagenda') }}: {{ todaysDate }} 
@@ -58,9 +58,9 @@
                   {{ e.description }}
                 </p>
               </OttraWidget>
-            </v-flex>
+            </v-col>
 
-            <v-flex v-if="getMessageUnreadCount" md4>
+            <v-col v-if="getMessageUnreadCount" md4>
               <OttraWidget type="info">
                 <template slot="title">
                   {{ $t('domobj.messages.unread') }}
@@ -71,12 +71,80 @@
                   {{ m.subject }}
                 </p>
               </OttraWidget>
-            </v-flex>
+            </v-col>
 
-          </v-layout>
+            <!-- TODO: Make new component. -->
+            <v-col v-if="getNewTodoCount" md4>
+              <OttraWidget type="plan">
+                <template slot="title">
+                  {{ $t('ui.dashboard.unattended.new.todos') }}
+                </template>
+                <v-list dense flat>
+                  <v-list-item-group v-model="newTodoItem">
+                    <v-list-item class="mx-0" 
+                      v-for="newTodoItem in getUnattendedNewTodos" 
+                      :key="newTodoItem.uuid">
+                      <v-speed-dial v-model="localFab[newTodoItem.uuid]" direction="left">
+                        <template v-slot:activator>
+                          <v-list-item-icon class="mx-0">
+                            <v-btn v-model="localFab[newTodoItem.uuid]" icon text>
+                              <v-icon>mdi-dots-vertical</v-icon>
+                            </v-btn>
+                          </v-list-item-icon>
+                        </template>
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                            <v-btn v-on="on" fab small dark color="green">
+                              <v-icon>mdi-check</v-icon>
+                            </v-btn>
+                          </template>
+                          {{ $t('ui.text.checkdone') }}
+                        </v-tooltip>
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                            <v-btn v-on="on" fab small class="blue lighten-4">
+                              <v-icon>mdi-file-document-edit-outline</v-icon>
+                            </v-btn>
+                          </template>
+                          {{ $t('ui.text.edit') }}
+                        </v-tooltip>
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                            <v-btn v-on="on" fab small class="light-green lighten-4">
+                              <v-icon>mdi-calendar-plus</v-icon>
+                            </v-btn>
+                          </template>
+                          {{ $t('ui.text.plan') }}
+                        </v-tooltip>
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                            <v-btn v-on="on" fab small disabled>
+                              <v-icon>mdi-forward</v-icon>
+                            </v-btn>
+                          </template>
+                          {{ $t('ui.text.forward') }}
+                        </v-tooltip>
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                            <v-btn v-on="on" fab small class="red lighten-3">
+                              <v-icon>mdi-trash-can-outline</v-icon>
+                            </v-btn>
+                          </template>
+                          {{ $t('ui.text.delete') }}
+                        </v-tooltip>
+                      </v-speed-dial>
+                      <v-list-item-content>
+                        <v-list-item-title v-text="newTodoItem.subject"></v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </OttraWidget>
+            </v-col>
+          </v-row>
 
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
 	 </div>
 </template>
@@ -94,7 +162,9 @@ export default {
   },
   data: function() {
     return {
-      currentDate: ''
+      currentDate: '',
+      paginationPage: 1,
+      localFab: {}
     }
   },
   computed: {
@@ -102,8 +172,12 @@ export default {
       "todaysDate",
       "getEvents",
       "getMessagesUnread",
-      "getMessageUnreadCount"
+      "getMessageUnreadCount",
+      "getUnattendedNewTodos"
     ]),
+    getNewTodoCount: function() {
+      return this.getUnattendedNewTodos.length
+    },
     getEventsByDate: function() {
       let theDate = this.currentDate
 
