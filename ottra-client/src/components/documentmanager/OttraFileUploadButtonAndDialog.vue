@@ -30,9 +30,6 @@
                   transition="fade-transition">
                   <OttraImageOrIcon :doc="item"></OttraImageOrIcon>
           			</v-carousel-item>
-<!--
-                  :src="item.filename" 
--->
           		</v-carousel>
           		<v-img height="500" v-else-if="previewFiles.length === 1" :src="previewFiles[0]"></v-img>
           	</v-col>
@@ -69,9 +66,6 @@ export default {
 		}
 	},
 	methods: {
-    printFileObjects: function() {
-      //console.debug("%s: FileObjects:\n%O", __filename, this.files)
-    },
 		uploadDocument: function() {
     	this.$store.dispatch("uploadDocuments", this.files)
     	this.dialog = false

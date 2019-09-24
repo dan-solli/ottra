@@ -186,7 +186,7 @@ import { mapGetters, mapActions } from "vuex";
     },
     methods: {
       gotoMessage(uuid) {
-        this.$log.debug("Trying to move over...")
+        console.debug("%s: gotoMessage: Trying to move over...", __filename)
         this.$router.push("/messages/" + uuid)
       },
       editItem (item) {

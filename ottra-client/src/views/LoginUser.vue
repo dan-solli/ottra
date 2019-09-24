@@ -135,7 +135,7 @@ export default {
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.submitStatus = "ERROR"
-        this.$log.error("LoginUser.vue: Form is invalid...")
+        console.error("%s: loginUser: Form is invalid...", __filename)
       } else {
         const payload = {
           username: this.form.email,
@@ -146,8 +146,7 @@ export default {
           this.$router.push('/dashboard')
         })
         .catch(function(err) {
-          this.$log.error("THIS IS A FUCKING ERROR FOR NO GOD DAMNED REASON!")
-          this.$log.error("Error is: " + err)
+          console.error("%s: loginUser: Error is: %s", __filename, err)
         })
       }
 		},

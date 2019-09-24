@@ -17,7 +17,7 @@ export default {
   mounted: function() {
   	this.$getLocation()
   		.then(coordinates => {
-    		this.$log.debug(coordinates);
+    		console.debug("%s: (mounted()) Coordinates: %O", __filename, coordinates);
   	})
   }
 };

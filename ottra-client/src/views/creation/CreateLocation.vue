@@ -197,21 +197,21 @@ export default {
   },
   watch: {
     search (val) {
-      this.$log.debug("CreateLocation.search: called with val = " + val)
+      console.debug("%s: In search, got %s", __filename, val)
       if (this.isLoading || !val) 
         return
 
-      this.$log.debug("CreateLocation.search: passed first obstacle")
+      console.debug("%s: search() passed first obstacle", __filename)
       this.isLoading = true
 
-      this.$log.debug("CreateLocation.search: Trying to fetch data")
+      console.debug("%s: search() Trying to fetch data", __filename)
       LocRepo.searchLocation(val)
       .then(res => {
-        this.$log.debug(__filename + ": Populating search_hits with ", res.data.predictions)
+        console.debug("%s: Populating search_hits with %O", __filename, res.data.predictions)
         this.search_hits = res.data.predictions
       })
       .catch(err => {
-        this.$log.error("Error in watch: " + err)
+        console.error("%s: Error in watch: %s", __filename, err)
       })
       .finally(() => (this.isLoading = false))
     }
