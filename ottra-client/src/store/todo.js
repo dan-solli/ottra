@@ -27,6 +27,9 @@ const Todo = {
 		CLEAR_STORE(state) {
 			state.todos = {}
 		},
+		REMOVE_TODO(state, uuid) {
+			Vue.delete(state.todos, uuid)
+		},
 		ADD_TODO(state, payload) {
       Vue.set(state.todos, payload.uuid, payload)			
 		}
@@ -41,6 +44,17 @@ const Todo = {
 			} 
 			catch(err) {
 				console.error("%s: saveTodo failed: %O", __filename, err)
+			}
+		},
+		deleteTodo: async function({ commit }, todo_uuid) {
+			try {
+				console.debug("%s: deleteTodo, payload is: %O", __filename, todo_uuid)
+				const response = await TodoRepo.deleteTodo(todo_uuid)
+				commit("REMOVE_TODO", todo_uuid)
+				return response.data
+			} 
+			catch(err) {
+				console.error("%s: deleteTodo failed: %O", __filename, err)
 			}
 		},
 		loadTodos: async function({ commit })	{

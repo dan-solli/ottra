@@ -8,5 +8,8 @@ export default {
 	},
 	createTodo(payload) {
 		return Repository.post(`${resource}`, payload)
+	},
+	deleteTodo(todo_uuid) {
+		return Repository.delete(`${resource}`, { data: { uuid: todo_uuid } } )
 	}
 };

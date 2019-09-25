@@ -43,6 +43,12 @@ const TodoModel = {
 	MATCH (:User { uuid: { uuid }})-[r:HAS]->(t:Todo)
 	RETURN COLLECT (t { .*, dateTime: apoc.date.format(t.sent), relType: TYPE(r) }) AS Todos`,
 		{ uuid: uuid }, "Todos")
+	},
+	deleteTodo: async function(user_id, todo_uuid) {
+    return await DB.fetchRow(`
+      MATCH (t:Todo { uuid: {todo_uuid}, creator: {user_id} }) DETACH DELETE t`, 
+      { user_id, todo_uuid }
+    )
 	}
 }
 

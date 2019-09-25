@@ -88,7 +88,8 @@
                         <template v-slot:activator>
                           <v-list-item-icon class="mx-0">
                             <v-btn v-model="localFab[newTodoItem.uuid]" icon text>
-                              <v-icon>mdi-dots-vertical</v-icon>
+                              <v-icon v-if="localFab[newTodoItem.uuid]">mdi-close</v-icon>
+                              <v-icon v-else>mdi-dots-vertical</v-icon>
                             </v-btn>
                           </v-list-item-icon>
                         </template>
@@ -126,7 +127,7 @@
                         </v-tooltip>
                         <v-tooltip bottom>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-on="on" fab small class="red lighten-3">
+                            <v-btn v-on="on" fab small class="red lighten-3" @click="deleteTodo(newTodoItem.uuid)">
                               <v-icon>mdi-trash-can-outline</v-icon>
                             </v-btn>
                           </template>
@@ -192,7 +193,10 @@ export default {
       // this.$log.debug(event_type)
       const arr = event_type.split('#')
       return arr[1].slice(0,1).toUpperCase()
-    }    
+    },
+    deleteTodo: function(todo_uuid) {
+      this.$store.dispatch("deleteTodo", todo_uuid)
+    }   
   },
   created: function() {
     // Set up context sensitive stuff.

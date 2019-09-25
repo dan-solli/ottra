@@ -16,7 +16,10 @@ const TodoService = {
 		catch (err) {
 			return { ok: false, error: err }
 		}
-	}
+	},
+	deleteTodo: async function(user_id, todo_uuid) {
+		return await TodoModel.deleteTodo(user_id, todo_uuid)
+	},
 }
 
 module.exports = TodoService
