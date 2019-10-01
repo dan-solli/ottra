@@ -20,6 +20,10 @@ const TodoService = {
 	deleteTodo: async function(user_id, todo_uuid) {
 		return await TodoModel.deleteTodo(user_id, todo_uuid)
 	},
+	updateTodo: async function(user_id, payload) {
+		const updateTodoResult = await TodoModel.updateTodo(user_id, payload)
+		return updateTodoResult
+	}
 }
 
 module.exports = TodoService

@@ -95,7 +95,7 @@
 
 		    	<v-tooltip v-if="isAuthenticated" bottom>
 		    		<template v-slot:activator="{ on }">
-	      		  <v-btn text to="/todos" v-on="on">
+	      		  <v-btn text to="/todo" v-on="on">
 							  <v-badge color="blue" overlap>
 							    <template v-slot:badge>
 							      <span> {{ Object.keys(getTodos).length }} </span>

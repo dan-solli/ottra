@@ -1,0 +1,316 @@
+<template>
+  <v-card>
+    <v-card-title>
+      {{ $t('ui.view.edittodo.heading') }} 
+      <v-spacer></v-spacer>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" text icon @click="startTour">
+            <v-icon>help_outline</v-icon>
+          </v-btn>
+        </template>
+        {{ $t('ui.tooltip.starttour') }}
+      </v-tooltip>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" text icon @click="closeDialog">
+            <v-icon>clear</v-icon>
+          </v-btn>
+        </template>
+        {{ $t('ui.text.close') }}                  
+      </v-tooltip>
+
+    </v-card-title>
+
+    <v-card-text>
+
+      <v-container fluid fill-height>
+        <v-row align-center justify-center>
+          <v-col cols="12">
+
+            <v-form ref="form">
+
+              <v-stepper v-model="currentStep" vertical>
+                <v-stepper-step step="1" :complete="currentStep > 1">
+                  {{ $t('ui.view.edittodo.step1.header') }}
+                </v-stepper-step>
+                <v-stepper-content step="1">
+                  <v-container>
+                    <v-row>
+                      <v-col>
+                        <v-text-field 
+                          v-model="payload.subject" 
+                          :label="$t('ui.domobj.todo.subject')" 
+                          type="text"
+                          prepend-icon="mdi-page-layout-header" 
+                          required>
+                        </v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col>
+                        <v-textarea
+                          v-model="payload.body"
+                          prepend-icon="mdi-comment"
+                          outlined
+                          :hint="$t('ui.view.edittodo.step1.description.hint')"
+                          :label="$t('ui.view.edittodo.step1.description')">
+                        </v-textarea>
+                      </v-col>
+                    </v-row>
+
+                    <v-row>
+                      <v-col>
+                        <v-btn color="primary" @click="nextStep">
+                          {{ $t('ui.text.continue') }} </v-btn>
+                        <v-btn text @click="closeDialog">
+                          {{ $t('ui.text.cancel') }}
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+
+                  </v-container>
+                </v-stepper-content>
+
+                <v-stepper-step step="2" :complete="currentStep > 2">
+                  {{ $t('ui.view.edittodo.step2.header') }}
+                </v-stepper-step>
+                <v-stepper-content step="2">
+                  <v-container>
+                    <v-row>
+                      <v-col>
+                        <span class="headline"> (*) When you want it done.</span>
+                        <OttraDateTimePicker 
+                          :date="payload.softDLDate"
+                          :time="payload.softDLTime">
+                        </OttraDateTimePicker>
+                      </v-col>
+                    </v-row>
+
+                    <v-row>
+                      <v-col>
+                        <span class="headline"> (*) When it HAS to be done.</span>
+                        <OttraDateTimePicker 
+                          :date="payload.hardDLDate" 
+                          :time="payload.hardDLTime">
+                        </OttraDateTimePicker>
+                      </v-col>
+                    </v-row>
+
+                    <v-row>
+                      <v-col>
+                        <v-btn color="primary" @click="nextStep">
+                          {{ $t('ui.text.continue') }} </v-btn>
+                        <v-btn text @click="closeDialog">
+                          {{ $t('ui.text.cancel') }}
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+
+                  </v-container>
+                </v-stepper-content>
+
+                <v-stepper-step step="3" :complete="currentStep > 3">
+                  {{ $t('ui.view.edittodo.step3.header') }}
+                </v-stepper-step>
+                <v-stepper-content step="3">
+                  <v-container>
+                    <v-row>
+                      <v-col>
+                        <span class="headline"> (*) Set priority.</span>
+                        <component :is="getStrategyComponent"></component>
+                      </v-col>
+                    </v-row>
+
+                    <v-row>
+                      <v-col>
+                        <v-btn color="primary" @click="saveTodo">
+                          {{ $t('ui.text.saveandcontinue') }} </v-btn>
+                        <v-btn text @click="closeDialog">
+                          {{ $t('ui.text.cancel') }}
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+
+                  </v-container>
+                </v-stepper-content>
+
+                <v-stepper-step step="4" :complete="currentStep > 4">
+                  {{ $t('ui.view.edittodo.step4.header') }}
+                </v-stepper-step>
+                <v-stepper-content step="4">
+                  <v-container>
+                    <v-row>
+                      <v-col>
+                        <span class="headline"> (*) Set steps.</span>
+
+                        <v-list dense>
+                          <v-list-item-group v-model="item">
+                            <v-list-item v-for="(item, i) in items" :key="i">
+                              <v-list-item-content>
+                                <v-list-item-title v-text="item.text"></v-list-item-title>
+                              </v-list-item-content>
+                            </v-list-item>
+                          </v-list-item-group>
+                        </v-list>
+                      </v-col>
+                    </v-row>
+
+                    <v-row>
+                      <v-col>
+                        <v-text-field 
+                          v-model="newStep" 
+                          :label="$t('ui.domobj.todo.subject')" 
+                          type="text"
+                          prepend-icon="mdi-note-plus" 
+                          required>
+                        </v-text-field>
+                        <v-btn color="primary" @click="addStep">(*) Add step</v-btn>
+                      </v-col>
+                    </v-row>
+
+
+                    <v-row>
+                      <v-col>
+                        <v-btn color="primary" @click="saveTodo">
+                          {{ $t('ui.text.save') }} </v-btn>
+                        <v-btn text @click="closeDialog">
+                          {{ $t('ui.text.cancel') }}
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+
+                  </v-container>
+                </v-stepper-content>
+
+
+              </v-stepper>
+            </v-form>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card-text>
+
+    <v-tour name="CreateTodoTour" :steps="tourSteps" :options="tourLabels"></v-tour>
+  </v-card>
+</template>
+
+<script>
+import { required, minLength } from 'vuelidate/lib/validators'
+import { mapGetters } from 'vuex'
+import { TODO_NEW } from '@/common/todo.types'
+import OttraDateTimePicker from '@/components/OttraDateTimePicker'
+
+import OttraPriorityStrategyDefault from '@/components/strategies/Default'
+
+export default {
+  name: "create-todo",
+  props: [ 'todo_uuid' ],
+  components: {
+    OttraDateTimePicker,
+    OttraPriorityStrategyDefault
+  },
+  data: function() {
+    return {
+      currentStep: 1,
+      newStep: '',
+      item: '',
+
+      payload: {
+        uuid: '',
+        body: '',
+        created: '',
+        creator: '',
+        softDLDate: new Date().toISOString().substr(0, 10),
+        hardDLDate: new Date().toISOString().substr(0, 10),
+        softDLTime: null,
+        hardDLTime: null,
+        hardDeadline: 0,
+        priority: 0,
+        relType: '',
+        softDeadline: 0,
+        status: TODO_NEW
+      },
+      items: [],
+    }
+  },
+  mounted: function() {
+    if (this.todo_uuid) {
+      this.payload = this.getTodoById(this.todo_uuid)
+    }
+  },
+  computed: {
+    ...mapGetters([
+      "getTodoById",
+    ]),
+    getStrategyComponent: function() {
+      return OttraPriorityStrategyDefault
+    },
+    tourLabels: function() {
+      return {
+        labels: {
+          buttonSkip: this.$t('ui.tour.buttonSkip'),
+          buttonPrevious: this.$t('ui.tour.buttonPrevious'),
+          buttonNext: this.$t('ui.tour.buttonNext'),
+          buttonStop: this.$t('ui.tour.buttonStop')
+        }
+      }
+    },
+    tourSteps: function() { 
+      return [
+        { 
+          target: '.tour-step-1',
+          content: this.$t('ui.tour.loginuser.step1'),
+          params: {
+            placement: 'left'
+          }
+        },
+        { 
+          target: '.tour-step-2',
+          content: this.$t('ui.tour.loginuser.step2'),
+          params: {
+            placement: 'left'
+          }
+        },
+        { 
+          target: '.tour-step-4',
+          content: this.$t('ui.tour.loginuser.step4'),
+          params: {
+            placement: 'right'
+          }
+        },
+      ]
+    }
+  },
+  methods: {
+    addStep: function() {
+      if (this.newStep.length > 0) {
+        this.$store.dispatch("saveStep", { parent_uuid: this.payload.uuid, text: this.newStep })
+        this.items.push({ text: this.newStep })
+        this.newStep = ''
+      }
+    },
+    saveTodo: function() {
+      this.payload.uuid = this.todo_uuid
+      this.$store.dispatch("updateTodo", this.payload)
+      .then(() => {
+        this.nextStep()
+      })
+      .catch((err) => {
+        console.error("%s: updateTodo failed: %s", __filename, error)
+      })
+    },
+    startTour: function() {
+      this.$tours['CreateTodoTour'].start()
+    },
+    closeDialog: function() {
+      this.$router.push('/todo')
+    },
+    nextStep: function() {
+      console.debug("%s: nextStep: currentStep is %d", __filename, this.currentStep)
+      this.currentStep = this.currentStep + 1
+    },
+  }
+};
+</script>
+

@@ -2,6 +2,7 @@ import Repository from "../repository";
 
 const user_resource = "/user";
 const auth_resource = "/auth";
+const settings_resource = user_resource + "/settings"
 
 export default {
 	get() {
@@ -13,7 +14,7 @@ export default {
 	authenticateUser(payload) {
 		return Repository.post(`${auth_resource}/authenticate`, payload);
 	},
-	getSettings(uuid) {
-		return Repository.get(`${user_resource}/${uuid}/settings`)
-	}
+	getSettings() {
+		return Repository.get(`${settings_resource}`)
+	},
 };

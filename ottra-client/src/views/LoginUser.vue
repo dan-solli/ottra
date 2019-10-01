@@ -112,7 +112,7 @@ export default {
     submitStatus: 'Indetermined',
 	}),
   mounted: function() {
-    this.$log.debug(this.$route.params)
+    console.debug("%s: In mounted(). Params are: %O", __filename, this.$route.params)
     this[this.$route.params.directive] = true
   },
   validations: function() {

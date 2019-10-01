@@ -7,36 +7,36 @@ const { check,
 
 const autenUser = buildCheckFunction([ 'tokenData' ])
 
-const TodoService = require('./../services/todo.service')
+const StepService = require('./../services/step.service')
 
 const { sendResponse } = require('./../infra/response.js')
 
 const r = express.Router();
 
+/*
 r.get('/', [ autenUser('uuid').isUUID() ],
 	async function(req, res) {
 		sendResponse(res, await TodoService.getTodos(req.tokenData.uuid))
 	}
 )
-
+*/
 r.post('/', [ autenUser('uuid').isUUID() ],
 	async function(req, res) {
-		sendResponse(res, await TodoService.createTodo(req.tokenData.uuid, req.body))
+		sendResponse(res, await StepService.createStep(req.tokenData.uuid, req.body))
 	}
 )
 
 r.delete("/", [ autenUser('uuid').isUUID() ],
 	async function(req, res) {
-		sendResponse(res, await TodoService.deleteTodo(req.tokenData.uuid, req.body.uuid))
+		sendResponse(res, await StepService.deleteStep(req.tokenData.uuid, req.body.uuid))
 	}
 )
 
+/*
 r.put("/", [ autenUser('uuid').isUUID() ],
 	async function(req, res) {
-		const result = await TodoService.updateTodo(req.tokenData.uuid, req.body)
-		console.debug("%s: put / returning: %O", __filename, result)
-		sendResponse(res, result)
+		sendResponse(res, await TodoService.updateTodo(req.tokenData.uuid, req.body))
 	}
 )
-
+*/
 module.exports = r

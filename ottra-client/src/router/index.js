@@ -31,6 +31,8 @@ import StorageView from './../views/StorageView'
 import EquipmentNewView from './../views/creation/CreateEquipment'
 import EquipmentView from './../views/EquipmentView'
 
+import CreateTodo from './../views/creation/CreateTodo'
+
 
 import store from '../store'
 
@@ -109,11 +111,6 @@ const router = new Router({
       component: SettingsView
     },
     {
-      path: '/todos',
-      name: 'view_todos',
-      component: TodoView
-    },
-    {
       path: '/create',
       name: 'base_create',
       component: CreateBaseView,
@@ -175,6 +172,17 @@ const router = new Router({
           path: '/equipment',
           name: 'equipment',
           component: EquipmentView
+        },
+        {
+          path: '/todo',
+          name: 'view_todos',
+          component: TodoView
+        },
+        {
+          path: '/todo/:todo_uuid',
+          name: 'edit_todo',
+          props: true,
+          component: CreateTodo
         },
       ]
     },

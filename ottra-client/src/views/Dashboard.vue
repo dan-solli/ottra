@@ -80,60 +80,11 @@
                   {{ $t('ui.dashboard.unattended.new.todos') }}
                 </template>
                 <v-list dense flat>
-                  <v-list-item-group v-model="newTodoItem">
+                  <v-list-item-group>
                     <v-list-item class="mx-0" 
                       v-for="newTodoItem in getUnattendedNewTodos" 
                       :key="newTodoItem.uuid">
-                      <v-speed-dial v-model="localFab[newTodoItem.uuid]" direction="left">
-                        <template v-slot:activator>
-                          <v-list-item-icon class="mx-0">
-                            <v-btn v-model="localFab[newTodoItem.uuid]" icon text>
-                              <v-icon v-if="localFab[newTodoItem.uuid]">mdi-close</v-icon>
-                              <v-icon v-else>mdi-dots-vertical</v-icon>
-                            </v-btn>
-                          </v-list-item-icon>
-                        </template>
-                        <v-tooltip bottom>
-                          <template v-slot:activator="{ on }">
-                            <v-btn v-on="on" fab small dark color="green">
-                              <v-icon>mdi-check</v-icon>
-                            </v-btn>
-                          </template>
-                          {{ $t('ui.text.checkdone') }}
-                        </v-tooltip>
-                        <v-tooltip bottom>
-                          <template v-slot:activator="{ on }">
-                            <v-btn v-on="on" fab small class="blue lighten-4">
-                              <v-icon>mdi-file-document-edit-outline</v-icon>
-                            </v-btn>
-                          </template>
-                          {{ $t('ui.text.edit') }}
-                        </v-tooltip>
-                        <v-tooltip bottom>
-                          <template v-slot:activator="{ on }">
-                            <v-btn v-on="on" fab small class="light-green lighten-4">
-                              <v-icon>mdi-calendar-plus</v-icon>
-                            </v-btn>
-                          </template>
-                          {{ $t('ui.text.plan') }}
-                        </v-tooltip>
-                        <v-tooltip bottom>
-                          <template v-slot:activator="{ on }">
-                            <v-btn v-on="on" fab small disabled>
-                              <v-icon>mdi-forward</v-icon>
-                            </v-btn>
-                          </template>
-                          {{ $t('ui.text.forward') }}
-                        </v-tooltip>
-                        <v-tooltip bottom>
-                          <template v-slot:activator="{ on }">
-                            <v-btn v-on="on" fab small class="red lighten-3" @click="deleteTodo(newTodoItem.uuid)">
-                              <v-icon>mdi-trash-can-outline</v-icon>
-                            </v-btn>
-                          </template>
-                          {{ $t('ui.text.delete') }}
-                        </v-tooltip>
-                      </v-speed-dial>
+                      <OttraTodoButtons :todo="newTodoItem"></OttraTodoButtons>
                       <v-list-item-content>
                         <v-list-item-title v-text="newTodoItem.subject"></v-list-item-title>
                       </v-list-item-content>
@@ -155,17 +106,20 @@
 import { mapGetters } from "vuex";
 
 import OttraWidget from '@/components/OttraWidget'
+import OttraTodoButtons from '@/components/OttraTodoButtons'
+
+import { TODO_DONE } from '@/common/todo.types'
 
 export default {
   name: 'dashboard',
   components: {
-    OttraWidget
+    OttraWidget,
+    OttraTodoButtons
   },
   data: function() {
     return {
       currentDate: '',
       paginationPage: 1,
-      localFab: {}
     }
   },
   computed: {
@@ -174,7 +128,8 @@ export default {
       "getEvents",
       "getMessagesUnread",
       "getMessageUnreadCount",
-      "getUnattendedNewTodos"
+      "getUnattendedNewTodos",
+      "getTodoById"
     ]),
     getNewTodoCount: function() {
       return this.getUnattendedNewTodos.length
@@ -194,9 +149,6 @@ export default {
       const arr = event_type.split('#')
       return arr[1].slice(0,1).toUpperCase()
     },
-    deleteTodo: function(todo_uuid) {
-      this.$store.dispatch("deleteTodo", todo_uuid)
-    }   
   },
   created: function() {
     // Set up context sensitive stuff.

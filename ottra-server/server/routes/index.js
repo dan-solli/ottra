@@ -24,6 +24,7 @@ r.use('/1/todo', (require('./../api/todo.controller')))
 r.use('/1/room', (require('./../api/room.controller')))
 r.use('/1/storage', (require('./../api/storage.controller')))
 r.use('/1/equipment', (require('./../api/equipment.controller')))
+r.use('/1/step', (require('./../api/step.controller')))
 
 module.exports = r
 

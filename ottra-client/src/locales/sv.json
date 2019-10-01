@@ -159,6 +159,7 @@
 	"ui.text.address": "Adress",
 	"ui.text.continue": "Fortsätt",
 	"ui.text.save": "Spara",
+	"ui.text.saveandcontinue": "Spara och fortsätt",
 	"ui.text.street": "Gatuadress",
 	"ui.text.postalcode": "Postnummer",
 	"ui.text.city": "Stad",
@@ -199,5 +200,17 @@
 	"ui.component.addconsumable.tresholdwarning": "Varning när det blir färre än",
 	"ui.component.addconsumable.goalnumber": "Hur många som behövs",
 	"ui.component.addconsumable.addaction": "Lägg automatiskt till uppgift om att skaffa fler?",
-	"ui.view.createequipment.step6.header": "Bilder eller dokument"
+	"ui.view.createequipment.step6.header": "Bilder eller dokument",
+
+	"ui.view.edittodo.heading": "Ändra att-göra",
+	"ui.view.edittodo.step1.header": "Namn och beskrivning",
+	"ui.view.edittodo.step1.description": "Beskrivning",
+	"ui.view.edittodo.step1.description.hint": "Om du vill lägga till stegvis instruktioner för hur uppgiften ska lösas, kan du göra det senare",
+	"ui.view.edittodo.step2.header": "Deadlines",
+	"ui.view.edittodo.step2.harddeadline.header": "Hård deadline",
+	"ui.view.edittodo.step2.harddeadlinetime.header": "Time",
+	"ui.view.edittodo.step3.header": "Prioritet",
+	"ui.view.edittodo.step4.header": "Lägg till delmoment",
+
+	"ui.domobj.todo.subject": "Namn"
 }

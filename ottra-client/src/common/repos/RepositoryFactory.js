@@ -7,6 +7,7 @@ import TodoRepo from './todoRepository'
 import RoomRepo from './roomRepository'
 import StorageRepo from './storageRepository'
 import EquipmentRepo from './equipmentRepository'
+import StepRepo from './stepRepository'
 
 const repositories = {
 	user: UserRepo,
@@ -18,6 +19,7 @@ const repositories = {
 	room: RoomRepo,
 	storage: StorageRepo,
 	equipment: EquipmentRepo,
+	step: StepRepo
 };
 
 export const RepositoryFactory = {

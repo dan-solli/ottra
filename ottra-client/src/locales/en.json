@@ -167,6 +167,7 @@
 	"ui.text.address": "Address",
 	"ui.text.continue": "Continue",
 	"ui.text.save": "Save",
+	"ui.text.saveandcontinue": "Save and continue",
 	"ui.text.street": "Street",
 	"ui.text.postalcode": "Postal code",
 	"ui.text.city": "City",
@@ -208,6 +209,17 @@
 	"ui.component.addconsumable.goalnumber": "Goal amount",
 	"ui.component.addconsumable.addaction": "Automatically add action to require more?",
 	"ui.view.createequipment.step6.header": "Documents",
+
+	"ui.view.edittodo.heading": "Edit todo",
+	"ui.view.edittodo.step1.header": "Subject and description",
+	"ui.domobj.todo.subject": "Subject",
+	"ui.view.edittodo.step1.description": "Description",
+	"ui.view.edittodo.step1.description.hint": "If you want to add a list of things to do to complete the todo, add them later as steps.",
+	"ui.view.edittodo.step2.header": "Deadlines",
+	"ui.view.edittodo.step2.harddeadline.header": "Hard deadline",
+	"ui.view.edittodo.step2.harddeadlinetime.header": "Tidpunkt",
+	"ui.view.edittodo.step3.header": "Priority",
+	"ui.view.edittodo.step4.header": "Add steps",
 
   "flurb": "flurb",
   "message": "hello i18n !!"

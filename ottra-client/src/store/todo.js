@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 import { RepositoryFactory } from '@/common/repos/RepositoryFactory'
-import { TODO_NEW } from '@/common/todo.types'
+import { TODO_NEW, TODO_DONE } from '@/common/todo.types'
 
 const TodoRepo = RepositoryFactory.get('todo')
 
@@ -18,7 +18,10 @@ const Todo = {
 			} else {
 				return null
 			}
-		})
+		}),
+		getTodoById: (state) => (id) => {
+			return state.todos[id]
+		},
 	},
 	mutations: {
 		SET_TODOS(state, payload) {
@@ -32,7 +35,7 @@ const Todo = {
 		},
 		ADD_TODO(state, payload) {
       Vue.set(state.todos, payload.uuid, payload)			
-		}
+		},
 	},
 	actions: {
 		saveTodo: async function({ commit }, payload) {
@@ -55,6 +58,17 @@ const Todo = {
 			} 
 			catch(err) {
 				console.error("%s: deleteTodo failed: %O", __filename, err)
+			}
+		},
+		updateTodo: async function({ commit }, payload) {
+			try {
+				console.debug("%s: updateTodo, payload is: %O", __filename, payload)
+				const response = await TodoRepo.updateTodo(payload)
+				commit("ADD_TODO", response.data)
+				return response.data
+			} 
+			catch(err) {
+				console.error("%s: updateTodo failed: %O", __filename, err)
 			}
 		},
 		loadTodos: async function({ commit })	{

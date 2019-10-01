@@ -10,8 +10,10 @@ const TodoModel = {
 			subject = 'No subject',
 			body = 'Empty message', 
 			priority = -1,
-			softDeadline = -1,
-			hardDeadline = -1,
+			softDLDate = -1,
+			hardDLDate = -1,
+			softDLTime = -1,
+			hardDLTime = -1,
 		} = payload
 
 		return await DB.fetchRow(`
@@ -22,26 +24,24 @@ const TodoModel = {
 						subject: {subject}, 
 						body: {body},
 						priority: {priority}, 
-						softDeadline: {softDeadline},
-						hardDeadline: {hardDeadline},
+						softDeadlineDate: {softDLDate},
+						softDeadlineTime: {softDLTime},
+						hardDeadlineDate: {hardDLDate},
+						hardDeadlineTime: {hardDLTime},
 						creator: {creator},
 						created: TIMESTAMP()
-					}) return t { .* } as Todo`, { 
+					}) RETURN t { .* } AS Todo`, { 
 						new_uuid: uuidv4(), 
-						status: status,
-						subject: subject,
-						body: body,
-						priority: priority,
-						softDeadline: softDeadline,
-						hardDeadline: hardDeadline,
+						status, subject, body, priority,
+						softDLDate, hardDLDate, softDLTime, hardDLTime,
 						creator: user_id
 					}, "Todo"
 		)
 	},
 	getTodos: async function(uuid) {
 		return await DB.fetchAll(`
-	MATCH (:User { uuid: { uuid }})-[r:HAS]->(t:Todo)
-	RETURN COLLECT (t { .*, dateTime: apoc.date.format(t.sent), relType: TYPE(r) }) AS Todos`,
+	MATCH (:User { uuid: { uuid }})-[:HAS]->(t:Todo)
+	RETURN COLLECT (t { .*, dateTime: apoc.date.format(t.created) }) AS Todos`,
 		{ uuid: uuid }, "Todos")
 	},
 	deleteTodo: async function(user_id, todo_uuid) {
@@ -49,6 +49,19 @@ const TodoModel = {
       MATCH (t:Todo { uuid: {todo_uuid}, creator: {user_id} }) DETACH DELETE t`, 
       { user_id, todo_uuid }
     )
+	},
+	updateTodo: async function(user_id, payload) {
+		if (payload.hasOwnProperty('steps')) {
+			delete payload.steps
+		}
+
+		console.debug("%s: updateTodo called with payload: %O", __filename, payload)
+		return await DB.fetchRow(`
+			MATCH (t:Todo { uuid: {uuid}, creator: {user_id} })
+			SET t += {payload}
+			RETURN t { .*, dateTime: apoc.date.format(t.created) } AS Todo`, 
+			{ uuid: payload.uuid, user_id, payload }, "Todo"
+		)
 	}
 }
 
