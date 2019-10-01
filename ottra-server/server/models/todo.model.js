@@ -40,8 +40,11 @@ const TodoModel = {
 	},
 	getTodos: async function(uuid) {
 		return await DB.fetchAll(`
-	MATCH (:User { uuid: { uuid }})-[:HAS]->(t:Todo)
-	RETURN COLLECT (t { .*, dateTime: apoc.date.format(t.created) }) AS Todos`,
+			MATCH (:User { uuid: { uuid }})-[:HAS]->(t:Todo)
+			OPTIONAL MATCH (t)-[r:INCLUDE]->(s:Step)
+			WITH t, s, r ORDER BY r.order
+			WITH COLLECT (s.uuid) as Steps, t
+			RETURN COLLECT (t { .*, steps: Steps, dateTime: apoc.date.format(t.created) }) AS Todos`,
 		{ uuid: uuid }, "Todos")
 	},
 	deleteTodo: async function(user_id, todo_uuid) {

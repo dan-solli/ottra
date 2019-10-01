@@ -13,13 +13,12 @@ const { sendResponse } = require('./../infra/response.js')
 
 const r = express.Router();
 
-/*
 r.get('/', [ autenUser('uuid').isUUID() ],
 	async function(req, res) {
-		sendResponse(res, await TodoService.getTodos(req.tokenData.uuid))
+		sendResponse(res, await StepService.getSteps(req.tokenData.uuid))
 	}
 )
-*/
+
 r.post('/', [ autenUser('uuid').isUUID() ],
 	async function(req, res) {
 		sendResponse(res, await StepService.createStep(req.tokenData.uuid, req.body))

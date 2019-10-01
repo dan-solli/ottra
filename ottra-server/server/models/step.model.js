@@ -37,9 +37,17 @@ const StepModel = {
 			}, "Step"
 		)
 	},
-	getSteps: async function(uuid) {
+	getSteps: async function(user_id) {
+		return await DB.fetchAll(`
+			MATCH (s:Step { creator: {user_id} })
+			RETURN COLLECT (s { .*, dateTime: apoc.date.format(s.created) }) AS Steps`,
+			{ user_id }, "Steps"
+		)
 	},
 	deleteStep: async function(user_id, step_uuid) {
+		return await DB.fetchRow(`
+			MATCH (t)-[r:INCLUDE]->(s:Step { uuid: {step_uuid} }) DETACH DELETE s`,
+			{ step_uuid })
 	},
 	updateStep: async function(user_id, payload) {
 		return await DB.fetchRow(`

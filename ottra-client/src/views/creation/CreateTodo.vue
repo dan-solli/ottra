@@ -31,7 +31,7 @@
             <v-form ref="form">
 
               <v-stepper v-model="currentStep" vertical>
-                <v-stepper-step step="1" :complete="currentStep > 1">
+                <v-stepper-step step="1" :complete="currentStep > 1" editable>
                   {{ $t('ui.view.edittodo.step1.header') }}
                 </v-stepper-step>
                 <v-stepper-content step="1">
@@ -72,7 +72,7 @@
                   </v-container>
                 </v-stepper-content>
 
-                <v-stepper-step step="2" :complete="currentStep > 2">
+                <v-stepper-step step="2" :complete="currentStep > 2" editable>
                   {{ $t('ui.view.edittodo.step2.header') }}
                 </v-stepper-step>
                 <v-stepper-content step="2">
@@ -110,7 +110,7 @@
                   </v-container>
                 </v-stepper-content>
 
-                <v-stepper-step step="3" :complete="currentStep > 3">
+                <v-stepper-step step="3" :complete="currentStep > 3" editable>
                   {{ $t('ui.view.edittodo.step3.header') }}
                 </v-stepper-step>
                 <v-stepper-content step="3">
@@ -137,7 +137,7 @@
                   </v-container>
                 </v-stepper-content>
 
-                <v-stepper-step step="4" :complete="currentStep > 4">
+                <v-stepper-step step="4" :complete="currentStep > 4" editable>
                   {{ $t('ui.view.edittodo.step4.header') }}
                 </v-stepper-step>
                 <v-stepper-content step="4">
@@ -149,6 +149,11 @@
                         <v-list dense>
                           <v-list-item-group v-model="item">
                             <v-list-item v-for="(item, i) in items" :key="i">
+                              <v-list-item-icon>
+                                <v-btn icon @click="deleteStep(i, item)">
+                                  <v-icon>mdi-delete</v-icon>
+                                </v-btn>
+                              </v-list-item-icon>
                               <v-list-item-content>
                                 <v-list-item-title v-text="item.text"></v-list-item-title>
                               </v-list-item-content>
@@ -283,12 +288,18 @@ export default {
     }
   },
   methods: {
-    addStep: function() {
+    addStep: async function() {
       if (this.newStep.length > 0) {
-        this.$store.dispatch("saveStep", { parent_uuid: this.payload.uuid, text: this.newStep })
-        this.items.push({ text: this.newStep })
+        const response = await this.$store.dispatch("saveStep", 
+          { parent_uuid: this.payload.uuid, text: this.newStep })
+
+        this.items.push({ text: this.newStep, uuid: response.uuid })
         this.newStep = ''
       }
+    },
+    deleteStep: function(index, item) {
+      this.items.splice(index, 1)
+      this.$store.dispatch("deleteStep", item.uuid)
     },
     saveTodo: function() {
       this.payload.uuid = this.todo_uuid
