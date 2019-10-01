@@ -24,10 +24,10 @@ const TodoModel = {
 						subject: {subject}, 
 						body: {body},
 						priority: {priority}, 
-						softDeadlineDate: {softDLDate},
-						softDeadlineTime: {softDLTime},
-						hardDeadlineDate: {hardDLDate},
-						hardDeadlineTime: {hardDLTime},
+						softDLDate: {softDLDate},
+						softDLTime: {softDLTime},
+						hardDLDate: {hardDLDate},
+						hardDLTime: {hardDLTime},
 						creator: {creator},
 						created: TIMESTAMP()
 					}) RETURN t { .* } AS Todo`, { 

@@ -18,7 +18,7 @@
 		      v-on="on"
 		    ></v-text-field>
 		  </template>
-		  <v-date-picker v-model="localDate" scrollable>
+		  <v-date-picker v-model="localDate" scrollable v-on:change="$emit('set-date', localDate)">
 		    <div class="flex-grow-1"></div>
 		    <v-btn text color="primary" @click="menu = false">(*)Cancel</v-btn>
 		    <v-btn text color="primary" @click="$refs.datepicker.save(localDate)">(*)OK</v-btn>
@@ -41,6 +41,7 @@
 		      prepend-icon="access_time"
 		      readonly
 		      v-on="on"
+		      v-on:change="$emit('set-time', localTime)"
 		    ></v-text-field>
 		  </template>
 		  <v-time-picker v-model="localTime" format="24hr" scrollable>
@@ -56,12 +57,6 @@
 <script>
 export default {
 	name: 'ottra-datetime-picker',
-/*	
-	props: [
-		dateProp, 
-		timeProp
-	],
-*/	
 	data: function() {
 		return {
 			menu: '',

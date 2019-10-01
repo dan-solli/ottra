@@ -81,8 +81,8 @@
                       <v-col>
                         <span class="headline"> (*) When you want it done.</span>
                         <OttraDateTimePicker 
-                          :date="payload.softDLDate"
-                          :time="payload.softDLTime">
+                          v-on:set-date="payload.softDLDate = $event"
+                          v-on:set-time="payload.softDLTime = $event">
                         </OttraDateTimePicker>
                       </v-col>
                     </v-row>
@@ -91,8 +91,8 @@
                       <v-col>
                         <span class="headline"> (*) When it HAS to be done.</span>
                         <OttraDateTimePicker 
-                          :date="payload.hardDLDate" 
-                          :time="payload.hardDLTime">
+                          v-on:set-date="payload.hardDLDate = $event"
+                          v-on:set-time="payload.hardDLTime = $event">
                         </OttraDateTimePicker>
                       </v-col>
                     </v-row>
@@ -118,7 +118,9 @@
                     <v-row>
                       <v-col>
                         <span class="headline"> (*) Set priority.</span>
-                        <component :is="getStrategyComponent"></component>
+                        <component :is="getStrategyComponent" 
+                          v-on:set-priority="payload.priority = $event">
+                        </component>
                       </v-col>
                     </v-row>
 
@@ -221,14 +223,12 @@ export default {
         body: '',
         created: '',
         creator: '',
-        softDLDate: new Date().toISOString().substr(0, 10),
-        hardDLDate: new Date().toISOString().substr(0, 10),
+        softDLDate: null,
+        hardDLDate: null,
         softDLTime: null,
         hardDLTime: null,
-        hardDeadline: 0,
         priority: 0,
         relType: '',
-        softDeadline: 0,
         status: TODO_NEW
       },
       items: [],
@@ -236,7 +236,7 @@ export default {
   },
   mounted: function() {
     if (this.todo_uuid) {
-      this.payload = this.getTodoById(this.todo_uuid)
+      this.payload = Object.assign(this.payload, this.getTodoById(this.todo_uuid))
     }
   },
   computed: {

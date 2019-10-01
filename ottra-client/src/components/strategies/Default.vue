@@ -1,5 +1,5 @@
 <template>
-	<v-btn-toggle v-model="priority" mandatory>
+	<v-btn-toggle v-on:change="$emit('set-priority', priority)" v-model="priority" mandatory>
 		<v-btn> 0 </v-btn>
 		<v-btn class="red lighten-1"> ! </v-btn>
 		<v-btn class="red darken-2"> !! </v-btn>
