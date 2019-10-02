@@ -57,6 +57,9 @@
 <script>
 export default {
 	name: 'ottra-datetime-picker',
+	props: [
+		"date", "time"
+	],
 	data: function() {
 		return {
 			menu: '',
@@ -64,7 +67,14 @@ export default {
 			localDate: '',
 			localTime: '',
 		}
-	}
+	},
+	mounted: function() {
+		this.$nextTick(() => {
+			console.debug("%s: Setting time (%s) and date (%s)", __filename, this.time, this.date)
+			this.localDate = this.date
+			this.localTime = this.time
+		})
+	} 
 }
 
 </script>	

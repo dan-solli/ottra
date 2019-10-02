@@ -25,7 +25,7 @@ const Step = {
 		REMOVE_STEP(state, uuid) {
 			Vue.delete(state.steps, uuid)
 		},
-		ADD_TODO(state, payload) {
+		ADD_STEP(state, payload) {
       Vue.set(state.steps, payload.uuid, payload)			
 		},
 	},

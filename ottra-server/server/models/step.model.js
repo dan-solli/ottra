@@ -31,7 +31,7 @@ const StepModel = {
 				uuid: uuidv4(),
 				creator: user_id,
 				step_type: payload.type || 'step',
-				description: payload.text,
+				description: payload.description,
 				order: newStepNumber,
 				parent_uuid: parent_uuid
 			}, "Step"

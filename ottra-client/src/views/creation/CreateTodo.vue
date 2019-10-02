@@ -80,7 +80,9 @@
                     <v-row>
                       <v-col>
                         <span class="headline"> (*) When you want it done.</span>
-                        <OttraDateTimePicker 
+                        <OttraDateTimePicker
+                          :time="payload.softDLTime" 
+                          :date="payload.softDLDate"
                           v-on:set-date="payload.softDLDate = $event"
                           v-on:set-time="payload.softDLTime = $event">
                         </OttraDateTimePicker>
@@ -91,6 +93,8 @@
                       <v-col>
                         <span class="headline"> (*) When it HAS to be done.</span>
                         <OttraDateTimePicker 
+                          :time="payload.hardDLTime" 
+                          :date="payload.hardDLDate"
                           v-on:set-date="payload.hardDLDate = $event"
                           v-on:set-time="payload.hardDLTime = $event">
                         </OttraDateTimePicker>
@@ -147,15 +151,15 @@
                         <span class="headline"> (*) Set steps.</span>
 
                         <v-list dense>
-                          <v-list-item-group v-model="item">
-                            <v-list-item v-for="(item, i) in items" :key="i">
+                          <v-list-item-group>
+                            <v-list-item v-for="(item, i) in hydratedSteps" :key="i">
                               <v-list-item-icon>
                                 <v-btn icon @click="deleteStep(i, item)">
                                   <v-icon>mdi-delete</v-icon>
                                 </v-btn>
                               </v-list-item-icon>
                               <v-list-item-content>
-                                <v-list-item-title v-text="item.text"></v-list-item-title>
+                                <v-list-item-title v-text="item.description"></v-list-item-title>
                               </v-list-item-content>
                             </v-list-item>
                           </v-list-item-group>
@@ -172,7 +176,12 @@
                           prepend-icon="mdi-note-plus" 
                           required>
                         </v-text-field>
-                        <v-btn color="primary" @click="addStep">(*) Add step</v-btn>
+                        <v-btn color="primary" :disabled="!newStep"
+                          @click="addStep"
+                          v-shortkey.push="['enter']"
+                          @shortkey="addStep">
+                            (*) Add step
+                        </v-btn>
                       </v-col>
                     </v-row>
 
@@ -221,8 +230,6 @@ export default {
     return {
       currentStep: 1,
       newStep: '',
-      item: '',
-
       payload: {
         uuid: '',
         body: '',
@@ -234,20 +241,30 @@ export default {
         hardDLTime: null,
         priority: 0,
         relType: '',
-        status: TODO_NEW
+        status: TODO_NEW,
+        steps: [],
       },
-      items: [],
     }
   },
   mounted: function() {
     if (this.todo_uuid) {
+      console.debug("%s: mounted() got todo_uuid %s", __filename, this.todo_uuid)
       this.payload = Object.assign(this.payload, this.getTodoById(this.todo_uuid))
     }
   },
   computed: {
     ...mapGetters([
       "getTodoById",
+      "getStepById",
     ]),
+    hydratedSteps: function() {
+      return this.payload.steps.map(function(step_uuid) {
+        //console.debug("%s: hydratedSteps: Hydrating step %s", __filename, step_uuid)
+        const stepData = this.getStepById(step_uuid)
+        //console.debug("%s: hydratedSteps: stepData is %O", __filename, stepData)
+        return stepData
+      }, this)
+    },
     getStrategyComponent: function() {
       return OttraPriorityStrategyDefault
     },
@@ -290,15 +307,16 @@ export default {
   methods: {
     addStep: async function() {
       if (this.newStep.length > 0) {
-        const response = await this.$store.dispatch("saveStep", 
-          { parent_uuid: this.payload.uuid, text: this.newStep })
-
-        this.items.push({ text: this.newStep, uuid: response.uuid })
+        const response = await this.$store.dispatch("saveStep", { 
+          parent_uuid: this.payload.uuid, 
+          description: this.newStep 
+        })
+        this.payload.steps.push(response.uuid)
         this.newStep = ''
       }
     },
     deleteStep: function(index, item) {
-      this.items.splice(index, 1)
+      this.payload.steps.splice(index, 1)
       this.$store.dispatch("deleteStep", item.uuid)
     },
     saveTodo: function() {
