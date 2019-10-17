@@ -1,0 +1,4 @@
+exports.RECURRANCE_DAY = 1
+exports.RECURRANCE_WEEK = 2
+exports.RECURRANCE_MONTH = 3
+exports.RECURRANCE_YEAR = 4

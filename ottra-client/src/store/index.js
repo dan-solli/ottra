@@ -19,6 +19,8 @@ import Todo from './todo'
 
 import Equipment from './equipment'
 import Step from './step'
+
+import Task from './task'
 /*
 import ActionModel from '@/store/models/action.model'
 import AddressModel from '@/store/models/address.model'
@@ -69,6 +71,7 @@ const OttraStore = new Vuex.Store({
 		Room,
 		Step,
 		Storage,
+		Task,
 		Todo,
 		UIState,
 		User,

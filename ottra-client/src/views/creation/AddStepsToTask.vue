@@ -1,0 +1,228 @@
+<template>
+  <v-card>
+    <v-card-title>
+      {{ $t('ui.view.edittask.heading') }} 
+
+      <v-spacer></v-spacer>
+
+      <v-menu offset-y >
+        <template v-slot:activator="{ on }">
+          <v-btn class="mr-3" text v-on="on">
+            (*) Add step
+          </v-btn>
+        </template>
+        <v-list dense>
+          <v-list-item @click="addStep(STEP_INSTRUCTION)">
+            <v-list-item-title> 
+              (*) Instruction 
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="addStep(STEP_PAUSE)">
+            <v-list-item-title> 
+              (*) Pause 
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="addStep(STEP_TRANSPORT)">
+            <v-list-item-title> 
+              (*) Transport
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="addStep(STEP_TASK)">
+            <v-list-item-title> 
+              (*) Task
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <v-divider vertical class="mr-2"></v-divider>
+
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" text icon @click="startTour">
+            <v-icon>help_outline</v-icon>
+          </v-btn>
+        </template>
+        {{ $t('ui.tooltip.starttour') }}
+      </v-tooltip>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" text icon @click="closeDialog">
+            <v-icon>clear</v-icon>
+          </v-btn>
+        </template>
+        {{ $t('ui.text.close') }}                  
+      </v-tooltip>
+
+    </v-card-title>
+
+    <v-card-text>
+      <v-container fluid fill-height>
+        <v-row align-center justify-center>
+          <v-col cols="12">
+            <v-form ref="form" v-model="valid">
+              <v-container>
+                <v-row>
+                  <v-col cols="2">
+                    {{ $t('ui.domobj.todo.subject') }}
+                  </v-col>
+                  <v-col cols="10">
+                    {{ task.subject }}
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="2">
+                    {{ $t('ui.view.edittask.description') }}
+                  </v-col>
+                  <v-col cols="10">
+                    {{ task.body }}
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col cols="12">
+                    <qrcode-vue :value="QRCodeImage"></qrcode-vue>
+                  </v-col>
+                </v-row>
+<!--
+                <v-row>
+                  <v-col cols="12">
+                    <v-btn color="primary" @click="saveTask"> {{ $t('ui.text.save') }} </v-btn>
+                    <v-btn text @click="closeDialog">{{ $t('ui.text.cancel') }} </v-btn>
+                  </v-col>
+                </v-row>
+-->                
+                <v-row>
+                  <v-col cols="12">
+                    <v-expansion-panels>
+                      <v-expansion-panel v-for="(step, i) in steps" :key="i">
+                        <component 
+                          :is="step.component"
+                          :this-step="step.data"
+                          :edit-mode="step.editMode">
+                        </component>
+                      </v-expansion-panel>
+                    </v-expansion-panels>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-form>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card-text>
+
+<!--
+    <v-tour name="CreateTaskTour" :steps="tourSteps" :options="tourLabels"></v-tour>
+-->    
+  </v-card>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+import { 
+  STEP_INSTRUCTION,
+  STEP_TASK,
+  STEP_TRANSPORT,
+  STEP_PAUSE,
+  stepTypeMixin
+} from '@/common/mixins/step.types.mixin'
+
+import QrcodeVue from 'qrcode.vue'
+
+import OttraInstructionStep from '@/components/steps/OttraInstructionStep'
+import OttraPauseStep from '@/components/steps/OttraPauseStep'
+import OttraTransportStep from '@/components/steps/OttraTransportStep'
+import OttraTaskStep from '@/components/steps/OttraTaskStep'
+
+export default {
+  name: "add-steps-to-task",
+  props: [ 'task_uuid' ],
+  mixins: [ stepTypeMixin ],
+  components: {
+    QrcodeVue
+  },
+  data: function() {
+    return {
+      valid: '',
+      task: {
+        subject: '',
+        uuid: '',
+        body: '',
+        created: '',
+        creator: '',
+      },
+      steps: [],
+      base_step: {
+        title: '',
+        description: '',
+        type: -1,
+        visualAidImages: [],
+        documents: [],
+        duration: '',
+        energyExpense: 2,
+        saveStatus: false
+      }
+    }
+  },
+  computed: {
+    ...mapGetters([
+      "getStepById",
+      "getTaskById",
+      "getRooms",
+    ]),
+    QRCodeImage: function() {
+      return 'https://' + window.location.host + window.location.pathname
+    }
+  },
+  async mounted() {
+    await this.$store.dispatch("loadTasks")
+    await this.$store.dispatch("loadSteps")
+    if (this.task_uuid) {
+      this.task = Object.assign({}, this.getTaskById(this.task_uuid))
+    } 
+/*    
+    else {
+      this.$router.push("/task")
+    }
+*/    
+  },
+  methods: {
+    startTour: function() {
+    },
+    closeDialog: function() {
+      this.$router.push('/task')
+    },
+/*    
+    saveTask: function() {
+      console.debug("%s: saveTask, payload is: %O", __filename, this.payload)
+      this.$store.dispatch("saveTask", this.payload)
+      this.$router.push('/task')
+    }
+*/    
+    addStep: function(step_type) {
+      if (step_type === STEP_INSTRUCTION) {
+        const the_step = Object.assign({}, this.base_step)
+        the_step.type = STEP_INSTRUCTION
+        this.steps.push({ component: OttraInstructionStep, data: the_step, editMode: true })
+      }
+      else if (step_type === STEP_PAUSE) {
+        const the_step = Object.assign({}, this.base_step)
+        the_step.type = STEP_PAUSE
+        this.steps.push({ component: OttraPauseStep, data: the_step, editMode: true })
+      }
+      else if (step_type === STEP_TRANSPORT) {
+        const the_step = Object.assign({}, this.base_step)
+        the_step.type = STEP_TRANSPORT
+        this.steps.push({ component: OttraTransportStep, data: the_step, editMode: true })
+      }
+      else if (step_type === STEP_TASK) {
+        const the_step = Object.assign({}, this.base_step)
+        the_step.type = STEP_TASK
+        this.steps.push({ component: OttraTaskStep, data: the_step, editMode: true })
+      }
+    }
+  }
+}
+</script>
+

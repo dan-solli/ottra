@@ -212,5 +212,13 @@
 	"ui.view.edittodo.step3.header": "Prioritet",
 	"ui.view.edittodo.step4.header": "Lägg till delmoment",
 
+
+	"ui.view.edittask.heading": "Ändra uppgift",
+	"ui.view.edittask.description": "Beskrivning",
+	"ui.view.edittask.description.hint": "Beskriv syftet med uppgiften här",
+	
+	"ui.view.taskview.heading": "Ändra uppgift",
+	"ui.view.taskview.newtask": "Ny uppgift",
+
 	"ui.domobj.todo.subject": "Namn"
 }

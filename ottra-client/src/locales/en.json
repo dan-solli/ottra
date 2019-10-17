@@ -221,6 +221,14 @@
 	"ui.view.edittodo.step3.header": "Priority",
 	"ui.view.edittodo.step4.header": "Add steps",
 
+	"ui.view.edittask.heading": "Edit task",
+	"ui.view.edittask.description": "Description",
+	"ui.view.edittask.description.hint": "Describe the purpose of the task",
+
+	"ui.view.taskview.heading": "Tasks",
+	"ui.view.taskview.newtask": "New task",
+
+
   "flurb": "flurb",
   "message": "hello i18n !!"
 }

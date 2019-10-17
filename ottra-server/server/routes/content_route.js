@@ -1,11 +1,9 @@
 const express = require('express')
 const r = express.Router()
 
-const { check, 
-				validationResult,
+const { validationResult,
 				buildCheckFunction 
 			} = require('express-validator');
-const checkTokenData = buildCheckFunction([ 'tokenData' ])
 
 
 //const jwtMiddleware = require('express-jwt-middleware')

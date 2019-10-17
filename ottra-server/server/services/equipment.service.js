@@ -3,7 +3,7 @@ const EquipmentModel = require('./../models/equipment.model')
 const EquipmentService = {
 	createEquipment: async function(payload, user_id) {
 		try {
-			result = await EquipmentModel.createEquipment(payload, user_id)
+			const result = await EquipmentModel.createEquipment(payload, user_id)
 			return await EquipmentModel.getEquipmentById(user_id, result.data.uuid)
 		}
 		catch (err) {

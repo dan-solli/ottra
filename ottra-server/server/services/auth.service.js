@@ -1,5 +1,4 @@
 const JWT = require('jsonwebtoken')
-const { aSureThing } = require('./../infra/await-to')
 
 const AuthService = {
 	refreshToken: async function(payload) {

@@ -33,6 +33,9 @@ import EquipmentView from './../views/EquipmentView'
 
 import CreateTodo from './../views/creation/CreateTodo'
 
+import TaskView from '@/views/TaskView'
+import CreateTask from './../views/creation/CreateTask'
+import AddStepsToTask from '@/views/creation/AddStepsToTask'
 
 import store from '../store'
 
@@ -184,6 +187,23 @@ const router = new Router({
           props: true,
           component: CreateTodo
         },
+        {
+          path: '/task',
+          name: 'view_tasks',
+          component: TaskView
+        },
+        {
+          path: '/task/new',
+          name: 'new_task',
+          component: CreateTask
+        },
+        {
+          path: '/task/:task_uuid',
+          name: 'add_steps_to_task',
+          props: true,
+          component: AddStepsToTask
+        },
+
       ]
     },
     {

@@ -12,7 +12,7 @@ process.on("attachDocument", async function attach(to_uuid, file) {
 	return await aSureThing(DocumentModel.attach(to_uuid, file))
 })
 
-DocumentService = {
+const DocumentService = {
 	getDocuments: async function(user_id) {
 		try {
 			return await DocumentModel.getDocuments(user_id)
@@ -21,6 +21,7 @@ DocumentService = {
 			return { ok: false, error: { code: 404, status: 'failed', message: err } }
 		}
 	},
+/*	
 	getDocumentById: async function(user_id, doc_id) {
 
 	},
@@ -30,12 +31,13 @@ DocumentService = {
 	relateDocumentToTarget(user_id, doc_id, target_id) {
 
 	},
+*/	
 	uploadDocuments: async function(user_id, documents) {
 		try {
 			const returnData = []
 
 			console.debug("%s: Documents: %O", __filename, documents)
-			for ({ file, filename, mimetype } of documents) {
+			for (const { file, filename, mimetype } of documents) {
 
 				//console.debug("%s: File and filename are:\n%s\n%s", __filename, file, filename)
 
@@ -47,9 +49,7 @@ DocumentService = {
 				if (!fileData.ok) {
 					return { ok: false, error: fileData.error }
 				} else {
-					const { 
-						ok, error, data 
-					} = await aSureThing(moveFile(file, process.env.OTTRA_CONTENT_PATH + "/" + user_id + "/" + fileData.data.filename))
+					const { ok } = await aSureThing(moveFile(file, process.env.OTTRA_CONTENT_PATH + "/" + user_id + "/" + fileData.data.filename))
 					if (ok) {
 						returnData.push(fileData)
 					} else {

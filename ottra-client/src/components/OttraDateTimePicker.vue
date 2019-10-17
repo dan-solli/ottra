@@ -1,6 +1,6 @@
 <template>
 	<div class="text-center">
-		<v-menu
+		<v-menu v-if="dateOnly"
 		  ref="datepicker"
 		  v-model="menu"
 		  :close-on-content-click="false"
@@ -12,10 +12,12 @@
 		  <template v-slot:activator="{ on }">
 		    <v-text-field
 		      v-model="localDate"
-		      label="(*)Date"
+		      :label="dateLabel"
+		      :hint="dateHint"
 		      prepend-icon="event"
 		      readonly
 		      v-on="on"
+		      v-on:change="$emit('set-date', localDate)"		      
 		    ></v-text-field>
 		  </template>
 		  <v-date-picker v-model="localDate" scrollable v-on:change="$emit('set-date', localDate)">
@@ -25,7 +27,7 @@
 		  </v-date-picker>
 		</v-menu>
 
-		<v-menu
+		<v-menu v-if="timeOnly"
 		  ref="timepicker"
 		  v-model="menu2"
 		  :close-on-content-click="false"
@@ -37,7 +39,8 @@
 		  <template v-slot:activator="{ on }">
 		    <v-text-field
 		      v-model="localTime"
-		      label="(*)Time"
+		      :label="timeLabel"
+		      :hint="timeHint"
 		      prepend-icon="access_time"
 		      readonly
 		      v-on="on"
@@ -57,15 +60,46 @@
 <script>
 export default {
 	name: 'ottra-datetime-picker',
-	props: [
-		"date", "time"
-	],
+	props: {
+		date: {
+			default: '',
+			type: String
+		},
+		time: {
+			default: '',
+			type: String
+		},
+		timeOnly: {
+			default: false,
+			type: Boolean
+		},
+		dateOnly: {
+			default: false,
+			type: Boolean
+		},
+		dateLabel: {
+			default: '(*) Date',
+			type: String,
+		},
+		dateHint: {
+			default: '(*) Date',
+			type: String,
+		},
+		timeLabel: {
+			default: '(*) Time',
+			type: String,
+		},
+		timeHint: {
+			default: '(*) Time',
+			type: String,
+		},
+	},
 	data: function() {
 		return {
 			menu: '',
 			menu2: '',
-			localDate: '',
-			localTime: '',
+			localDate: null,
+			localTime: null,
 		}
 	},
 	mounted: function() {
