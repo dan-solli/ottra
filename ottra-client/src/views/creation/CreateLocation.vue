@@ -95,6 +95,32 @@
                     {{ $t('ui.view.createlocation.savelocation') }}
                   </v-btn>
                 </v-stepper-content>
+
+<!--
+                <v-stepper-step step="3" :complete="current_step > 3">
+                  {{ $t('ui.text.save') }}
+                </v-stepper-step>
+
+                <v-stepper-content step="3">
+                  <v-form ref="form" v-model="valid">
+                    <v-container>
+                      <v-row>
+                        <v-col cols="6">
+                          <v-text-field v-model="payload.address" :label="$t('ui.text.address')">
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-form>
+                  <v-btn text @click="current_step = 1">
+                    {{ $t('ui.text.restart') }}
+                  </v-btn>
+                  <v-btn text @click="saveLocation">
+                    {{ $t('ui.view.createlocation.savelocation') }}
+                  </v-btn>
+                </v-stepper-content>
+-->
+
               </v-stepper>
             </v-col>
           </v-row>

@@ -2,7 +2,7 @@
 	<div>
 	  <v-expansion-panel-header>
 	  	<v-container>
-	  		<v-row>
+	  		<v-row no-gutters>
 	  			<v-col cols="1">
 	  				<OttraStepState :step-state="localStep.saveState"></OttraStepState>
 	  				<v-icon>{{ localStep.method.icon || 'mdi-train-car' }}</v-icon>
@@ -22,6 +22,23 @@
 
 	  <v-expansion-panel-content>
 	  	<v-container>
+	  		<v-row>
+	  			<v-col cols="12">
+				  	<v-toolbar>
+			  			<v-btn-toggle multiple dense borderless v-model="stepOptions">
+			  				<v-tooltip bottom v-for="button in buttons" :key="button.icon">
+			  					<template v-slot:activator="{ on }">
+			  						<v-btn @click.native.stop v-on="on" :value="button.value">
+			  							<v-icon right> {{ button.icon }} </v-icon>
+			  						</v-btn>
+			  					</template>
+			  					<span> {{ button.tooltip }} </span>
+			  				</v-tooltip>
+			  			</v-btn-toggle>
+			  		</v-toolbar>
+			  	</v-col>
+			  </v-row>
+
 	  		<v-row>
 			  	<v-col v-if="editMode">
 		        <v-text-field 
@@ -52,7 +69,7 @@
 	  			</v-col>
 	  		</v-row>
 
-	  		<v-row>
+	  		<v-row v-if="stepOptions.includes('useDestination')">
 	  			<v-col v-if="editMode">
 		        <v-select
 		          v-model="localStep.destination"
@@ -65,11 +82,11 @@
 
 	  			</v-col>
 	  			<v-col v-else>
-				    {{ localStep.description }} 
+				    {{ localStep.destination }} 
 	  			</v-col>
 	  		</v-row>
 
-	  		<v-row>
+	  		<v-row v-if="stepOptions.includes('useMethod')">
 	  			<v-col v-if="editMode">
 		        <v-select
 		          v-model="localStep.method"
@@ -82,11 +99,11 @@
 
 	  			</v-col>
 	  			<v-col v-else>
-				    {{ localStep.description }} 
+				    {{ localStep.method }} 
 	  			</v-col>
 	  		</v-row>
 
-	  		<v-row>	<!-- Duration -->
+	  		<v-row v-if="stepOptions.includes('useDuration')">	<!-- Duration -->
 	  			<v-col v-if="editMode">
 	  				<OttraDateTimePicker 
 	  					time-only
@@ -100,7 +117,7 @@
 	  			</v-col>
 	  		</v-row>
 
-	  		<v-row> <!-- Visual Aid Images -->
+	  		<v-row v-if="stepOptions.includes('useVisualAid')"> <!-- Visual Aid Images -->
 	  			<v-col v-if="editMode">
               <v-file-input 
                 v-model="localStep.visualAidImages"
@@ -116,7 +133,7 @@
 	  			</v-col>
 	  		</v-row>
 
-	  		<v-row> <!-- Documents -->
+	  		<v-row v-if="stepOptions.includes('useDocuments')"> <!-- Documents -->
 	  			<v-col v-if="editMode">
               <v-file-input 
                 v-model="localStep.documents"
@@ -162,6 +179,8 @@ export default {
 	},
 	data: function() {
 		return {
+			isExpanded: false,
+			stepOptions: [],
 			localStep: {
 				destination: '',
 				method: '',
@@ -176,6 +195,33 @@ export default {
 				{ text: '(*) By bicycle', value: this.TRANSPORT_BY_BICYCLE, icon: 'mdi-bike' },
 				{ text: '(*) By other means', value: this.TRANSPORT_BY_OTHER, icon: 'mdi-crosshairs-question' },
 			],
+			buttons: [
+				{
+					icon: "mdi-map-marker-question-outline",
+					value: "useDestination",
+					tooltip: "(*) Destination"			  				
+				}, 
+				{
+					icon: "mdi-train-car",
+					value: "useMethod",
+					tooltip: "(*) Method"			  				
+				}, 
+				{
+					icon: "mdi-clock-outline",
+					value: "useDuration",
+					tooltip: "(*) Duration"			  				
+				}, 
+				{
+					icon: "mdi-tooltip-image-outline",
+					value: "useVisualAid",
+					tooltip: "(*) Visual Aid"			  				
+				}, 
+				{
+					icon: "mdi-file-document-box-multiple-outline",
+					value: "useDocuments",
+					tooltip: "(*) Documents"			  				
+				}, 
+			]
 		}
 	},
 	computed: {

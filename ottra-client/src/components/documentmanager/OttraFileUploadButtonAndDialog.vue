@@ -14,11 +14,7 @@
         <v-container>
           <v-row>
             <v-col cols="12">
-              <v-file-input 
-                v-model="files"
-                chips multiple
-                :label="$t('ui.text.uploadfile')"
-                v-on:change="printFileObjects">
+              <v-file-input v-model="files" chips multiple :label="$t('ui.text.uploadfile')">
                </v-file-input>
              </v-col>
           </v-row>
