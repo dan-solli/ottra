@@ -96,9 +96,11 @@
                   <v-col cols="12">
                     <v-expansion-panels>
                       <v-expansion-panel v-for="(step, i) in steps" :key="i">
+                        <!-- :this-step="step.data" -->
                         <component 
                           :is="step.component"
-                          :this-step="step.data"
+                          v-model="step.data"
+                          :step-order="step.order"
                           :edit-mode="step.editMode">
                         </component>
                       </v-expansion-panel>
@@ -140,6 +142,7 @@ export default {
   },
   data: function() {
     return {
+      current_step: 0,
       valid: '',
       task: {
         subject: '',
@@ -189,7 +192,7 @@ export default {
       this.$router.push('/task')
     },
     addStep: function(step_type) {
-      this.steps.push(this.stepFactory(step_type))
+      this.steps.push(this.stepFactory(step_type, this.current_step++))
     }
   }
 }

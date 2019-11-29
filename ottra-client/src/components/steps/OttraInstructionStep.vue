@@ -154,6 +154,15 @@ Instruction<template>
 	  			</v-col>
 	  		</v-row>
 
+	  		<v-row v-if="editMode"> <!-- Action button -->
+	  			<v-col>
+	  				<v-btn text @click="saveStep">
+	  					(*) Save 
+	  				</v-btn>
+	  			</v-col>
+	  		</v-row>
+
+
 	  	</v-container>
 	  </v-expansion-panel-content>
 
@@ -168,7 +177,7 @@ import OttraStepState from '@/components/OttraStepState'
 
 export default {
 	name: 'ottra-instruction-step',
-	props: [ 'thisStep', 'editMode' ],
+	props: [ 'thisStep', 'editMode', 'stepOrder'  ],
 	components: {
 		OttraDateTimePicker,
 		OttraStepState
@@ -225,6 +234,10 @@ export default {
 		}
 	},
 	methods: {
+		saveStep: function() {
+			console.debug("%s: saveStep, payload is: %O", __filename, this.localStep)
+			this.$store.dispatch("saveStep", this.localStep)
+		}
 	},
 	created() {
 		this.localStep = Object.assign(this.localStep, this.thisStep)

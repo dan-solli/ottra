@@ -28,26 +28,26 @@ export const stepTypeMixin = {
 		}
 	},
 	methods: {
-		stepFactory(step_type) {
+		stepFactory(step_type, order) {
       if (step_type === STEP_INSTRUCTION) {
         const the_step = Object.assign({}, this.base_step)
         the_step.type = STEP_INSTRUCTION
-        return { component: OttraInstructionStep, data: the_step, editMode: true }
+        return { component: OttraInstructionStep, data: the_step, order: order, editMode: true }
       }
       else if (step_type === STEP_PAUSE) {
         const the_step = Object.assign({}, this.base_step)
         the_step.type = STEP_PAUSE
-        return { component: OttraPauseStep, data: the_step, editMode: true }
+        return { component: OttraPauseStep, data: the_step, order: order, editMode: true }
       }
       else if (step_type === STEP_TRANSPORT) {
         const the_step = Object.assign({}, this.base_step)
         the_step.type = STEP_TRANSPORT
-        return { component: OttraTransportStep, data: the_step, editMode: true }
+        return { component: OttraTransportStep, data: the_step, order: order, editMode: true }
       }
       else if (step_type === STEP_TASK) {
         const the_step = Object.assign({}, this.base_step)
         the_step.type = STEP_TASK
-        return { component: OttraTaskStep, data: the_step, editMode: true }
+        return { component: OttraTaskStep, data: the_step, order: order, editMode: true }
       }
 		},
 	}
