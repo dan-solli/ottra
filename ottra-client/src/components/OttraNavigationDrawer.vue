@@ -1,6 +1,6 @@
 <template>
 	<v-navigation-drawer v-bind:value="value" v-on:input="$emit('input', $event)" app>
-    <v-list v-for="(section, s) in getNavigationDrawerItems" :key="s">
+    <v-list dense nav v-for="(section, s) in getNavigationDrawerItems" :key="s">
     	<v-list-item v-for="(list, l) in section" :key="l" router :to="list.route">
     		<v-list-item-action>
     			<v-icon> {{ list.icon }} </v-icon>

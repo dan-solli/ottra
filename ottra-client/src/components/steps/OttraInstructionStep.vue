@@ -1,4 +1,4 @@
-<template>
+Instruction<template>
 	<div>
 	  <v-expansion-panel-header>
 	  	<v-container>

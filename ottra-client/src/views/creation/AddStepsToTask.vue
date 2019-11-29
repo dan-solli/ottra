@@ -119,6 +119,7 @@
 </template>
 
 <script>
+
 import { mapGetters } from 'vuex'
 import { 
   STEP_INSTRUCTION,
@@ -129,11 +130,6 @@ import {
 } from '@/common/mixins/step.types.mixin'
 
 import QrcodeVue from 'qrcode.vue'
-
-import OttraInstructionStep from '@/components/steps/OttraInstructionStep'
-import OttraPauseStep from '@/components/steps/OttraPauseStep'
-import OttraTransportStep from '@/components/steps/OttraTransportStep'
-import OttraTaskStep from '@/components/steps/OttraTaskStep'
 
 export default {
   name: "add-steps-to-task",
@@ -153,16 +149,6 @@ export default {
         creator: '',
       },
       steps: [],
-      base_step: {
-        title: '',
-        description: '',
-        type: -1,
-        visualAidImages: [],
-        documents: [],
-        duration: '',
-        energyExpense: 2,
-        saveStatus: false
-      }
     }
   },
   computed: {
@@ -193,34 +179,17 @@ export default {
     closeDialog: function() {
       this.$router.push('/task')
     },
-/*    
     saveTask: function() {
+      const payload = {
+        task,
+        steps
+      }
       console.debug("%s: saveTask, payload is: %O", __filename, this.payload)
       this.$store.dispatch("saveTask", this.payload)
       this.$router.push('/task')
-    }
-*/    
+    },
     addStep: function(step_type) {
-      if (step_type === STEP_INSTRUCTION) {
-        const the_step = Object.assign({}, this.base_step)
-        the_step.type = STEP_INSTRUCTION
-        this.steps.push({ component: OttraInstructionStep, data: the_step, editMode: true })
-      }
-      else if (step_type === STEP_PAUSE) {
-        const the_step = Object.assign({}, this.base_step)
-        the_step.type = STEP_PAUSE
-        this.steps.push({ component: OttraPauseStep, data: the_step, editMode: true })
-      }
-      else if (step_type === STEP_TRANSPORT) {
-        const the_step = Object.assign({}, this.base_step)
-        the_step.type = STEP_TRANSPORT
-        this.steps.push({ component: OttraTransportStep, data: the_step, editMode: true })
-      }
-      else if (step_type === STEP_TASK) {
-        const the_step = Object.assign({}, this.base_step)
-        the_step.type = STEP_TASK
-        this.steps.push({ component: OttraTaskStep, data: the_step, editMode: true })
-      }
+      this.steps.push(this.stepFactory(step_type))
     }
   }
 }

@@ -184,7 +184,6 @@ export default {
 			localStep: {
 				destination: '',
 				method: '',
-				duration: '',
 			},
 			transportItems: [
 				{ text: '(*) By foot', value: this.TRANSPORT_BY_FOOT, icon: 'mdi-walk' },

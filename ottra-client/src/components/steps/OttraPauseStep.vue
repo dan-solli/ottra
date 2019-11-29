@@ -25,7 +25,7 @@
 		          v-model="localStep.title" 
 		          label="(*) Title" 
 		          type="text"
-		          prepend-icon="mdi-page-layout-header" 
+		          prepend-icon="mdi-page-layout-header"
 		          required>
 		        </v-text-field>
 			  	</v-col>
