@@ -52,12 +52,78 @@
                   </v-col>
                 </v-row>
 
+                <!-- Implemented as a row. Bad. -->
+                <OttraRecurringTask
+                  v-on:set-recurrance-how-often="payload.recurranceEvery = $event"
+                  v-on:set-recurrance-what="payload.recurranceType = $event">
+                </OttraRecurringTask>
+
                 <v-row>
+                  <v-col cols="12">
+                    <v-icon class="mr-2">mdi-priority-high</v-icon>
+                    <v-btn-toggle 
+                      mandatory 
+                      v-model="payload.task_priority">
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                          <v-btn @click.native.stop v-on="on">5</v-btn> 
+                        </template>
+                        <span> (*) No priority. It would be nice if the task could be completed. No big deal if it is not </span>
+                      </v-tooltip>
+
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                          <v-btn @click.native.stop v-on="on">4</v-btn> 
+                        </template>
+                        <span> (*) Low priority. The task should be completed or it will be inconvenient or filthy. </span>
+                      </v-tooltip>
+
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                          <v-btn @click.native.stop v-on="on">3</v-btn> 
+                        </template>
+                        <span> (*) Mid priority. The task should be completed or it will be bad. </span>
+                      </v-tooltip>
+
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                          <v-btn @click.native.stop v-on="on">2</v-btn> 
+                        </template>
+                        <span> (*) High priority. The task has to be completed or the consequences will be dire. </span>
+                      </v-tooltip>
+
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                          <v-btn @click.native.stop v-on="on">1</v-btn> 
+                        </template>
+                        <span> (*) Highest priority. The task has to be completed or the consequences will be extremely dire. </span>
+                      </v-tooltip>
+
+                    </v-btn-toggle>
+                  </v-col>
+                </v-row>
+
+                <v-row> <!-- Visual Aid Images -->
                   <v-col>
-                    <OttraRecurringTask
-                      v-on:set-recurrance-how-often="payload.recurranceEvery = $event"
-                      v-on:set-recurrance-what="payload.recurranceType = $event">
-                    </OttraRecurringTask>
+                    <v-file-input 
+                      v-model="payload.goodEnoughImages"
+                      prepend-icon="mdi-tooltip-image-outline"
+                      chips multiple
+                      label="(*) Good enough result images"
+                      hint="(*) If the task has no outcome that can be visually controlled, leave this blank">
+                     </v-file-input>
+                  </v-col>
+                </v-row>
+
+                <v-row> 
+                  <v-col>
+                    <v-file-input 
+                      v-model="payload.goalImages"
+                      prepend-icon="mdi-tooltip-image-outline"
+                      chips multiple
+                      hint="If the task has no outcome that can be visually controlled, leave this blank"
+                      label="(*) Goal result images">
+                     </v-file-input>
                   </v-col>
                 </v-row>
 
@@ -99,7 +165,9 @@ export default {
         creator: '',
         steps: [],
         recurranceEvery: 1,
-        recurranceType: 1
+        recurranceType: 1,
+        goodEnoughImages: [],
+        goalImages: []
       },
     }
   },

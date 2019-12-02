@@ -23,7 +23,7 @@ r.get("/related/to/:uuid", async function(req, res) {
 	sendResponse(res, await DocumentService.getDocumentsRelatedToId(req.tokenData.uuid, target_uuid))
 })
 
-r.get("/relate/:document_uuid/to/:target_uuid", async function(req, res) {
+r.put("/relate/:document_uuid/to/:target_uuid", async function(req, res) {
 	// TODO: Add parameter checking
 	const { doc_uuid, target_uuid }	= req.params
 
