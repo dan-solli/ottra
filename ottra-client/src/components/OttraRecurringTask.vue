@@ -13,7 +13,7 @@
 		<v-col cols="9">
 			<v-btn-toggle mandatory v-model="payload.recurrance"
 						v-on:change="$emit('set-recurrance-what', payload.recurrance)">
-				<v-btn v-for="btn in recurranceOptions" :value="btn.option">
+				<v-btn v-for="btn in recurranceOptions" :key="btn.option" :value="btn.option">
 					{{ btn.title }}
 				</v-btn>
 			</v-btn-toggle>

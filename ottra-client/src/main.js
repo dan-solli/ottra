@@ -7,8 +7,9 @@ import i18n from './i18n'
 import vuetify_sv from './locales/vuetify.sv'
 import vuetify_en from 'vuetify/es5/locale/en'
 
+import '@mdi/font/css/materialdesignicons.css' 
 import 'vuetify/dist/vuetify.min.css'
-
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.use(Vuetify)
 

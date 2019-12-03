@@ -105,6 +105,7 @@
 
                 <v-row> <!-- Visual Aid Images -->
                   <v-col>
+<!--                    
                     <v-file-input 
                       v-model="payload.goodEnoughImages"
                       prepend-icon="mdi-tooltip-image-outline"
@@ -112,11 +113,15 @@
                       label="(*) Good enough result images"
                       hint="(*) If the task has no outcome that can be visually controlled, leave this blank">
                      </v-file-input>
+
+-->                     
+                    <OttraDocumentBrowser></OttraDocumentBrowser>
                   </v-col>
                 </v-row>
 
                 <v-row> 
                   <v-col>
+<!--                    
                     <v-file-input 
                       v-model="payload.goalImages"
                       prepend-icon="mdi-tooltip-image-outline"
@@ -124,6 +129,9 @@
                       hint="If the task has no outcome that can be visually controlled, leave this blank"
                       label="(*) Goal result images">
                      </v-file-input>
+-->                     
+                    <OttraDocumentBrowser></OttraDocumentBrowser>
+
                   </v-col>
                 </v-row>
 
@@ -147,11 +155,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import OttraRecurringTask from '@/components/OttraRecurringTask'
+import OttraDocumentBrowser from '@/components/documentmanager/OttraDocumentBrowser'
 
 export default {
   name: "create-task",
   components: {
-    OttraRecurringTask
+    OttraRecurringTask,
+    OttraDocumentBrowser 
   },
   props: [ 'task_uuid' ],
   data: function() {

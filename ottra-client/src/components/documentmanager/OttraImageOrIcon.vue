@@ -1,5 +1,8 @@
 <template>
-	<v-card flat tile outlined>
+	<v-card flat tile outlined 
+		:id="doc.uuid"
+		@click="clickImage"
+		v-bind:class="[selectedImages.includes(doc.uuid) ? 'blue lighten-2' : '']">
 		<v-card-text>
 			<v-img v-if="isImage(doc.mimetype)"
 				:src="getProperURL(doc.filename)"
@@ -26,20 +29,6 @@
 		</v-card-text>
 
 		<v-card-actions v-if="viewActionButtons">
-
-			<v-btn fab dark small class="blue lighten-4">
-				<v-icon>mdi-pencil</v-icon>
-			</v-btn>
-
-			<v-btn fab dark small class="indigo lighten-4">
-				<v-icon>mdi-information</v-icon>
-			</v-btn>
-
-			<v-spacer></v-spacer>
-			<v-btn fab dark small color="red">
-				<v-icon>mdi-trash-can</v-icon>
-			</v-btn>
-
 		</v-card-actions>
 	</v-card>
 </template>
@@ -58,6 +47,7 @@ export default {
 	},
 	data: function() {
 		return {
+			selectedImages: [],
 			selected: false,
 			fab: false,
 			mimeTypes: {
@@ -91,9 +81,20 @@ export default {
 			if (url.substring(0,5) === 'blob:') {
 				return url
 			} else {
+				// TODO: Must replace this URL. Yikes.
 				return `https://192.168.1.200:8888/content/${this.getUserID}/${url}`
 			}
-		}
+		},
+		clickImage: function(event) {
+			const imageUUID = event.currentTarget.id
+			if (this.selectedImages.includes(imageUUID)) {
+				this.selectedImages = this.selectedImages.filter(function(val, idx, arra) {
+					return val != imageUUID
+				})
+			} else {
+				this.selectedImages.push(imageUUID)
+			}
+		},
 	},
 	computed: {
 		...mapGetters([

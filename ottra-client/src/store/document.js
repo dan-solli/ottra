@@ -66,8 +66,17 @@ const Document = {
         commit("SET_DOCUMENTS", new_documents)
       }
       catch (err) {
-        console.error("MsgRepo failed to get messages")
+        console.error("%s: MsgRepo failed to get messages", __filename)
       }      
+    },
+    createFolder: async function ({ commit }) {
+      try {
+        //const response = await DocumentRepo.createFolder(payload)
+        console.debug("%s: createFolder: Response is %O", __filename, response)
+      }
+      catch (err) {
+        console.error("%s: DocumentRepo failed to create folder.", __filename)
+      }
     },
     loadUserData: async function({ dispatch }) {
       await dispatch("loadDocuments")

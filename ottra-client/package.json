@@ -10,12 +10,12 @@
     "lint": "eslint --fix src"
   },
   "dependencies": {
-    "@mdi/font": "^4.6.95",
     "@vuex-orm/core": "^0.32.5",
     "@vuex-orm/plugin-axios": "^0.5.1",
     "axios": "^0.19.0",
     "axios-auth-refresh": "^1.0.7",
     "core-js": "^2.6.10",
+    "material-design-icons-iconfont": "^5.0.1",
     "mixin-deep": "^2.0.1",
     "qrcode.vue": "^1.7.0",
     "sass": "^1.23.7",
@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@kazupon/vue-i18n-loader": "^0.3.0",
+    "@mdi/font": "^4.6.95",
     "@vue/cli-plugin-babel": "^3.12.1",
     "@vue/cli-service": "^3.12.1",
     "@vue/test-utils": "^1.0.0-beta.29",
