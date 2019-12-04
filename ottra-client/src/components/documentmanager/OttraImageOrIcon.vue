@@ -2,7 +2,7 @@
 	<v-card flat tile outlined 
 		:id="doc.uuid"
 		@click="clickImage"
-		v-bind:class="[selectedImages.includes(doc.uuid) ? 'blue lighten-2' : '']">
+		v-bind:class="[selected ? 'blue lighten-2' : '']">
 		<v-card-text>
 			<v-img v-if="isImage(doc.mimetype)"
 				:src="getProperURL(doc.filename)"
@@ -35,7 +35,7 @@
 
 <script>
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
 	name: 'ottra-image-or-icon',
@@ -47,7 +47,6 @@ export default {
 	},
 	data: function() {
 		return {
-			selectedImages: [],
 			selected: false,
 			fab: false,
 			mimeTypes: {
@@ -87,18 +86,20 @@ export default {
 		},
 		clickImage: function(event) {
 			const imageUUID = event.currentTarget.id
-			if (this.selectedImages.includes(imageUUID)) {
-				this.selectedImages = this.selectedImages.filter(function(val, idx, arra) {
-					return val != imageUUID
-				})
+
+			this.selected = !this.selected
+
+			if (this.selected) {
+    		this.$store.dispatch("addSelectedFile", imageUUID)				
 			} else {
-				this.selectedImages.push(imageUUID)
+    		this.$store.dispatch("removeSelectedFile", imageUUID)				
 			}
 		},
 	},
 	computed: {
 		...mapGetters([
-			"getUserID"
+			"getUserID",
+			"getSelectedFiles",
 		]),
 		viewActionButtons: function() {
 			return !this.readOnly
