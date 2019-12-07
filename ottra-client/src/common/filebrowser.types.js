@@ -1,0 +1,2 @@
+exports.VIEWMODE_THUMBNAILS = 1
+exports.VIEWMODE_DETAILED = 2

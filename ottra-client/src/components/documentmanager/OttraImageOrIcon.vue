@@ -1,41 +1,43 @@
 <template>
-	<v-card flat tile outlined 
-		:id="doc.uuid"
-		@click="clickImage"
-		v-bind:class="[selected ? 'blue lighten-2' : '']">
-		<v-card-text>
-			<v-img v-if="isImage(doc.mimetype)"
-				:src="getProperURL(doc.filename)"
-				aspect-ratio="1"
-				class="grey lighten-2">
-				<template v-slot:placeholder>
-					<v-row class="fill-height ma-0" align="center" justify="center">
-						<v-progress-circular indeterminate color="grey lighten-5">
-						</v-progress-circular>
-					</v-row>
-				</template>
-			</v-img>
-			<v-icon v-else x-large class="fill-height ma-0">
-				{{ getIcon(doc.mimetype) }}
-			</v-icon>
+	<div>
+		<v-card flat tile outlined 
+			v-if="viewMode == VIEWMODE_THUMBNAILS"
+			:id="doc.uuid"
+			@click="clickImage"
+			v-bind:class="[selected ? 'blue lighten-2' : '']">
+			<v-card-text>
+				<v-img v-if="isImage(doc.mimetype)"
+					:src="getProperURL(doc.filename)"
+					aspect-ratio="1"
+					class="grey lighten-2">
+					<template v-slot:placeholder>
+						<v-row class="fill-height ma-0" align="center" justify="center">
+							<v-progress-circular indeterminate color="grey lighten-5">
+							</v-progress-circular>
+						</v-row>
+					</template>
+				</v-img>
+				<v-icon v-else x-large class="fill-height ma-0">
+					{{ getIcon(doc.mimetype) }}
+				</v-icon>
+			</v-card-text>
 
-			<v-row class="mb-0 pb-0">
-				<span v-if="isPickable">
-					<v-switch class="ma-0 pa-0" v-model="selected"></v-switch>
-				</span>
-				<span v-if="viewFilename" class="caption float-right"> {{ doc.original_filename }} </span>
-			</v-row>
+			<v-card-actions v-if="viewActionButtons">
+			</v-card-actions>
+		</v-card>
 
-		</v-card-text>
-
-		<v-card-actions v-if="viewActionButtons">
-		</v-card-actions>
-	</v-card>
+		<div v-else>
+			<td> <v-icon>{{ getIcon(doc.mimetype) }}</v-icon> {{ doc.original_filename }} </td>
+			<td> 0 </td>
+			<td> {{ doc.dateTime }} </td>
+		</div>
+	</div>
 </template>
 
 <script>
 
 import { mapGetters, mapActions } from 'vuex'
+import { VIEWMODE_THUMBNAILS, VIEWMODE_DETAILS } from '@/common/filebrowser.types'
 
 export default {
 	name: 'ottra-image-or-icon',
@@ -43,7 +45,8 @@ export default {
 		doc: Object,
 		readOnly: Boolean,
 		showFilename: Boolean,
-		pickable: Boolean
+		pickable: Boolean,
+		viewMode: Number,
 	},
 	data: function() {
 		return {
@@ -54,6 +57,11 @@ export default {
   			'application/msword': 'mdi-file-word',
   			'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'mdi-file-word',
   			'application/pdf': 'mdi-file-pdf',
+  			'image/jpeg': 'mdi-image',
+  			'image/tiff': 'mdi-image',
+  			'image/gif': 'mdi-image',
+  			'image/png': 'mdi-image',
+
 /*
 				'blah': 'mdi-file-excel',
 				'blah': 'mdi-file-powerpoint',
