@@ -6,17 +6,9 @@
 			transition="dialog-bottom-transition">
 
 
-<!--
 			<template v-slot:activator="{ on }">
--->				
-				<slot name="the_activator">
-					<template v-slot:activator="{ on }">
-						<v-btn v-on="on">(*) File browser </v-btn>
-					</template>
-				</slot>
-<!--			
+				<v-btn v-on="on">(*) File browser </v-btn>
 			</template>
--->			
 
 			<v-card>
 				<v-card-title>
@@ -32,6 +24,12 @@
 						<div class="flex-grow-1"></div>
 
 						<v-toolbar-items>
+
+							<v-select 
+								v-model="sortOrder"
+								:items="sortOrderItems"
+								placeholder="(*) Sort" 
+								dense></v-select>
 
 							<v-btn-toggle dense group mandatory v-model="viewMode">
 								<v-btn value="1"><v-icon>mdi-file-image</v-icon></v-btn>
@@ -60,7 +58,7 @@
 
 				<v-container fluid>
 					<v-row v-if="viewMode == 1">
-						<v-col v-for="i in getDocuments" :key="i.uuid" class="d-flex child-flex">
+						<v-col v-for="i in getSortedDocuments" :key="i.uuid" class="d-flex child-flex">
 
 							<v-card flat tile outlined 
 								:id="i.uuid"
@@ -101,7 +99,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr v-for="i in getDocuments" :key="i.uuid">
+										<tr v-for="i in getSortedDocuments" :key="i.uuid">
 											<td> 
 												<v-icon>{{ getIcon(i.mimetype) }}</v-icon> {{ i.original_filename }} 
 											</td>
@@ -153,12 +151,18 @@ export default {
   			'image/tiff': 'mdi-image',
   			'image/gif': 'mdi-image',
   			'image/png': 'mdi-image',
-
-/*
 				'blah': 'mdi-file-excel',
 				'blah': 'mdi-file-powerpoint',
-*/				
-			}			
+			},
+			sortOrder: 3,
+			sortOrderItems: [
+				{ text: "(*) A-Z", value: 1 },
+				{ text: "(*) Z-A", value: 2 },
+				{ text: "(*) Recent first", value: 3 },
+				{ text: "(*) Oldest first", value: 4 },
+				{ text: "(*) Biggest first", value: 5 },
+				{ text: "(*) Smallest first", value: 6 },
+			],
 		}
 	},
 	computed: {
@@ -166,7 +170,34 @@ export default {
 			"getDocuments",
 			"getSelectedFiles",
 			"getUserID"
-		])
+		]),
+		getSortedDocuments: function() {
+			const docList = Object.values(this.getDocuments)
+
+			if (this.sortOrder == 1 || this.sortOrder == 2) {
+				docList.sort(function(a, b) {
+					return a.original_filename > b.original_filename ? 1 : 
+								 a.original_filename < b.original_filename ? -1 : 0
+				})
+			}
+			else if (this.sortOrder == 3 || this.sortOrder == 4) {
+				docList.sort(function(a, b) {
+					return a.created > b.created ? 1 : 
+								 a.created < b.created ? -1 : 0
+				})
+			}
+			else if (this.sortOrder == 5 || this.sortOrder == 6) {
+				docList.sort(function(a, b) {
+					return a.created > b.created ? 1 : 
+								 a.created < b.created ? -1 : 0
+				})
+			}
+			else {
+				this.sortOrder = 1
+				return this.getSortedDocuments
+			}
+			return ((this.sortOrder % 2) == 0) ? docList.reverse() : docList;
+		}
 	},
   mounted() {
     this.$store.dispatch("loadDocuments")

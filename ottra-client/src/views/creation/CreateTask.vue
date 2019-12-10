@@ -130,13 +130,7 @@
                       label="(*) Goal result images">
                      </v-file-input>
 -->                     
-                    <OttraDocumentBrowser>
-                      <template v-slot:the_activator>
-                        <template v-slot:activator="{ on }">
-                          <v-btn color="primary" dark v-on="on">Gnugurkateleledningsanka</v-btn>
-                        </template>
-                      </template>
-                    </OttraDocumentBrowser>
+                    <OttraDocumentBrowser></OttraDocumentBrowser>
 
                   </v-col>
                 </v-row>
