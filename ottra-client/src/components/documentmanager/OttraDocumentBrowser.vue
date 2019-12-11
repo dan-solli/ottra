@@ -30,9 +30,8 @@
 
 							<v-divider class="mx-4" vertical></v-divider>
 
-							<v-btn text><v-icon>mdi-content-cut</v-icon></v-btn>
-							<v-btn text><v-icon>mdi-file-move</v-icon></v-btn>
-							<v-btn text><v-icon>mdi-trash-can</v-icon></v-btn>
+							<v-btn :disabled="!hasSelectedFiles" text ><v-icon>mdi-file-move</v-icon></v-btn>
+							<v-btn :disabled="!hasSelectedFiles" text><v-icon>mdi-trash-can</v-icon></v-btn>
 
 							<v-divider class="mx-4" vertical></v-divider>
 
@@ -187,6 +186,9 @@ export default {
 			"getSelectedFiles",
 			"getUserID"
 		]),
+		hasSelectedFiles: function() {
+			return Object.keys(this.getSelectedFiles).length
+		},
 		getSortedDocuments: function() {
 			console.debug("%s: searchFilter is ->%s<-", __filename, this.searchFilter)
 			var docList = Object.values(this.getDocuments)
