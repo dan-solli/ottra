@@ -3,7 +3,6 @@
     <template v-slot:activator="{ on }">
       <v-btn text v-on="on">
 				<v-icon>mdi-folder-plus-outline</v-icon>
-				(*) New folder
       </v-btn>
     </template>
     <v-card>

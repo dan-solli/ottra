@@ -25,33 +25,49 @@
 
 						<v-toolbar-items>
 
-							<v-select 
-								v-model="sortOrder"
-								:items="sortOrderItems"
-								placeholder="(*) Sort" 
-								dense></v-select>
+							<OttraNewFolderDialog :cwd="currentFolder"></OttraNewFolderDialog>
+							<OttraFileUploadDialog></OttraFileUploadDialog>
+
+							<v-divider class="mx-4" vertical></v-divider>
+
+							<v-btn text><v-icon>mdi-content-cut</v-icon></v-btn>
+							<v-btn text><v-icon>mdi-file-move</v-icon></v-btn>
+							<v-btn text><v-icon>mdi-trash-can</v-icon></v-btn>
+
+							<v-divider class="mx-4" vertical></v-divider>
 
 							<v-btn-toggle dense group mandatory v-model="viewMode">
 								<v-btn value="1"><v-icon>mdi-file-image</v-icon></v-btn>
 								<v-btn value="0"><v-icon>mdi-view-list</v-icon></v-btn>
 							</v-btn-toggle>
 
+							<v-divider class="mx-4" vertical></v-divider>
+
+							<v-select 
+								v-model="sortOrder"
+								:items="sortOrderItems"
+								placeholder="(*) Sort" 
+								dense></v-select>
+
+
 							<v-divider vertical class="mx-4"></v-divider>
 
-							<OttraNewFolderDialog :cwd="currentFolder"></OttraNewFolderDialog>
-							<OttraFileUploadDialog></OttraFileUploadDialog>
+
+							<v-text-field v-model="searchFilter" solo flat 
+									:label="$t('ui.text.search')" hide-details prepend-inner-icon="mdi-magnify"
+									clearable 
+									@click:clear="resetFilter"
+									clear-icon="mdi-close-circle-outline">
+							</v-text-field>
+
+							<v-divider class="mx-0" vertical></v-divider>
 
 							<v-btn text @click="isFullScreen = !isFullScreen">
 								<v-icon v-if="isFullScreen">mdi-window-restore</v-icon>
 								<v-icon v-else>mdi-window-maximize</v-icon>
 							</v-btn>
 
-							<v-divider class="mx-4" vertical></v-divider>
 
-							<v-text-field v-model="search" solo flat 
-									:label="$t('ui.text.search')" hide-details prepend-inner-icon="mdi-magnify"
-									clearable clear-icon="mdi-close-circle-outline">
-							</v-text-field>
 						</v-toolbar-items>
 					</v-toolbar>
 				</v-card-title>
@@ -138,7 +154,7 @@ export default {
 	data: function() {
 		return {
 			viewMode: 0,
-			search: '',
+			searchFilter: '',
 			currentFolder: '/',
 			isFullScreen: false,
 			dialog: false,
@@ -172,7 +188,8 @@ export default {
 			"getUserID"
 		]),
 		getSortedDocuments: function() {
-			const docList = Object.values(this.getDocuments)
+			console.debug("%s: searchFilter is ->%s<-", __filename, this.searchFilter)
+			var docList = Object.values(this.getDocuments)
 
 			if (this.sortOrder == 1 || this.sortOrder == 2) {
 				docList.sort(function(a, b) {
@@ -196,6 +213,11 @@ export default {
 				this.sortOrder = 1
 				return this.getSortedDocuments
 			}
+			if (this.searchFilter != '' && this.searchFilter != null) {
+				docList = docList.filter(function(file) {
+					return (file.original_filename.includes(this.searchFilter) ? file : 0)
+				}, this)
+			}
 			return ((this.sortOrder % 2) == 0) ? docList.reverse() : docList;
 		}
 	},
@@ -203,6 +225,9 @@ export default {
     this.$store.dispatch("loadDocuments")
   },
   methods: {
+  	resetFilter: function() {
+  		this.searchFilter = ''
+  	},
 		isImage: function(item) {
 			if (!item) {
 				return false

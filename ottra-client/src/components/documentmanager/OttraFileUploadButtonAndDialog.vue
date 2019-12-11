@@ -3,7 +3,7 @@
     <template v-slot:activator="{ on }">
       <v-btn text v-on="on">
 				<v-icon>mdi-upload</v-icon>
-				{{ $t('ui.view.filebrowser.uploadbutton') }}
+				<!-- {{ $t('ui.view.filebrowser.uploadbutton') }} -->
 			</v-btn>
     </template>
     <v-card>
