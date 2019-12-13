@@ -36,7 +36,16 @@ const DocumentModel = {
 			}, 
 			"Document"
 		)
-	}
+	},
+	moveFiles: async function(user_id, payload) {
+
+	},
+	deleteFiles: async function(user_id, payload) {
+
+	},
+	getFolderTree: async function(user_id) {
+
+	},	
 }
 
 module.exports = DocumentModel

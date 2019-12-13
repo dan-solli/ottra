@@ -10,4 +10,16 @@ export default {
 	get() {
 		return Repository.get(`${resource}`)
 	},
+	createFolder(payload) {
+		return Repository.post(`${resource}/folder`, payload)
+	},
+	moveFiles(payload) {
+		return Repository.patch(`${resource}/folder`, payload)
+	},
+	deleteFiles(payload) {
+		return Repository.delete('`${resource}', { data: { payload: payload }})
+	},
+	getFolderTree() {
+		return Repository.get(`${resource}/folder`)
+	}
 }

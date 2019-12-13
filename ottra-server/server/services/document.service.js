@@ -3,6 +3,7 @@ const { aSureThing } = require('./../infra/await-to')
 const DocumentModel = require('./../models/document.model')
 
 const moveFile = require('move-file')
+const fs = require('fs')
 
 process.on("attachDocument", async function attach(to_uuid, file) {
 
@@ -63,30 +64,27 @@ const DocumentService = {
 			console.error("%s: Error is: %O", __filename, err)
 			return { ok: false, error: { code: 500, status: 'failed', message: 'Could not upload file' } }
 		}
-	}
+	},
+	createFolder: async function(user_id, payload) {
+		console.debug("%s: createFolder called with payload: %O", __filename, payload)
+		const { cwd, folderName } = payload
+		const path = process.env.OTTRA_CONTENT_PATH + "/" + user_id + "/" + cwd + "/" + folderName
+		console.debug("%s: createFolder built pathname: %s", __filename, path)
+		fs.mkdir(path, { recursive: false }, (err) => {
+				return { ok: false, error: { code: 500, status: 'failed', message: err } }
+			}
+		)
+		return { ok: true, data: path }
+	},
+	moveFile: async function(user_id, payload) {
+		return await DocumentModel.moveFile(user_id, payload)
+	},
+	deleteFile: async function(user_id, payload) {
+		return await DocumentModel.deleteFile(user_id, payload)
+	},
+	getFolderTree: async function(user_id) {
+		return await DocumentModel.getFolderTree(user_id)
+	},
 }
 
 module.exports = DocumentService
-
-/*
-[ { uuid: '2eeac1d6-5e31-4eaa-a344-cb444c5dbb91',
-    field: 'documents',
-    file:
-     '/home/dsi/projects/ottra/ottra-server/server/content/temp/2eeac1d6-5e31-4eaa-a344-cb444c5dbb91/documents/dri-table.png',
-    filename: 'dri-table.png',
-    encoding: '7bit',
-    mimetype: 'image/png',
-    truncated: false,
-    done: true },
-  { uuid: 'd77ae8a0-ae07-4d9f-af73-eb6bfe4ee4c7',
-    field: 'documents',
-    file:
-     '/home/dsi/projects/ottra/ottra-server/server/content/temp/d77ae8a0-ae07-4d9f-af73-eb6bfe4ee4c7/documents/eurosko.PNG',
-    filename: 'eurosko.PNG',
-    encoding: '7bit',
-    mimetype: 'image/png',
-    truncated: false,
-    done: true } ]
-
-
-*/

@@ -25,13 +25,24 @@
 
 						<v-toolbar-items>
 
-							<OttraNewFolderDialog :cwd="currentFolder"></OttraNewFolderDialog>
+							<OttraNewFolderDialog	:cwd="currentFolder"></OttraNewFolderDialog>
+							
 							<OttraFileUploadDialog></OttraFileUploadDialog>
 
 							<v-divider class="mx-4" vertical></v-divider>
 
-							<v-btn :disabled="!hasSelectedFiles" text ><v-icon>mdi-file-move</v-icon></v-btn>
-							<v-btn :disabled="!hasSelectedFiles" text><v-icon>mdi-trash-can</v-icon></v-btn>
+							<v-btn 
+								:disabled="!hasSelectedFiles" 
+								@click="moveFiles"
+								text>
+								<v-icon>mdi-file-move</v-icon>
+							</v-btn>
+							<v-btn 
+								:disabled="!hasSelectedFiles"
+								@click="deleteFiles"
+								text>
+								<v-icon>mdi-trash-can</v-icon>
+							</v-btn>
 
 							<v-divider class="mx-4" vertical></v-divider>
 
@@ -263,6 +274,15 @@ export default {
 		},
 		isSelected: function(uuid) {
 			return this.getSelectedFiles.includes(uuid)
+		},
+		deleteFiles: function() {
+			this.$store.dispatch("deleteFiles", this.getSelectedFiles)
+		},
+		moveFiles: function() {
+			this.$store.dispatch("moveFiles", { 
+				files: this.getSelectedFiles, 
+				target: null
+			})
 		}
   }	
 }	

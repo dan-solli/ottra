@@ -66,16 +66,34 @@ const Document = {
         commit("SET_DOCUMENTS", new_documents)
       }
       catch (err) {
-        console.error("%s: MsgRepo failed to get messages", __filename)
+        console.error("%s: DocumentRepo failed to get documents: %O", __filename, err)
       }      
     },
-    createFolder: async function ({ commit }) {
+    createFolder: async function ({ commit }, payload) {
       try {
-        //const response = await DocumentRepo.createFolder(payload)
+        // TODO: Should validate that folderName only contains [A-Za-z0-9-_.]
+
+        const response = await DocumentRepo.createFolder(payload)
         console.debug("%s: createFolder: Response is %O", __filename, response)
       }
       catch (err) {
-        console.error("%s: DocumentRepo failed to create folder.", __filename)
+        console.error("%s: DocumentRepo failed to create folder: %O", __filename, err)
+      }
+    },
+    moveFiles: async function ({ commit }, payload) {
+      try {
+        // const response = await DocumentRepo.moveFiles(payload)
+        console.debug("%s: moveFiles: Response is %O", __filename, response)
+      } catch (err) {
+        console.error("%s: DocumentRepo failed to move files: %O", __filename, err)
+      }
+    },
+    deleteFiles: async function ({ commit }, payload) {
+      try {
+        // const response = await DocumentRepo.moveFiles(payload)
+        console.debug("%s: moveFiles: Response is %O", __filename, response)
+      } catch (err) {
+        console.error("%s: DocumentRepo failed to move files: %O", __filename, err)
       }
     },
     loadUserData: async function({ dispatch }) {
