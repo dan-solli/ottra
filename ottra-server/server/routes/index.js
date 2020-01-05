@@ -26,6 +26,7 @@ r.use('/1/storage', (require('./../api/storage.controller')))
 r.use('/1/equipment', (require('./../api/equipment.controller')))
 r.use('/1/step', (require('./../api/step.controller')))
 r.use('/1/task', (require('./../api/task.controller')))
+r.use('/1/folders', (require('./../api/folder.controller')))
 
 module.exports = r
 

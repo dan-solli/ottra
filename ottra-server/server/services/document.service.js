@@ -4,6 +4,9 @@ const DocumentModel = require('./../models/document.model')
 
 const moveFile = require('move-file')
 const fs = require('fs')
+const fsPath = require('path')
+
+const dirTree = require("directory-tree")
 
 process.on("attachDocument", async function attach(to_uuid, file) {
 
@@ -83,8 +86,35 @@ const DocumentService = {
 		return await DocumentModel.deleteFile(user_id, payload)
 	},
 	getFolderTree: async function(user_id) {
-		return await DocumentModel.getFolderTree(user_id)
-	},
+
+		const startPath = process.env.OTTRA_CONTENT_PATH + "/" + user_id
+/*
+		function flatten(lists) {
+			console.debug("%s: flatten: %O", __filename, lists)
+			return lists.reduce((a, b) => a.concat(b), [])
+		}
+
+		function getDirectories(path) {
+			console.debug("%s: getDirectories: %O", __filename, path)
+			return fs.readdirSync(path)
+				.map(file => fsPath.join(path, file))
+				.filter(thePath => fs.statSync(thePath).isDirectory())
+		}
+
+		function getDirectoriesRecursive(path) {
+			console.debug("%s: getDirectoriesRecursive: %O", __filename, path)
+			return [path, ...flatten(getDirectories(path).map(getDirectoriesRecursive))]
+		}
+
+		return { 
+			ok: true, 
+			data: getDirectoriesRecursive(startPath).map(function(pathName) {
+				return pathName.substring(startPath.length)
+			}) 
+		}
+*/
+		return { ok: true, data: dirTree(startPath) }
+	}
 }
 
 module.exports = DocumentService

@@ -2,24 +2,48 @@ import Repository from "../repository"
 
 const resource = "/document"
 
+
+// TODO: Make sure all paths are being encoded before being sent to server. 
+// This will probably be handled here and in Vuex. But I wonder if it should all be handled 
+// right here. Or in the Vuex getter. But. No. I don't know.
+
+// It should be done in Vuex. 
 export default {
+	get() {
+		return this.getDocuments({ cwd: "/" })
+	},
 	uploadDocuments(payload) {
 		console.debug("%s: In repo, with payload %O", __filename, payload)
 		return Repository.post(`${resource}`, payload)
 	},
-	get() {
-		return Repository.get(`${resource}`)
+	deleteDocument(payload) {
+		return Repository.delete(`${resource}`, { data: { payload: payload }})
 	},
-	createFolder(payload) {
-		return Repository.post(`${resource}/folder`, payload)
+	moveDocument(payload) {
+		return Repository.patch(`${resource}`, payload)
 	},
-	moveFiles(payload) {
-		return Repository.patch(`${resource}/folder`, payload)
+	dissociateDocument(payload) {
+		return Repository.delete(`${resource}/association`, payload)
 	},
-	deleteFiles(payload) {
-		return Repository.delete('`${resource}', { data: { payload: payload }})
+	changeDocumentAssociation(payload) {
+		return Repository.patch(`${resource}/association`, payload)
 	},
-	getFolderTree() {
-		return Repository.get(`${resource}/folder`)
+	getDocuments(payload) {
+		const cwdEncoded = encodeURIComponent(payload.cwd)
+		return Repository.get(`${resource}?path=${cwdEncoded}`)
+	},
+	getDocument(payload) {
+		return Repository.get(`${resource}?document=${payload.uuid}`)
+	},
+	getAssociationsTo(payload) {
+		return Repository.get(`${resource}/association?source=${payload.uuid}`)
+	},
+	getAssociationsFrom(payload) {
+		return Repository.get(`${resource}/association?target=${payload.uuid}`)
+	},
+	createAssociation(payload) {
+		return Repository.post(`${resource}/association`, payload)
 	}
+
+
 }

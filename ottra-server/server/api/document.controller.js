@@ -12,82 +12,81 @@ const { sendResponse } = require('./../infra/response.js')
 
 const r = express.Router()
 
-r.get("/", async function(req, res) {
-	sendResponse(res, await DocumentService.getDocuments(req.tokenData.uuid))	
-})
-
-/*
-r.get("/:document_uuid", async function(req, res) {
-	// TODO: Add parameter checking
-	const document_uuid = req.params.document_uuid
-
-	sendResponse(res, await DocumentService.getDocumentById(req.tokenData.uuid, document_uuid))	
-})
-
-r.get("/related/to/:uuid", async function(req, res) {
-	// TODO: Add parameter checking
-	const target_uuid = req.params.uuid
-
-	sendResponse(res, await DocumentService.getDocumentsRelatedToId(req.tokenData.uuid, target_uuid))
-})
-
-r.put("/relate/:document_uuid/to/:target_uuid", async function(req, res) {
-	// TODO: Add parameter checking
-	const { doc_uuid, target_uuid }	= req.params
-
-	sendResponse(res, await DocumentService.relateDocumentToTarget(req.tokenData.uuid, doc_uuid, target_uuid))
-})
-
-*/
-r.post("/", async function(req, res) {
-	// TODO: Add parameter checking
-	console.debug("%s: Req.files are: %O", __filename, req.files)
-	if (req.files.documents.constructor !== Array) {
-		req.files.documents = [ req.files.documents ]
+r.post("/", [
+		autenUser('uuid').isUUID() 
+	], async function(req, res) {
+		sendResponse(res, await DocumentService.uploadDocument(req.tokenData.uuid, req.body))
 	}
-	sendResponse(res, await DocumentService.uploadDocuments(req.tokenData.uuid, req.files.documents))
-})
+)
 
-r.post("/folder", [
-		// TODO: Should validate that folderName only contains [A-Za-z0-9-_.]
-		autenUser('uuid').isUUID()
-	],
-	async function(req, res) {
-		// TODO: Add parameter checking
-		console.debug("%s: POST /folder: Payload is: %O", __filename, req.body)
-		const errors = validationResult(req)
-		if (!errors.isEmpty) {
-			sendResponse(res, { 
-				ok: false, 
-				error: { 
-					status: 'failed', 
-					message: "This",	
-					code: 422 
-				}
-			})
-		}
-		else {
-			sendResponse(res, await DocumentService.createFolder(req.tokenData.uuid, req.body))
+r.delete("/", [
+		autenUser('uuid').isUUID() 
+	], async function(req, res) {
+		sendResponse(res, await DocumentService.deleteDocument(req.tokenData.uuid, req.body))
+	}
+)
+
+r.patch("/", [
+		autenUser('uuid').isUUID() 
+	], async function(req, res) {
+		sendResponse(res, await DocumentService.moveDocument(req.tokenData.uuid, req.body))
+	}
+)
+
+r.get("/", [
+		autenUser('uuid').isUUID() 
+	], async function(req, res) {
+		const path = req.query.path
+		const doc = req.query.document
+
+		if (path !== undefined) {
+			const pathDecoded = decodeURIComponent(path)
+			sendResponse(res, await DocumentService.getDocuments(req.tokenData.uuid, pathDecoded))
+		} else if (document !== undefined) {
+			sendResponse(res, await Documentservice.getDocument(req.tokenData.uuid, doc))
+		} else {
+			sendResponse(res, await DocumentService.getDocuments(req.tokenData.uuid, "/"))
 		}
 	}
 )
 
-r.patch("/folder", async function(req, res) {
-	// TODO: Add parameter checking
-	console.debug("%s: PATCH /folder: Payload is: %O", __filename, req.body)
-	sendResponse(res, await DocumentService.moveFile(req.tokenData.uuid, rec.body))
-})
+r.post("/association", [
+		autenUser('uuid').isUUID() 
+	], async function(req, res) {
+		sendResponse(res, await DocumentService.createAssociation(req.tokenData.uuid, req.body))
+	}
+)
 
-/* Yeah, this one should probably just delete one file at the time */
-r.delete("/", async function(req, res) {
-	// TODO: Add parameter checking
-	console.debug("%s: DELETE /: Payload is: %O", __filename, req.body.data)
-	sendResponse(res, await DocumentService.deleteFile(req.tokenData.uuid, rec.body.data))
-})
+r.delete("/association", [
+		autenUser('uuid').isUUID() 
+	], async function(req, res) {
+		sendResponse(res, await DocumentService.removeAssociation(req.tokenData.uuid, req.body))
+	}
+)
 
-r.get("/folder", async function(req, res) {
-	console.debug("%s: GET /folder", __filename)
-	sendResponse(res, await DocumentService.getFolderTree(req.tokenData.uuid))
-})
+r.patch("/association", [
+		autenUser('uuid').isUUID() 
+	], async function(req, res) {
+		sendResponse(res, await DocumentService.changeDocumentAssociation(req.tokenData.uuid, req.body))
+	}
+)
+
+r.get("/association", [
+		autenUser('uuid').isUUID() 
+	], async function(req, res) {
+		const source = req.query.source
+		const target = req.query.target
+
+		if (source !== undefined) {
+			sendResponse(res, await DocumentService.getAssociationsTo(req.tokenData.uuid, source))
+		} else if (target !== undefined) {
+			sendResponse(res, await DocumentService.getAssociationsFrom(req.tokenData.uuid, target))
+		}
+	}
+)
+
+
+
+
 
 module.exports = r

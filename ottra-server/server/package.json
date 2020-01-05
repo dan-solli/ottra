@@ -21,6 +21,7 @@
     "cookie-parser": "^1.4.4",
     "countries-list": "^2.5.0",
     "country-flags-svg": "^0.2.12",
+    "directory-tree": "^2.2.4",
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",

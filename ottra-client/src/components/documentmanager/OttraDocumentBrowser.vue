@@ -31,12 +31,16 @@
 
 							<v-divider class="mx-4" vertical></v-divider>
 
+							<OttraFolderBrowser></OttraFolderBrowser>
+<!--
 							<v-btn 
 								:disabled="!hasSelectedFiles" 
 								@click="moveFiles"
 								text>
 								<v-icon>mdi-file-move</v-icon>
 							</v-btn>
+-->
+
 							<v-btn 
 								:disabled="!hasSelectedFiles"
 								@click="deleteFiles"
@@ -152,6 +156,7 @@ import OttraFileUploadDialog from '@/components/documentmanager/OttraFileUploadB
 import OttraImageOrIcon from '@/components/documentmanager/OttraImageOrIcon.vue'
 import OttraNormalView from '@/components/layout/normalView.vue'
 import OttraNewFolderDialog from '@/components/documentmanager/OttraNewFolderDialog.vue'
+import OttraFolderBrowser from '@/components/documentmanager/OttraFolderBrowser.vue'
 
 export default {
 	name: 'file-browser-view',
@@ -159,7 +164,8 @@ export default {
     OttraFileUploadDialog,
     OttraImageOrIcon,
     OttraNormalView,
-    OttraNewFolderDialog
+    OttraNewFolderDialog,
+    OttraFolderBrowser
   },
 	data: function() {
 		return {
@@ -236,6 +242,7 @@ export default {
 	},
   mounted() {
     this.$store.dispatch("loadDocuments")
+    this.$store.dispatch("getFolderTree")
   },
   methods: {
   	resetFilter: function() {
@@ -279,6 +286,7 @@ export default {
 			this.$store.dispatch("deleteFiles", this.getSelectedFiles)
 		},
 		moveFiles: function() {
+
 			this.$store.dispatch("moveFiles", { 
 				files: this.getSelectedFiles, 
 				target: null

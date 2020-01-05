@@ -20,10 +20,18 @@
       </v-card-text>
       <v-card-actions>
         <div class="flex-grow-1"></div>
-        <v-btn text @click="dialog = false">
+        <v-btn 
+          v-shortkey.push="['esc']"
+          @shortkey="dialog = false"
+          text 
+          @click="dialog = false">
         	{{ $t('ui.text.cancel') }}
         </v-btn>
-        <v-btn text @click="createFolder">
+        <v-btn 
+          text 
+          v-shortkey.push="['enter']"
+          @shortkey="createFolder"
+          @click="createFolder">
         	{{ $t('ui.text.save') }}
         </v-btn>
       </v-card-actions>

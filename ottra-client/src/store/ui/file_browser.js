@@ -1,18 +1,20 @@
 import Vue from 'vue'
 
+// Highly suspicious. I think this should be stored in the component. I see very little reason
+// to share this information with the rest of the app. You select a bunch of files to remove, move
+// or use/tie to an object. All of which is in the component. 
+//
+// Or. Hmm, selected files has to be emitted to parent in case of selecting files for attachment,
+// and then, it is probably several files. Emit that, or just keep it centralized? 
+// For that case, I think I prefer Vuex. 
 const UIFileBrowser = {
   state: {
     selected_files: [],
-    current_working_dir: '/',
   },
   getters: {
     getSelectedFiles: state => state.selected_files,
-    getCurrentWorkingDirectory: state => state.current_working_dir
   },
   actions: {
-    setCurrentWorkingDir: function({ commit }, cwd) {
-      commit("SAVE_CWD", cwd)
-    },
     addSelectedFile: function({ commit }, file) {
       commit("ADD_SELECTED_FILES", file)
     },
@@ -23,16 +25,10 @@ const UIFileBrowser = {
       commit("CLEAR_SELECTED_FILES")
     },
     clearItems: function({ dispatch }) {
-      return Promise.all([ 
-        dispatch('clearSelectedFiles'),
-        dispatch('setCurrentWorkingDir', '/'),
-      ])
+      return dispatch('clearSelectedFiles')
     },
   },
   mutations: {
-    SAVE_CWD(state, cwd) {
-      state.current_working_dir = cwd
-    },
     ADD_SELECTED_FILES(state, file) {
       state.selected_files.push(file)
     },
@@ -44,7 +40,7 @@ const UIFileBrowser = {
       }) 
     },
     CLEAR_SELECTED_FILES(state) {
-      state.current_working_dir = []
+      state.selected_files = []
     },
   }
 };

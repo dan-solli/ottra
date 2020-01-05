@@ -6457,6 +6457,32 @@
 					"documentation": "This has no data of its own, however, it's type, when looking at a task as a whole, shows that a task cannot be (or is not programmed to be) continued without this pause. \nThis also enables whatever program using this step to plan other tasks in parallel. "
 				}
 			]
+		},
+		{
+			"_type": "UMLCollaboration",
+			"_id": "AAAAAAFuuL3Sb3mw4xw=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Collaboration1"
+		},
+		{
+			"_type": "UMLModel",
+			"_id": "AAAAAAFuuL5R63m3g24=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Model1",
+			"ownedElements": [
+				{
+					"_type": "UMLClassDiagram",
+					"_id": "AAAAAAFuuL5R63m4a5w=",
+					"_parent": {
+						"$ref": "AAAAAAFuuL5R63m3g24="
+					},
+					"name": "ClassDiagram1"
+				}
+			]
 		}
 	],
 	"documentation": "This is an attempt to model according to requirements. ",
