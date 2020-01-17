@@ -28,11 +28,18 @@ export default {
 	changeDocumentAssociation(payload) {
 		return Repository.patch(`${resource}/association`, payload)
 	},
-	getDocuments(payload) {
+	getDocumentsByCwd(payload) {
+		const cwd = payload.cwd
+		if (cwd.length < 1) {
+			cwd = "/"
+		}
 		const cwdEncoded = encodeURIComponent(payload.cwd)
 		return Repository.get(`${resource}?path=${cwdEncoded}`)
 	},
-	getDocument(payload) {
+	getDocuments(payload) {
+		return Repository.get(`${resource}`)
+	},
+	getDocument(payload) { // Should be rewritten not to use query param.
 		return Repository.get(`${resource}?document=${payload.uuid}`)
 	},
 	getAssociationsTo(payload) {

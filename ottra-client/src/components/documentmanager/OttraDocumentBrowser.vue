@@ -107,7 +107,7 @@
 										</template>
 									</v-img>
 									<v-icon v-else x-large class="fill-height ma-0">
-										{{ getIcon(i.mimetype) }}
+										{{ getIcon(i) }}
 									</v-icon>
 								</v-card-text>
 							</v-card>
@@ -131,7 +131,7 @@
 									<tbody>
 										<tr v-for="i in getSortedDocuments" :key="i.uuid">
 											<td> 
-												<v-icon>{{ getIcon(i.mimetype) }}</v-icon> {{ i.original_filename }} 
+												<v-icon>{{ getIcon(i) }}</v-icon> {{ i.original_filename }} 
 											</td>
 											<td> 0 </td>
 											<td> {{ i.dateTime }} </td>
@@ -256,8 +256,11 @@ export default {
 			}
 		},
 		getIcon: function(item) {
-			if (this.mimeTypes.hasOwnProperty(item)) {
-				return this.mimeTypes[item]
+			if (this.mimeTypes.hasOwnProperty(item.mimetype)) {
+				return this.mimeTypes[item.mimetype]
+			} 
+			else if (item.type === 'directory') {
+				return 'mdi-folder-outline'
 			} else {
 				return 'mdi-help-box'
 			}

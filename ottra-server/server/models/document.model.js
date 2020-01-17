@@ -1,7 +1,57 @@
 const DB = require('./../infra/db')
 const uuidv4 = require('uuid/v4')
 
+const dirTree = require('directory-tree')
+const traverse = require('traverse')
+const thePath = require('path')
+
 const DocumentModel = {
+	getAllDocuments: async function(user_id) {
+		const startPath = process.env.OTTRA_CONTENT_PATH + "/" + user_id
+		const theTree = dirTree(startPath, { attributes: ['mtime', 'ctime'] })
+
+		var obFromDb = {}
+		var resultData = {}
+
+		const dbResult = await this.getDocuments(user_id)
+		if (dbResult.ok) {
+			dbResult.data.forEach(function (f) {
+				obFromDb[f.filename] = f
+			})
+		}
+
+		handleChild(theTree)
+		return { ok: true, data: resultData }
+
+		function rewriteChild(child) {
+			child.path = child.path.replace(startPath, "")
+			child.path = thePath.dirname(child.path)
+			if (child.path === ".") {
+				child.path = "/"
+			}
+			if (obFromDb.hasOwnProperty(child.name)) {
+				child = Object.assign(child, obFromDb[child.name])
+			}
+			return child
+		}
+
+		function handleChild(child) {
+			child = rewriteChild(child)
+
+			if (child.hasOwnProperty('children')) {
+				if (child.children.length > 0) {
+					child.children.forEach(function(c) {
+						handleChild(c)
+					})
+				}
+			}
+			if (!resultData.hasOwnProperty(child.path)) {
+				resultData[child.path] = []
+			}
+			delete child.children
+			resultData[child.path].push(child)
+		}
+	},	
 	getDocuments: async function(user_id) {
 		return await DB.fetchAll(`
 			MATCH (u:User { uuid: { user_id } })-[:UPLOADED]->(n:Document)

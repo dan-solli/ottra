@@ -10,6 +10,9 @@ r.get('/1/showstuff', function (req, res) {
 	res.send(req.headers)
 })
 
+r.use('/lab', (require('./../api/lab.controller')))
+
+
 //r.use('/1/upload', (require('./../api/upload.controller')))
 
 r.use(jwtCheck)

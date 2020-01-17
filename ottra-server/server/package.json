@@ -36,6 +36,7 @@
     "openweather-apis": "^4.1.0",
     "parse-google-address": "^1.0.4",
     "rxjs": "^5.5.10",
+    "traverse": "^0.6.6",
     "uuid": "^3.3.3"
   },
   "devDependencies": {

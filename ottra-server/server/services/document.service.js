@@ -8,34 +8,18 @@ const fsPath = require('path')
 
 const dirTree = require("directory-tree")
 
-process.on("attachDocument", async function attach(to_uuid, file) {
-
-	// This event should call a non-exported function in this service module and let it handle the 
-	// actual file-processing and condence the file-maps parameters to what is necessary. 
-
-	return await aSureThing(DocumentModel.attach(to_uuid, file))
-})
-
 const DocumentService = {
-	getDocuments: async function(user_id) {
+	getDocumentByID: async function(user_id, doc_id) {
+
+	},
+	getAllDocuments: async function(user_id) {
 		try {
-			return await DocumentModel.getDocuments(user_id)
+			return await DocumentModel.getAllDocuments(user_id)
 		}
 		catch(err) {
 			return { ok: false, error: { code: 404, status: 'failed', message: err } }
 		}
 	},
-/*	
-	getDocumentById: async function(user_id, doc_id) {
-
-	},
-	getDocumentsRelatedToId(user_id, doc_id) {
-
-	},
-	relateDocumentToTarget(user_id, doc_id, target_id) {
-
-	},
-*/	
 	uploadDocuments: async function(user_id, documents) {
 		try {
 			const returnData = []
@@ -43,12 +27,12 @@ const DocumentService = {
 			console.debug("%s: Documents: %O", __filename, documents)
 			for (const { file, filename, mimetype } of documents) {
 
-				//console.debug("%s: File and filename are:\n%s\n%s", __filename, file, filename)
+				console.debug("%s: File and filename are:\n%s\n%s", __filename, file, filename)
 
 				const filenameExtension = filename.split('.').pop()
 				const fileData = await DocumentModel.createDocument(user_id, filename, filenameExtension, mimetype)
 
-				//console.debug("%s: Filedata is: %O", __filename, fileData)
+				console.debug("%s: Filedata is: %O", __filename, fileData)
 
 				if (!fileData.ok) {
 					return { ok: false, error: fileData.error }
@@ -68,53 +52,12 @@ const DocumentService = {
 			return { ok: false, error: { code: 500, status: 'failed', message: 'Could not upload file' } }
 		}
 	},
-	createFolder: async function(user_id, payload) {
-		console.debug("%s: createFolder called with payload: %O", __filename, payload)
-		const { cwd, folderName } = payload
-		const path = process.env.OTTRA_CONTENT_PATH + "/" + user_id + "/" + cwd + "/" + folderName
-		console.debug("%s: createFolder built pathname: %s", __filename, path)
-		fs.mkdir(path, { recursive: false }, (err) => {
-				return { ok: false, error: { code: 500, status: 'failed', message: err } }
-			}
-		)
-		return { ok: true, data: path }
-	},
 	moveFile: async function(user_id, payload) {
 		return await DocumentModel.moveFile(user_id, payload)
 	},
 	deleteFile: async function(user_id, payload) {
 		return await DocumentModel.deleteFile(user_id, payload)
 	},
-	getFolderTree: async function(user_id) {
-
-		const startPath = process.env.OTTRA_CONTENT_PATH + "/" + user_id
-/*
-		function flatten(lists) {
-			console.debug("%s: flatten: %O", __filename, lists)
-			return lists.reduce((a, b) => a.concat(b), [])
-		}
-
-		function getDirectories(path) {
-			console.debug("%s: getDirectories: %O", __filename, path)
-			return fs.readdirSync(path)
-				.map(file => fsPath.join(path, file))
-				.filter(thePath => fs.statSync(thePath).isDirectory())
-		}
-
-		function getDirectoriesRecursive(path) {
-			console.debug("%s: getDirectoriesRecursive: %O", __filename, path)
-			return [path, ...flatten(getDirectories(path).map(getDirectoriesRecursive))]
-		}
-
-		return { 
-			ok: true, 
-			data: getDirectoriesRecursive(startPath).map(function(pathName) {
-				return pathName.substring(startPath.length)
-			}) 
-		}
-*/
-		return { ok: true, data: dirTree(startPath) }
-	}
 }
 
 module.exports = DocumentService

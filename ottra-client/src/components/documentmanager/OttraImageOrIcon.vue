@@ -69,6 +69,9 @@ export default {
 			}
 		}
 	},
+	created: function() {
+		console.error("This component (%s) is deprecated it seems. But shouldn't.")
+	},
 	methods: {
 		isImage: function(item) {
 			if (!item) {
@@ -80,7 +83,11 @@ export default {
 		getIcon: function(item) {
 			if (this.mimeTypes.hasOwnProperty(item)) {
 				return this.mimeTypes[item]
-			} else {
+			} 
+			else if (item.type === 'directory') {
+				return 'mdi-folder-outline'
+			}
+			else {
 				return 'mdi-help-box'
 			}
 		},

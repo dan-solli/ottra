@@ -8,22 +8,14 @@ const FolderRepo = RepositoryFactory.get('folder')
 
 const Document = {
 	state: {
-    documents: { },
+    //documents: { },
+    current_working_directory: '/',
+    folders: {}, 
     folderTree: { },
 	},
 	mutations: {
-    ADD_DOCUMENTS(state, response) {
-      console.debug("%s.ADD_DOCUMENTS received response: %O", __filename, response)
-      for (const result of response) {
-        console.debug("%s.ADD_DOCUMENTS result is: %O", __filename, result)
-        if (result.ok) {
-          console.debug("%s.ADD_DOCUMENTS key is: %s, value is: %O", __filename, result.data.uuid, result.data)
-          Vue.set(state.documents, result.data.uuid, result.data)
-        }
-      }
-    },
-    SET_DOCUMENTS(state, response) {
-      state.documents = Object.assign({}, response)
+    SET_FOLDERS(state, tree) {
+      state.folders = Object.assign({}, tree)      
     },
     CLEAR_STORE(state) {
       state.documents = {}
@@ -34,14 +26,11 @@ const Document = {
     },
 	},
 	getters: {
-    getDocuments: state => state.documents,
-    getDocumentByID: (state) => (id) => { 
-      return state.documents[id]
-    },
+    getDocuments: state => state.folders[state.current_working_directory],
     getFolderTree: state => state.folderTree
 	},
 	actions: {
-    uploadDocuments: async function ({ commit }, files) {
+    uploadDocuments: async function ({ commit, dispatch }, files) {
       const payload = new FormData()
 
       console.debug("%s: In Vuex, with files: %O", __filename, files)
@@ -52,8 +41,7 @@ const Document = {
       })      
       try {
         const response = await DocumentRepo.uploadDocuments(payload)
-        commit("ADD_DOCUMENTS", response.data)
-        return response.data
+        await dispatch("loadDocuments")
       }
       catch(err) {
         console.error("%s: File upload failed: %O", __filename, err)
@@ -62,14 +50,9 @@ const Document = {
     loadDocuments: async function ({ commit }) {
       try {
         const response = await DocumentRepo.get()
-        console.debug("%s: loadUserData: Response is %O", __filename, response)
+        console.debug("%s: loadDocuments: Response is %O", __filename, response)
 
-        let new_documents = {} 
-
-        response.data.forEach(function(doc) {
-          new_documents[doc.uuid] = doc
-        })
-        commit("SET_DOCUMENTS", new_documents)
+        commit("SET_FOLDERS", response.data)
       }
       catch (err) {
         console.error("%s: DocumentRepo failed to get documents: %O", __filename, err)

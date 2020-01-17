@@ -15,7 +15,10 @@ const r = express.Router()
 r.post("/", [
 		autenUser('uuid').isUUID() 
 	], async function(req, res) {
-		sendResponse(res, await DocumentService.uploadDocument(req.tokenData.uuid, req.body))
+		if (req.files.documents.constructor !== Array) {
+			req.files.documents = [ req.files.documents ]
+		}
+		sendResponse(res, await DocumentService.uploadDocuments(req.tokenData.uuid, req.files.documents))
 	}
 )
 
@@ -36,17 +39,20 @@ r.patch("/", [
 r.get("/", [
 		autenUser('uuid').isUUID() 
 	], async function(req, res) {
-		const path = req.query.path
-		const doc = req.query.document
 
+/*
 		if (path !== undefined) {
 			const pathDecoded = decodeURIComponent(path)
 			sendResponse(res, await DocumentService.getDocuments(req.tokenData.uuid, pathDecoded))
-		} else if (document !== undefined) {
-			sendResponse(res, await Documentservice.getDocument(req.tokenData.uuid, doc))
-		} else {
-			sendResponse(res, await DocumentService.getDocuments(req.tokenData.uuid, "/"))
-		}
+*/			
+		sendResponse(res, await DocumentService.getAllDocuments(req.tokenData.uuid))
+	}
+)
+
+r.get("/:doc_id", [
+		autenUser('uuid').isUUID() 
+	], async function(req, res) {
+		sendResponse(res, await Documentservice.getDocumentByID(req.tokenData.uuid, req.param.doc_id))
 	}
 )
 

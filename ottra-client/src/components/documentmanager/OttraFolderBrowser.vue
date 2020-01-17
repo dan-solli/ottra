@@ -32,7 +32,7 @@
         	{{ $t('ui.text.cancel') }}
         </v-btn>
         <v-btn text @click="moveToFolder">
-        	{{ $t('ui.text.choose') }}
+        	{{ $t('ui.text.checkdone') }}
         </v-btn>
       </v-card-actions>
     </v-card>
