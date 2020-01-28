@@ -17,7 +17,8 @@
 							<v-icon>mdi-close</v-icon>
 						</v-btn>
 						<v-toolbar-title>
-							{{ $t('ui.view.filebrowser.heading') }}
+							<!-- 	{{ $t('ui.view.filebrowser.heading') }} -->
+							{{ getCWD }}
 						</v-toolbar-title>
 
 
@@ -25,7 +26,10 @@
 
 						<v-toolbar-items>
 
-							<OttraNewFolderDialog	:cwd="currentFolder"></OttraNewFolderDialog>
+							<v-btn icon @click="upOneDirectory">
+								<v-icon>mdi-subdirectory-arrow-left</v-icon>
+							</v-btn>
+							<OttraNewFolderDialog></OttraNewFolderDialog>
 							
 							<OttraFileUploadDialog></OttraFileUploadDialog>
 
@@ -86,17 +90,19 @@
 					</v-toolbar>
 				</v-card-title>
 
+
 				<v-container fluid>
+
 					<v-row v-if="viewMode == 1">
-						<v-col v-for="i in getSortedDocuments" :key="i.uuid" class="d-flex child-flex">
+						<v-col cols="2" v-for="i in getSortedDocuments" :key="i.uuid" class="d-flex child-flex">
 
 							<v-card flat tile outlined 
 								:id="i.uuid"
-								@click="clickImage"
+								@click="clickImage(i, $event)"
 								v-bind:class="[isSelected(i.uuid) ? 'blue lighten-2' : '']">
 								<v-card-text>
 									<v-img v-if="isImage(i.mimetype)"
-										:src="getProperURL(i.filename)"
+										:src="getProperURL(i)"
 										aspect-ratio="1"
 										class="grey lighten-2">
 										<template v-slot:placeholder>
@@ -106,9 +112,12 @@
 											</v-row>
 										</template>
 									</v-img>
-									<v-icon v-else x-large class="fill-height ma-0">
-										{{ getIcon(i) }}
-									</v-icon>
+									<div v-else>
+										<v-icon x-large class="fill-height ma-0">
+											{{ getIcon(i) }}
+										</v-icon>
+										{{ i.name }}
+									</div>
 								</v-card-text>
 							</v-card>
 
@@ -131,9 +140,10 @@
 									<tbody>
 										<tr v-for="i in getSortedDocuments" :key="i.uuid">
 											<td> 
-												<v-icon>{{ getIcon(i) }}</v-icon> {{ i.original_filename }} 
+												<v-icon>{{ getIcon(i) }}</v-icon> 
+												{{ i.type === "directory" ? i.name : i.original_filename }} 
 											</td>
-											<td> 0 </td>
+											<td> {{ i.size | humanize }} </td>
 											<td> {{ i.dateTime }} </td>
 										</tr>
 									</tbody>
@@ -171,7 +181,6 @@ export default {
 		return {
 			viewMode: 0,
 			searchFilter: '',
-			currentFolder: '/',
 			isFullScreen: false,
 			dialog: false,
 			mimeTypes: {
@@ -197,11 +206,23 @@ export default {
 			],
 		}
 	},
+	filters: {
+		humanize: function(val) {
+  		if (val > 1024 * 1024) {
+  			return parseFloat(val / (1024 * 1024)).toFixed(2) + " Mb"
+  		} else if (val > 1024) {
+  			return parseFloat(val / 1024).toFixed(2) + " kb"
+  		} else {
+  			return parseFloat(val).toFixed(2)
+  		}
+  	},
+	},
 	computed: {
 		...mapGetters([ 
 			"getDocuments",
 			"getSelectedFiles",
-			"getUserID"
+			"getUserID",
+			"getCWD"
 		]),
 		hasSelectedFiles: function() {
 			return Object.keys(this.getSelectedFiles).length
@@ -224,8 +245,8 @@ export default {
 			}
 			else if (this.sortOrder == 5 || this.sortOrder == 6) {
 				docList.sort(function(a, b) {
-					return a.created > b.created ? 1 : 
-								 a.created < b.created ? -1 : 0
+					return a.size > b.size ? -1 : 
+								 a.size < b.size ? 1 : 0
 				})
 			}
 			else {
@@ -265,22 +286,32 @@ export default {
 				return 'mdi-help-box'
 			}
 		},
-		getProperURL: function(url) {
-			if (url.substring(0,5) === 'blob:') {
-				return url
+		getProperURL: function(doc) {
+			if (doc.filename.substring(0,5) === 'blob:') {
+				return doc.filename
 			} else {
 				// TODO: Must replace this URL. Yikes.
-				return `https://192.168.1.200:8888/content/${this.getUserID}/${url}`
+				// This should soak up the cwd. How?
+				return `https://192.168.1.200:8888/content/${this.getUserID}/${doc.path}/${doc.filename}`
 			}
 		},
-		clickImage: function(event) {
-			const imageUUID = event.currentTarget.id
+		clickImage: function(doc) {
+			console.debug(doc)
 
-			if (this.isSelected(imageUUID)) {
-    		this.$store.dispatch("removeSelectedFile", imageUUID)				
+			if (doc.type === 'directory') {
+				this.$store.dispatch("changeDir", doc.path + "/" + doc.name)
 			} else {
-    		this.$store.dispatch("addSelectedFile", imageUUID)				
+				const imageUUID = doc.uuid
+
+				if (this.isSelected(imageUUID)) {
+	    		this.$store.dispatch("removeSelectedFile", imageUUID)				
+				} else {
+	    		this.$store.dispatch("addSelectedFile", imageUUID)				
+				}
 			}
+		},
+		upOneDirectory: function() {
+			this.$store.dispatch("changeDir", "..")
 		},
 		isSelected: function(uuid) {
 			return this.getSelectedFiles.includes(uuid)

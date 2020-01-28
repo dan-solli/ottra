@@ -41,25 +41,27 @@
 
 <script>
 
+import { mapGetters } from 'vuex'
+
 import OttraImageOrIcon from '@/components/documentmanager/OttraImageOrIcon.vue'
 
 
 export default {
 	name: 'ottra-new-folder-dialog',
-  props: [ 'cwd' ],
 	data: function() {
 		return {
 			dialog: false,
 			folderName: '',
 		}
 	},
+  computed: {
+    ...mapGetters([
+      "getCWD"
+    ])
+  },
 	methods: {
 		createFolder: function() {
-      const payload = {
-        cwd: this.cwd,
-        folderName: this.folderName
-      }
-    	this.$store.dispatch("createFolder", payload)
+    	this.$store.dispatch("createFolder", this.folderName)
     	this.dialog = false
     	this.folderName = ''
 		}

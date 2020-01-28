@@ -1,4 +1,6 @@
 const DB = require('./../infra/db')
+const resolvePath = require('./../infra/resolve_path')
+
 const uuidv4 = require('uuid/v4')
 
 const dirTree = require('directory-tree')
@@ -21,6 +23,7 @@ const DocumentModel = {
 		}
 
 		handleChild(theTree)
+		console.debug("%s: getAllDocuments yields: %O", __filename, resultData)
 		return { ok: true, data: resultData }
 
 		function rewriteChild(child) {
@@ -43,6 +46,10 @@ const DocumentModel = {
 					child.children.forEach(function(c) {
 						handleChild(c)
 					})
+				} else {
+					const cPath = child.path + "/" + child.name
+					console.debug("%s: Empty directory for %s, creating such...", __filename, cPath) 
+					resultData[cPath] = []
 				}
 			}
 			if (!resultData.hasOwnProperty(child.path)) {
@@ -90,8 +97,12 @@ const DocumentModel = {
 	moveFiles: async function(user_id, payload) {
 
 	},
-	deleteFiles: async function(user_id, payload) {
-
+	deleteDocument: async function(user_id, doc_uuid) {
+		return await DB.fetchRow(`
+			MATCH (n:Document { uuid: { doc_uuid }}) 
+			WITH n, properties(n) as props
+			DETACH DELETE n 
+			RETURN props AS Props`, { doc_uuid: doc_uuid }, "Props")
 	},
 	getFolderTree: async function(user_id) {
 

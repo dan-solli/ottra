@@ -15,17 +15,24 @@ const r = express.Router()
 r.post("/", [
 		autenUser('uuid').isUUID() 
 	], async function(req, res) {
+		//console.debug("%s: req.files are: %O", __filename, req.files)
+		//console.debug("%s: req.body is: %O", __filename, req.body)
+		const cwd = req.body.cwd
 		if (req.files.documents.constructor !== Array) {
 			req.files.documents = [ req.files.documents ]
 		}
-		sendResponse(res, await DocumentService.uploadDocuments(req.tokenData.uuid, req.files.documents))
+		sendResponse(res, await DocumentService.uploadDocuments(req.tokenData.uuid, cwd, req.files.documents))
 	}
 )
 
 r.delete("/", [
 		autenUser('uuid').isUUID() 
 	], async function(req, res) {
-		sendResponse(res, await DocumentService.deleteDocument(req.tokenData.uuid, req.body))
+		console.debug("%s: Preparing to send response by calling DS.deleteDocument.", __filename)
+		const response = await DocumentService.deleteDocument(req.tokenData.uuid, req.body.payload)
+		console.debug("%s: Response from DS is %O", __filename, response)
+		sendResponse(res, response)
+		console.debug("%s: Response sent", __filename)
 	}
 )
 

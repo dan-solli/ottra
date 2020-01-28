@@ -49,7 +49,7 @@ const FolderService = {
 			})
 		}
 
-		console.debug(theTree)
+		//console.debug(theTree)
 		return { ok: true, data: theTree }
 	},
 	moveFolder: async function(user_id, payload) {

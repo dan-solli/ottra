@@ -5,7 +5,6 @@ import { RepositoryFactory } from '@/common/repos/RepositoryFactory'
 const DocumentRepo = RepositoryFactory.get('document')
 const FolderRepo = RepositoryFactory.get('folder')
 
-
 const Document = {
 	state: {
     //documents: { },
@@ -24,15 +23,31 @@ const Document = {
       tree.name = '/'
       state.folderTree = Object.assign({}, tree)
     },
+    SET_CWD(state, cwd) {
+      while (cwd.search("//") > -1) {
+        cwd = cwd.replace("//", "/")
+      }      
+      state.current_working_directory = cwd || "/"
+    }
 	},
 	getters: {
     getDocuments: state => state.folders[state.current_working_directory],
-    getFolderTree: state => state.folderTree
+    getFolderTree: state => state.folderTree,
+    getCWD: state => state.current_working_directory
 	},
 	actions: {
-    uploadDocuments: async function ({ commit, dispatch }, files) {
+    changeDir: async function ({ commit, state }, cwd) {
+      if (cwd === '..') {
+        const dirParts = state.current_working_directory.split("/")
+        dirParts.pop()
+        cwd = "/" + dirParts.join("/")
+      }
+      commit("SET_CWD", cwd)
+    },
+    uploadDocuments: async function ({ commit, dispatch, state }, files) {
       const payload = new FormData()
 
+      payload.append('cwd', state.current_working_directory)
       console.debug("%s: In Vuex, with files: %O", __filename, files)
 
       files.forEach(function(file) {
@@ -58,11 +73,14 @@ const Document = {
         console.error("%s: DocumentRepo failed to get documents: %O", __filename, err)
       }      
     },
-    createFolder: async function ({ commit, dispatch }, payload) {
+    createFolder: async function ({ commit, dispatch, state }, folderName) {
       try {
         // TODO: Should validate that folderName only contains [A-Za-z0-9-_.]
 
-        const response = await FolderRepo.createFolder(payload)
+        const response = await FolderRepo.createFolder({ 
+                                cwd: state.current_working_directory,
+                                folderName: folderName
+                              })
         console.debug("%s: createFolder: Response is %O", __filename, response)
         const response2 = await dispatch('getFolderTree')
       }
@@ -78,12 +96,44 @@ const Document = {
         console.error("%s: DocumentRepo failed to move files: %O", __filename, err)
       }
     },
-    deleteFiles: async function ({ commit }, payload) {
-      try {
-        // const response = await DocumentRepo.moveFiles(payload)
-        console.debug("%s: moveFiles: Response is %O", __filename, response)
-      } catch (err) {
-        console.error("%s: DocumentRepo failed to move files: %O", __filename, err)
+    deleteFiles: async function ({ commit, dispatch, state }, payload) {
+      function findFileByUUID(doc_uuid) {
+        for (const dirname of Object.keys(state.folders)) {
+          for (const dirent of state.folders[dirname]) {
+            if (dirent.type === 'file' && dirent.uuid === doc_uuid) {
+              return dirent
+            }
+          }
+        }
+      }
+
+      console.debug("%s: deleteFiles called with %O", __filename, payload)
+      if (Array.isArray(payload)) {
+        try {
+          const result = payload.map(async function(doc_uuid) {
+            const dirent = await findFileByUUID(doc_uuid)
+            if (dirent !== "undefined") {
+              console.debug("%s: Dirent is: %O", __filename, dirent)
+              const payload = {
+                uuid: doc_uuid,
+                path: dirent.path,
+                file: dirent.filename
+              }
+              const retval = await DocumentRepo.deleteDocument(payload)
+              await dispatch("removeSelectedFile", doc_uuid)
+              await dispatch("loadDocuments")
+              await dispatch("getFolderTree")
+
+              return retval
+            } else {
+              console.error("Ok, we're trying to delete a file which has been lost. WTF.")
+              throw "Fuck shit crap"
+            }
+          })
+          console.debug("%s: deleteFiles: Response is %O", __filename, result)
+        } catch (err) {
+          console.error("%s: DocumentRepo failed to delete files: %O", __filename, err)
+        }
       }
     },
     getFolderTree: async function({ commit }) {
