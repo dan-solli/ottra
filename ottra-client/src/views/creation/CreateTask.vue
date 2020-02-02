@@ -104,34 +104,38 @@
                 </v-row>
 
                 <v-row> <!-- Visual Aid Images -->
-                  <v-col>
-<!--                    
-                    <v-file-input 
-                      v-model="payload.goodEnoughImages"
-                      prepend-icon="mdi-tooltip-image-outline"
-                      chips multiple
-                      label="(*) Good enough result images"
-                      hint="(*) If the task has no outcome that can be visually controlled, leave this blank">
-                     </v-file-input>
-
--->                     
-                    <OttraDocumentBrowser></OttraDocumentBrowser>
+                  <v-col cols="5">
+                    <v-text-field 
+                      v-model="payload.goodEnoughImages" 
+                      label="(*) Good enough images" 
+                      type="text"
+                      disabled
+                      prepend-icon="mdi-bullseye" 
+                      required>
+                    </v-text-field>
                   </v-col>
-                </v-row>
+                  <v-col cols="1">
+                    <OttraDocumentBrowser 
+                      v-on:attach-documents="attachVisualAid"
+                      :documents="payload.goodEnoughImages">
+                    </OttraDocumentBrowser>
+                  </v-col>
 
-                <v-row> 
-                  <v-col>
-<!--                    
-                    <v-file-input 
-                      v-model="payload.goalImages"
-                      prepend-icon="mdi-tooltip-image-outline"
-                      chips multiple
-                      hint="If the task has no outcome that can be visually controlled, leave this blank"
-                      label="(*) Goal result images">
-                     </v-file-input>
--->                     
-                    <OttraDocumentBrowser></OttraDocumentBrowser>
-
+                  <v-col cols="5">
+                    <v-text-field 
+                      v-model="payload.goalImages" 
+                      label="(*) Goal Images" 
+                      type="text"
+                      disabled
+                      prepend-icon="mdi-bullseye-arrow" 
+                      required>
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="1">
+                    <OttraDocumentBrowser
+                      v-on:attach-documents="attachGoalDocuments"
+                      :documents="payload.goalImages">
+                    </OttraDocumentBrowser>
                   </v-col>
                 </v-row>
 
@@ -182,6 +186,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      "getSelectedFiles"
+    ]),
     tourLabels: function() {
       return {
         labels: {
@@ -230,6 +237,14 @@ export default {
       const result = await this.$store.dispatch("saveTask", this.payload)
       console.debug("%s: saveTask success: %O", __filename, result)
       this.$router.push('/task/' + result.uuid)
+    },
+    attachGoalDocuments: function() {
+      this.payload.goodEnoughImages = [...this.getSelectedFiles]
+      this.$store.dispatch("clearSelectedFiles")
+    },
+    attachVisualAid: function() {
+      this.payload.goalImages = [...this.getSelectedFiles]
+      this.$store.dispatch("clearSelectedFiles")
     }
   }
 }

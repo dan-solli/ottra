@@ -1,162 +1,165 @@
 <template>
-	<v-row justify="center">
-		<v-dialog 
-			v-model="dialog" 
-			:fullscreen="isFullScreen" 
-			transition="dialog-bottom-transition">
+	<v-dialog 
+		v-model="dialog" 
+		:fullscreen="isFullScreen" 
+		transition="dialog-bottom-transition">
+
+		<template v-slot:activator="{ on: dialog }">
+			<v-btn icon v-on="dialog">
+				<v-icon>mdi-attachment</v-icon>
+			</v-btn>
+		</template>
 
 
-			<template v-slot:activator="{ on }">
-				<v-btn v-on="on">(*) File browser </v-btn>
-			</template>
+		<v-card>
+			<v-card-title>
+				<v-toolbar dense>
+					<v-btn icon @click="dialog = false">
+						<v-icon>mdi-close</v-icon>
+					</v-btn>
+					<v-toolbar-title>
+						<!-- 	{{ $t('ui.view.filebrowser.heading') }} -->
+						{{ getCWD }}
+					</v-toolbar-title>
 
-			<v-card>
-				<v-card-title>
-					<v-toolbar dense>
-						<v-btn icon @click="dialog = false">
-							<v-icon>mdi-close</v-icon>
+
+					<div class="flex-grow-1"></div>
+
+					<v-toolbar-items>
+
+						<v-btn icon @click="upOneDirectory">
+							<v-icon>mdi-subdirectory-arrow-left</v-icon>
 						</v-btn>
-						<v-toolbar-title>
-							<!-- 	{{ $t('ui.view.filebrowser.heading') }} -->
-							{{ getCWD }}
-						</v-toolbar-title>
+						<OttraNewFolderDialog></OttraNewFolderDialog>
+						
+						<OttraFileUploadDialog></OttraFileUploadDialog>
 
+						<v-divider class="mx-4" vertical></v-divider>
 
-						<div class="flex-grow-1"></div>
-
-						<v-toolbar-items>
-
-							<v-btn icon @click="upOneDirectory">
-								<v-icon>mdi-subdirectory-arrow-left</v-icon>
-							</v-btn>
-							<OttraNewFolderDialog></OttraNewFolderDialog>
-							
-							<OttraFileUploadDialog></OttraFileUploadDialog>
-
-							<v-divider class="mx-4" vertical></v-divider>
-
-							<OttraFolderBrowser></OttraFolderBrowser>
+						<OttraFolderBrowser></OttraFolderBrowser>
 <!--
-							<v-btn 
-								:disabled="!hasSelectedFiles" 
-								@click="moveFiles"
-								text>
-								<v-icon>mdi-file-move</v-icon>
-							</v-btn>
+						<v-btn 
+							:disabled="!hasSelectedFiles" 
+							@click="moveFiles"
+							text>
+							<v-icon>mdi-file-move</v-icon>
+						</v-btn>
 -->
 
-							<v-btn 
-								:disabled="!hasSelectedFiles"
-								@click="deleteFiles"
-								text>
-								<v-icon>mdi-trash-can</v-icon>
-							</v-btn>
+						<v-btn 
+							:disabled="!hasSelectedFiles"
+							@click="deleteFiles"
+							text>
+							<v-icon>mdi-trash-can</v-icon>
+						</v-btn>
 
-							<v-divider class="mx-4" vertical></v-divider>
+						<v-divider class="mx-4" vertical></v-divider>
 
-							<v-btn-toggle dense group mandatory v-model="viewMode">
-								<v-btn value="1"><v-icon>mdi-file-image</v-icon></v-btn>
-								<v-btn value="0"><v-icon>mdi-view-list</v-icon></v-btn>
-							</v-btn-toggle>
+						<v-btn-toggle dense group mandatory v-model="viewMode">
+							<v-btn value="1"><v-icon>mdi-file-image</v-icon></v-btn>
+							<v-btn value="0"><v-icon>mdi-view-list</v-icon></v-btn>
+						</v-btn-toggle>
 
-							<v-divider class="mx-4" vertical></v-divider>
+						<v-divider class="mx-4" vertical></v-divider>
 
-							<v-select 
-								v-model="sortOrder"
-								:items="sortOrderItems"
-								placeholder="(*) Sort" 
-								dense></v-select>
-
-
-							<v-divider vertical class="mx-4"></v-divider>
+						<v-select 
+							v-model="sortOrder"
+							:items="sortOrderItems"
+							placeholder="(*) Sort" 
+							dense></v-select>
 
 
-							<v-text-field v-model="searchFilter" solo flat 
-									:label="$t('ui.text.search')" hide-details prepend-inner-icon="mdi-magnify"
-									clearable 
-									@click:clear="resetFilter"
-									clear-icon="mdi-close-circle-outline">
-							</v-text-field>
-
-							<v-divider class="mx-0" vertical></v-divider>
-
-							<v-btn text @click="isFullScreen = !isFullScreen">
-								<v-icon v-if="isFullScreen">mdi-window-restore</v-icon>
-								<v-icon v-else>mdi-window-maximize</v-icon>
-							</v-btn>
+						<v-divider vertical class="mx-4"></v-divider>
 
 
-						</v-toolbar-items>
-					</v-toolbar>
-				</v-card-title>
+						<v-text-field v-model="searchFilter" solo flat 
+								:label="$t('ui.text.search')" hide-details prepend-inner-icon="mdi-magnify"
+								clearable 
+								@click:clear="resetFilter"
+								clear-icon="mdi-close-circle-outline">
+						</v-text-field>
+
+						<v-divider class="mx-0" vertical></v-divider>
+
+						<v-btn text @click="isFullScreen = !isFullScreen">
+							<v-icon v-if="isFullScreen">mdi-window-restore</v-icon>
+							<v-icon v-else>mdi-window-maximize</v-icon>
+						</v-btn>
 
 
-				<v-container fluid>
+					</v-toolbar-items>
+				</v-toolbar>
+			</v-card-title>
 
-					<v-row v-if="viewMode == 1">
-						<v-col cols="2" v-for="i in getSortedDocuments" :key="i.uuid" class="d-flex child-flex">
 
-							<v-card flat tile outlined 
-								:id="i.uuid"
-								@click="clickImage(i, $event)"
-								v-bind:class="[isSelected(i.uuid) ? 'blue lighten-2' : '']">
-								<v-card-text>
-									<v-img v-if="isImage(i.mimetype)"
-										:src="getProperURL(i)"
-										aspect-ratio="1"
-										class="grey lighten-2">
-										<template v-slot:placeholder>
-											<v-row class="fill-height ma-0" align="center" justify="center">
-												<v-progress-circular indeterminate color="grey lighten-5">
-												</v-progress-circular>
-											</v-row>
-										</template>
-									</v-img>
-									<div v-else>
-										<v-icon x-large class="fill-height ma-0">
-											{{ getIcon(i) }}
-										</v-icon>
-										{{ i.name }}
-									</div>
-								</v-card-text>
-							</v-card>
+			<v-container fluid>
+
+				<v-row v-if="viewMode == 1">
+					<v-col cols="2" v-for="i in getSortedDocuments" :key="i.uuid" class="d-flex child-flex">
+
+						<v-card flat tile outlined 
+							:id="i.uuid"
+							@click="clickImage(i, $event)"
+							v-bind:class="[isSelected(i.uuid) ? 'blue lighten-2' : '']">
+							<v-card-text>
+								<v-img v-if="isImage(i.mimetype)"
+									:src="getProperURL(i)"
+									aspect-ratio="1"
+									class="grey lighten-2">
+									<template v-slot:placeholder>
+										<v-row class="fill-height ma-0" align="center" justify="center">
+											<v-progress-circular indeterminate color="grey lighten-5">
+											</v-progress-circular>
+										</v-row>
+									</template>
+								</v-img>
+								<div v-else>
+									<v-icon x-large class="fill-height ma-0">
+										{{ getIcon(i) }}
+									</v-icon>
+									{{ i.name }}
+								</div>
+							</v-card-text>
+						</v-card>
 
 					</v-col>
+				</v-row>
+				<v-row v-else-if="viewMode == 0">
 
+					<v-col cols="12">
+						<v-simple-table dense>
+							<template v-slot:default>
+								<thead>
+									<tr>
+										<th> (*) Filename </th>
+										<th> (*) Filesize </th>
+										<th> (*) Uploaded </th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="i in getSortedDocuments" :key="i.uuid">
+										<td> 
+											<v-icon>{{ getIcon(i) }}</v-icon> 
+											{{ i.type === "directory" ? i.name : i.original_filename }} 
+										</td>
+										<td> {{ i.size | humanize }} </td>
+										<td> {{ i.dateTime }} </td>
+									</tr>
+								</tbody>
+							</template>
+						</v-simple-table>
+					</v-col>
+				</v-row>
 
-					</v-row>
-					<v-row v-else-if="viewMode == 0">
+				<v-row v-if="attachDocument">
+					<v-btn text @click="$emit('attach-documents'); dialog = false">
+						(*) Attach
+					</v-btn>
+				</v-row>
 
-						<v-col cols="12">
-							<v-simple-table dense>
-								<template v-slot:default>
-									<thead>
-										<tr>
-											<th> (*) Filename </th>
-											<th> (*) Filesize </th>
-											<th> (*) Uploaded </th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr v-for="i in getSortedDocuments" :key="i.uuid">
-											<td> 
-												<v-icon>{{ getIcon(i) }}</v-icon> 
-												{{ i.type === "directory" ? i.name : i.original_filename }} 
-											</td>
-											<td> {{ i.size | humanize }} </td>
-											<td> {{ i.dateTime }} </td>
-										</tr>
-									</tbody>
-								</template>
-							</v-simple-table>
-						</v-col>
-
-					</v-row>
-
-				</v-container>
-			</v-card>
-		</v-dialog>
-	</v-row>
+			</v-container>
+		</v-card>
+	</v-dialog>
 </template>
 
 <script>
@@ -170,6 +173,16 @@ import OttraFolderBrowser from '@/components/documentmanager/OttraFolderBrowser.
 
 export default {
 	name: 'file-browser-view',
+	props: {
+		attachDocument: {
+			type: Boolean,
+			default: true
+		},
+		documents: {
+			type: Array,
+			default: []
+		}
+	},
   components: {
     OttraFileUploadDialog,
     OttraImageOrIcon,
@@ -320,7 +333,6 @@ export default {
 			this.$store.dispatch("deleteFiles", this.getSelectedFiles)
 		},
 		moveFiles: function() {
-
 			this.$store.dispatch("moveFiles", { 
 				files: this.getSelectedFiles, 
 				target: null

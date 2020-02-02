@@ -1,5 +1,4 @@
 const DB = require('./../infra/db')
-const resolvePath = require('./../infra/resolve_path')
 
 const uuidv4 = require('uuid/v4')
 

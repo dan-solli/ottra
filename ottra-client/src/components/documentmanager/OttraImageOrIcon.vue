@@ -70,7 +70,7 @@ export default {
 		}
 	},
 	created: function() {
-		console.error("This component (%s) is deprecated it seems. But shouldn't.")
+		console.error("This component (%s) is deprecated it seems. But shouldn't.", "ottra-image-or-icon")
 	},
 	methods: {
 		isImage: function(item) {

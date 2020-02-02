@@ -56,27 +56,20 @@ const DocumentService = {
 		return await DocumentModel.moveFile(user_id, payload)
 	},
 	deleteDocument: async function(user_id, payload) {
-		console.debug("%s: deleteDocument called with payload: %O", __filename, payload)
 		const { path: doc_path, file: doc_filename, uuid: doc_uuid } = payload
-		console.debug("%s: deleteDocument calling DM.deleteDocument with uuid %s", __filename, doc_uuid)
 		const result = await DocumentModel.deleteDocument(user_id, doc_uuid)
-		console.debug("%s: deleteDocument: DM.deleteDocument returned %O", __filename, result)
 		if (result.ok) {
 			const path = process.env.OTTRA_CONTENT_PATH + "/" + user_id + "/" + doc_path
 			const fullFilename = path + "/" + doc_filename
-			console.debug("%s: Trying to delete %s", __filename, fullFilename)
 			try {
 				fs.unlinkSync(fullFilename)
-				console.debug("%s: deleteDocument: Unlink worked, returning %O", __filename, result)
 				return result
 			}
 			catch (err) {
-				console.error("%s: Failed to unlink %s: Error: %s", __filename, fullFilename, err)
 				return { ok: false, error: { code: 500, status: "failed", message: "Could not delete file " + fullFilename }}
 			}
 		}
 		else {
-			console.error("%s: deleteDocument: call to Model failed. Returning: %O", __filename, result)
 			return result
 		}
 	},
