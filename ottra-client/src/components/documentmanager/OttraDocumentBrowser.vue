@@ -152,7 +152,7 @@
 				</v-row>
 
 				<v-row v-if="attachDocument">
-					<v-btn text @click="$emit('attach-documents'); dialog = false">
+					<v-btn text @click="attachDocuments">
 						(*) Attach
 					</v-btn>
 				</v-row>
@@ -174,13 +174,13 @@ import OttraFolderBrowser from '@/components/documentmanager/OttraFolderBrowser.
 export default {
 	name: 'file-browser-view',
 	props: {
+		value: {
+			type: Array,
+			default: () => [] // ES6 variation of factory function
+		},
 		attachDocument: {
 			type: Boolean,
 			default: true
-		},
-		documents: {
-			type: Array,
-			default: []
 		}
 	},
   components: {
@@ -192,6 +192,8 @@ export default {
   },
 	data: function() {
 		return {
+			moveDestination: null,
+			selectedFiles: [],
 			viewMode: 0,
 			searchFilter: '',
 			isFullScreen: false,
@@ -233,12 +235,12 @@ export default {
 	computed: {
 		...mapGetters([ 
 			"getDocuments",
-			"getSelectedFiles",
 			"getUserID",
 			"getCWD"
 		]),
 		hasSelectedFiles: function() {
-			return Object.keys(this.getSelectedFiles).length
+			return this.selectedFiles.length
+			//return Object.keys(this.getSelectedFilesById("FileBrowserSelection")).length
 		},
 		getSortedDocuments: function() {
 			console.debug("%s: searchFilter is ->%s<-", __filename, this.searchFilter)
@@ -317,9 +319,13 @@ export default {
 				const imageUUID = doc.uuid
 
 				if (this.isSelected(imageUUID)) {
-	    		this.$store.dispatch("removeSelectedFile", imageUUID)				
+					this.selectedFiles = this.selectedFiles.filter(function(f) {
+						if (f != imageUUID) {
+							return f
+						}
+					})
 				} else {
-	    		this.$store.dispatch("addSelectedFile", imageUUID)				
+					this.selectedFiles.push(imageUUID)
 				}
 			}
 		},
@@ -327,16 +333,31 @@ export default {
 			this.$store.dispatch("changeDir", "..")
 		},
 		isSelected: function(uuid) {
-			return this.getSelectedFiles.includes(uuid)
+			return this.selectedFiles.includes(uuid)
 		},
-		deleteFiles: function() {
-			this.$store.dispatch("deleteFiles", this.getSelectedFiles)
+		deleteFiles: async function() {
+			try {
+				await this.$store.dispatch("deleteFiles", this.selectedFiles)
+				this.selectedFiles = []
+			} 
+			catch (err) {
+				console.error("%s: Delete files failed: %O", __filename, err)
+			}
 		},
-		moveFiles: function() {
-			this.$store.dispatch("moveFiles", { 
-				files: this.getSelectedFiles, 
-				target: null
-			})
+		moveFiles: async function() {
+			try {
+				await this.$store.dispatch("moveFiles", { 
+					files: this.selectedFiles, target: this.moveDestination 
+				})
+				this.selectedFiles = []
+			}
+			catch (err) {
+				console.error("%s: Move files failed: %O", __filename, err)
+			}
+		},
+		attachDocuments: function() {
+			this.$emit("input", this.value.concat(this.selectedFiles))
+			this.dialog = false
 		}
   }	
 }	

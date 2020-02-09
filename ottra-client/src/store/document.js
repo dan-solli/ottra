@@ -33,7 +33,16 @@ const Document = {
 	getters: {
     getDocuments: state => state.folders[state.current_working_directory],
     getFolderTree: state => state.folderTree,
-    getCWD: state => state.current_working_directory
+    getCWD: state => state.current_working_directory,
+    findFileByUUID: (state) => (doc_uuid) => {
+      for (const dirname of Object.keys(state.folders)) {
+        for (const dirent of state.folders[dirname]) {
+          if (dirent.type === 'file' && dirent.uuid === doc_uuid) {
+            return dirent
+          }
+        }
+      }
+    }      
 	},
 	actions: {
     changeDir: async function ({ commit, state }, cwd) {
@@ -96,7 +105,8 @@ const Document = {
         console.error("%s: DocumentRepo failed to move files: %O", __filename, err)
       }
     },
-    deleteFiles: async function ({ commit, dispatch, state }, payload) {
+    deleteFiles: async function ({ commit, dispatch, state, getters }, payload) {
+/*
       function findFileByUUID(doc_uuid) {
         for (const dirname of Object.keys(state.folders)) {
           for (const dirent of state.folders[dirname]) {
@@ -106,12 +116,12 @@ const Document = {
           }
         }
       }
-
+*/
       console.debug("%s: deleteFiles called with %O", __filename, payload)
       if (Array.isArray(payload)) {
         try {
           const result = payload.map(async function(doc_uuid) {
-            const dirent = await findFileByUUID(doc_uuid)
+            const dirent = await getters.findFileByUUID(doc_uuid)
             if (dirent !== "undefined") {
               console.debug("%s: Dirent is: %O", __filename, dirent)
               const payload = {

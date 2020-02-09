@@ -9,38 +9,47 @@ import Vue from 'vue'
 // For that case, I think I prefer Vuex. 
 const UIFileBrowser = {
   state: {
-    selected_files: [],
+    selected_files: {},
   },
   getters: {
     getSelectedFiles: state => state.selected_files,
+    getSelectedFilesById: (state) => (id) => {
+      return state.selected_files[id]
+    }
   },
   actions: {
-    addSelectedFile: function({ commit }, file) {
-      commit("ADD_SELECTED_FILES", file)
+    addSelectedFile: function({ commit }, { id, file} ) {
+      commit("ADD_SELECTED_FILES", id, file)
     },
-    removeSelectedFile: function({ commit }, file) {
-      commit("REMOVE_SELECTED_FILES", file)
+    removeSelectedFile: function({ commit }, { id, file }) {
+      commit("REMOVE_SELECTED_FILES", id, file)
     },
-    clearSelectedFiles: function({ commit }) {
-      commit("CLEAR_SELECTED_FILES")
+    clearSelectedFiles: function({ commit }, id) {
+      commit("CLEAR_SELECTED_FILES", id)
     },
+/*    
     clearItems: function({ dispatch }) {
       return dispatch('clearSelectedFiles')
     },
+*/    
   },
   mutations: {
-    ADD_SELECTED_FILES(state, file) {
-      state.selected_files.push(file)
+    ADD_SELECTED_FILES(state, id, file) {
+      const fileList = state.selected_files[id] || []
+      fileList.push(file)
+      Vue.set(state.selected_files, id, fileList)
     },
-    REMOVE_SELECTED_FILES(state, file) {
-      state.selected_files = state.selected_files.filter(function(f) {
+    REMOVE_SELECTED_FILES(state, id, file) {
+      const fileList = state.selected_files[id] || []
+      fileList = fileList.filter(function(f) {
         if (f != file) {
           return f 
         }
-      }) 
+      })
+      Vue.set(state.selected_files, id, fileList) 
     },
-    CLEAR_SELECTED_FILES(state) {
-      state.selected_files = []
+    CLEAR_SELECTED_FILES(state, id) {
+      Vue.set(state.selected_files, id, [])
     },
   }
 };

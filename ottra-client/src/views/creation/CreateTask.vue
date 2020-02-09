@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      {{ $t('ui.view.edittask.heading') }} 
+      (*) Create new task 
       <v-spacer></v-spacer>
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
@@ -115,9 +115,9 @@
                     </v-text-field>
                   </v-col>
                   <v-col cols="1">
+              
                     <OttraDocumentBrowser 
-                      v-on:attach-documents="attachVisualAid"
-                      :documents="payload.goodEnoughImages">
+                      v-model="payload.goodEnoughImages">
                     </OttraDocumentBrowser>
                   </v-col>
 
@@ -133,8 +133,7 @@
                   </v-col>
                   <v-col cols="1">
                     <OttraDocumentBrowser
-                      v-on:attach-documents="attachGoalDocuments"
-                      :documents="payload.goalImages">
+                      v-model="payload.goalImages">
                     </OttraDocumentBrowser>
                   </v-col>
                 </v-row>

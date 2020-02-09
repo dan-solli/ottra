@@ -4,7 +4,9 @@ import Vuex from "vuex";
 //import VuexORMAxios from '@vuex-orm/plugin-axios'
 
 import UIState from "./ui/navigation_drawer"
-import UIFileBrowser from "./ui/file_browser"
+
+// You're fired!
+//import UIFileBrowser from "./ui/file_browser"
 
 import User from "./user"
 import UserSettings from "./user/user.settings"
@@ -75,7 +77,7 @@ const OttraStore = new Vuex.Store({
 		Storage,
 		Task,
 		Todo,
-		UIFileBrowser,
+//		UIFileBrowser,
 		UIState,
 		User,
 		UserSettings
