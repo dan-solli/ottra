@@ -64,16 +64,27 @@
                       </v-switch>
                     </v-col>
                   </v-row>
-<!--
-                  <v-row>
-                    <v-col>
-                      (*) Do you want to add documents/images to the Room, either upload or pick from already uploaded images.
 
-                      <v-checkbox v-model="showDocumentPicker"></v-checkbox>
-                      <OttraFileUploadButtonAndDialog></OttraFileUploadButtonAndDialog>
+                  <v-row>
+                    <v-col cols="5">
+
+                      <v-text-field 
+                        v-model="payload.attachments" 
+                        label="(*) Attachments" 
+                        type="text"
+                        disabled
+                        prepend-icon="mdi-tooltip-image-outline" 
+                        required>
+                      </v-text-field>
+                    </v-col>
+                    <v-col cols="1">
+
+                      <OttraDocumentBrowser 
+                        v-model="payload.attachments">
+                      </OttraDocumentBrowser>
+
                     </v-col>
                   </v-row>
--->
 
                 </v-container>
               </v-form>
@@ -113,6 +124,7 @@ export default {
         name: '',
         container: '', // This can be a room or another storage.
         mobile: false, // Handbag, purse etc
+        attachments: []
       },
       valid: false,
       showDocumentPicker: false,

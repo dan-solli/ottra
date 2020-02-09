@@ -1,4 +1,4 @@
-Instruction<template>
+<template>
 	<div>
 	  <v-expansion-panel-header>
 	  	<v-container>
@@ -33,7 +33,8 @@ Instruction<template>
 		          v-model="localStep.title" 
 		          label="(*) Title" 
 		          type="text"
-		          prepend-icon="mdi-page-layout-header" 
+		          prepend-icon="mdi-page-layout-header"
+		          append-icon="mdi-iframe-variable-outline" 
 		          required>
 		        </v-text-field>
 			  	</v-col>
@@ -47,6 +48,7 @@ Instruction<template>
 		        <v-textarea
 		          v-model="localStep.description"
 		          prepend-icon="mdi-comment"
+		          append-icon="mdi-iframe-variable-outline" 
 		          outlined
 		          hint="(*) Describe the step here"
 		          label="(*) Description">
@@ -56,6 +58,13 @@ Instruction<template>
 				    {{ localStep.description }} 
 	  			</v-col>
 	  		</v-row>
+
+        <v-row>
+          <v-col>
+          	<OttraOptionalStep v-model="localStep.optionalStep"></OttraOptionalStep>
+          </v-col>
+        </v-row>
+
 
 	  		<v-row> <!-- What room -->
 	  			<v-col v-if="editMode">
@@ -79,6 +88,7 @@ Instruction<template>
 	  					time-only
 	  					timeLabel="(*) Duration"
 	  					timeHint="(*) Duration"
+		          append-icon="mdi-iframe-variable-outline" 
 	  					:time="localStep.duration"
 	  					v-on:set-time="localStep.duration = $event">
 	  				</OttraDateTimePicker>
@@ -93,6 +103,7 @@ Instruction<template>
 			      <v-slider
 		          v-model="localStep.energyExpense"
 		          prepend-icon="mdi-flash"
+		          append-icon="mdi-iframe-variable-outline" 
 			        :tick-labels="tickLabels"
 			        :max="4"
 			        step="1"
@@ -122,36 +133,43 @@ Instruction<template>
 	  			</v-col>
 				</v-row>
 
-	  		<v-row> <!-- Visual Aid Images -->
-	  			<v-col v-if="editMode">
-              <v-file-input 
-                v-model="localStep.visualAidImages"
-                prepend-icon="mdi-tooltip-image-outline"
-                chips multiple
-                :label="$t('ui.text.uploadfile')"
-                v-on:change="">
-               </v-file-input>
+	  		<v-row v-if="editMode"> 
 
-	  			</v-col>
-	  			<v-col v-else>
-				    {{ localStep.visualAidImages }} 
-	  			</v-col>
-	  		</v-row>
+          <v-col cols="5">
+            <v-text-field 
+              v-model="localStep.visualAidImages" 
+              label="(*) Visual Aid Images" 
+              type="text"
+              disabled
+		          append-icon="mdi-iframe-variable-outline" 
+              prepend-icon="mdi-tooltip-image-outline" 
+              required>
+            </v-text-field>
+          </v-col>
+          <v-col cols="1">
+      
+            <OttraDocumentBrowser 
+              v-model="localStep.visualAidImages">
+            </OttraDocumentBrowser>
+          </v-col>
 
-	  		<v-row> <!-- Documents -->
-	  			<v-col v-if="editMode">
-              <v-file-input 
-                v-model="localStep.documents"
-                prepend-icon="mdi-file-document-box-multiple-outline"
-                chips multiple
-                :label="$t('ui.text.uploadfile')"
-                v-on:change="">
-               </v-file-input>
+          <v-col cols="5">
+            <v-text-field 
+              v-model="localStep.attachments" 
+              label="(*) Attachments" 
+              type="text"
+              disabled
+		          append-icon="mdi-iframe-variable-outline" 
+              prepend-icon="mdi-file-document-box-multiple-outline" 
+              required>
+            </v-text-field>
+          </v-col>
+          <v-col cols="1">
+            <OttraDocumentBrowser
+              v-model="localStep.attachments">
+            </OttraDocumentBrowser>
+          </v-col>
 
-	  			</v-col>
-	  			<v-col v-else>
-				    {{ localStep.documents }} 
-	  			</v-col>
 	  		</v-row>
 
 	  		<v-row v-if="editMode"> <!-- Action button -->
@@ -174,13 +192,17 @@ import { mapGetters } from 'vuex'
 
 import OttraDateTimePicker from '@/components/OttraDateTimePicker'
 import OttraStepState from '@/components/OttraStepState'
+import OttraDocumentBrowser from '@/components/documentmanager/OttraDocumentBrowser'
+import OttraOptionalStep from '@/components/steps/subcomponents/OttraOptionalStep'
 
 export default {
 	name: 'ottra-instruction-step',
 	props: [ 'thisStep', 'editMode', 'stepOrder'  ],
 	components: {
 		OttraDateTimePicker,
-		OttraStepState
+		OttraStepState,
+		OttraOptionalStep,
+    OttraDocumentBrowser 
 	},
 	data: function() {
 		return {
@@ -194,6 +216,9 @@ export default {
 			localStep: {
 				tools: {},
 				stepLocation: '',
+				visualAidImages: [],
+				attachments: [],
+				optionalStep: false,
 			}
 		}
 	},
