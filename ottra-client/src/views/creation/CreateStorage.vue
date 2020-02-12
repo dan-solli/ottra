@@ -110,12 +110,14 @@ import { mapGetters } from 'vuex'
 
 import OttraHorizDocumentPicker from '@/components/documentmanager/OttraHorizDocumentPicker.vue'
 import OttraFileUploadButtonAndDialog from '@/components/documentmanager/OttraFileUploadButtonAndDialog.vue'
+import OttraDocumentBrowser from '@/components/documentmanager/OttraDocumentBrowser'
 
 export default {
   name: "create-storage",
   props: [ 'container_uuid'],
   components: {
     OttraHorizDocumentPicker,
+    OttraDocumentBrowser,     
     OttraFileUploadButtonAndDialog
   },
   data: function() {

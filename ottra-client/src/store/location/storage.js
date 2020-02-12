@@ -26,16 +26,25 @@ const Storage = {
     }
 	},
 	actions: {
-    createStorage: async function({ commit }, payload) {
+    createStorage: async function({ commit, dispatch }, payload) {
       console.debug("%s: createStorage: Payload is: %O", __filename, payload)
 
       try {
         const response = await StorageRepo.createStorage(payload)
         commit("ADD_STORAGE", response.data)
+        if (payload.attachments.length > 0) {
+          await dispatch("attachDocumentToStorage", { 
+            attachments: payload.attachments,
+            storage_uuid: response.data.uuid
+          })
+        }
       }
       catch (err) {
         console.error("%s: createStorage failed: %s", __filename, err)
       }
+    },
+    attachDocumentToStorage: async function({ commit }, payload) {
+      console.debug("%s: attachDocumentToStorage payload is: %O", __filename, payload)
     },
     loadStorages: async function({ commit }) {
       try {
