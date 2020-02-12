@@ -69,11 +69,11 @@
                     <v-col cols="5">
 
                       <v-text-field 
-                        v-model="payload.attachments" 
                         label="(*) Attachments" 
                         type="text"
                         disabled
-                        prepend-icon="mdi-tooltip-image-outline" 
+                        prepend-icon="mdi-tooltip-image-outline"
+                        v-model="viewAttachmentsInTextField" 
                         required>
                       </v-text-field>
                     </v-col>
@@ -157,8 +157,25 @@ export default {
   computed: {
     ...mapGetters([
       "getRooms",
-      "getStorages"
+      "getStorages",
+      "findFileByUUID"
     ]),
+    viewAttachmentsInTextField: {
+      get() {
+        if (this.payload.attachments.length < 1) {
+          console.debug("No attachments found")
+          return ""
+        } else {
+          return this.payload.attachments.map(function(f) {
+            return this.findFileByUUID(f).original_filename
+          }, this).join(", ")
+        }
+        return ""
+      },
+      set(val) {
+        // Not needed?
+      },
+    },
     containers: function() {
       // This one has to be a bit smarter
       const rooms = Object.values(this.getRooms)

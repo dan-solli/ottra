@@ -347,7 +347,8 @@ export default {
 		moveFiles: async function() {
 			try {
 				await this.$store.dispatch("moveFiles", { 
-					files: this.selectedFiles, target: this.moveDestination 
+					files: this.selectedFiles, 
+					target: this.moveDestination 
 				})
 				this.selectedFiles = []
 			}
