@@ -105,7 +105,22 @@ const DocumentModel = {
 	},
 	getFolderTree: async function(user_id) {
 
-	},	
+	},
+	createAssociation: async function(user_id, payload) {
+		const { attachment, target, type } = payload
+		console.debug("%s: createAssociation: %O", __filename, payload)
+
+		const uuid = uuidv4()
+
+		return await DB.fetchRow(`
+			MATCH (u:User { uuid: { user_id } })-[*0..100]->(t { uuid: { target } }),
+						(u)-[*0..100]->(a { uuid: { attachment } })
+			CREATE (a)-[r:ATTACHMENT { type: { type } }]->(t)
+			RETURN r AS Relation
+		`, {
+			user_id, target, attachment, type
+		}, "Relation")
+	}
 }
 
 module.exports = DocumentModel

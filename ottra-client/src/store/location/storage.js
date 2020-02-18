@@ -2,6 +2,7 @@ import Vue from 'vue'
 
 import { RepositoryFactory } from '@/common/repos/RepositoryFactory'
 const StorageRepo = RepositoryFactory.get('storage')
+const DocRepo = RepositoryFactory.get('document')
 
 const Storage = {
 	state: {
@@ -33,7 +34,7 @@ const Storage = {
         const response = await StorageRepo.createStorage(payload)
         commit("ADD_STORAGE", response.data)
         if (payload.attachments.length > 0) {
-          await dispatch("attachDocumentToStorage", { 
+          await dispatch("attachDocumentsToStorage", { 
             attachments: payload.attachments,
             storage_uuid: response.data.uuid
           })
@@ -43,8 +44,23 @@ const Storage = {
         console.error("%s: createStorage failed: %s", __filename, err)
       }
     },
-    attachDocumentToStorage: async function({ commit }, payload) {
-      console.debug("%s: attachDocumentToStorage payload is: %O", __filename, payload)
+    attachDocumentsToStorage: async function({ commit, dispatch }, payload) {
+      console.debug("%s: attachDocumentsToStorage payload is: %O", __filename, payload)
+      try {
+        payload.attachments.forEach(async function (attachment) {
+          console.debug("%s: Calling DocRepo.createAssociation with %O", __filename, attachment)
+          const response = await DocRepo.createAssociation({
+            attachment: attachment, // uuid of document
+            target: payload.storage_uuid,
+            type: "document"
+          })
+          console.debug("%s: DocRepo.createAssociation response: %O", __filename, response)
+        })
+        await dispatch("loadStorages")
+      } 
+      catch (err) {
+        console.error("%s: attachDocumentsToStorage: %O", __filename, err)
+      }
     },
     loadStorages: async function({ commit }) {
       try {

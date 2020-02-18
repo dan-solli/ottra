@@ -33,9 +33,12 @@ const StorageModel = {
       MATCH (u:User { uuid: {user_id} })-[*0..15]->(n)-[:CONTAINS]->(s:Storage)
       OPTIONAL MATCH (s)-[:CONTAINS]->(ss:Storage)
       OPTIONAL MATCH (s)-[:HOLDS]->(e:Equipment)
+      OPTIONAL MATCH (d:Document)-[:ATTACHMENT]->(s)
       WITH COLLECT(ss.uuid) AS SubStorages, 
-           COLLECT(e.uuid) AS Equipments, n, s
+           COLLECT(e.uuid) AS Equipments,
+           COLLECT(d.uuid) AS Documents, n, s
       RETURN COLLECT(s { .*, 
+                 attachments: Documents,
                  storages: SubStorages,
                  equipment: Equipments,
                  dateTime: apoc.date.format(s.created), 
@@ -46,6 +49,13 @@ const StorageModel = {
       }, "Storages"
     )
   },
+  /* TODO: Refactor into fetching all storages and single out the single one. I know this will put
+           a greater load into things, but I need something less verbose before I can accept the 
+           duplication of code. Changes to the fetch-all will also require a change to fetch-one
+           and due to its many relations, that would get ugly. 
+
+           On the other hand, should getStorages really fetch all the equipment and such?
+*/           
   getStorageById: async function(user_id, storage_id) {
     return await DB.fetchRow(`
       MATCH (u:User { uuid: {user_id} })-[*0..15]->(n)-[:CONTAINS]->(s:Storage { uuid: {storage_id} })
@@ -66,26 +76,12 @@ const StorageModel = {
   }
 }
 
-/* Put this in getStorages!
-MATCH (u:User { uuid: {user_id} })-[*0..15]->(n)-[:CONTAINS]->(s:Storage)
-OPTIONAL MATCH (s)-[:CONTAINS]->(ss:Storage)
-OPTIONAL MATCH (s)-[:HOLDS]->(e:Equipment)
-WITH COLLECT(ss.uuid) AS SubStorages, 
-     COLLECT(e.uuid) AS Equipments, n, s
-RETURN COLLECT(s { .*, 
-           storages: SubStorages,
-                   equipment: Equipments,
-                   dateTime: apoc.date.format(s.created), 
-                   type: LABELS(s),
-                   location: { uuid: n.uuid, type: LABELS(n) } }) 
-       AS Storages
-*/
-
 module.exports = StorageModel
 
 
 
 /*
+This is saved for future reference of different ways to accomplish next to nothing.
 
 It does seem like, due to my shortcomings of Cypher, need to filter/mix/match outside the queries.-
 

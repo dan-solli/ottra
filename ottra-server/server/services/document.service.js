@@ -73,6 +73,9 @@ const DocumentService = {
 			return result
 		}
 	},
+	createAssociation: async function(user_id, payload) {
+		return await DocumentModel.createAssociation(user_id, payload)
+	}
 }
 
 module.exports = DocumentService
