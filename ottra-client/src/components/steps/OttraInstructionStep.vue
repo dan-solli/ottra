@@ -98,7 +98,7 @@
 	  			</v-col>
 	  		</v-row>
 
-	  		<v-row> <!-- Energy Expense -->
+	  		<v-row> <!-- Energy Expense. TODO: Should be a separate component -->
 	  			<v-col v-if="editMode">
 			      <v-slider
 		          v-model="localStep.energyExpense"

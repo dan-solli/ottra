@@ -44,6 +44,14 @@
     </v-tooltip>
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
+        <v-btn v-on="on" fab small>
+          <v-icon>mdi-clipboard-arrow-right-outline</v-icon>
+        </v-btn>
+      </template>
+      {{ $t('ui.text.promote') }}
+    </v-tooltip>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
         <v-btn v-on="on" fab small class="red lighten-3" 
             @click="deleteTodo(todo.uuid)">
           <v-icon>mdi-trash-can-outline</v-icon>
