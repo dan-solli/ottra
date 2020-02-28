@@ -17,7 +17,7 @@
 	  				{{ localStep.duration }}
 	  			</v-col>
 	  			<v-col cols="2">
-	  				<div :class="getThumbColor">
+	  				<div :class="getColor">
 	  					{{ tickLabels[localStep.energyExpense] }}
 	  				</div>
 	  			</v-col>
@@ -60,11 +60,11 @@
 	  		</v-row>
 
         <v-row>
-          <v-col>
+          <v-col v-if="editMode">
           	<OttraOptionalStep v-model="localStep.optionalStep"></OttraOptionalStep>
           </v-col>
-        </v-row>
 
+        </v-row>
 
 	  		<v-row> <!-- What room -->
 	  			<v-col v-if="editMode">
@@ -98,24 +98,16 @@
 	  			</v-col>
 	  		</v-row>
 
-	  		<v-row> <!-- Energy Expense. TODO: Should be a separate component -->
-	  			<v-col v-if="editMode">
-			      <v-slider
-		          v-model="localStep.energyExpense"
-		          prepend-icon="mdi-flash"
-		          append-icon="mdi-iframe-variable-outline" 
-			        :tick-labels="tickLabels"
-			        :max="4"
-			        step="1"
-			        :thumb-color="getThumbColor"
-			        :track-fill-color="getThumbColor"
-      			  ticks="always"
-        			tick-size="4"></v-slider>
+	  		<v-row> <!-- Energy Expense. -->
+	  			<v-col>
+	  				<OttraEffortSlider 
+	  					v-model="localStep.energyExpense"> 
+	  				</OttraEffortSlider>
 	  			</v-col>
-	  			<v-col v-else>
-				    {{ tickLabels[localStep.energyExpense] }} 
-	  			</v-col>
-	  		</v-row>
+          <v-col>
+          	{{ tickLabels[localStep.energyExpense] }}
+          </v-col>
+ 	  		</v-row>
 
 	  		<v-row>
 	  			<v-col v-if="editMode">
@@ -190,29 +182,27 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import { OttraEffortMixin } from '@/components/steps/mixins/OttraEffortMixin'
+
 import OttraDateTimePicker from '@/components/OttraDateTimePicker'
 import OttraStepState from '@/components/OttraStepState'
 import OttraDocumentBrowser from '@/components/documentmanager/OttraDocumentBrowser'
 import OttraOptionalStep from '@/components/steps/subcomponents/OttraOptionalStep'
+import OttraEffortSlider from '@/components/steps/subcomponents/OttraEffortSlider'
 
 export default {
 	name: 'ottra-instruction-step',
 	props: [ 'thisStep', 'editMode', 'stepOrder'  ],
+	mixins: [ OttraEffortMixin ],
 	components: {
 		OttraDateTimePicker,
 		OttraStepState,
 		OttraOptionalStep,
+		OttraEffortSlider,
     OttraDocumentBrowser 
 	},
 	data: function() {
 		return {
-			tickLabels: [
-				"(*) Återhämtning",
-				"(*) Nollsumma",
-				"(*) Ansträngande",
-				"(*) Tröttande",
-				"(*) Utmattande"
-			],
 			localStep: {
 				tools: {},
 				stepLocation: '',
@@ -233,17 +223,6 @@ export default {
 		toolList: function() {
 			return Object.values(this.getEquipment)
 		},
-		getThumbColor: function() {
-			const colors = [
-				"blue",
-				"green",
-				"yellow",
-				"orange",
-				"red"
-			]
-			console.debug("%s: Step value is: %s", __filename, this.localStep.energyExpense)
-			return colors[this.localStep.energyExpense]
-		},
 		getRoomName: function() {
 			if (this.localStep.hasOwnProperty('stepLocation')) {
 				const loc = this.localStep.stepLocation
@@ -256,7 +235,10 @@ export default {
 				}
 			}
 			return ''
-		}
+		},
+		getColor: function() {
+			return this.getThumbColor(this.localStep.energyExpense)
+		},
 	},
 	methods: {
 		saveStep: function() {
