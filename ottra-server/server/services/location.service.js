@@ -14,7 +14,16 @@ const LocationService = {
 			if (weatherResult.ok) { // We got proper data
 				payload.owm_cityid = '' + weatherResult.data.id
 			}
+
+			const accessEquipment = payload.accessEquipment
+			delete payload.accessEquipment
+
 			const createLocationResult = await LocationModel.createLocation(payload, user_id)
+
+			accessEquipment.forEach(async function (eq_uuid) {
+				await LocationModel.createAccessKey(createLocationResult.data.uuid, eq_uuid)
+			})
+
 			console.debug("%s: createLocation returning: %O", __filename, createLocationResult)
 			return createLocationResult
 		}

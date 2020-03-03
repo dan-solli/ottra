@@ -1,4 +1,5 @@
 const StorageModel = require('./../models/storage.model')
+const LocationModel = require('./../models/location.model')
 
 const StorageService = {
 	createStorage: async function(payload, user_id) {
@@ -6,7 +7,15 @@ const StorageService = {
 			if (payload.mobile) {
 				payload.current_container = payload.container
 			}
+			const accessEquipment = payload.accessEquipment
+			delete payload.accessEquipment
+
 			const createStorageResult = await StorageModel.createStorage(payload, user_id)
+
+			accessEquipment.forEach(async function (eq_uuid) {
+				await LocationModel.createAccessKey(createStorageResult.data.uuid, eq_uuid)
+			})
+
 			return await StorageModel.getStorageById(user_id, createStorageResult.data.uuid)
 		}
 		catch (err) {

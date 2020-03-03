@@ -26,8 +26,9 @@ const Equipment = {
 	actions: {
 		createEquipment: async function({ commit }, payload) {
 			try {
-				console.debug("%s: saveEquipment, payload is: %O", __filename, payload)
+				console.debug("%s: createEquipment, payload is: %O", __filename, payload)
 				const response = await EquipmentRepo.createEquipment(payload)
+				console.debug("%s: createEquipment, response.data is: %O", __filename, response.data)
 				commit("ADD_EQUIPMENT", response.data)
 				return response.data
 			} 

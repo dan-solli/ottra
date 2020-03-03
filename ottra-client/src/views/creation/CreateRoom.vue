@@ -65,7 +65,12 @@
                     </v-col>
                   </v-row>
 -->
-
+                  <v-row>
+                    <v-col>
+                      <OttraAccessEquipment v-model="payload.accessEquipment">
+                      </OttraAccessEquipment>
+                    </v-col>
+                  </v-row>
                 </v-container>
               </v-form>
 <!--
@@ -88,21 +93,25 @@
 import { required, minLength } from 'vuelidate/lib/validators'
 import { mapGetters } from 'vuex'
 
-import OttraHorizDocumentPicker from '@/components/documentmanager/OttraHorizDocumentPicker.vue'
-import OttraFileUploadButtonAndDialog from '@/components/documentmanager/OttraFileUploadButtonAndDialog.vue'
+import OttraHorizDocumentPicker from '@/components/documentmanager/OttraHorizDocumentPicker'
+import OttraFileUploadButtonAndDialog from '@/components/documentmanager/OttraFileUploadButtonAndDialog'
+import OttraAccessEquipment from '@/components/locations/subcomponents/OttraAccessEquipment'
+
 
 export default {
   name: "create-room",
   props: [ 'location_uuid'],
   components: {
     OttraHorizDocumentPicker,
-    OttraFileUploadButtonAndDialog
+    OttraFileUploadButtonAndDialog,
+    OttraAccessEquipment
   },
   data: function() {
     return {
       payload: {
         name: '',
         location: '',
+        accessEquipment: [],
       },
       valid: false,
       showDocumentPicker: false,

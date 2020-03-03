@@ -14,6 +14,8 @@ const EquipmentService = {
 		return await EquipmentModel.getEquipment(user_id)
 	},
 	getEquipmentById: async function(user_id, eq_id) {
+		console.debug("%s: getEquipmentById is called with user_id: %s, eq_id: %s", 
+			__filename, user_id, eq_id)
 		return await EquipmentModel.getEquipmentById(user_id, eq_id)
 	}
 }

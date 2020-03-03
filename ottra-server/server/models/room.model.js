@@ -24,6 +24,7 @@ const RoomModel = {
     console.debug("%O: createRoom result is: %O", __filename, result)
     return result
 	},
+  // Is this being used? Should it be used? Can it be deprecated?
 	getRoomsByLocation: async function(location_id, user_id) {
 		return await DB.fetchAll(`
       MATCH (l:Location { uuid: {location_id} })-[:CONTAINS]->(r:Room)
@@ -37,9 +38,15 @@ const RoomModel = {
       MATCH (u:User { uuid: {user_id} })-->(l:Location)-->(r:Room { uuid: {room_id} })
       OPTIONAL MATCH (r)-[:CONTAINS]->(s:Storage)
       OPTIONAL MATCH (r)-[:HOLDS]->(e:Equipment)
-      WITH COLLECT(s.uuid) AS Storages, COLLECT(e.uuid) AS Equipments, l, r
+      OPTIONAL MATCH (r)-[:ACCESS_KEY]->(k:Equipment)
+      WITH COLLECT(s.uuid) AS Storages, 
+           COLLECT(e.uuid) AS Equipments, 
+           COLLECT(k.uuid) AS AccessKeys,
+           l, r
       RETURN r { .*, 
-                storages: Storages, equipment: Equipments,
+                storages: Storages, 
+                equipment: Equipments,
+                accessKeys: AccessKeys,
                 dateTime: apoc.date.format(r.created), 
                 type: LABELS(r),
                 location: { uuid: l.uuid, type: LABELS(l) } } AS Room`, {
@@ -52,9 +59,15 @@ const RoomModel = {
       MATCH (u:User { uuid: {user_id} })-->(l:Location)-->(r:Room)
       OPTIONAL MATCH (r)-[:CONTAINS]->(s:Storage)
       OPTIONAL MATCH (r)-[:HOLDS]->(e:Equipment)
-      WITH COLLECT(s.uuid) AS Storages, COLLECT(e.uuid) AS Equipments, l, r
+      OPTIONAL MATCH (r)-[:ACCESS_KEY]->(k:Equipment)
+      WITH COLLECT(s.uuid) AS Storages, 
+           COLLECT(e.uuid) AS Equipments, 
+           COLLECT(k.uuid) AS AccessKeys,
+           l, r
       RETURN COLLECT(r { .*, 
-                storages: Storages, equipment: Equipments,
+                storages: Storages, 
+                equipment: Equipments,
+                accessKeys: AccessKeys,
                 dateTime: apoc.date.format(r.created), 
                 type: LABELS(r),
                 location: { uuid: l.uuid, type: LABELS(l) } }) AS Rooms`, {

@@ -34,16 +34,17 @@ const EquipmentModel = {
     )
   },
   getEquipmentById: async function(user_id, eq_id) {
+    console.debug("%s: getEquipmentById is called with user_id: %s, eq_id: %s", 
+      __filename, user_id, eq_id)    
     return await DB.fetchAll(`
-      MATCH (u:User { uuid: {user_id} })-[*0..15]->(n)-[:HOLDS]->(e:Equipment { uuid: eq_id })
-      RETURN COLLECT(e { .*, dateTime: apoc.date.format(e.created), type: LABELS(e),
-                         location: { uuid: n.uuid, type: LABELS(n) } }) AS Equipment`, {
+      MATCH (u:User { uuid: {user_id} })-[*0..15]->(n)-[:HOLDS]->(e:Equipment { uuid: { eq_id }})
+      RETURN e { .*, dateTime: apoc.date.format(e.created), type: LABELS(e),
+                         location: { uuid: n.uuid, type: LABELS(n) } } AS Equipment`, {
         user_id, eq_id
       }, "Equipment"
     )
   }
 }
-
 
 module.exports = EquipmentModel
 

@@ -33,14 +33,17 @@ const StorageModel = {
       MATCH (u:User { uuid: {user_id} })-[*0..15]->(n)-[:CONTAINS]->(s:Storage)
       OPTIONAL MATCH (s)-[:CONTAINS]->(ss:Storage)
       OPTIONAL MATCH (s)-[:HOLDS]->(e:Equipment)
+      OPTIONAL MATCH (s)-[:ACCESS_KEY]->(k:Equipment)
       OPTIONAL MATCH (d:Document)-[:ATTACHMENT]->(s)
       WITH COLLECT(ss.uuid) AS SubStorages, 
            COLLECT(e.uuid) AS Equipments,
+           COLLECT(k.uuid) AS AccessKeys,
            COLLECT(d.uuid) AS Documents, n, s
       RETURN COLLECT(s { .*, 
                  attachments: Documents,
                  storages: SubStorages,
                  equipment: Equipments,
+                 accessKeys: AccessKeys,
                  dateTime: apoc.date.format(s.created), 
                  type: LABELS(s),
                  location: { uuid: n.uuid, type: LABELS(n) } }) 
@@ -61,11 +64,15 @@ const StorageModel = {
       MATCH (u:User { uuid: {user_id} })-[*0..15]->(n)-[:CONTAINS]->(s:Storage { uuid: {storage_id} })
       OPTIONAL MATCH (s)-[:CONTAINS]->(ss:Storage)
       OPTIONAL MATCH (s)-[:HOLDS]->(e:Equipment)
+      OPTIONAL MATCH (s)-[:ACCESS_KEY]->(k:Equipment)
       WITH COLLECT(ss.uuid) AS SubStorages, 
-           COLLECT(e.uuid) AS Equipments, n, s
+           COLLECT(e.uuid) AS Equipments, 
+           COLLECT(k.uuid) AS AccessKeys, 
+           n, s
       RETURN s { .*, 
                  storages: SubStorages,
                  equipment: Equipments,
+                 accessKeys: AccessKeys,
                  dateTime: apoc.date.format(s.created), 
                  type: LABELS(s),
                  location: { uuid: n.uuid, type: LABELS(n) } } 

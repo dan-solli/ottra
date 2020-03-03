@@ -1,4 +1,5 @@
 const RoomModel = require('./../models/room.model')
+const LocationModel = require('./../models/location.model')
 
 const RoomService = {
 	getRoomsByLocation: async function(location_id, user_id) {
@@ -7,7 +8,15 @@ const RoomService = {
 	},
 	createRoom: async function(payload, user_id) {
 		try {
+			const accessEquipment = payload.accessEquipment
+			delete payload.accessEquipment
+
 			const createRoomResult = await RoomModel.createRoom(payload, user_id)
+
+			accessEquipment.forEach(async function (eq_uuid) {
+				await LocationModel.createAccessKey(createRoomResult.data.uuid, eq_uuid)
+			})
+
 			return await RoomModel.getRoomById(user_id, createRoomResult.data.uuid)
 		}
 		catch (err) {

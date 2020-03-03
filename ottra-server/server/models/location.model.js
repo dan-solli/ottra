@@ -44,9 +44,12 @@ const LocationModel = {
 		return await DB.fetchAll(`
       MATCH (u:User { uuid: {user_id} })-->(l:Location) 
       OPTIONAL MATCH (l)-->(r:Room)
-      WITH COLLECT (r.uuid) as theRooms, l
+      OPTIONAL MATCH (l)-[:ACCESS_KEY]->(k:Equipment)
+      WITH COLLECT (r.uuid) as theRooms, 
+           COLLECT (k.uuid) as theKeys, l
       RETURN COLLECT(l { .*, dateTime: apoc.date.format(l.created), 
-          rooms: theRooms }) AS Locations`, { 
+          rooms: theRooms,
+          accessKeys: theKeys }) AS Locations`, { 
 				user_id: user_id 
 			}, "Locations"
 		)
@@ -56,6 +59,16 @@ const LocationModel = {
       MATCH (l:Location { uuid: {location_id}, creator: {user_id} }) DETACH DELETE l`, 
       { user_id, location_id }
     )
+  },
+  createAccessKey: async function(area_uuid, key_uuid) {
+    console.debug("%s: createAccessKey called with area_uuid: %s and key_uuid: %s", __filename, area_uuid, key_uuid)
+    const result = await DB.fetchRow(`
+      MATCH (key { uuid: { key_uuid }}), (area { uuid: { area_uuid }})
+      CREATE (area)-[r:ACCESS_KEY]->(key)
+      RETURN r AS Relation`, {
+        area_uuid, key_uuid
+      }, "Relation")
+    return result
   }
 }
 

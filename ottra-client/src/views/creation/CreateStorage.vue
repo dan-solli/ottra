@@ -86,6 +86,13 @@
                     </v-col>
                   </v-row>
 
+                  <v-row>
+                    <v-col>
+                      <OttraAccessEquipment v-model="payload.accessEquipment">
+                      </OttraAccessEquipment>
+                    </v-col>
+                  </v-row>
+
                 </v-container>
               </v-form>
 <!--
@@ -111,6 +118,7 @@ import { mapGetters } from 'vuex'
 import OttraHorizDocumentPicker from '@/components/documentmanager/OttraHorizDocumentPicker.vue'
 import OttraFileUploadButtonAndDialog from '@/components/documentmanager/OttraFileUploadButtonAndDialog.vue'
 import OttraDocumentBrowser from '@/components/documentmanager/OttraDocumentBrowser'
+import OttraAccessEquipment from '@/components/locations/subcomponents/OttraAccessEquipment'
 
 export default {
   name: "create-storage",
@@ -118,7 +126,8 @@ export default {
   components: {
     OttraHorizDocumentPicker,
     OttraDocumentBrowser,     
-    OttraFileUploadButtonAndDialog
+    OttraFileUploadButtonAndDialog,
+    OttraAccessEquipment
   },
   data: function() {
     return {
@@ -126,7 +135,8 @@ export default {
         name: '',
         container: '', // This can be a room or another storage.
         mobile: false, // Handbag, purse etc
-        attachments: []
+        attachments: [],
+        accessEquipment: []
       },
       valid: false,
       showDocumentPicker: false,

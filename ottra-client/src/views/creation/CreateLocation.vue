@@ -86,6 +86,14 @@
                           </v-text-field>
                         </v-col>
                       </v-row>
+
+                      <v-row>
+                        <v-col>
+                          <OttraAccessEquipment v-model="payload.accessEquipment">
+                          </OttraAccessEquipment>
+                        </v-col>
+                      </v-row>
+                      
                     </v-container>
                   </v-form>
                   <v-btn text @click="current_step = 1">
@@ -140,11 +148,13 @@ import { RepositoryFactory } from '@/common/repos/RepositoryFactory';
 const LocRepo  = RepositoryFactory.get('location');  
 
 import OttraHorizDocumentPicker from '@/components/documentmanager/OttraHorizDocumentPicker.vue'
+import OttraAccessEquipment from '@/components/locations/subcomponents/OttraAccessEquipment'
 
 export default {
   name: "create-location",
   components: {
-    OttraHorizDocumentPicker
+    OttraHorizDocumentPicker,
+    OttraAccessEquipment,
   },
   data: function() {
     return {
@@ -156,7 +166,8 @@ export default {
         maps_url: '',
         phone_nr: '',
         latitude: 0,
-        longitude: 0
+        longitude: 0,
+        accessEquipment: [],
       },
       current_step: 1,
       search_string: '', // Contains Google place_id
