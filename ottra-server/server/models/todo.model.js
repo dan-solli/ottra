@@ -10,10 +10,10 @@ const TodoModel = {
 			subject = 'No subject',
 			body = 'Empty message', 
 			priority = -1,
-			softDLDate = -1,
-			hardDLDate = -1,
-			softDLTime = -1,
-			hardDLTime = -1,
+			softDLDate = "",
+			hardDLDate = "",
+			softDLTime = "",
+			hardDLTime = "",
 		} = payload
 
 		return await DB.fetchRow(`

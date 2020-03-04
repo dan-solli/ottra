@@ -63,11 +63,11 @@ export default {
 	props: {
 		date: {
 			default: '',
-			type: String
+			//type: String
 		},
 		time: {
 			default: '',
-			type: String
+			//type: String
 		},
 		timeOnly: {
 			default: false,
@@ -103,11 +103,15 @@ export default {
 		}
 	},
 	mounted: function() {
+		// This is just wrong. Why would I need to use nextTick?!
 		this.$nextTick(() => {
 			console.debug("%s: Setting time (%s) and date (%s)", __filename, this.time, this.date)
 			this.localDate = this.date
 			this.localTime = this.time
 		})
+	},
+	created: function() {
+		console.error("%s: Component OttraDateTimePicker is deprecated. Replace immediately!", __filename)
 	} 
 }
 
