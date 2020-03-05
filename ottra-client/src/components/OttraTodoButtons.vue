@@ -67,6 +67,8 @@
 
 import { mapGetters } from "vuex";
 
+import { TODO_DONE } from '@/common/todo.types'
+
 export default {
 	name: 'ottra-todo-buttons',
 	props: [ 'todo' ],
