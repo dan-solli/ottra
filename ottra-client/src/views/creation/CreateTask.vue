@@ -52,12 +52,28 @@
                   </v-col>
                 </v-row>
 
-                <!-- Implemented as a row. Bad. -->
-                <OttraRecurringTask
-                  v-on:set-recurrance-how-often="payload.recurranceEvery = $event"
-                  v-on:set-recurrance-what="payload.recurranceType = $event">
-                </OttraRecurringTask>
-
+                <v-row>
+                  <v-col cols="auto">
+                    <v-text-field 
+                      class="pr-2"
+                      prepend-icon="mdi-calendar-repeat"
+                      hint="(*) How many times per ..."
+                      v-model="payload.recurranceNumber"
+                      min="1"
+                      max="10000"
+                      type="number">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="auto">
+                    <v-select 
+                      class="pl-2"
+                      v-model="payload.recurranceType"
+                      :items="recurranceOptions"
+                      item-text="title"
+                      item-value="option">
+                    </v-select>
+                  </v-col>
+                </v-row>
                 <v-row>
                   <v-col cols="12">
                     <v-icon class="mr-2">mdi-priority-high</v-icon>
@@ -157,13 +173,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import OttraRecurringTask from '@/components/OttraRecurringTask'
 import OttraDocumentBrowser from '@/components/documentmanager/OttraDocumentBrowser'
 
 export default {
   name: "create-task",
   components: {
-    OttraRecurringTask,
     OttraDocumentBrowser 
   },
   props: [ 'task_uuid' ],
@@ -177,17 +191,20 @@ export default {
         created: '',
         creator: '',
         steps: [],
-        recurranceEvery: 1,
+        recurranceNumber: 1,
         recurranceType: 1,
         goodEnoughImages: [],
         goalImages: []
       },
+      recurranceOptions: [
+        { title: '(*) Day', option: this.RECURRANCE_DAY },
+        { title: '(*) Week', option: this.RECURRANCE_WEEK },
+        { title: '(*) Month', option: this.RECURRANCE_MONTH },
+        { title: '(*) Year', option: this.RECURRANCE_YEAR },
+      ],      
     }
   },
   computed: {
-    ...mapGetters([
-      "getSelectedFiles"
-    ]),
     tourLabels: function() {
       return {
         labels: {
@@ -237,14 +254,6 @@ export default {
       console.debug("%s: saveTask success: %O", __filename, result)
       this.$router.push('/task/' + result.uuid)
     },
-    attachGoalDocuments: function() {
-      this.payload.goodEnoughImages = [...this.getSelectedFiles]
-      this.$store.dispatch("clearSelectedFiles")
-    },
-    attachVisualAid: function() {
-      this.payload.goalImages = [...this.getSelectedFiles]
-      this.$store.dispatch("clearSelectedFiles")
-    }
   }
 }
 </script>

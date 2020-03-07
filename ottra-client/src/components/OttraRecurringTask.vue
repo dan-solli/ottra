@@ -1,4 +1,12 @@
 <template>
+	<v-card>
+		<v-card-text>
+			<span>(*) Recurrance interval: </span>
+		</v-card-text>
+	</v-card>
+</template>
+
+<!-- Replaced by Ottra#249 	
 	<v-row>
 		<v-col cols="2">
 			<v-text-field 
@@ -19,10 +27,29 @@
 			</v-btn-toggle>
 		</v-col>
 	</v-row>
+
+-->	
 </template>
 
 <script>
+import {
+	RECURRANCE_DAY, RECURRANCE_WEEK, RECURRANCE_MONTH, RECURRANCE_YEAR
+} from '@/common/recurrance.types'
 
+export default {
+	name: 'ottra-recurring-task',
+	data: function() {
+		return {
+			recurranceNumber: 1,
+			recurranceType: this.RECURRANCE_DAY,
+		}
+	},
+	created() {
+		console.error("%s: OttraRecurringTask component is deprecated. Kill it", __filename)
+	}
+}
+
+/* Replaced by Ottra#249 
 import {
 	RECURRANCE_DAY, RECURRANCE_WEEK, RECURRANCE_MONTH, RECURRANCE_YEAR
 } from '@/common/recurrance.types'
@@ -44,4 +71,5 @@ export default {
 		}
 	},
 }
+*/
 </script>

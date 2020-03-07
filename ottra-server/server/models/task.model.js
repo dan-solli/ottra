@@ -10,7 +10,7 @@ const TaskModel = {
 						subject: {subject}, 
 						body: {body},
 						creator: {creator},
-						recurranceEvery: {recurranceEvery},
+						recurranceNumber: {recurranceNumber},
 						recurranceType: {recurranceType},
 						created: TIMESTAMP()
 					}) RETURN t { .* } AS Task`, { 
@@ -18,7 +18,7 @@ const TaskModel = {
 						subject: payload.subject || 'No subject', 
 						body: payload.body || 'No description',
 						creator: user_id,
-						recurranceEvery: payload.recurranceEvery, 
+						recurranceNumber: payload.recurranceNumber, 
 						recurranceType: payload.recurranceType
 					}, "Task"
 		)
