@@ -122,7 +122,7 @@
                 <v-row> <!-- Visual Aid Images -->
                   <v-col cols="5">
                     <v-text-field 
-                      v-model="payload.goodEnoughImages" 
+                      :value="attachmentUUIDToFilename(payload.goodEnoughImages)" 
                       label="(*) Good enough images" 
                       type="text"
                       disabled
@@ -139,7 +139,7 @@
 
                   <v-col cols="5">
                     <v-text-field 
-                      v-model="payload.goalImages" 
+                      :value="attachmentUUIDToFilename(payload.goalImages)" 
                       label="(*) Goal Images" 
                       type="text"
                       disabled
@@ -175,11 +175,15 @@
 import { mapGetters } from 'vuex'
 import OttraDocumentBrowser from '@/components/documentmanager/OttraDocumentBrowser'
 
+import { DocumentMixin } from '@/views/creation/mixins/DocumentUUIDToFilename'
+
+
 export default {
   name: "create-task",
   components: {
     OttraDocumentBrowser 
   },
+  mixins: [ DocumentMixin ],
   props: [ 'task_uuid' ],
   data: function() {
     return {

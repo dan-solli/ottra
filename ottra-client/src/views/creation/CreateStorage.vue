@@ -73,7 +73,7 @@
                         type="text"
                         disabled
                         prepend-icon="mdi-tooltip-image-outline"
-                        v-model="viewAttachmentsInTextField" 
+                        :value="attachmentUUIDToFilename(payload.attachments)" 
                         required>
                       </v-text-field>
                     </v-col>
@@ -120,9 +120,12 @@ import OttraFileUploadButtonAndDialog from '@/components/documentmanager/OttraFi
 import OttraDocumentBrowser from '@/components/documentmanager/OttraDocumentBrowser'
 import OttraAccessEquipment from '@/components/locations/subcomponents/OttraAccessEquipment'
 
+import { DocumentMixin } from '@/views/creation/mixins/DocumentUUIDToFilename'
+
 export default {
   name: "create-storage",
   props: [ 'container_uuid'],
+  mixins: [ DocumentMixin ],
   components: {
     OttraHorizDocumentPicker,
     OttraDocumentBrowser,     
@@ -168,8 +171,9 @@ export default {
     ...mapGetters([
       "getRooms",
       "getStorages",
-      "findFileByUUID"
+//      "findFileByUUID"
     ]),
+/*    
     viewAttachmentsInTextField: {
       get() {
         if (this.payload.attachments.length < 1) {
@@ -186,6 +190,7 @@ export default {
         // Not needed?
       },
     },
+*/    
     containers: function() {
       // This one has to be a bit smarter
       const rooms = Object.values(this.getRooms)

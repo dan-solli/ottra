@@ -3,6 +3,7 @@ import Vue from 'vue'
 import { RepositoryFactory } from '@/common/repos/RepositoryFactory'
 
 const TaskRepo = RepositoryFactory.get('task')
+const DocRepo = RepositoryFactory.get('document')
 
 const Task = {
 	state: {
@@ -30,15 +31,47 @@ const Task = {
 		},
 	},
 	actions: {
-		saveTask: async function({ commit }, payload) {
+		saveTask: async function({ commit, dispatch }, payload) {
 			try {
 				console.debug("%s: saveTask, payload is: %O", __filename, payload)
 				const response = await TaskRepo.createTask(payload)
 				commit("ADD_TASK", response.data)
+				if (payload.goodEnoughImages.length > 0) {
+					await dispatch("attachImagesToTask", {
+						attachments: payload.goodEnoughImages,
+						task_uuid: response.data.uuid,
+						type: "goodEnoughImage"
+					})
+				}
+				else if (payload.goalImages.length > 0) {
+					await dispatch("attachImagesToTask", {
+						attachments: payload.goalImages,
+						task_uuid: response.data.uuid,
+						type: "goalImage"
+					})
+				}
 				return response.data
 			} 
 			catch(err) {
 				console.error("%s: saveTask failed: %O", __filename, err)
+			}
+		},
+		attachImagesToTask: async function({ commit, dispatch }, payload) {
+			console.debug("%s: attachImageToTask payload is: %O", __filename, payload)
+			try {
+				payload.attachments.forEach(async function (attachment) {
+					console.debug("%s: Calling DocRepo.createAssociation with %O", __filename, attachment)
+					const response = await DocRepo.createAssociation({
+						attachment: attachment,
+						target: payload.task_uuid,
+						type: payload.type
+					})
+					console.debug("%s: DocRepo.createAssociation response: %O", __filename, response)
+				})
+				await dispatch("loadTasks")
+			}
+			catch (err) {
+				console.error("%s: attachImageToTask: %O", __filename, err)
 			}
 		},
 		deleteTask: async function({ commit }, task_uuid) {
