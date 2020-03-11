@@ -62,6 +62,7 @@ export default {
 			set(localTime) { this.$emit('input', localTime) }
 		}
 	},
+/*	
 	mounted: function() {
 		// This is just wrong. Why would I need to use nextTick?!
 		this.$nextTick(() => {
@@ -69,6 +70,7 @@ export default {
 			this.localTime = this.time
 		})
 	},
+*/	
 }
 
 </script>	

@@ -115,27 +115,18 @@ import { mapGetters } from 'vuex'
 
 import OttraDateTimePicker from '@/components/OttraDateTimePicker'
 import OttraStepState from '@/components/OttraStepState'
+import { OttraStepMixin } from '@/components/steps/mixins/OttraStepMixin'
 
 export default {
 	name: 'ottra-pause-step',
+	mixins: [ OttraStepMixin ],
 	props: [ 'thisStep', 'editMode', 'stepOrder' ],
 	components: {
 		OttraDateTimePicker,
 		OttraStepState
 	},
-	data: function() {
-		return {
-			localStep: {}
-		}
-	},
 	created() {
-		this.localStep = Object.assign({}, this.thisStep)
-	},
-	methods: {
-		saveStep: function() {
-			console.debug("%s: saveStep, payload is: %O", __filename, this.localStep)
-			this.$store.dispatch("saveStep", this.localStep)
-		}
+		console.error("%s: Component is deprecated. Kill it!", __filename)
 	}
 }
 

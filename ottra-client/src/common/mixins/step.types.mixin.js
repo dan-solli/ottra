@@ -1,7 +1,12 @@
-import OttraInstructionStep from '@/components/steps/OttraInstructionStep'
-import OttraPauseStep from '@/components/steps/OttraPauseStep'
-import OttraTransportStep from '@/components/steps/OttraTransportStep'
-import OttraTaskStep from '@/components/steps/OttraTaskStep'
+import OttraInstructionStepH from '@/components/steps/OttraInstructionStepHeader'
+import OttraInstructionStepC from '@/components/steps/OttraInstructionStepContent'
+
+import OttraPauseStepH from '@/components/steps/OttraPauseStepHeader'
+import OttraPauseStepC from '@/components/steps/OttraPauseStepContent'
+import OttraTransportStepH from '@/components/steps/OttraTransportStepHeader'
+import OttraTransportStepC from '@/components/steps/OttraTransportStepContent'
+import OttraTaskStepH from '@/components/steps/OttraTaskStepHeader'
+import OttraTaskStepC from '@/components/steps/OttraTaskStepContent'
 
 export const STEP_INSTRUCTION = 1
 export const STEP_PAUSE = 2
@@ -18,8 +23,22 @@ export const stepTypeMixin = {
         energyExpense: 2,
         type: -1,
         visualAidImages: [],
-        documents: [],
-        saveStatus: false
+        attachments: [],
+        saveStatus: false,
+        optionalStep: false,
+      },
+      instruction_step: {
+        tools: {},
+        stepLocation: '',
+      },
+      pause_step: { /* Empty */  },
+      task_step: {
+        task_uuid: '',
+        task: {},
+      },
+      transport_step: {
+        destination: '',
+        method: '',
       },
 			STEP_INSTRUCTION,
 			STEP_PAUSE,
@@ -30,24 +49,40 @@ export const stepTypeMixin = {
 	methods: {
 		stepFactory(step_type, order) {
       if (step_type === STEP_INSTRUCTION) {
-        const the_step = Object.assign({}, this.base_step)
+        const the_step = Object.assign(this.instruction_step, this.base_step)
         the_step.type = STEP_INSTRUCTION
-        return { component: OttraInstructionStep, data: the_step, order: order, editMode: true }
+        return { 
+          componentHeader: OttraInstructionStepH, 
+          componentContent: OttraInstructionStepC, 
+          data: the_step, 
+        }
       }
       else if (step_type === STEP_PAUSE) {
-        const the_step = Object.assign({}, this.base_step)
+        const the_step = Object.assign(this.pause_step, this.base_step)
         the_step.type = STEP_PAUSE
-        return { component: OttraPauseStep, data: the_step, order: order, editMode: true }
+        return { 
+          componentHeader: OttraPauseStepH, 
+          componentContent: OttraPauseStepC, 
+          data: the_step, 
+        }
       }
       else if (step_type === STEP_TRANSPORT) {
-        const the_step = Object.assign({}, this.base_step)
+        const the_step = Object.assign(this.transport_step, this.base_step)
         the_step.type = STEP_TRANSPORT
-        return { component: OttraTransportStep, data: the_step, order: order, editMode: true }
+        return { 
+          componentHeader: OttraTransportStepH, 
+          componentContent: OttraTransportStepC, 
+          data: the_step, 
+        }
       }
       else if (step_type === STEP_TASK) {
-        const the_step = Object.assign({}, this.base_step)
+        const the_step = Object.assign(this.task_step, this.base_step)
         the_step.type = STEP_TASK
-        return { component: OttraTaskStep, data: the_step, order: order, editMode: true }
+        return { 
+          componentHeader: OttraTaskStepH, 
+          componentContent: OttraTaskStepC, 
+          data: the_step, 
+        }
       }
 		},
 	}

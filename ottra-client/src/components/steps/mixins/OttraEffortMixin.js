@@ -30,6 +30,6 @@ export const OttraEffortMixin = {
 			else {
 				return colors[value]
 			}
-		}
+		},
 	}
 }

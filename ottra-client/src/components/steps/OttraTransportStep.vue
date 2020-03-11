@@ -168,6 +168,8 @@ import { mapGetters } from 'vuex'
 
 import OttraDateTimePicker from '@/components/OttraDateTimePicker'
 import OttraStepState from '@/components/OttraStepState'
+import { OttraStepMixin } from '@/components/steps/mixins/OttraStepMixin'
+
 import {
 	TRANSPORT_BY_FOOT,
 	TRANSPORT_BY_BUS,
@@ -180,6 +182,7 @@ import {
 
 export default {
 	name: 'ottra-transport-step',
+	mixins: [ OttraStepMixin ],
 	props: [ 'thisStep', 'editMode', 'stepOrder'  ],
 	components: {
 		OttraDateTimePicker,
@@ -246,15 +249,8 @@ export default {
 	},
 	created() {
 		this.$store.dispatch("loadLocations")
-		this.localStep = Object.assign(this.localStep, this.thisStep)
+		console.error("%s: Component is deprecated. Kill it!", __filename)
 	},
-	methods: {
-		saveStep: function() {
-			console.debug("%s: saveStep, payload is: %O", __filename, this.localStep)
-			this.$store.dispatch("saveStep", this.localStep)
-		}
-	}
-
 }
 
 </script>	

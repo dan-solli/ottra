@@ -94,15 +94,25 @@
 -->                
                 <v-row>
                   <v-col cols="12">
-                    <v-expansion-panels>
+                    <v-expansion-panels v-model="panelExpansions">
                       <v-expansion-panel v-for="(step, i) in steps" :key="i">
-                        <!-- :this-step="step.data" -->
-                        <component 
-                          :is="step.component"
-                          v-model="step.data"
-                          :step-order="step.order"
-                          :edit-mode="step.editMode">
-                        </component>
+                        <v-expansion-panel-header>
+                          <component :is="step.componentHeader" v-model="steps[i].data">
+                          </component>
+                        </v-expansion-panel-header>
+
+                        <v-expansion-panel-content>
+                          <component :is="step.componentContent" v-model="steps[i].data">
+                          </component>
+<!--
+                          <component 
+                            :is="step.component"
+                            v-model="step.data"
+                            :step-order="step.order"
+                            :edit-mode="step.editMode">
+                          </component>
+-->                          
+                        </v-expansion-panel-content>
                       </v-expansion-panel>
                     </v-expansion-panels>
                   </v-col>
@@ -143,6 +153,7 @@ export default {
   data: function() {
     return {
       current_step: 0,
+      panelExpansions: [],
       valid: '',
       task: {
         subject: '',

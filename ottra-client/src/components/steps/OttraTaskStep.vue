@@ -54,9 +54,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import OttraStepState from '@/components/OttraStepState'
+import { OttraStepMixin } from '@/components/steps/mixins/OttraStepMixin'
 
 export default {
 	name: 'ottra-task-step',
+	mixins: [ OttraStepMixin ],
 	props: [ 'thisStep', 'editMode', 'stepOrder'  ],
 	components: {
 		OttraStepState
@@ -84,15 +86,8 @@ export default {
 		}
 	},
 	created() {
-		this.localStep = Object.assign(this.localStep, this.thisStep)
-	},
-	methods: {
-		saveStep: function() {
-			console.debug("%s: saveStep, payload is: %O", __filename, this.localStep)
-			this.$store.dispatch("saveStep", this.localStep)
-		}
+		console.error("%s: Component is deprecated. Kill it!", __filename)
 	}
-
 }
 
 </script>	

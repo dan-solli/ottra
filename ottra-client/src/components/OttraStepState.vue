@@ -1,6 +1,6 @@
 <template>
 	<v-btn icon>
-		<v-icon v-if="stepState" color="green"> 
+		<v-icon v-if="localValue" color="green"> 
 			mdi-checkbox-marked-circle-outline
 		</v-icon>
 		<v-icon v-else color="orange">
@@ -13,14 +13,15 @@
 
 export default {
 	name: 'ottra-step-state',
-	props: [ 'stepState'],
-	data: function() {
-		return {
-		}
-	},
+	props: [ 'value' ],
 	methods: {
 		saveState() {
-
+		}
+	},
+	computed: {
+		localValue: {
+			get() { this.value },
+			set(localValue) { this.$emit('input', localValue) }
 		}
 	}
 }

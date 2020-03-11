@@ -183,6 +183,7 @@
 import { mapGetters } from 'vuex'
 
 import { OttraEffortMixin } from '@/components/steps/mixins/OttraEffortMixin'
+import { OttraStepMixin } from '@/components/steps/mixins/OttraStepMixin'
 
 import OttraDateTimePicker from '@/components/OttraDateTimePicker'
 import OttraStepState from '@/components/OttraStepState'
@@ -193,7 +194,7 @@ import OttraEffortSlider from '@/components/steps/subcomponents/OttraEffortSlide
 export default {
 	name: 'ottra-instruction-step',
 	props: [ 'thisStep', 'editMode', 'stepOrder'  ],
-	mixins: [ OttraEffortMixin ],
+	mixins: [ OttraEffortMixin, OttraStepMixin ],
 	components: {
 		OttraDateTimePicker,
 		OttraStepState,
@@ -240,14 +241,8 @@ export default {
 			return this.getThumbColor(this.localStep.energyExpense)
 		},
 	},
-	methods: {
-		saveStep: function() {
-			console.debug("%s: saveStep, payload is: %O", __filename, this.localStep)
-			this.$store.dispatch("saveStep", this.localStep)
-		}
-	},
 	created() {
-		this.localStep = Object.assign(this.localStep, this.thisStep)
+		console.error("%s: Component is deprecated. Kill it!", __filename)
 	}
 }
 
