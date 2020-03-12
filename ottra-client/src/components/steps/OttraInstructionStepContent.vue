@@ -90,8 +90,8 @@
 		<v-row>
 			<v-col v-if="editMode">
 		    <v-autocomplete
-	        :value="value.equipment" 
-	        @input="val => { updateValue('equipment', val) }"
+	        :value="value.tools" 
+	        @input="val => { updateValue('tools', val) }"
 		    	prepend-icon="mdi-hammer"
 		      label="(*) Necessary tools"
 		      :items="toolList"
@@ -100,7 +100,7 @@
 		    ></v-autocomplete>
 			</v-col>
 			<v-col v-else>
-		    {{ value.equipment }} 
+		    {{ value.tools }} 
 			</v-col>
 		</v-row>
 

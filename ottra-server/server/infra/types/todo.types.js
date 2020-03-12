@@ -8,3 +8,4 @@ exports.TODO_DELETED = 64
 exports.TODO_RESOLVED = 128
 exports.TODO_ARCHIVED = 256
 exports.TODO_DONE = 512
+exports.TODO_CONVERTED = 1024
