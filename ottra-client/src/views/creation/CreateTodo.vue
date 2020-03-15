@@ -83,7 +83,6 @@
               <v-row>
                 <v-col>
                   <span class="headline"> (*) Set priority.</span>
-                  <!-- TODO: This should utilize v-model as well. No reason for it to emit/catch event -->
                   <component :is="getStrategyComponent" v-model="payload.priority"></component>
                 </v-col>
               </v-row>

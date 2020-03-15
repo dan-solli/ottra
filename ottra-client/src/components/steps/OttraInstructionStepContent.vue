@@ -66,8 +66,8 @@
 				<OttraTimePicker 
 					:value="value.duration"
 	        @input="val => { updateValue('duration', val) }"
-					timeLabel="(*) Duration"
-					timeHint="(*) Duration">
+					time-hint="(*) Duration"
+					time-label="(*) Duration">
 				</OttraTimePicker>
 			</v-col>
 			<v-col v-else>

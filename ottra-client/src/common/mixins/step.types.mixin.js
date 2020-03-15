@@ -33,8 +33,7 @@ export const stepTypeMixin = {
       },
       pause_step: { /* Empty */  },
       task_step: {
-        task_uuid: '',
-        task: {},
+        task: '',
       },
       transport_step: {
         destination: '',

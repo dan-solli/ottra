@@ -15,6 +15,9 @@ const Task = {
 		getTaskById: (state) => (id) => {
 			return state.tasks[id]
 		},
+		getTaskDuration: (state) => (id) => {
+			return { hours: 0, minutes: 4, seconds: 23 }
+		},
 	},
 	mutations: {
 		SET_TASKS(state, payload) {

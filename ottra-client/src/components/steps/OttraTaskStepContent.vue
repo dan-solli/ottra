@@ -3,18 +3,17 @@
 		<v-row>
 			<v-col v-if="editMode">
         <v-select
-        	:value="value.task.uuid"
-	        @input="val => { updateValue('title', val) }"
+        	:value="value.task"
+	        @input="val => { updateValue('task', val) }"
           prepend-icon="mdi-clipboard-list-outline"
           outlined
           :items="taskItems"
-          return-object
           label="(*) Task">
         </v-select>
 
 			</v-col>
 			<v-col v-else>
-		    {{ value.task.uuid }} 
+		    {{ value.task }} 
 			</v-col>
 		</v-row>
 

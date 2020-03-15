@@ -155,13 +155,7 @@ export default {
       current_step: 0,
       panelExpansions: [],
       valid: '',
-      task: {
-        subject: '',
-        uuid: '',
-        body: '',
-        created: '',
-        creator: '',
-      },
+      task: { },
       steps: [],
     }
   },

@@ -37,8 +37,8 @@
 				<OttraTimePicker
 					:value="value.duration"
 	        @input="val => { updateValue('duration', val) }"
-					time-hint="(*) Pause length"
-					time-label="(*) Pause length">
+					time-label="(*) Pause length"
+					time-hint="(*) Pause length">
 				</OttraTimePicker>
 			</v-col>
 			<v-col v-else>
