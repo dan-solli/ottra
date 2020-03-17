@@ -15,7 +15,7 @@
 					<v-list-item-title>(*) {{ value ? "Save" : "Edit" }} step</v-list-item-title>
 				</v-list-item-content>
 			</v-list-item>
-			<v-list-item>
+			<v-list-item @click="moveUp">
 	      <v-list-item-icon>
 	        <v-icon>mdi-arrow-up-bold</v-icon>
 	      </v-list-item-icon>				
@@ -23,7 +23,7 @@
 					<v-list-item-title>(*) Move up</v-list-item-title>
 				</v-list-item-content>
 			</v-list-item>
-			<v-list-item>
+			<v-list-item @click="moveUp">
 	      <v-list-item-icon>
 	        <v-icon>>mdi-arrow-down-bold</v-icon>
 	      </v-list-item-icon>				
@@ -31,7 +31,7 @@
 					<v-list-item-title>(*) Move down</v-list-item-title>
 				</v-list-item-content>
 			</v-list-item>
-			<v-list-item>
+			<v-list-item @click="deleteStep">
 	      <v-list-item-icon>
 	        <v-icon>mdi-delete</v-icon>
 	      </v-list-item-icon>				
@@ -65,7 +65,16 @@ export default {
 				// Edit it
 			}
 			this.localValue = !this.value
-		}
+		},
+		moveUp: function() {
+			this.$emit('move-up')
+		},
+		moveDown: function() {
+			this.$emit('move-down')
+		},
+		deleteStep: function() {
+			this.$emit('delete-step')
+		},
 	}
 }
 
