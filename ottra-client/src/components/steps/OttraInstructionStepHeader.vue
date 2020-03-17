@@ -1,11 +1,12 @@
 <template>
 	<v-container>
 		<v-row>
-			<v-col cols="1">
+			<v-col cols="2">
+				<OttraStepMenu v-model="value.editMode"></OttraStepMenu>
 				<OttraStepState v-model="value.saveState"></OttraStepState>
 				<v-icon>mdi-format-list-checkbox</v-icon>
 			</v-col>
-			<v-col cols="5">
+			<v-col cols="4">
 		    {{ value.title || '<(*) New step>' }}
 			</v-col>
 			<v-col cols="3">
@@ -28,13 +29,15 @@ import { mapGetters } from 'vuex'
 
 import { OttraEffortMixin } from '@/components/steps/mixins/OttraEffortMixin'
 import OttraStepState from '@/components/OttraStepState'
+import OttraStepMenu from '@/components/steps/subcomponents/OttraStepMenu'
 
 export default {
 	name: 'ottra-instruction-step-header',
 	props: [ 'value' ],
 	mixins: [ OttraEffortMixin ],
 	components: {
-		OttraStepState
+		OttraStepState,
+		OttraStepMenu,
 	},
 	computed: {
 		...mapGetters([

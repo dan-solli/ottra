@@ -1,7 +1,7 @@
 <template>
 	<v-container>
 		<v-row>
-			<v-col v-if="editMode">
+			<v-col v-if="value.editMode">
         <v-select
         	:value="value.task"
 	        @input="val => { updateValue('task', val) }"
@@ -17,7 +17,7 @@
 			</v-col>
 		</v-row>
 
-		<v-row v-if="editMode"> <!-- Action button -->
+		<v-row v-if="value.editMode"> <!-- Action button -->
 			<v-col>
 				<v-btn text @click="saveStep">
 					(*) Save 

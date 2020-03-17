@@ -84,14 +84,7 @@
                     <qrcode-vue :value="QRCodeImage"></qrcode-vue>
                   </v-col>
                 </v-row>
-<!--
-                <v-row>
-                  <v-col cols="12">
-                    <v-btn color="primary" @click="saveTask"> {{ $t('ui.text.save') }} </v-btn>
-                    <v-btn text @click="closeDialog">{{ $t('ui.text.cancel') }} </v-btn>
-                  </v-col>
-                </v-row>
--->                
+
                 <v-row>
                   <v-col cols="12">
                     <v-expansion-panels v-model="panelExpansions">
@@ -104,14 +97,7 @@
                         <v-expansion-panel-content>
                           <component :is="step.componentContent" v-model="steps[i].data">
                           </component>
-<!--
-                          <component 
-                            :is="step.component"
-                            v-model="step.data"
-                            :step-order="step.order"
-                            :edit-mode="step.editMode">
-                          </component>
--->                          
+                     
                         </v-expansion-panel-content>
                       </v-expansion-panel>
                     </v-expansion-panels>

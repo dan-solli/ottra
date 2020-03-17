@@ -1,9 +1,4 @@
 export const OttraStepMixin = {
-	data: function() {
-		return {
-			editMode: true,
-		}
-	},	
 	methods: {
 		updateValue: function(key, val) {
 			this.$emit("input", { ...this.value, [key]: val })

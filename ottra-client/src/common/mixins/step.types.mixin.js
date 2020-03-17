@@ -22,6 +22,7 @@ export const stepTypeMixin = {
         duration: '',
         energyExpense: 2,
         type: -1,
+        editMode: true,
         visualAidImages: [],
         attachments: [],
         saveStatus: false,

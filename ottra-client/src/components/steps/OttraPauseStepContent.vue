@@ -1,7 +1,7 @@
 <template>
 	<v-container>
 		<v-row>
-	  	<v-col v-if="editMode">
+	  	<v-col v-if="value.editMode">
         <v-text-field 
 	        :value="value.title" 
 	        @input="val => { updateValue('title', val) }"
@@ -17,7 +17,7 @@
 	  </v-row>
 
 		<v-row>
-			<v-col v-if="editMode">
+			<v-col v-if="value.editMode">
         <v-textarea
 	        :value="value.description" 
 	        @input="val => { updateValue('description', val) }"
@@ -33,7 +33,7 @@
 		</v-row>
 
 		<v-row>	<!-- Duration -->
-			<v-col v-if="editMode">
+			<v-col v-if="value.editMode">
 				<OttraTimePicker
 					:value="value.duration"
 	        @input="val => { updateValue('duration', val) }"
@@ -47,7 +47,7 @@
 		</v-row>
 
 		<v-row> <!-- Visual Aid Images -->
-			<v-col cols="5" v-if="editMode">
+			<v-col cols="5" v-if="value.editMode">
 	      <v-text-field 
 	        :value="value.visualAidImages" 
 	        @input="val => { updateValue('visualAidImages', val) }"
@@ -88,7 +88,7 @@
 		</v-row>
 
 
-		<v-row v-if="editMode"> <!-- Action button -->
+		<v-row v-if="value.editMode"> <!-- Action button -->
 			<v-col>
 				<v-btn text @click="saveStep">
 					(*) Save 
@@ -102,7 +102,6 @@
 <script>
 import OttraTimePicker from '@/components/OttraTimePicker'
 import OttraDocumentBrowser from '@/components/documentmanager/OttraDocumentBrowser'
-import OttraStepState from '@/components/OttraStepState'
 import { OttraStepMixin } from '@/components/steps/mixins/OttraStepMixin'
 
 export default {
@@ -112,7 +111,6 @@ export default {
 	components: {
 		OttraTimePicker,
 		OttraDocumentBrowser,
-		OttraStepState
 	},
 }
 

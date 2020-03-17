@@ -1,5 +1,5 @@
 <template>
-	<v-btn icon>
+	<v-btn icon @click.native.stop="">
 		<v-icon v-if="localValue" color="green"> 
 			mdi-checkbox-marked-circle-outline
 		</v-icon>

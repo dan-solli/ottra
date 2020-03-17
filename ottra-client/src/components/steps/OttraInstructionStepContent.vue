@@ -1,7 +1,7 @@
 <template>
 	<v-container>
 		<v-row>
-	  	<v-col v-if="editMode">
+	  	<v-col v-if="value.editMode">
 	      <v-text-field 
 	        :value="value.title" 
 	        @input="val => { updateValue('title', val) }"
@@ -18,7 +18,7 @@
 	  </v-row>
 
 		<v-row>
-			<v-col v-if="editMode">
+			<v-col v-if="value.editMode">
 	      <v-textarea
 	        :value="value.description" 
 	        @input="val => { updateValue('description', val) }"
@@ -35,7 +35,7 @@
 		</v-row>
 
 	  <v-row>
-	    <v-col v-if="editMode">
+	    <v-col v-if="value.editMode">
 	    	<OttraOptionalStep 
 	    		:value="value.optionalStep"
 	        @input="val => { updateValue('optionalStep', val) }">
@@ -45,7 +45,7 @@
 	  </v-row>
 
 		<v-row> <!-- What room -->
-			<v-col v-if="editMode">
+			<v-col v-if="value.editMode">
 		    <v-autocomplete
 	        :value="value.stepLocation" 
 	        @input="val => { updateValue('stepLocation', val) }"
@@ -62,7 +62,7 @@
 		</v-row>
 
 		<v-row>	<!-- Duration -->
-			<v-col v-if="editMode">
+			<v-col v-if="value.editMode">
 				<OttraTimePicker 
 					:value="value.duration"
 	        @input="val => { updateValue('duration', val) }"
@@ -76,19 +76,19 @@
 		</v-row>
 
 		<v-row> <!-- Energy Expense. -->
-			<v-col>
+			<v-col v-if="value.editMode">
 				<OttraEffortSlider 
 					:value="value.energyExpense"
 	        @input="val => { updateValue('energyExpense', val) }"> 
 				</OttraEffortSlider>
 			</v-col>
-	    <v-col>
+	    <v-col v-else>
 	    	{{ tickLabels[value.energyExpense] }}
 	    </v-col>
 			</v-row>
 
 		<v-row>
-			<v-col v-if="editMode">
+			<v-col v-if="value.editMode">
 		    <v-autocomplete
 	        :value="value.tools" 
 	        @input="val => { updateValue('tools', val) }"
@@ -104,7 +104,7 @@
 			</v-col>
 		</v-row>
 
-		<v-row v-if="editMode"> 
+		<v-row v-if="value.editMode"> 
 
 	    <v-col cols="5">
 	      <v-text-field 
@@ -147,7 +147,7 @@
 
 		</v-row>
 
-		<v-row v-if="editMode"> <!-- Action button -->
+		<v-row v-if="value.editMode"> <!-- Action button -->
 			<v-col>
 				<v-btn text @click="saveStep">
 					(*) Save 

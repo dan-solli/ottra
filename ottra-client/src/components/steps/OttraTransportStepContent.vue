@@ -18,7 +18,7 @@
 	  </v-row>
 
 		<v-row>
-	  	<v-col v-if="editMode">
+	  	<v-col v-if="value.editMode">
         <v-text-field 
 	        :value="value.title" 
 	        @input="val => { updateValue('title', val) }"
@@ -34,7 +34,7 @@
 	  </v-row>
 
 		<v-row>
-			<v-col v-if="editMode">
+			<v-col v-if="value.editMode">
         <v-textarea
 	        :value="value.description" 
 	        @input="val => { updateValue('description', val) }"
@@ -50,7 +50,7 @@
 		</v-row>
 
 		<v-row v-if="stepOptions.includes('useDestination')">
-			<v-col v-if="editMode">
+			<v-col v-if="value.editMode">
         <v-select
 	        :value="value.destination" 
 	        @input="val => { updateValue('destination', val) }"
@@ -68,7 +68,7 @@
 		</v-row>
 
 		<v-row v-if="stepOptions.includes('useMethod')">
-			<v-col v-if="editMode">
+			<v-col v-if="value.editMode">
         <v-select
  	        :value="value.method" 
 	        @input="val => { updateValue('method', val) }"
@@ -86,7 +86,7 @@
 		</v-row>
 
 		<v-row v-if="stepOptions.includes('useDuration')">	<!-- Duration -->
-			<v-col v-if="editMode">
+			<v-col v-if="value.editMode">
 				<OttraTimePicker 
 					:value="value.duration"
 	        @input="val => { updateValue('duration', val) }"
@@ -99,7 +99,7 @@
 		</v-row>
 
 		<v-row v-if="stepOptions.includes('useVisualAid')"> <!-- Visual Aid Images -->
-			<v-col cols="5" v-if="editMode">
+			<v-col cols="5" v-if="value.editMode">
 	      <v-text-field 
 	        :value="value.visualAidImages" 
 	        @input="val => { updateValue('visualAidImages', val) }"
@@ -139,7 +139,7 @@
 	    </v-col>
 		</v-row>
 
-		<v-row v-if="editMode"> <!-- Action button -->
+		<v-row v-if="value.editMode"> <!-- Action button -->
 			<v-col>
 				<v-btn text @click="saveStep">
 					(*) Save 
