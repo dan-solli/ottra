@@ -8,6 +8,13 @@ const TaskService = {
 			return await TaskModel.getTasks(user_id)
 		}
 	},
+	getTask: async function(user_id, task_id) {
+		if (!user_id || !task_id) {
+			return { ok: false, error: { code: 404, status: 'failed', messages: "Missing parameters" }}
+		} else {
+			return await TaskModel.getTask(user_id, task_id)
+		}
+	},
 	createTask: async function(user_id, payload) {
 		try {
 			const result = await TaskModel.createTask(user_id, payload)

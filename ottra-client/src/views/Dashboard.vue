@@ -151,6 +151,10 @@ export default {
     },
   },
   created: function() {
+    const now = new Date().toISOString().slice(0, 10)
+    console.debug("%s: The date is %s", __filename, now)
+    this.currentDate = now
+
     // Set up context sensitive stuff.
     // For each widget, load data from backend:
     // - Userdata
@@ -160,8 +164,5 @@ export default {
     // - Tasks
     // - Maybe a weather-blob
   },
-  mounted: function() {
-    this.currentDate = this.todaysDate
-  }
 }
 </script>

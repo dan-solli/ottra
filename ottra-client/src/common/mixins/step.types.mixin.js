@@ -8,6 +8,7 @@ import OttraTransportStepC from '@/components/steps/OttraTransportStepContent'
 import OttraTaskStepH from '@/components/steps/OttraTaskStepHeader'
 import OttraTaskStepC from '@/components/steps/OttraTaskStepContent'
 
+export const STEP_UNDEFINED = 0
 export const STEP_INSTRUCTION = 1
 export const STEP_PAUSE = 2
 export const STEP_TRANSPORT = 3
@@ -27,6 +28,7 @@ export const stepTypeMixin = {
         attachments: [],
         saveStatus: false,
         optionalStep: false,
+        stepType: 0
       },
       instruction_step: {
         tools: {},
@@ -40,6 +42,7 @@ export const stepTypeMixin = {
         destination: '',
         method: '',
       },
+      STEP_UNDEFINED,
 			STEP_INSTRUCTION,
 			STEP_PAUSE,
 			STEP_TRANSPORT,
@@ -47,13 +50,24 @@ export const stepTypeMixin = {
 		}
 	},
 	methods: {
-		stepFactory(step_type, order) {
+		stepFactory(step_type) {
+
       if (step_type === STEP_INSTRUCTION) {
         const the_step = Object.assign(this.instruction_step, this.base_step)
         the_step.type = STEP_INSTRUCTION
         return { 
           componentHeader: OttraInstructionStepH, 
           componentContent: OttraInstructionStepC, 
+          data: the_step, 
+        }
+      }
+      else if (step_type === STEP_UNDEFINED) {
+        // As long as pause_step is empty, this is a decent default
+        const the_step = Object.assign(this.pause_step, this.base_step)
+        the_step.type = STEP_PAUSE
+        return { 
+          componentHeader: OttraPauseStepH, 
+          componentContent: OttraPauseStepC, 
           data: the_step, 
         }
       }

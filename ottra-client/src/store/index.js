@@ -22,7 +22,7 @@ import Document from './document'
 import Todo from './todo'
 
 import Equipment from './equipment'
-import Step from './step'
+//import Step from './step'
 
 import Task from './task'
 /*
@@ -73,7 +73,7 @@ const OttraStore = new Vuex.Store({
 		Location,
 		Message,
 		Room,
-		Step,
+//		Step,
 		Storage,
 		Task,
 		Todo,

@@ -27,11 +27,6 @@ import OttraStepMenu from '@/components/steps/subcomponents/OttraStepMenu'
 export default {
 	name: 'ottra-transport-step-header',
 	mixins: [ OttraStepMixin ],
-	props: [ 'value' ],
-	components: {
-		OttraStepState,
-		OttraStepMenu,
-	},
 }
 
 </script>	

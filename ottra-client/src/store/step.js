@@ -1,19 +1,21 @@
 import Vue from 'vue'
 
 import { RepositoryFactory } from '@/common/repos/RepositoryFactory'
+import { StepFactory } from '@/common/repos/StepFactory'
 
 const StepRepo = RepositoryFactory.get('step')
 
 const Step = {
 	state: {
-		steps: {
-		}
+		steps: []
 	},
 	getters: {
 		getSteps: state => state.steps,
+/*
 		getStepById: (state) => (id) => {
 			return state.steps[id]
 		},
+*/		
 	},
 	mutations: {
 		SET_STEPS(state, payload) {
@@ -22,65 +24,31 @@ const Step = {
 		CLEAR_STORE(state) {
 			state.steps = {}
 		},
+/*		
 		REMOVE_STEP(state, uuid) {
 			Vue.delete(state.steps, uuid)
 		},
+*/		
 		ADD_STEP(state, payload) {
-      Vue.set(state.steps, payload.uuid, payload)			
+			state.steps.push(payload)
+      //Vue.set(state.steps, payload.uuid, payload)			
 		},
 	},
 	actions: {
-		saveStep: async function({ commit }, payload) {
+		newStep: async function({ commit }, step_type) {
 			try {
-				console.debug("%s: saveStep, payload is: %O", __filename, payload)
-				const response = await StepRepo.createStep(payload)
-				commit("ADD_STEP", response.data)
-				return response.data
-			} 
-			catch(err) {
-				console.error("%s: saveStep failed: %O", __filename, err)
-			}
-		},
-		deleteStep: async function({ commit }, step_uuid) {
-			try {
-				console.debug("%s: deleteStep, payload is: %O", __filename, step_uuid)
-				const response = await StepRepo.deleteStep(step_uuid)
-				commit("REMOVE_STEP", step_uuid)
-				return response.data
-			} 
-			catch(err) {
-				console.error("%s: deleteStep failed: %O", __filename, err)
-			}
-		},
-		updateStep: async function({ commit }, payload) {
-			try {
-				console.debug("%s: updateStep, payload is: %O", __filename, payload)
-				const response = await StepRepo.updateStep(payload)
-				commit("ADD_STEP", response.data)
-				return response.data
-			} 
-			catch(err) {
-				console.error("%s: updateStep failed: %O", __filename, err)
-			}
-		},
-		loadSteps: async function({ commit })	{
-			try {
-				const response = await StepRepo.get()
-				console.debug("%s: loadSteps: Response is %O", __filename, response)
+				console.debug("%s: newStep, steptype is: %d", __filename, step_type)
+				const stepData = StepFactory.getStepData(step_type)
+				// --- Missing task-id. And that should not be required.
+				// --- 
+				// const response = await StepRepo.createStep(stepData)
 
-				let new_steps = {}
-
-				response.data.forEach(function(step) {
-					new_steps[step.uuid] = step
-				})
-				commit("SET_STEPS", new_steps)
+				commit("ADD_STEP", stepData)
+				return response.data.uuid
 			}
 			catch(err) {
-				console.error("%s: loadSteps failed: %O", __filename, err)
+				console.error("%s: newStep failed: %O", __filename, err)
 			}
-		},
-		loadUserData: async function({ dispatch }) {
-			await dispatch("loadSteps")
 		},
 		clearStore({ commit }) {
 			commit("CLEAR_STORE")

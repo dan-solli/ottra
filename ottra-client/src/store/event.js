@@ -110,7 +110,6 @@ const Event = {
     getEventByID: (state) => (id) => { 
       return state.events[id]
     },
-    todaysDate: () => new Date().toISOString().slice(0, 10)
 	},
 	actions: {
 	}

@@ -40,6 +40,23 @@ const TaskModel = {
 								steps: Steps, dateTime: apoc.date.format(t.created) }) AS Tasks`,
 		{ uuid: uuid }, "Tasks")
 	},
+	getTask: async function(user_id, task_id) {
+		return await DB.fetchAll(`
+			MATCH (:User { uuid: { user_id }})-[:HAS]->(t:Task { uuid: { task_id }})
+			OPTIONAL MATCH (t)-[r:INCLUDE]->(s:Step)
+			OPTIONAL MATCH (t)-[:ATTACHMENT { type: 'goodEnoughImage'}]->(dGE:Document)
+			OPTIONAL MATCH (t)-[:ATTACHMENT { type: 'goalImage'}]->(dG:Document)
+			WITH t, r, 
+					 COLLECT(dGE.uuid) AS GEI,
+					 COLLECT(dG.uuid) AS GI
+					 COLLECT(s { .*}) AS Steps
+			ORDER BY r.order
+			RETURN COLLECT (t { .*, 
+								goodEnoughImages: GEI,
+								goalImages: GI,
+								steps: Steps, dateTime: apoc.date.format(t.created) }) AS Tasks`,
+		{ user_id, task_id }, "Task")
+	},
 	deleteTask: async function(user_id, task_uuid) {
     return await DB.fetchRow(`
       MATCH (t:Task { uuid: {task_uuid}, creator: {user_id} }) DETACH DELETE t`, 

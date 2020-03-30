@@ -12,25 +12,8 @@
           </v-btn>
         </template>
         <v-list dense>
-          <v-list-item @click="addStep(STEP_INSTRUCTION)">
-            <v-list-item-title> 
-              (*) Instruction 
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="addStep(STEP_PAUSE)">
-            <v-list-item-title> 
-              (*) Pause 
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="addStep(STEP_TRANSPORT)">
-            <v-list-item-title> 
-              (*) Transport
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="addStep(STEP_TASK)">
-            <v-list-item-title> 
-              (*) Task
-            </v-list-item-title>
+          <v-list-item v-for="(step, i) in stepTypes" :key="i" @click="addStep(step.type)">
+            <v-list-item-title>{{ step.description }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -90,12 +73,16 @@
                     <v-expansion-panels v-model="panelExpansions">
                       <v-expansion-panel v-for="(step, i) in steps" :key="i">
                         <v-expansion-panel-header>
-                          <component :is="step.componentHeader" v-model="steps[i].data">
+                          <component 
+                            :is="getHeaderComponent(step.stepType)"
+                            v-model="steps[i]">
                           </component>
                         </v-expansion-panel-header>
 
                         <v-expansion-panel-content>
-                          <component :is="step.componentContent" v-model="steps[i].data">
+                          <component 
+                            :is="getContentComponent(step.stepType)" 
+                            v-model="steps[i]">
                           </component>
                      
                         </v-expansion-panel-content>
@@ -119,45 +106,63 @@
 <script>
 
 import { mapGetters } from 'vuex'
+
 import { 
   STEP_INSTRUCTION,
   STEP_TASK,
   STEP_TRANSPORT,
   STEP_PAUSE,
-  stepTypeMixin
-} from '@/common/mixins/step.types.mixin'
+  StepFactory,
+} from '@/common/repos/StepFactory'
 
 import QrcodeVue from 'qrcode.vue'
 
 export default {
   name: "add-steps-to-task",
   props: [ 'task_uuid' ],
-  mixins: [ stepTypeMixin ],
   components: {
     QrcodeVue
   },
   data: function() {
     return {
-      current_step: 0,
       panelExpansions: [],
       valid: '',
       task: { },
-      steps: [],
+      stepTypes: [
+        { type: STEP_INSTRUCTION, description: "(*) Instruction" },
+        { type: STEP_PAUSE, description: "(*) Pause" },
+        { type: STEP_TRANSPORT, description: "(*) Transport" },
+        { type: STEP_TASK, description: "(*) Task" },
+      ]
     }
   },
   computed: {
     ...mapGetters([
       "getStepById",
       "getTaskById",
-      "getRooms",
     ]),
     QRCodeImage: function() {
       return 'https://' + window.location.host + window.location.pathname
-    }
+    },
+    steps: function() {
+      if (!this.task_uuid || !this.task.hasOwnProperty('uuid')) {
+        return []
+      } else {
+        const taskData = this.getTaskById(this.task_uuid)
+        console.debug("%s: taskData for %s is %O", __filename, this.task_uuid, taskData)
+        const steps = taskData.steps
+        console.debug("%s: Task %s steps are: %O", __filename, this.task_uuid, steps)
+
+        return steps.map(function(f) {
+          const step = this.getStepById(f)
+          console.debug("%s: In map for f=%s gets %O", __filename, f, step)
+          return step
+        }, this)
+      }
+    },
   },
   async mounted() {
     await this.$store.dispatch("loadTasks")
-    await this.$store.dispatch("loadSteps")
     if (this.task_uuid) {
       this.task = Object.assign({}, this.getTaskById(this.task_uuid))
     } 
@@ -168,6 +173,13 @@ export default {
 */    
   },
   methods: {
+    getHeaderComponent(type) {
+      return StepFactory.getStepHeaderComponent(type)
+    },
+    getContentComponent(type) {
+      return StepFactory.getStepContentComponent(type)
+    },
+
     startTour: function() {
     },
     closeDialog: function() {
@@ -182,8 +194,16 @@ export default {
       this.$store.dispatch("saveTask", this.payload)
       this.$router.push('/task')
     },
-    addStep: function(step_type) {
-      this.steps.push(this.stepFactory(step_type, this.current_step++))
+    addStep: async function(step_type) {
+      if (!this.task_uuid) {
+        console.error("%s: addStep called without task_uuid", __filename)
+      } else {
+        const step_uuid = await this.$store.dispatch("newStep", step_type)
+        await this.$store.dispatch("addStepToTask", {
+          task_uuid: this.task.uuid, 
+          step_uuid: step_uuid
+        })
+      }
     }
   }
 }
