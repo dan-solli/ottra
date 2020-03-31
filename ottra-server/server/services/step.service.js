@@ -9,6 +9,9 @@ const StepService = {
 	},
 	deleteStep: async function(user_id, step_id) {
 		return await StepModel.deleteStep(user_id, step_id)
+	},
+	updateStep: async function(user_id, step_data) {
+		return await StepModel.updateStep(user_id, step_data)
 	}
 }
 

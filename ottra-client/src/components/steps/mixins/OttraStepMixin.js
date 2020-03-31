@@ -27,7 +27,7 @@ export const OttraStepMixin = {
 			//this.$emit("input", { ...this.value, [key]: val })
 		},
 		saveStep: function() {
-			console.debug("%s: saveStep %s, payload is: %O", __filename, this.value)
+			console.debug("%s: saveStep, payload is: %O", __filename, this.value)
 			this.$store.dispatch("saveStep", this.value)
 		}		
 	},

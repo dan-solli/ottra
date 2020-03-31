@@ -13,7 +13,11 @@ const DB = require('./../infra/db')
 const r = express.Router()
 
 r.get("/", async function(req, res) {
-	res.send(resultData)
+	sendResponse(res, await DB.fetchRow(`
+		CREATE (n:Testnode)
+		SET n += { hash }
+		RETURN n { .* } AS Testnode`, { hash: { a: 1, b: "Apa", c: 3.14 }}, "Testnode"
+	))
 })
 
 

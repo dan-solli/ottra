@@ -108,8 +108,36 @@ const Task = {
 				__filename, step_uuid, key, val)
 			commit("UPDATE_STEP", { step_uuid, key, val })
 		},
-		saveStep: async function({ commit }, step) {
+		saveStep: async function({ commit, dispatch }, step) {
 			console.debug("%s: saveStep called with %O", __filename, step)
+			if (step.saveStatus === false) {
+				return await dispatch("createStep", step)
+			} else {
+				try {
+					const response = await StepRepo.updateStep(step)
+					console.debug("%s: saveStep/update response is: %O", __filename, response.data)
+					commit("ADD_STEP", response.data)
+				}
+				catch (err) {
+					console.error("%s: saveStep/update failed: %s", __filename, err)
+				}
+			}
+		},
+		createStep: async function({ commit }, step) {
+			console.debug("%s: createStep called with %O", __filename, step)
+			try {
+				await dispatch("updateStep", {
+					step_uuid: step.uuid,
+					key: "saveStatus",
+					value: true
+				})
+				const response = await StepRepo.createStep(step)
+				console.debug("%s: createStep response was %O", __filename, response.data)
+				commit("ADD_STEP", response.data)
+			}
+			catch (err) {
+				console.error("%s: createStep failed: %s", __filename, err)
+			}
 		},
 		attachImagesToTask: async function({ commit, dispatch }, payload) {
 			console.debug("%s: attachImageToTask payload is: %O", __filename, payload)

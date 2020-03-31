@@ -4,6 +4,8 @@ const uuidv4 = require('uuid/v4')
 const StepModel = {
 	createStep: async function(user_id, parent_uuid, payload) {
 		console.debug("%s: createStep got payload: %O", __filename, payload)
+
+/*
 		const maxStepResult = await StepModel.getMaxStep(parent_uuid)
 		console.debug("%s: createStep maxStepResult is: %O", __filename, maxStepResult)
 		let maxStep = 1
@@ -17,8 +19,25 @@ const StepModel = {
 		}
 
 		const newStepNumber = maxStep + 1
-
+*/
 		return await DB.fetchRow(`
+			CREATE(s:Step {
+				uuid: {uuid},
+				created: TIMESTAMP(),
+				creator: {creator}
+			})
+			SET s += { payload }
+			RETURN s { .*, dateTime: apoc.date.format(s.created) } AS Step`,
+			{
+				uuid: payload.uuid,
+				creator: user_id,
+				parent_uuid: parent_uuid,
+				payload: payload
+			}, "Step"
+		)
+	},
+
+/*
 			MATCH (t { uuid: {parent_uuid}})
 			CREATE (t)-[:INCLUDE { order: {order} }]->(s:Step {
 				uuid: {uuid},
@@ -37,6 +56,7 @@ const StepModel = {
 			}, "Step"
 		)
 	},
+*/	
 	getSteps: async function(user_id) {
 		return await DB.fetchAll(`
 			MATCH (s:Step { creator: {user_id} })
@@ -66,6 +86,7 @@ const StepModel = {
 		)
 	},
 	getMaxStep: async function(todo_id) {
+		console.error("%s: getMaxStep is deprecated. Track and kill.", __filename)
 		return await DB.fetchRow(`
 			MATCH (t { uuid: {todo_id} })-[r:INCLUDE]->(s:Step)
 			WITH t, MAX(r.order) as max_order
