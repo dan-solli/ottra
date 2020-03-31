@@ -14,6 +14,7 @@ export const OttraStepMixin = {
 	methods: {
 		updateValue: function(key, val) {
 			try {
+				// console.debug("%s: updateValue called with key: %s and value: %O", __filename, key, val)
 				//this.$set(this.step, key, val)
 				this.$store.dispatch("updateStep", {
 					step_uuid: this.value.uuid,

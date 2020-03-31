@@ -97,6 +97,8 @@
 		      :items="toolList"
 		      item-text="name"
 		      item-value="uuid"
+		      multiple 
+		      chips
 		    ></v-autocomplete>
 			</v-col>
 			<v-col v-else>

@@ -35,7 +35,7 @@ const stepTypeData = {
     stepType: 0
   },
   instruction_step: {
-    tools: {},
+    tools: [],
     stepLocation: '',
   },
   pause_step: { /* Empty */  },
