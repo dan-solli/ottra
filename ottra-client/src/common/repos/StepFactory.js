@@ -29,13 +29,13 @@ const stepTypeData = {
     energyExpense: 2,
     editMode: true,
     visualAidImages: [],
-    attachments: [],
     saveStatus: false,
     optionalStep: false,
     stepType: 0
   },
   instruction_step: {
     tools: [],
+    attachments: [],
     stepLocation: '',
   },
   pause_step: { /* Empty */  },
@@ -44,6 +44,7 @@ const stepTypeData = {
   },
   transport_step: {
     destination: '',
+    attachments: [],
     method: '',
   },
 }

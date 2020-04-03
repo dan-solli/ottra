@@ -67,24 +67,6 @@
 	      </OttraDocumentBrowser>
 	    </v-col>
 
-	    <v-col cols="5">
-	      <v-text-field 
-	        :value="value.attachments" 
-	        @input="val => { updateValue('attachments', val) }"
-	        label="(*) Attachments" 
-	        type="text"
-	        disabled
-	        append-icon="mdi-iframe-variable-outline" 
-	        prepend-icon="mdi-file-document-box-multiple-outline" 
-	        required>
-	      </v-text-field>
-	    </v-col>
-	    <v-col cols="1">
-	      <OttraDocumentBrowser
-	      	:value="value.attachments"
-	        @input="val => { updateValue('attachments', val) }">
-	      </OttraDocumentBrowser>
-	    </v-col>
 		</v-row>
 
 
