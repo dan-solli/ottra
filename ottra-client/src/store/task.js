@@ -78,6 +78,7 @@ const Task = {
 				console.debug("%s: saveTask, payload is: %O", __filename, payload)
 				const response = await TaskRepo.createTask(payload)
 				commit("ADD_TASK", response.data)
+
 				if (payload.goodEnoughImages.length > 0) {
 					await dispatch("attachImagesToTask", {
 						attachments: payload.goodEnoughImages,

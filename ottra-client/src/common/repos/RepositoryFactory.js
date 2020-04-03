@@ -10,6 +10,7 @@ import EquipmentRepo from './equipmentRepository'
 import StepRepo from './stepRepository'
 import TaskRepo from './taskRepository'
 import FolderRepo from './folderRepository'
+import RelRepo from './relationRepository'
 
 const repositories = {
 	user: UserRepo,
@@ -23,7 +24,8 @@ const repositories = {
 	equipment: EquipmentRepo,
 	step: StepRepo,
 	task: TaskRepo,
-	folder: FolderRepo
+	folder: FolderRepo,
+	relation: RelRepo,
 };
 
 export const RepositoryFactory = {

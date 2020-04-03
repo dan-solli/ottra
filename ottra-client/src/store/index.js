@@ -25,6 +25,9 @@ import Equipment from './equipment'
 //import Step from './step'
 
 import Task from './task'
+
+import Relation from './relations'
+
 /*
 import ActionModel from '@/store/models/action.model'
 import AddressModel from '@/store/models/address.model'
@@ -72,6 +75,7 @@ const OttraStore = new Vuex.Store({
 		Event,
 		Location,
 		Message,
+		Relation,
 		Room,
 //		Step,
 		Storage,
