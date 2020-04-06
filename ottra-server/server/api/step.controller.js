@@ -33,7 +33,7 @@ r.delete("/", [ autenUser('uuid').isUUID() ],
 
 r.patch("/", [ autenUser('uuid').isUUID() ],
 	async function(req, res) {
-		sendResponse(res, await StepService.updateStep(rec.tokenData.uuid, rec.body))
+		sendResponse(res, await StepService.updateStep(req.tokenData.uuid, req.body))
 	}
 )
 

@@ -76,9 +76,26 @@ const Task = {
 		saveTask: async function({ commit, dispatch }, payload) {
 			try {
 				console.debug("%s: saveTask, payload is: %O", __filename, payload)
+
+				// Really, what's the difference between createTask and updateTask? saveTask 
+				// should probably dispatch the proper action. Where's my dirty-flag?
+
+				// Also, after the task has been saved, we need to save the steps. But should 
+				// that be done with the collected call to saveTask? The steps are in there, 
+				// aren't they? Let the task service layer call for saving of different steps.
+
+				// But what should it return? Should we call getTaskById separately, or trust the
+				// return value. It seems like we get a whole synchronicity problem then. Maybe.
+
 				const response = await TaskRepo.createTask(payload)
 				commit("ADD_TASK", response.data)
 
+
+				// We should probably not do this. The server will get the opportunity to handle 
+				// this. So the comment section above thusly solves itself. Steps (their uuid) 
+				// will be sent with the task payload and be handled on the server side without
+				// any concern from the client side. 
+				
 				if (payload.goodEnoughImages.length > 0) {
 					await dispatch("attachImagesToTask", {
 						attachments: payload.goodEnoughImages,
@@ -124,7 +141,7 @@ const Task = {
 				}
 			}
 		},
-		createStep: async function({ commit }, step) {
+		createStep: async function({ commit, dispatch  }, step) {
 			console.debug("%s: createStep called with %O", __filename, step)
 			try {
 				await dispatch("updateStep", {

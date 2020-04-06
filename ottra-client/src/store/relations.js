@@ -29,3 +29,5 @@ const Relations = {
 		}
 	},
 }
+
+export default Relations
