@@ -70,6 +70,13 @@
 
                 <v-row>
                   <v-col cols="12">
+                    <v-spacer></v-spacer>
+                    <v-btn @click="saveTask">Save</v-btn>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col cols="12">
                     <v-expansion-panels v-model="panelExpansions">
                       <v-expansion-panel v-for="(step, i) in steps" :key="i">
                         <v-expansion-panel-header>
@@ -186,13 +193,9 @@ export default {
       this.$router.push('/task')
     },
     saveTask: function() {
-      const payload = {
-        task,
-        steps
-      }
-      console.debug("%s: saveTask, payload is: %O", __filename, this.payload)
-      this.$store.dispatch("saveTask", this.payload)
-      this.$router.push('/task')
+      console.debug("%s: saveTask, payload is: %O", __filename, this.task)
+      this.$store.dispatch("updateTask", this.task)
+      //this.$router.push('/task')
     },
     addStep: async function(step_type) {
       if (!this.task_uuid) {

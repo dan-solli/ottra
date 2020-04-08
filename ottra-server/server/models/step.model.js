@@ -49,7 +49,45 @@ const StepModel = {
 			{ todo_id }, "Steps"
 		)
 	},
+	getStepById: async function(step_id) {
+		return await DB.fetchAll(`
+			MATCH (s:Step { uuid: { step_id }})
+			OPTIONAL MATCH (s)-[:REQUIRES]->(e:Equipment)
+			WITH s, COLLECT(e.uuid) AS tools 
+			OPTIONAL MATCH (s)-[:VISUALAID]->(va:Document)
+			WITH s, tools, COLLECT(va.uuid) AS visualAidImages
+			OPTIONAL MATCH (s)-[:ATTACHMENT]->(a:Document)
+			WITH s, tools, visualAidImages, COLLECT(a.uuid) AS attachments
+			OPTIONAL MATCH (s)-[:INCLUDES]->(t:Task)
+			WITH s, tools, visualAidImages, attachments, t.uuid AS task
+			OPTIONAL MATCH (s)-[:AT]->(l:Location)
+			WITH s, tools, visualAidImages, attachments, task, l.uuid AS destination
+			OPTIONAL MATCH (s)-[:IN]->(r:Room)
+			WITH 
+				s, r.uuid AS stepLocation, destination, task, attachments, visualAidImages, tools
+			RETURN s { .*, stepLocation, destination, task, attachments, visualAidImages, tools } AS Step
+		`, { step_id }, "Step")
+	}
 }
+
+/* 	getTask: async function(user_id, task_id) {
+		return await DB.fetchAll(`
+			MATCH (:User { uuid: { user_id }})-[:HAS]->(t:Task { uuid: { task_id }})
+			OPTIONAL MATCH (t)-[r:INCLUDE]->(s:Step)
+			OPTIONAL MATCH (t)-[:ATTACHMENT { type: 'goodEnoughImage'}]->(dGE:Document)
+			OPTIONAL MATCH (t)-[:ATTACHMENT { type: 'goalImage'}]->(dG:Document)
+			WITH t, r, 
+					 COLLECT(dGE.uuid) AS GEI,
+					 COLLECT(dG.uuid) AS GI
+					 COLLECT(s { .*}) AS Steps
+			ORDER BY r.order
+			RETURN COLLECT (t { .*, 
+								goodEnoughImages: GEI,
+								goalImages: GI,
+								steps: Steps, dateTime: apoc.date.format(t.created) }) AS Tasks`,
+		{ user_id, task_id }, "Task")
+	},
+*/
 
 module.exports = StepModel
 

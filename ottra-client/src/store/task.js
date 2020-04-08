@@ -15,6 +15,10 @@ const Task = {
 		steps: {
 			// Key is step_id
 		}
+		dirty: { 
+			steps: { },
+			tasks: { }
+		},
 	},
 	getters: {
 		getTasks: state => state.tasks,
@@ -26,6 +30,12 @@ const Task = {
 		},
 		getStepById: (state) => (step_id) => {
 			return state.steps[step_id]
+		},
+		isDirtyTask: (state) => (task_id) => {
+			return state.dirty.tasks[task_id]
+		},
+		isDirtyStep: (state) => (step_id) => {
+			return state.dirty.steps[step_id]
 		},
 	},
 	mutations: {
@@ -40,7 +50,7 @@ const Task = {
 			Vue.delete(state.tasks, uuid)
 		},
 		ADD_TASK(state, payload) {
-      Vue.set(state.tasks, payload.uuid, payload)			
+      Vue.set(state.tasks, payload.uuid, payload)
 		},
 		ADD_STEP_TO_TASK(state, { task_uuid, step_uuid }) {
 			console.debug("%s: ADD_STEP_TO_TASK: task_uuid %s gets step_uuid %s",
@@ -57,6 +67,18 @@ const Task = {
 			console.debug("%s: UPDATE_STEP: stepData is %O", __filename, stepData)
 			stepData[key] = val
 			Vue.set(state.steps, step_uuid, stepData)
+		},
+		DIRTY_STEP(state, step_uuid) {
+			Vue.set(state.dirty.steps, step_uuid, true)
+		},
+		CLEAN_STEP(state, step_uuid) {
+			Vue.delete(state.dirty.steps, step_uuid)
+		},
+		DIRTY_TASK(state, task_uuid) {
+			Vue.set(state.dirty.tasks, task_uuid, true)
+		},
+		CLEAN_TASK(state, task_uuid) {
+			Vue.delete(state.dirty.tasks, task_uuid)
 		}
 	},
 	actions: {
@@ -66,6 +88,7 @@ const Task = {
 				const stepData = StepFactory.getStepData(step_type)
 				console.debug("%s: newStep: Factory returned step data: %O", __filename, stepData)
 				commit("ADD_STEP", stepData)
+				commit("DIRTY_STEP", stepData.uuid)
 				console.debug("%s: newStep: returning: %s", __filename, stepData.uuid)
 				return stepData.uuid
 			}
@@ -77,25 +100,14 @@ const Task = {
 			try {
 				console.debug("%s: saveTask, payload is: %O", __filename, payload)
 
-				// Really, what's the difference between createTask and updateTask? saveTask 
-				// should probably dispatch the proper action. Where's my dirty-flag?
-
-				// Also, after the task has been saved, we need to save the steps. But should 
-				// that be done with the collected call to saveTask? The steps are in there, 
-				// aren't they? Let the task service layer call for saving of different steps.
-
-				// But what should it return? Should we call getTaskById separately, or trust the
-				// return value. It seems like we get a whole synchronicity problem then. Maybe.
+				// Creating a new task is already being handled. saveTask shouuld thusly
+				// be renamed createTask. 
 
 				const response = await TaskRepo.createTask(payload)
 				commit("ADD_TASK", response.data)
 
 
-				// We should probably not do this. The server will get the opportunity to handle 
-				// this. So the comment section above thusly solves itself. Steps (their uuid) 
-				// will be sent with the task payload and be handled on the server side without
-				// any concern from the client side. 
-				
+				// Will be refactored by Ottra#284
 				if (payload.goodEnoughImages.length > 0) {
 					await dispatch("attachImagesToTask", {
 						attachments: payload.goodEnoughImages,
@@ -103,7 +115,7 @@ const Task = {
 						type: "goodEnoughImage"
 					})
 				}
-				else if (payload.goalImages.length > 0) {
+				if (payload.goalImages.length > 0) {
 					await dispatch("attachImagesToTask", {
 						attachments: payload.goalImages,
 						task_uuid: response.data.uuid,
@@ -122,8 +134,6 @@ const Task = {
 			commit("ADD_STEP_TO_TASK", { task_uuid, step_uuid })
 		},
 		updateStep: async function({ commit }, { step_uuid, key, val }) {
-			console.debug("%s: updateStep called with step_uuid = %s, key = %s, val = %O",
-				__filename, step_uuid, key, val)
 			commit("UPDATE_STEP", { step_uuid, key, val })
 		},
 		saveStep: async function({ commit, dispatch }, step) {
@@ -141,7 +151,7 @@ const Task = {
 				}
 			}
 		},
-		createStep: async function({ commit, dispatch  }, step) {
+		createStep: async function({ commit, dispatch, getters }, step) {
 			console.debug("%s: createStep called with %O", __filename, step)
 			try {
 				await dispatch("updateStep", {
@@ -149,6 +159,7 @@ const Task = {
 					key: "saveStatus",
 					value: true
 				})
+				step.saveStatus = true
 				const response = await StepRepo.createStep(step)
 				console.debug("%s: createStep response was %O", __filename, response.data)
 				commit("ADD_STEP", response.data)
@@ -186,6 +197,18 @@ const Task = {
 			}
 		},
 		updateTask: async function({ commit }, payload) {
+			/* This action has two work orders. 
+				- Update changes to the task-data itself.
+				- Save the list of steps. Passing the order of steps.
+
+				So this can be called from the edit-task-view as well as the 
+				add-steps-to-task-view.
+
+				So what is the payload?
+
+				Server side gets all the fun!
+			*/
+
 			try {
 				console.debug("%s: updateTask, payload is: %O", __filename, payload)
 				const response = await TaskRepo.updateTask(payload)

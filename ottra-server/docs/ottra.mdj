@@ -6795,7 +6795,7 @@
 											"font": "Arial;13;1",
 											"left": 501,
 											"top": 47,
-											"width": 77.70166015625,
+											"width": 78,
 											"height": 13,
 											"text": "Task"
 										},
@@ -6830,7 +6830,7 @@
 									"font": "Arial;13;0",
 									"left": 496,
 									"top": 40,
-									"width": 87.70166015625,
+									"width": 88,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAFwXGRHFJed5JQ="
@@ -6867,7 +6867,7 @@
 											"font": "Arial;13;0",
 											"left": 501,
 											"top": 70,
-											"width": 77.70166015625,
+											"width": 78,
 											"height": 13,
 											"text": "+uuid: uuidv4",
 											"horizontalAlignment": 0
@@ -6876,7 +6876,7 @@
 									"font": "Arial;13;0",
 									"left": 496,
 									"top": 65,
-									"width": 87.70166015625,
+									"width": 88,
 									"height": 23
 								},
 								{
@@ -6891,7 +6891,7 @@
 									"font": "Arial;13;0",
 									"left": 496,
 									"top": 88,
-									"width": 87.70166015625,
+									"width": 88,
 									"height": 10
 								},
 								{
@@ -6931,7 +6931,7 @@
 							"containerChangeable": true,
 							"left": 496,
 							"top": 40,
-							"width": 87.70166015625,
+							"width": 88,
 							"height": 58,
 							"nameCompartment": {
 								"$ref": "AAAAAAFwXGRHFJecs90="
@@ -10622,6 +10622,33 @@
 							"name": "TaskTemplate"
 						}
 					]
+				}
+			]
+		},
+		{
+			"_type": "UMLStateMachine",
+			"_id": "AAAAAAFxVfdfeO/h5Fk=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Vuex",
+			"ownedElements": [
+				{
+					"_type": "UMLStatechartDiagram",
+					"_id": "AAAAAAFxVfdfeO/jITA=",
+					"_parent": {
+						"$ref": "AAAAAAFxVfdfeO/h5Fk="
+					},
+					"name": "StatechartDiagram1"
+				}
+			],
+			"regions": [
+				{
+					"_type": "UMLRegion",
+					"_id": "AAAAAAFxVfdfeO/i5k4=",
+					"_parent": {
+						"$ref": "AAAAAAFxVfdfeO/h5Fk="
+					}
 				}
 			]
 		}

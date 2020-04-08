@@ -64,12 +64,8 @@ const StepService = {
 		]
 
 		indices.forEach(function (key) {
-			console.debug("%s: getRelations, looking for key: %s", __filename, key)
 			if (payload.hasOwnProperty(key)) {
-				console.debug("%s: getRelations, key %s seem to exist", __filename, key)
-				console.debug("%s: getRelations, extracting payload.key to: %O", __filename, payload[key])
 				relations = Object.assign(relations, { [key]: payload[key] })
-				console.debug("%s: getRelations, relations is now: %O", __filename, relations)
 			}
 		})
 		console.debug("%s: getRelations, returning %O", __filename, relations)
