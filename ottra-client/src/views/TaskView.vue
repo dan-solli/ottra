@@ -82,6 +82,9 @@ export default {
             console.debug("%s: showTask got %O", __filename, item)
             this.selectedTask = Object.assign({}, this.getTaskById(item.pop()))
         }
-	}
+	},
+    async mounted() {
+        await this.$store.dispatch("loadTasks")
+    }
 }
 </script>

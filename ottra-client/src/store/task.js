@@ -14,7 +14,7 @@ const Task = {
 		},
 		steps: {
 			// Key is step_id
-		}
+		},
 		dirty: { 
 			steps: { },
 			tasks: { }
@@ -128,10 +128,19 @@ const Task = {
 				console.error("%s: saveTask failed: %O", __filename, err)
 			}
 		},
-		addStepToTask: async function({ commit }, { task_uuid, step_uuid }) {
+		addStepToTask: async function({ commit, dispatch }, { task_uuid, step_uuid }) {
 			console.debug("%s: addStepToTask task_uuid = %s, step_uuid = %s", 
 				__filename, task_uuid, step_uuid)
 			commit("ADD_STEP_TO_TASK", { task_uuid, step_uuid })
+		},
+		saveStepOrder: async function({ commit, state }, task_uuid) {
+			try {
+				console.debug("%s: saveStepOrder: saving task %s", __filename, task_uuid)
+				return await TaskRepo.saveStepOrder(state.tasks[task_uuid])
+			} 
+			catch (err) {
+				console.error("%s: saveStepOrder failed: %s", __filename, err)
+			}
 		},
 		updateStep: async function({ commit }, { step_uuid, key, val }) {
 			commit("UPDATE_STEP", { step_uuid, key, val })

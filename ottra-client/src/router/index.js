@@ -36,6 +36,7 @@ import CreateTodo from './../views/creation/CreateTodo'
 import TaskView from '@/views/TaskView'
 import CreateTask from './../views/creation/CreateTask'
 import AddStepsToTask from '@/views/creation/AddStepsToTask'
+import CreateStep from './../views/creation/CreateStep'
 
 import store from '../store'
 
@@ -203,7 +204,12 @@ const router = new Router({
           props: true,
           component: AddStepsToTask
         },
-
+        { 
+          path: '/step/:step_uuid',
+          name: 'new_step',
+          props: true,
+          component: CreateStep
+        }
       ]
     },
     {

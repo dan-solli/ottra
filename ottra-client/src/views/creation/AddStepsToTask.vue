@@ -12,9 +12,11 @@
           </v-btn>
         </template>
         <v-list dense>
+
           <v-list-item v-for="(step, i) in stepTypes" :key="i" @click="addStep(step.type)">
             <v-list-item-title>{{ step.description }}</v-list-item-title>
           </v-list-item>
+
         </v-list>
       </v-menu>
 
@@ -128,7 +130,7 @@ export default {
   name: "add-steps-to-task",
   props: [ 'task_uuid' ],
   components: {
-    QrcodeVue
+    QrcodeVue,
   },
   data: function() {
     return {
@@ -169,7 +171,6 @@ export default {
     },
   },
   async mounted() {
-    await this.$store.dispatch("loadTasks")
     if (this.task_uuid) {
       this.task = Object.assign({}, this.getTaskById(this.task_uuid))
     } 
@@ -206,8 +207,14 @@ export default {
           task_uuid: this.task.uuid, 
           step_uuid: step_uuid
         })
+        this.$router.push({ 
+          name: 'new_step', params: { 
+            task_uuid: this.task_uuid,
+            step_uuid: step_uuid
+          }
+        })
       }
-    }
+    },
   }
 }
 </script>
