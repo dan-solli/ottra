@@ -19,6 +19,27 @@ const TaskService = {
 	},
 	createTask: async function(user_id, payload) {
 		try {
+			if (payload.goalImages.length > 0) {
+				payload.goalImages.forEach(async function (img) {
+					await CommonService.createRelation(payload.uuid, img, "GOALIMAGE", {})
+				})
+			}
+			if (payload.goodEnoughImages.length > 0) {
+				payload.goodEnoughImages.forEach(async function (img) {
+					await CommonService.createRelation(payload.uuid, img, "GOODENOUGHIMAGE", {})
+				})
+			}
+			if (payload.steps.length > 0) {
+				var orderCnt = 0
+				payload.steps.forEach(async function (step) {
+					await CommonService.createRelation(payload.uuid, step, "INCLUDE", { order: orderCnt++ })
+					orderCnt++
+				})
+			}
+			delete payload.goalImages
+			delete payload.goodEnoughImages
+			delete payload.steps
+			
 			const result = await TaskModel.createTask(user_id, payload)
 			return result
 		}

@@ -113,23 +113,6 @@ const Task = {
 				const response = await TaskRepo.createTask(payload)
 				console.debug("%s: !!! TaskRepo.createTask returns: %O", __filename, response.data)
 				commit("ADD_TASK", response.data)
-
-
-				// Will be refactored by Ottra#284
-				if (payload.goodEnoughImages.length > 0) {
-					await dispatch("attachImagesToTask", {
-						attachments: payload.goodEnoughImages,
-						task_uuid: response.data.uuid,
-						type: "goodEnoughImage"
-					})
-				}
-				if (payload.goalImages.length > 0) {
-					await dispatch("attachImagesToTask", {
-						attachments: payload.goalImages,
-						task_uuid: response.data.uuid,
-						type: "goalImage"
-					})
-				}
 				return response.data
 			} 
 			catch(err) {
@@ -177,25 +160,6 @@ const Task = {
 				console.error("%s: createStep failed: %s", __filename, err)
 			}
 		},
-		// Will be removed by Ottra#284
-		attachImagesToTask: async function({ commit, dispatch }, payload) {
-			console.debug("%s: attachImageToTask payload is: %O", __filename, payload)
-			try {
-				payload.attachments.forEach(async function (attachment) {
-					console.debug("%s: Calling DocRepo.createAssociation with %O", __filename, attachment)
-					const response = await DocRepo.createAssociation({
-						attachment: attachment,
-						target: payload.task_uuid,
-						type: payload.type
-					})
-					console.debug("%s: DocRepo.createAssociation response: %O", __filename, response)
-				})
-			}
-			catch (err) {
-				console.error("%s: attachImageToTask: %O", __filename, err)
-			}
-		},
-		// Currently kinda unimplemented/tested.
 		deleteTask: async function({ commit }, task_uuid) {
 			try {
 				console.debug("%s: deleteTask, payload is: %O", __filename, task_uuid)

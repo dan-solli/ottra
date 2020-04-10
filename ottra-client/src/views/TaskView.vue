@@ -39,6 +39,9 @@
                     <router-link :to="{ name: 'add_steps_to_task', params: { task_uuid: selectedTask.uuid }}">
                         <v-icon>mdi-eye-outline</v-icon>
                     </router-link>
+                    <v-btn icon @click="deleteTask">
+                        <v-icon>mdi-delete</v-icon>
+                    </v-btn>
                 </div>
     		</v-col>
     	</v-row>
@@ -81,6 +84,11 @@ export default {
         showTask: function(item) {
             console.debug("%s: showTask got %O", __filename, item)
             this.selectedTask = Object.assign({}, this.getTaskById(item.pop()))
+        },
+        deleteTask: function(item) {
+            if (this.selectedTask) {
+                this.$store.dispatch("deleteTask", this.selectedTask.uuid)
+            }
         }
 	},
     async mounted() {
