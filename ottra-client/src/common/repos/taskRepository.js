@@ -14,5 +14,8 @@ export default {
 	},
 	updateTask(payload) {
 		return Repository.put(`${resource}`, payload)
+	},
+	getTaskSteps(task_uuid) {
+		return Repository.get(`${resource}/${task_uuid}/steps`)
 	}
 };

@@ -76,7 +76,7 @@ const TaskModel = {
 			RETURN t { .*, dateTime: apoc.date.format(t.created) } AS Task`, 
 			{ uuid: payload.uuid, user_id, payload }, "Task"
 		)
-	}
+	},
 }
 
 module.exports = TaskModel

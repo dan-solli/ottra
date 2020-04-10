@@ -173,6 +173,7 @@ export default {
   async mounted() {
     if (this.task_uuid) {
       this.task = Object.assign({}, this.getTaskById(this.task_uuid))
+      this.$store.dispatch("loadTaskSteps", this.task_uuid)
     } 
 /*    
     else {

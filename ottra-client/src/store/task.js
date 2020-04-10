@@ -194,6 +194,20 @@ const Task = {
 		loadUserData: async function({ dispatch }) {
 			await dispatch("loadTasks")
 		},
+		loadTaskSteps: async function({ commit }, task_uuid) {
+			try {
+				const response = await TaskRepo.getTaskSteps(task_uuid)
+				console.debug("%s: loadTaskSteps return %O", __filename, response.data)
+
+				response.data.forEach(function (step) {
+					console.debug("%s: loadTaskSteps in loop: Var is: %O", __filename, step)
+					commit("ADD_STEP", step)
+				})		
+			}
+			catch (err) {
+				console.error("%s: loadTaskSteps failed: %s", __filename, err)
+			}
+		},
 		clearStore({ commit }) {
 			commit("CLEAR_STORE")
 		}

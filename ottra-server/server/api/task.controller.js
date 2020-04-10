@@ -19,10 +19,17 @@ r.get('/', [ autenUser('uuid').isUUID() ],
 	}
 )
 
-r.get('/:task_id', [ autenUser('uuid').isUUID ],
+r.get('/:task_id/steps', [ autenUser('uuid').isUUID() ],
+	async function(req, res) {
+		sendResponse(res, await TaskService.getTaskSteps(req.tokenData.uuid, req.params.task_id))
+	}
+)
+
+r.get('/:task_id', [ autenUser('uuid').isUUID() ],
 	async function(req, res) {
 		sendResponse(res, await TaskService.getTask(req.tokenData.uuid, req.params.task_id))
-	})
+	}
+)
 
 r.post('/', [ autenUser('uuid').isUUID() ],
 	async function(req, res) {

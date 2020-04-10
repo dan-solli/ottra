@@ -87,6 +87,23 @@ const TaskService = {
 		}
 		console.debug("%s: updateTask will return: %O", __filename, result.data)
 		return result
+	},
+	getTaskSteps: async function(user_id, task_uuid) {
+		const stepData = await TaskModel.getSteps(user_id, task_uuid)
+		if (stepData.ok) {
+			const steps = await Promise.all(stepData.data.map(async function(step) {
+				console.debug("%s: getTaskSteps, in loop. Var is: %O", __filename, step)
+				const response = await StepModel.getStepById(step)
+				if (response.ok) {
+					return response.data
+				}
+			}))
+			console.debug("%s: getTaskSteps returns: %O", __filename, steps)
+			return { ok: true, data: steps }
+		}
+		else {
+			return { ok: false, error: { code: 422, status: 'failure', message: "Failed to fetch steps" }}
+		}
 	}
 }
 
