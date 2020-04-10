@@ -57,6 +57,7 @@
 
 	"ui.text.close": "Stäng",
 	"ui.text.uploadfile": "Ladda upp fil",
+	"ui.text.promote": "Befordra",
   "message": "hejsan i18n !!",
 
   "validation": {

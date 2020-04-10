@@ -50,7 +50,7 @@ const StepModel = {
 		)
 	},
 	getStepById: async function(step_id) {
-		return await DB.fetchAll(`
+		return await DB.fetchRow(`
 			MATCH (s:Step { uuid: { step_id }})
 			OPTIONAL MATCH (s)-[:REQUIRES]->(e:Equipment)
 			WITH s, COLLECT(e.uuid) AS tools 

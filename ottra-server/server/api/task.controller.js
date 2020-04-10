@@ -38,6 +38,7 @@ r.delete("/", [ autenUser('uuid').isUUID() ],
 
 r.put("/", [ autenUser('uuid').isUUID() ],
 	async function(req, res) {
+		console.debug("%s: put / called with %O", __filename, req.body)
 		const result = await TaskService.updateTask(req.tokenData.uuid, req.body)
 		console.debug("%s: put / returning: %O", __filename, result)
 		sendResponse(res, result)

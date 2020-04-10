@@ -55,13 +55,15 @@
 import { mapGetters } from 'vuex'
 import OttraStepState from '@/components/OttraStepState'
 import { OttraStepMixin } from '@/components/steps/mixins/OttraStepMixin'
+import OttraDocumentBrowser from '@/components/documentmanager/OttraDocumentBrowser'
 
 export default {
 	name: 'ottra-task-step-content',
 	mixins: [ OttraStepMixin ],
 	props: [ 'value' ],
 	components: {
-		OttraStepState
+		OttraStepState,
+		OttraDocumentBrowser
 	},
 	computed: {
 		...mapGetters([

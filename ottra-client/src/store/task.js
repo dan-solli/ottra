@@ -15,10 +15,6 @@ const Task = {
 		steps: {
 			// Key is step_id
 		},
-		dirty: { 
-			steps: { },
-			tasks: { }
-		},
 	},
 	getters: {
 		getTasks: state => state.tasks,
@@ -30,12 +26,6 @@ const Task = {
 		},
 		getStepById: (state) => (step_id) => {
 			return state.steps[step_id]
-		},
-		isDirtyTask: (state) => (task_id) => {
-			return state.dirty.tasks[task_id]
-		},
-		isDirtyStep: (state) => (step_id) => {
-			return state.dirty.steps[step_id]
 		},
 	},
 	mutations: {
@@ -68,27 +58,16 @@ const Task = {
 			stepData[key] = val
 			Vue.set(state.steps, step_uuid, stepData)
 		},
-		DIRTY_STEP(state, step_uuid) {
-			Vue.set(state.dirty.steps, step_uuid, true)
-		},
-		CLEAN_STEP(state, step_uuid) {
-			Vue.delete(state.dirty.steps, step_uuid)
-		},
-		DIRTY_TASK(state, task_uuid) {
-			Vue.set(state.dirty.tasks, task_uuid, true)
-		},
-		CLEAN_TASK(state, task_uuid) {
-			Vue.delete(state.dirty.tasks, task_uuid)
-		}
 	},
 	actions: {
+		// Called by AddStepToTask-view when a new step is requested. 
+		// Does not save to backend.
 		newStep: async function({ commit }, step_type) {
 			try {
 				console.debug("%s: newStep, steptype is: %d", __filename, step_type)
 				const stepData = StepFactory.getStepData(step_type)
 				console.debug("%s: newStep: Factory returned step data: %O", __filename, stepData)
 				commit("ADD_STEP", stepData)
-				commit("DIRTY_STEP", stepData.uuid)
 				console.debug("%s: newStep: returning: %s", __filename, stepData.uuid)
 				return stepData.uuid
 			}
@@ -96,14 +75,43 @@ const Task = {
 				console.error("%s: newStep failed: %O", __filename, err)
 			}
 		},
+		// Called by AddStepToTask-view right after a new step has been requested.
+		// Does not save to backend.
+		addStepToTask: async function({ commit, dispatch }, { task_uuid, step_uuid }) {
+			console.debug("%s: addStepToTask task_uuid = %s, step_uuid = %s", 
+				__filename, task_uuid, step_uuid)
+			commit("ADD_STEP_TO_TASK", { task_uuid, step_uuid })
+		},
+		// Called from AddStepToTask-view when the 'save' button is pressed.
+		// Saves to backend!
+		updateTask: async function({ commit }, payload) {
+			try {
+				console.debug("%s: updateTask, payload is: %O", __filename, payload)
+				const response = await TaskRepo.updateTask(payload)
+
+				console.debug("%s: !!! TaskRepo.updateTask returns: %O", __filename, response.data)
+				response.data.steps = response.data.steps.forEach(function (f) {
+					commit("ADD_STEP", f)
+					return f.uuid
+				})
+				console.debug("%s: updateTask, converted: %O", __filename, response.data)
+				commit("ADD_TASK", response.data)
+				return response.data
+			} 
+			catch(err) {
+				console.error("%s: updateTask failed: %O", __filename, err)
+			}
+		},
+		// Called from CreateTask-view. 
+		// Saves to backend!
 		saveTask: async function({ commit, dispatch }, payload) {
 			try {
 				console.debug("%s: saveTask, payload is: %O", __filename, payload)
 
-				// Creating a new task is already being handled. saveTask shouuld thusly
-				// be renamed createTask. 
+				// TODO: Rename to createTask
 
 				const response = await TaskRepo.createTask(payload)
+				console.debug("%s: !!! TaskRepo.createTask returns: %O", __filename, response.data)
 				commit("ADD_TASK", response.data)
 
 
@@ -128,23 +136,13 @@ const Task = {
 				console.error("%s: saveTask failed: %O", __filename, err)
 			}
 		},
-		addStepToTask: async function({ commit, dispatch }, { task_uuid, step_uuid }) {
-			console.debug("%s: addStepToTask task_uuid = %s, step_uuid = %s", 
-				__filename, task_uuid, step_uuid)
-			commit("ADD_STEP_TO_TASK", { task_uuid, step_uuid })
-		},
-		saveStepOrder: async function({ commit, state }, task_uuid) {
-			try {
-				console.debug("%s: saveStepOrder: saving task %s", __filename, task_uuid)
-				return await TaskRepo.saveStepOrder(state.tasks[task_uuid])
-			} 
-			catch (err) {
-				console.error("%s: saveStepOrder failed: %s", __filename, err)
-			}
-		},
+		// Event-based update of a step while editing a form. Called from Mixin.
+		// Does not save to backend.
 		updateStep: async function({ commit }, { step_uuid, key, val }) {
 			commit("UPDATE_STEP", { step_uuid, key, val })
 		},
+		// Common method for saving a step, saves or updates depending on state of step.
+		// This should be split into two, most likely. 
 		saveStep: async function({ commit, dispatch }, step) {
 			console.debug("%s: saveStep called with %O", __filename, step)
 			if (step.saveStatus === false) {
@@ -160,7 +158,9 @@ const Task = {
 				}
 			}
 		},
-		createStep: async function({ commit, dispatch, getters }, step) {
+		// Called by action saveStep.
+		// Saves to backend, updates Vuex with result.
+		createStep: async function({ commit, dispatch }, step) {
 			console.debug("%s: createStep called with %O", __filename, step)
 			try {
 				await dispatch("updateStep", {
@@ -177,6 +177,7 @@ const Task = {
 				console.error("%s: createStep failed: %s", __filename, err)
 			}
 		},
+		// Will be removed by Ottra#284
 		attachImagesToTask: async function({ commit, dispatch }, payload) {
 			console.debug("%s: attachImageToTask payload is: %O", __filename, payload)
 			try {
@@ -194,6 +195,7 @@ const Task = {
 				console.error("%s: attachImageToTask: %O", __filename, err)
 			}
 		},
+		// Currently kinda unimplemented/tested.
 		deleteTask: async function({ commit }, task_uuid) {
 			try {
 				console.debug("%s: deleteTask, payload is: %O", __filename, task_uuid)
@@ -205,28 +207,9 @@ const Task = {
 				console.error("%s: deleteTask failed: %O", __filename, err)
 			}
 		},
-		updateTask: async function({ commit }, payload) {
-			/* This action has two work orders. 
-				- Update changes to the task-data itself.
-				- Save the list of steps. Passing the order of steps.
+		// Currently not implemented. 
+		deleteStep: async function({ commit }, step_uuid) {
 
-				So this can be called from the edit-task-view as well as the 
-				add-steps-to-task-view.
-
-				So what is the payload?
-
-				Server side gets all the fun!
-			*/
-
-			try {
-				console.debug("%s: updateTask, payload is: %O", __filename, payload)
-				const response = await TaskRepo.updateTask(payload)
-				commit("ADD_TASK", response.data)
-				return response.data
-			} 
-			catch(err) {
-				console.error("%s: updateTask failed: %O", __filename, err)
-			}
 		},
 		loadTasks: async function({ commit })	{
 			try {

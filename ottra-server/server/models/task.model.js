@@ -27,8 +27,8 @@ const TaskModel = {
 		return await DB.fetchAll(`
 			MATCH (:User { uuid: { uuid }})-[:HAS]->(t:Task)
 			OPTIONAL MATCH (t)-[r:INCLUDE]->(s:Step)
-			OPTIONAL MATCH (t)-[:ATTACHMENT { type: 'goodEnoughImage'}]->(dGE:Document)
-			OPTIONAL MATCH (t)-[:ATTACHMENT { type: 'goalImage'}]->(dG:Document)
+			OPTIONAL MATCH (t)-[:GOODENOUGHIMAGE]->(dGE:Document)
+			OPTIONAL MATCH (t)-[:GOALIMAGE]->(dG:Document)
 			WITH t, s, r, 
 					 COLLECT(dGE.uuid) AS GEI,
 					 COLLECT(dG.uuid) AS GI
@@ -42,20 +42,25 @@ const TaskModel = {
 	},
 	getTask: async function(user_id, task_id) {
 		return await DB.fetchAll(`
-			MATCH (:User { uuid: { user_id }})-[:HAS]->(t:Task { uuid: { task_id }})
-			OPTIONAL MATCH (t)-[r:INCLUDE]->(s:Step)
-			OPTIONAL MATCH (t)-[:ATTACHMENT { type: 'goodEnoughImage'}]->(dGE:Document)
-			OPTIONAL MATCH (t)-[:ATTACHMENT { type: 'goalImage'}]->(dG:Document)
-			WITH t, r, 
-					 COLLECT(dGE.uuid) AS GEI,
-					 COLLECT(dG.uuid) AS GI
-					 COLLECT(s { .*}) AS Steps
-			ORDER BY r.order
-			RETURN COLLECT (t { .*, 
+			MATCH (u:User { uuid: { user_id }})-[:HAS]->(t:Task { uuid: { task_id }})
+			OPTIONAL MATCH (t)-[:GOODENOUGHIMAGE]->(dGE:Document)
+			OPTIONAL MATCH (t)-[:GOALIMAGE]->(dG:Document)
+			WITH t, 
+					COLLECT(dGE.uuid) AS GEI,
+					COLLECT(dG.uuid) AS GI
+			RETURN t { .*, 
 								goodEnoughImages: GEI,
 								goalImages: GI,
-								steps: Steps, dateTime: apoc.date.format(t.created) }) AS Tasks`,
+								steps: [],
+								dateTime: apoc.date.format(t.created) } AS Task`,
 		{ user_id, task_id }, "Task")
+	},
+	getSteps: async function(user_id, task_id) {
+		return await DB.fetchAll(`
+			MATCH (Task { uuid: { task_id }})-[r:INCLUDE]->(s:Step)
+			WITH s, r ORDER BY r.order
+			RETURN COLLECT(s.uuid) AS Steps`, { task_id }, "Steps"
+		)
 	},
 	deleteTask: async function(user_id, task_uuid) {
     return await DB.fetchRow(`
@@ -64,10 +69,6 @@ const TaskModel = {
     )
 	},
 	updateTask: async function(user_id, payload) {
-		if (payload.hasOwnProperty('steps')) {
-			delete payload.steps
-		}
-
 		console.debug("%s: updateTask called with payload: %O", __filename, payload)
 		return await DB.fetchRow(`
 			MATCH (t:Task { uuid: {uuid}, creator: {user_id} })

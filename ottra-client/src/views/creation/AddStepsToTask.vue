@@ -194,7 +194,7 @@ export default {
       this.$router.push('/task')
     },
     saveTask: function() {
-      console.debug("%s: saveTask, payload is: %O", __filename, this.task)
+      console.debug("AddStepsToTask: saveTask, payload is: %O", this.task)
       this.$store.dispatch("updateTask", this.task)
       //this.$router.push('/task')
     },

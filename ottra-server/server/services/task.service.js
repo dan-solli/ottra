@@ -1,4 +1,6 @@
 const TaskModel = require('./../models/task.model')
+const StepModel = require('./../models/step.model')
+const CommonService = require('./common.service')
 
 const TaskService = {
 	getTasks: async function(user_id) {
@@ -28,8 +30,42 @@ const TaskService = {
 		return await TaskModel.deleteTask(user_id, task_uuid)
 	},
 	updateTask: async function(user_id, payload) {
-		const updateTaskResult = await TaskModel.updateTask(user_id, payload)
-		return updateTaskResult
+		if (payload.goalImages.length > 0) {
+			payload.goalImages.forEach(async function (img) {
+				await CommonService.createRelation(payload.uuid, img, "GOALIMAGE", {})
+			})
+		}
+		if (payload.goodEnoughImages.length > 0) {
+			payload.goodEnoughImages.forEach(async function (img) {
+				await CommonService.createRelation(payload.uuid, img, "GOODENOUGHIMAGE", {})
+			})
+		}
+		if (payload.steps.length > 0) {
+			var orderCnt = 0
+			payload.steps.forEach(async function (step) {
+				await CommonService.createRelation(payload.uuid, step, "INCLUDE", { order: orderCnt++ })
+				orderCnt++
+			})
+		}
+		delete payload.goalImages
+		delete payload.goodEnoughImages
+		delete payload.steps
+
+		console.debug("%s: updateTask: Calling TaskModel.updateTask", __filename)
+		await TaskModel.updateTask(user_id, payload)
+		console.debug("%s: updateTask: Calling TaskModel.getTask", __filename)
+		var result = await TaskModel.getTask(user_id, payload.uuid)
+		console.debug("%s: updateTask: TaskModel.getTask returns %O", __filename, result)
+		if (result.ok) {
+			const response = await TaskModel.getSteps(user_id, payload.uuid)
+			if (response.ok) {
+				result.data.steps.push(...response.data)
+			} else {
+				return response
+			}
+		}
+		console.debug("%s: updateTask will return: %O", __filename, result.data)
+		return result
 	}
 }
 

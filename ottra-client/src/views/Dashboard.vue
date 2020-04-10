@@ -124,13 +124,15 @@ export default {
   },
   computed: {
     ...mapGetters([
-      "todaysDate",
       "getEvents",
       "getMessagesUnread",
       "getMessageUnreadCount",
       "getUnattendedNewTodos",
       "getTodoById"
     ]),
+    todaysDate: function() {
+      return new Date().toISOString().slice(0, 10)
+    },
     getNewTodoCount: function() {
       return this.getUnattendedNewTodos.length
     },
