@@ -2,14 +2,14 @@
 	<v-container>
 		<v-row>
 			<v-col v-if="value.editMode">
-        <v-select
+        <v-autocomplete
         	:value="value.task"
 	        @input="val => { updateValue('task', val) }"
           prepend-icon="mdi-clipboard-list-outline"
           outlined
           :items="taskItems"
           label="(*) Task">
-        </v-select>
+        </v-autocomplete>
 
 			</v-col>
 			<v-col v-else>
@@ -20,7 +20,7 @@
 		<v-row> <!-- Visual Aid Images -->
 			<v-col cols="5" v-if="value.editMode">
 	      <v-text-field 
-	        :value="value.visualAidImages" 
+	        :value="attachmentUUIDToFilename(value.visualAidImages)" 
 	        @input="val => { updateValue('visualAidImages', val) }"
 	        label="(*) Visual Aid Images" 
 	        type="text"
@@ -56,10 +56,14 @@ import { mapGetters } from 'vuex'
 import OttraStepState from '@/components/OttraStepState'
 import { OttraStepMixin } from '@/components/steps/mixins/OttraStepMixin'
 import OttraDocumentBrowser from '@/components/documentmanager/OttraDocumentBrowser'
+import { DocumentMixin } from '@/views/creation/mixins/DocumentUUIDToFilename'
 
 export default {
 	name: 'ottra-task-step-content',
-	mixins: [ OttraStepMixin ],
+	mixins: [ 
+		OttraStepMixin,
+		DocumentMixin
+ 	],
 	props: [ 'value' ],
 	components: {
 		OttraStepState,

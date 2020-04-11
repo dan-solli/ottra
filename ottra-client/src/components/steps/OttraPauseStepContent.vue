@@ -49,7 +49,7 @@
 		<v-row> <!-- Visual Aid Images -->
 			<v-col cols="5" v-if="value.editMode">
 	      <v-text-field 
-	        :value="value.visualAidImages" 
+	        :value="attachmentUUIDToFilename(value.visualAidImages)" 
 	        @input="val => { updateValue('visualAidImages', val) }"
 	        label="(*) Visual Aid Images" 
 	        type="text"
@@ -85,10 +85,14 @@
 import OttraTimePicker from '@/components/OttraTimePicker'
 import OttraDocumentBrowser from '@/components/documentmanager/OttraDocumentBrowser'
 import { OttraStepMixin } from '@/components/steps/mixins/OttraStepMixin'
+import { DocumentMixin } from '@/views/creation/mixins/DocumentUUIDToFilename'
 
 export default {
 	name: 'ottra-pause-step-content',
-	mixins: [ OttraStepMixin ],
+	mixins: [ 
+		OttraStepMixin,
+		DocumentMixin
+	],
 	props: [ 'value' ],
 	components: {
 		OttraTimePicker,

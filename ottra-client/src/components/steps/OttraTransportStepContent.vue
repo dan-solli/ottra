@@ -51,15 +51,14 @@
 
 		<v-row v-if="stepOptions.includes('useDestination')">
 			<v-col v-if="value.editMode">
-        <v-select
+        <v-autocomplete
 	        :value="value.destination" 
 	        @input="val => { updateValue('destination', val) }"
           prepend-icon="mdi-map-marker-question-outline"
           outlined
           :items="destinationItems"
-          return-object
           label="(*) Destination">
-        </v-select>
+        </v-autocomplete>
 
 			</v-col>
 			<v-col v-else>
@@ -69,15 +68,14 @@
 
 		<v-row v-if="stepOptions.includes('useMethod')">
 			<v-col v-if="value.editMode">
-        <v-select
+        <v-autocomplete
  	        :value="value.method" 
 	        @input="val => { updateValue('method', val) }"
           prepend-icon="mdi-train-car"
           outlined
           :items="transportItems"
-          return-object
           label="(*) Means of transport">
-        </v-select>
+        </v-autocomplete>
 
 			</v-col>
 			<v-col v-else>
@@ -101,7 +99,7 @@
 		<v-row v-if="stepOptions.includes('useVisualAid')"> <!-- Visual Aid Images -->
 			<v-col cols="5" v-if="value.editMode">
 	      <v-text-field 
-	        :value="value.visualAidImages" 
+	        :value="attachmentUUIDToFilename(value.visualAidImages)" 
 	        @input="val => { updateValue('visualAidImages', val) }"
 	        label="(*) Visual Aid Images" 
 	        type="text"
@@ -121,7 +119,7 @@
 
 	    <v-col cols="5">
 	      <v-text-field 
-	        :value="value.attachments" 
+	        :value="attachmentUUIDToFilename(value.attachments)" 
 	        @input="val => { updateValue('attachments', val) }"
 	        label="(*) Attachments" 
 	        type="text"
@@ -158,6 +156,8 @@ import OttraDocumentBrowser from '@/components/documentmanager/OttraDocumentBrow
 import OttraStepState from '@/components/OttraStepState'
 import { OttraStepMixin } from '@/components/steps/mixins/OttraStepMixin'
 
+import { DocumentMixin } from '@/views/creation/mixins/DocumentUUIDToFilename'
+
 import {
 	TRANSPORT_BY_FOOT,
 	TRANSPORT_BY_BUS,
@@ -165,12 +165,13 @@ import {
 	TRANSPORT_BY_TRAIN,
 	TRANSPORT_BY_PLANE,
 	TRANSPORT_BY_BICYCLE,
-	TRANSPORT_BY_OTHER
-} from '@/common/transport.types'
+	TRANSPORT_BY_OTHER,
+	OttraTransportMixin
+} from '@/components/steps/mixins/OttraTransportMixin'
 
 export default {
 	name: 'ottra-transport-step-content',
-	mixins: [ OttraStepMixin ],
+	mixins: [ OttraStepMixin, OttraTransportMixin, DocumentMixin ],
 	props: [ 'value'  ],
 	components: {
 		OttraTimePicker,
@@ -180,15 +181,6 @@ export default {
 	data: function() {
 		return {
 			stepOptions: [],
-			transportItems: [
-				{ text: '(*) By foot', value: this.TRANSPORT_BY_FOOT, icon: 'mdi-walk' },
-				{ text: '(*) By bus', value: this.TRANSPORT_BY_BUS, icon: 'mdi-bus' },
-				{ text: '(*) By car', value: this.TRANSPORT_BY_CAR, icon: 'mdi-car' },
-				{ text: '(*) By train', value: this.TRANSPORT_BY_TRAIN, icon: 'mdi-train' },
-				{ text: '(*) By plane', value: this.TRANSPORT_BY_PLANE, icon: 'mdi-airplane' },
-				{ text: '(*) By bicycle', value: this.TRANSPORT_BY_BICYCLE, icon: 'mdi-bike' },
-				{ text: '(*) By other means', value: this.TRANSPORT_BY_OTHER, icon: 'mdi-crosshairs-question' },
-			],
 			buttons: [
 				{
 					icon: "mdi-map-marker-question-outline",

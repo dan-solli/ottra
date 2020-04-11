@@ -41,17 +41,14 @@ export default {
 	},
 	computed: {
 		...mapGetters([
-			"getRooms"
+			"getRoomByID"
 		]),
 		getRoomName: function() {
 			if (this.value.hasOwnProperty('stepLocation')) {
 				const loc = this.value.stepLocation
 
 				if (loc != '') {
-					const rooms = this.getRooms
-					if (Object.values(rooms).length) {
-						return rooms[loc].name || ''
-					}
+					return this.getRoomByID(loc).name || ''
 				}
 			}
 			return ''

@@ -110,7 +110,7 @@
 
 	    <v-col cols="5">
 	      <v-text-field 
-	        :value="value.visualAidImages" 
+	        :value="attachmentUUIDToFilename(value.visualAidImages)" 
 	        @input="val => { updateValue('visualAidImages', val) }"
 	        label="(*) Visual Aid Images" 
 	        type="text"
@@ -130,7 +130,7 @@
 
 	    <v-col cols="5">
 	      <v-text-field 
-	        :value="value.attachments" 
+	        :value="attachmentUUIDToFilename(value.attachments)" 
 	        @input="val => { updateValue('attachments', val) }"
 	        label="(*) Attachments" 
 	        type="text"
@@ -166,6 +166,7 @@ import { mapGetters } from 'vuex'
 
 import { OttraEffortMixin } from '@/components/steps/mixins/OttraEffortMixin'
 import { OttraStepMixin } from '@/components/steps/mixins/OttraStepMixin'
+import { DocumentMixin } from '@/views/creation/mixins/DocumentUUIDToFilename'
 
 import OttraTimePicker from '@/components/OttraTimePicker'
 import OttraStepState from '@/components/OttraStepState'
@@ -176,7 +177,11 @@ import OttraEffortSlider from '@/components/steps/subcomponents/OttraEffortSlide
 export default {
 	name: 'ottra-instruction-step-content',
 	props: [ 'value' ],
-	mixins: [ OttraStepMixin, OttraEffortMixin ],
+	mixins: [ 
+		OttraStepMixin, 
+		OttraEffortMixin, 
+		DocumentMixin 
+	],
 	components: {
 		OttraTimePicker,
 		OttraStepState,
@@ -196,5 +201,9 @@ export default {
 			return Object.values(this.getEquipment)
 		},
 	},
+	mounted() {
+		this.$store.dispatch("loadRooms")
+		this.$store.dispatch("loadEquipment")
+	}
 }
 </script>
