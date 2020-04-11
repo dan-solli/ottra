@@ -31,6 +31,7 @@ const StepService = {
 		return await StepModel.getSteps(user_id)
 	},
 	deleteStep: async function(user_id, step_id) {
+		console.debug("%s: deleteStep called with %s", __filename, step_id)
 		return await StepModel.deleteStep(user_id, step_id)
 	},
 	updateStep: async function(user_id, payload) {

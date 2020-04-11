@@ -2,8 +2,13 @@
 	<v-container>
 		<v-row>
 			<v-col cols="2">
-				<OttraStepMenu v-model="value.editMode"></OttraStepMenu>
-				<OttraStepState v-model="value.saveState"></OttraStepState>
+				<OttraStepMenu
+					@delete-step="deleteThisStep"
+					v-model="value.editMode">
+				</OttraStepMenu>
+				<OttraStepState 
+					v-model="value.saveState">
+				</OttraStepState>
 				<v-icon>mdi-clipboard-list-outline</v-icon>
 			</v-col>
 			<v-col cols="7">
@@ -17,20 +22,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
-import OttraStepState from '@/components/OttraStepState'
 import { OttraStepMixin } from '@/components/steps/mixins/OttraStepMixin'
-import OttraStepMenu from '@/components/steps/subcomponents/OttraStepMenu'
 
 export default {
 	name: 'ottra-task-step-header',
 	mixins: [ OttraStepMixin ],
-	props: [ 'value' ],
-	components: {
-		OttraStepState,
-		OttraStepMenu,
-	},
 	computed: {
 		...mapGetters([ 
 			"getTaskDuration",

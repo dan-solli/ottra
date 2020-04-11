@@ -2,8 +2,13 @@
 	<v-container>
 		<v-row no-gutters>
 			<v-col cols="2">
-				<OttraStepMenu v-model="value.editMode"></OttraStepMenu>
-				<OttraStepState v-model="value.saveState"></OttraStepState>
+				<OttraStepMenu
+					@delete-step="deleteThisStep"
+					v-model="value.editMode">
+				</OttraStepMenu>
+				<OttraStepState 
+					v-model="value.saveState">
+				</OttraStepState>
 				<v-icon>{{ getTransportIcon(value.method) || 'mdi-train-car' }}</v-icon>
 			</v-col>
 			<v-col cols="4">
@@ -20,10 +25,8 @@
 </template>
 
 <script>
-import OttraStepState from '@/components/OttraStepState'
 import { OttraStepMixin } from '@/components/steps/mixins/OttraStepMixin'
 import { OttraTransportMixin } from '@/components/steps/mixins/OttraTransportMixin'
-import OttraStepMenu from '@/components/steps/subcomponents/OttraStepMenu'
 
 export default {
 	name: 'ottra-transport-step-header',

@@ -2,8 +2,13 @@
 	<v-container>
 		<v-row>
 			<v-col cols="2">
-				<OttraStepMenu v-model="value.editMode"></OttraStepMenu>
-				<OttraStepState v-model="value.saveState"></OttraStepState>
+				<OttraStepMenu
+					@delete-step="deleteThisStep"
+					v-model="value.editMode">
+				</OttraStepMenu>
+				<OttraStepState 
+					v-model="value.saveState">
+				</OttraStepState>
 				<v-icon>mdi-format-list-checkbox</v-icon>
 			</v-col>
 			<v-col cols="4">
@@ -25,20 +30,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import { OttraEffortMixin } from '@/components/steps/mixins/OttraEffortMixin'
-import OttraStepState from '@/components/OttraStepState'
-import OttraStepMenu from '@/components/steps/subcomponents/OttraStepMenu'
+import { OttraStepMixin } from '@/components/steps/mixins/OttraStepMixin'
 
 export default {
 	name: 'ottra-instruction-step-header',
-	props: [ 'value' ],
-	mixins: [ OttraEffortMixin ],
-	components: {
-		OttraStepState,
-		OttraStepMenu,
-	},
+	mixins: [ OttraEffortMixin, OttraStepMixin ],
 	computed: {
 		...mapGetters([
 			"getRoomByID"

@@ -27,6 +27,7 @@ r.post('/', [ autenUser('uuid').isUUID() ],
 
 r.delete("/", [ autenUser('uuid').isUUID() ],
 	async function(req, res) {
+		console.debug("%s: DELETE step: Req.body is: %O", __filename, req.body)
 		sendResponse(res, await StepService.deleteStep(req.tokenData.uuid, req.body.uuid))
 	}
 )

@@ -58,6 +58,10 @@ const Task = {
 			stepData[key] = val
 			Vue.set(state.steps, step_uuid, stepData)
 		},
+		DELETE_STEP(state, step_uuid) {
+			console.debug("%s: DELETE_STEP: uuid = %s", __filename, step_uuid)
+			Vue.delete(state.steps, step_uuid)
+		}
 	},
 	actions: {
 		// Called by AddStepToTask-view when a new step is requested. 
@@ -160,11 +164,13 @@ const Task = {
 				console.error("%s: createStep failed: %s", __filename, err)
 			}
 		},
-		deleteTask: async function({ commit }, task_uuid) {
+		deleteTask: async function({ commit, dispatch }, task_uuid) {
 			try {
 				console.debug("%s: deleteTask, payload is: %O", __filename, task_uuid)
 				const response = await TaskRepo.deleteTask(task_uuid)
 				commit("REMOVE_TASK", task_uuid)
+				// TODO: Horrible solution, but easiest to accomplish current goal.
+				await dispatch("loadTasks")
 				return response.data
 			} 
 			catch(err) {
@@ -173,7 +179,15 @@ const Task = {
 		},
 		// Currently not implemented. 
 		deleteStep: async function({ commit }, step_uuid) {
-
+			try {
+				console.debug("%s: deleteStep, uuid is: %s", __filename, step_uuid)
+				const response = await StepRepo.deleteStep(step_uuid)
+				commit("DELETE_STEP", step_uuid)
+				return response.data
+			}
+			catch (err) {
+				console.error("%s: deleteStep failed: %s", err)
+			}
 		},
 		loadTasks: async function({ commit })	{
 			try {
