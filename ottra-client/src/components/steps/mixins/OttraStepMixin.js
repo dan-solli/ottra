@@ -2,7 +2,12 @@ import OttraStepState from '@/components/OttraStepState'
 import OttraStepMenu from '@/components/steps/subcomponents/OttraStepMenu'
 
 export const OttraStepMixin = {
-	props: [ 'value' ],
+	props: [ 'value', 'task_uuid' ],
+	data: function () { 
+		return {
+			hasEdits: false
+		}
+	},
 	methods: {
 		updateValue: function(key, val) {
 			try {
@@ -11,6 +16,7 @@ export const OttraStepMixin = {
 					key: key,
 					val: val 
 				})
+				this.$emit('dirty', true)
 			}
 			catch (err) {
 				console.error("%s: updateValue(%s, %O) failed: %s", key, val, err)
@@ -19,12 +25,13 @@ export const OttraStepMixin = {
 		saveStep: function() {
 			console.debug("%s: saveStep, payload is: %O", __filename, this.value)
 			this.$store.dispatch("saveStep", this.value)
+			this.$emit('dirty', false)
 			//this.$router.go(-1)
 		},
 		deleteThisStep: function() {
 			console.debug("%s: deleteThisStep called", __filename)
 			this.$store.dispatch("deleteStep", this.value.uuid)
-		}
+		},
 	},
 	components: {
 		OttraStepState,

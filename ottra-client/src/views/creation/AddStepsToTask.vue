@@ -134,6 +134,7 @@ export default {
   },
   data: function() {
     return {
+      hasEdits: false,
       panelExpansions: [],
       valid: '',
       task: { },

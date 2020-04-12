@@ -202,13 +202,13 @@ const router = new Router({
           path: '/task/:task_uuid',
           name: 'add_steps_to_task',
           props: true,
-          component: AddStepsToTask
+          component: AddStepsToTask,
         },
         { 
           path: '/step/:step_uuid',
           name: 'new_step',
           props: true,
-          component: CreateStep
+          component: CreateStep,
         }
       ]
     },
@@ -218,7 +218,5 @@ const router = new Router({
     }
    ]
 });
-
-
 
 export default router

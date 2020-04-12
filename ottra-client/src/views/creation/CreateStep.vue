@@ -25,7 +25,10 @@
     <v-card-text>
 
     	<component 
-    		:is="getComponent(step.stepType)" v-model="step">
+    		:is="getComponent(step.stepType)"
+        v-model="step"
+        :task-uuid="task_uuid"
+        @dirty="val => { isDirty = val }">
     	</component>
 
     </v-card-text>
@@ -42,6 +45,11 @@ import { StepFactory } from '@/common/repos/StepFactory'
 export default {
 	name: 'create-step',
 	props: [ 'step_uuid', 'task_uuid' ],
+  data: function() {
+    return {
+      isDirty: false
+    }
+  },
   computed: {
   	...mapGetters([
   		"getStepById",
@@ -95,7 +103,19 @@ export default {
     closeDialog: function() {
       this.$router.go(-1) // push('/task')
     },
-  }
+  },
+  beforeRouteLeave: function (to, from, next) {
+    if (this.isDirty) {
+      const answer = window.confirm("(*) Do you really want to leave? You have unsaved changes!")
+      if (answer) {
+        next() 
+      } else {
+        next(false)
+      }
+    } else {
+      next()
+    }
+  },  
 }
 
 </script>
