@@ -204,10 +204,9 @@ export default {
       if (!this.task_uuid) {
         console.error("%s: addStep called without task_uuid", __filename)
       } else {
-        const step_uuid = await this.$store.dispatch("newStep", step_type)
-        await this.$store.dispatch("addStepToTask", {
-          task_uuid: this.task.uuid, 
-          step_uuid: step_uuid
+        const step_uuid = await this.$store.dispatch("createNewStep", {
+          step_type: step_type, 
+          task_uuid: this.task_uuid
         })
         this.$router.push({ 
           name: 'new_step', params: { 

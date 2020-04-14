@@ -43,8 +43,11 @@ export default {
 			"getRoomByID"
 		]),
 		getRoomName: function() {
+			console.debug("%s: getRoomName is called", __filename)
 			if (this.value.hasOwnProperty('stepLocation')) {
+				console.debug("%s: Room has a stepLocation", __filename)
 				const loc = this.value.stepLocation
+				console.debug("%s: And its value is: %s", __filename, loc)
 
 				if (loc != '') {
 					return this.getRoomByID(loc).name || ''

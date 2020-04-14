@@ -24,7 +24,7 @@ export const OttraStepMixin = {
 		},
 		saveStep: function() {
 			console.debug("%s: saveStep, payload is: %O", __filename, this.value)
-			this.$store.dispatch("saveStep", this.value)
+			this.$store.dispatch("updateStep", this.value)
 			this.$emit('dirty', false)
 			//this.$router.go(-1)
 		},

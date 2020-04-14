@@ -14,7 +14,7 @@ export default {
 	},
 	updateStep(payload) {
 		return Repository.patch(`${resource}`, payload)
-	}
+	},
 /*
 	updateTodo(payload) {
 		return Repository.put(`${resource}`, payload)

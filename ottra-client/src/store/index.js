@@ -23,8 +23,12 @@ import Todo from './todo'
 
 import Equipment from './equipment'
 //import Step from './step'
+//import Task from './task'
 
-import Task from './task'
+import TaskExternal from './task.external'
+import TaskInternal from './task.internal'
+import StepExternal from './step.external'
+import StepInternal from './step.internal'
 
 import Relation from './relations'
 
@@ -78,8 +82,11 @@ const OttraStore = new Vuex.Store({
 		Relation,
 		Room,
 //		Step,
+		StepExternal,
+		StepInternal,
 		Storage,
-		Task,
+		TaskExternal,
+		TaskInternal,
 		Todo,
 //		UIFileBrowser,
 		UIState,
