@@ -40,6 +40,16 @@ const TaskInternal = {
 				__filename, task_uuid, step_uuid)
 			state.tasks[task_uuid].steps.push(step_uuid)
 		},
+		REMOVE_STEP_FROM_TASK(state, step_uuid) {
+			console.debug("%s: REMOVE_STEP_FROM_TASK: step_uuid %s", __filename, step_uuid)
+			Object.values(state.tasks).forEach(function (task) {
+				var index = task.steps.indexOf(step_uuid)
+				if (index !== -1) {
+					console.debug("%s REMOVE_STEP_FROM_TASK: step removed from task %s", task.uuid)
+					task.steps.splice(index, 1)
+				}
+			})
+		}
 	},
 	actions: {
 		addStep: async function({ commit }, payload) {
@@ -54,6 +64,10 @@ const TaskInternal = {
 		removeTask: async function({ commit }, task_uuid) {
 			console.debug("%s: removeTask called with taskid: %s", __filename, task_uuid)
 			commit("REMOVE_TASK", task_uuid)
+		},
+		removeStep: async function({ commit }, step_uuid) {
+			console.debug("%s: removeStep called with stepid: %s", __filename, step_uuid)
+			commit("REMOVE_STEP_FROm_TASK", step_uuid)
 		},
 		clearStore: async function({ commit }) {
 			commit("CLEAR_STORE")

@@ -6,7 +6,7 @@ const CommonModel = {
 	createRelation: async function(src, dest, label, props) {
 		return await DB.fetchRow(`
 			MATCH (src { uuid: { src } }), (dest { uuid: { dest } })
-			CREATE (src)-[r:${label} { props }]->(dest)
+			MERGE (src)-[r:${label} { props }]->(dest)
 			RETURN r AS Rel
 		`, { src, dest, props }, "Rel" )
 	},	

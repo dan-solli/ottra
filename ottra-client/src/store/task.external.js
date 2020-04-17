@@ -17,6 +17,7 @@ const TaskExternal = {
 				const response = await TaskRepo.createTask(payload)
 				console.debug("%s: TaskRepo.createTask returns: %O", __filename, response.data)
 				await dispatch("setTask", response.data)
+				console.debug("%s: saveNewTask will return: %s", __filename, response.data.uuid)
 				return response.data.uuid
 			}
 			catch(err) {
@@ -45,12 +46,15 @@ const TaskExternal = {
 				console.error("%s: deleteTask failed: %O", __filename, err)
 			}
 		},
-		addStepToTask: async function({ dispatch, state }, { task_uuid, step_uuid }) {
+		addStepToTask: async function({ dispatch, getters }, { task_uuid, step_uuid }) {
 			console.debug("%s: addStepToTask task_uuid = %s, step_uuid = %s", 
 				__filename, task_uuid, step_uuid)
 			try {
 				await dispatch("addStep", { task_uuid, step_uuid })
-				await dispatch("updateTask", state.tasks[task_uuid])
+				//await dispatch("updateTask", getters.getTaskById(task_uuid))
+				const response = await TaskRepo.updateStepList(task_uuid, getters.getTaskById(task_uuid).steps)
+				
+
 			}
 			catch(err) {
 				console.error("%s: addStepToTask failed: %O", __filename, err)

@@ -66,6 +66,7 @@ const StepModel = {
 			WITH 
 				s, r.uuid AS stepLocation, destination, task, attachments, visualAidImages, tools
 			RETURN s { .*, stepLocation, destination, task, attachments, visualAidImages, tools } AS Step
+			
 		`, { step_id }, "Step")
 	}
 }

@@ -49,7 +49,7 @@ export default {
 				const loc = this.value.stepLocation
 				console.debug("%s: And its value is: %s", __filename, loc)
 
-				if (loc != '') {
+				if (loc != '' && loc != null) {
 					return this.getRoomByID(loc).name || ''
 				}
 			}

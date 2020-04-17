@@ -48,7 +48,36 @@ const StepService = {
 		const result = await StepModel.updateStep(user_id, payload)
 		await StepService.resolveStepRelations(payload.uuid, relations)
 		if (result.ok) {
-			return await StepModel.getStepById(result.data.uuid)
+/* Always return (star marked has to go)
+uuid, title, description, duration, energyExpense, *editMode, visualAidImages[],
+*saveStatus, optionalStep, stepType
+
+STEP_INSTRUCTION (1): tools[], attachments[], stepLocation
+STEP_PAUSE (2): Nuffin
+STEP_TRANSPORT (3): destination, attachments[], method
+STEP_TASK (4): task
+*/			
+			const stepData = await StepModel.getStepById(result.data.uuid)
+			if (stepData.ok) {
+				const list = [
+					[], // steptype 0 = doesn't exist
+					[ uuid, title, description, duration, energyExpense, editMode, visualAidImages, 
+						tools, attachments, stepLocation ],
+					[ uuid, title, description, duration, energyExpense, editMode, visualAidImages ],
+					[ uuid, title, description, duration, energyExpense, editMode, visualAidImages, 
+						destination, attachments, method ],
+					[ uuid, title, description, duration, energyExpense, editMode, visualAidImages, 
+						task ]
+				]
+				const filtered = Object.keys(stepData.data)
+					.filter(key => list.includes(key))
+					.reduce((obj, key) => {
+						obj[key] = stepData.data[key];
+						return obj
+					}, {})
+				stepData.data = Object.assign({}, filtered)
+				return stepData
+			}
 		} else {
 			return result
 		}

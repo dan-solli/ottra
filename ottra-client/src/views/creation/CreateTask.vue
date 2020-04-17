@@ -254,9 +254,9 @@ export default {
     },
     saveTask: async function() {
       console.debug("%s: saveTask, payload is: %O", __filename, this.payload)
-      const result = await this.$store.dispatch("saveNewTask", this.payload)
-      console.debug("%s: saveNewTask success: %O", __filename, result)
-      this.$router.push('/task/' + result.uuid)
+      const uuid = await this.$store.dispatch("saveNewTask", this.payload)
+      console.debug("%s: saveNewTask success: %O", __filename, uuid)
+      this.$router.push('/task/' + uuid)
     },
   }
 }

@@ -13,7 +13,7 @@ const TaskModel = {
 						recurranceNumber: {recurranceNumber},
 						recurranceType: {recurranceType},
 						created: TIMESTAMP()
-					}) RETURN t { .* } AS Task`, { 
+					}) RETURN t { .*, steps: [] } AS Task`, { 
 						new_uuid: uuidv4(), 
 						subject: payload.subject || 'No subject', 
 						body: payload.body || 'No description',

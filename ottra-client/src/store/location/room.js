@@ -5,7 +5,7 @@ const RoomRepo = RepositoryFactory.get('room')
 
 const Room = {
 	state: {
-    rooms : {
+    rooms: {
     }
 	},
 	mutations: {

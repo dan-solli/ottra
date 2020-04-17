@@ -11,7 +11,7 @@ export const OttraStepMixin = {
 	methods: {
 		updateValue: function(key, val) {
 			try {
-				this.$store.dispatch("updateStep", {
+				this.$store.dispatch("updateStepValue", {
 					step_uuid: this.value.uuid,
 					key: key,
 					val: val 
@@ -19,7 +19,7 @@ export const OttraStepMixin = {
 				this.$emit('dirty', true)
 			}
 			catch (err) {
-				console.error("%s: updateValue(%s, %O) failed: %s", key, val, err)
+				console.error("%s: updateValue(%s, %O) failed: %s", __filename, key, val, err)
 			}
 		},
 		saveStep: function() {

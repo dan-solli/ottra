@@ -6,30 +6,26 @@
 import Vue from 'vue'
 
 import { RepositoryFactory } from '@/common/repos/RepositoryFactory'
+import { StepFactory } from '@/common/repos/StepFactory'
 
 const StepRepo = RepositoryFactory.get('step')
 
 const StepExternal = {
-	getters: {
-		getStepById: (state) => (step_id) => {
-			return state.steps[step_id]
-		},
-	},
 	actions: {
 		updateStepValue: async function({ dispatch }, payload) {
 			await dispatch("setStepValue", payload)
 		},
 		// When an already created step is being saved.
 		updateStep: async function({ dispatch }, payload) {
-			console.debug("%s: updateStep called with %O", __filename, step)
+			console.debug("%s: updateStep called with %O", __filename, payload)
 
 			try {
-				const response = await StepRepo.updateStep(step)
+				const response = await StepRepo.updateStep(payload)
 				console.debug("%s: saveStep/update response is: %O", __filename, response.data)
 				await dispatch("setStep", response.data)
 			}
 			catch (err) {
-				console.error("%s: saveStep/update failed: %s", __filename, err)
+				console.error("%s: updateStep failed: %s", __filename, err)
 			}
 		},
 		deleteStep: async function({ dispatch }, step_uuid) {
@@ -37,6 +33,7 @@ const StepExternal = {
 
 			try {
 				const response = await StepRepo.deleteStep(step_uuid)
+				// Please note, removeStep is implemented in both step.internal and task.internal!
 				dispatch("removeStep", step_uuid)
 			}
 			catch (err) {
@@ -51,12 +48,12 @@ const StepExternal = {
 				const stepData = StepFactory.getStepData(step_type)
 				console.debug("%s: createNewStep: Factory returned step data: %O", __filename, stepData)
 
-				const response = StepRepo.createStep(stepData)
-				console.debug("%s: createNewStep: addStepToTask returns %O", __filename, response.data)
+				const response = await StepRepo.createStep(stepData)
+				console.debug("%s: createNewStep: stepRepo.createStep returns %O", __filename, response.data)
 				await dispatch("setStep", response.data)
 				await dispatch("addStepToTask", { // This will be responsible for backend save of the step with the task. 
 					task_uuid: task_uuid,
-					step_uuid: respose.data.uuid,
+					step_uuid: response.data.uuid,
 				})
 				return response.data.uuid
 			}
