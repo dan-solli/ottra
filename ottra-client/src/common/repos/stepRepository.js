@@ -15,9 +15,15 @@ export default {
 	updateStep(payload) {
 		return Repository.patch(`${resource}`, payload)
 	},
-/*
-	updateTodo(payload) {
-		return Repository.put(`${resource}`, payload)
-	}
-*/	
+
+	// New (WIP) here after:
+	saveVisualAidImages(task_uuid, images) {
+		return Repository.put(`${resource}/${task_uuid}/vai`, { vai: images})
+	},
+	saveTools(task_uuid, tools) {
+		return Repository.put(`${resource}/${task_uuid}/tools`, { tools: tools })
+	},
+	saveAttachments(task_uuid, attachments) {
+		return Repository.put(`${resource}/${task_uuid}/attachments`, { attachments: attachments })
+	},
 };
