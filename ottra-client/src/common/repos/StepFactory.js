@@ -22,14 +22,12 @@ export const STEP_TASK = 4
 
 const stepTypeData = {
 	base_step: {
-		uuid: '',
+		//uuid: '',
     title: '',
     description: '',
     duration: '',
     energyExpense: 2,
-    editMode: true,
     visualAidImages: [],
-    saveStatus: false,
     optionalStep: false,
     stepType: 0
   },
@@ -52,7 +50,8 @@ const stepTypeData = {
 export const StepFactory = {
 	getStepData: function(type) {
 		const baseStep = Object.assign({}, stepTypeData.base_step)
-		baseStep.uuid = uuidv4()
+		// Let server create the uuid. 
+		// baseStep.uuid = uuidv4() 
 		baseStep.stepType = type
 
 		if (type === STEP_INSTRUCTION) {

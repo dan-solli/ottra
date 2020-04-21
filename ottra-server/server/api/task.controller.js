@@ -52,4 +52,31 @@ r.put("/", [ autenUser('uuid').isUUID() ],
 	}
 )
 
+r.put("/:task_id/steps", [ autenUser('uuid').isUUID() ],
+	async function(req, res) {
+		console.debug("%s: put /:task_id/steps called with: %O", __filename, req.body)
+		const result = await TaskService.updateStepList(req.tokenData.uuid, req.params.task_id, req.body)
+		console.debug("%s: put /:task_id/steps returning: %O", __filename, result)
+		sendResponse(res, result)
+	}
+)
+
+r.put("/:task_id/gi", [ autenUser('uuid').isUUID() ],
+	async function(req, res) {
+		console.debug("%s: put /:task_id/gi called with: %O", __filename, req.body)
+		const result = await TaskService.updateGoalImages(req.tokenData.uuid, req.params.task_id, req.body)
+		console.debug("%s: put /:task_id/gi returning: %O", __filename, result)
+		sendResponse(res, result)
+	}
+)
+
+r.put("/:task_id/gei", [ autenUser('uuid').isUUID() ],
+	async function(req, res) {
+		console.debug("%s: put /:task_id/gei called with: %O", __filename, req.body)
+		const result = await TaskService.updateGoodEnoughImages(req.tokenData.uuid, req.params.task_id, req.body)
+		console.debug("%s: put /:task_id/gei returning: %O", __filename, result)
+		sendResponse(res, result)
+	}
+)
+
 module.exports = r

@@ -22,15 +22,18 @@ export const OttraStepMixin = {
 				console.error("%s: updateValue(%s, %O) failed: %s", __filename, key, val, err)
 			}
 		},
-		saveStep: function() {
-			console.debug("%s: saveStep, payload is: %O", __filename, this.value)
+		updateStep: function() {
+			console.debug("%s: updateStep, payload is: %O", __filename, this.value)
 			this.$store.dispatch("updateStep", this.value)
 			this.$emit('dirty', false)
 			//this.$router.go(-1)
 		},
-		deleteThisStep: function() {
-			console.debug("%s: deleteThisStep called", __filename)
-			this.$store.dispatch("deleteStep", this.value.uuid)
+		removeStep: function() {
+			console.debug("%s: removeStep called", __filename)
+			this.$store.dispatch("removeStep", {
+				task_uuid: this.task_uuid,
+				step_uuid: this.value.uuid
+			})
 		},
 	},
 	components: {

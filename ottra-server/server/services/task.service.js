@@ -19,12 +19,13 @@ const TaskService = {
 	},
 	createTask: async function(user_id, payload) {
 		try {
+/*			
 			if (payload.goalImages.length > 0) {
 				payload.goalImages.forEach(async function (img) {
 					await CommonService.createRelation(payload.uuid, img, "GOALIMAGE", {})
 				})
 			}
-			if (payload.goodEnoughImages.length > 0) {
+			if (payload.goodEnoughImages.length > 0) {	
 				payload.goodEnoughImages.forEach(async function (img) {
 					await CommonService.createRelation(payload.uuid, img, "GOODENOUGHIMAGE", {})
 				})
@@ -39,8 +40,10 @@ const TaskService = {
 			delete payload.goalImages
 			delete payload.goodEnoughImages
 			delete payload.steps
-			
+*/
 			const result = await TaskModel.createTask(user_id, payload)
+
+			// Here, we return the smallest of tasks, without relations at all. 
 			return result
 		}
 		catch (err) {
@@ -88,12 +91,13 @@ const TaskService = {
 		console.debug("%s: updateTask will return: %O", __filename, result.data)
 		return result
 	},
+	// In use
 	getTaskSteps: async function(user_id, task_uuid) {
 		const stepData = await TaskModel.getSteps(user_id, task_uuid)
 		if (stepData.ok) {
 			const steps = await Promise.all(stepData.data.map(async function(step) {
 				console.debug("%s: getTaskSteps, in loop. Var is: %O", __filename, step)
-				const response = await StepModel.getStepById(step)
+				const response = await StepService.getStepById(user_id, step)
 				if (response.ok) {
 					return response.data
 				}
@@ -104,7 +108,16 @@ const TaskService = {
 		else {
 			return { ok: false, error: { code: 422, status: 'failure', message: "Failed to fetch steps" }}
 		}
-	}
+	},
+	updateStepList: async function(user_id, task_id, payload) {
+		return { ok: true, data: [] }
+	},
+	updateGoalImages: async function(user_id, task_id, payload) {
+		return { ok: true, data: [] }
+	},
+	updateGoodEnoughImages: async function(user_id, task_id, payload) {
+		return { ok: true, data: [] }
+	},
 }
 
 module.exports = TaskService

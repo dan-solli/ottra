@@ -69,9 +69,6 @@ const TaskInternal = {
 			console.debug("%s: removeStep called with stepid: %s", __filename, step_uuid)
 			commit("REMOVE_STEP_FROm_TASK", step_uuid)
 		},
-		clearStore: async function({ commit }) {
-			commit("CLEAR_STORE")
-		}
 	}
 }
 

@@ -190,11 +190,11 @@ export default {
       valid: '',
       payload: {
         subject: '',
-        uuid: '',
+        //uuid: '',
         body: '',
-        created: '',
-        creator: '',
-        steps: [],
+        //created: '',
+        //creator: '',
+        //steps: [],
         recurranceNumber: 1,
         recurranceType: 1,
         goodEnoughImages: [],
@@ -254,10 +254,11 @@ export default {
     },
     saveTask: async function() {
       console.debug("%s: saveTask, payload is: %O", __filename, this.payload)
-      const uuid = await this.$store.dispatch("saveNewTask", this.payload)
-      console.debug("%s: saveNewTask success: %O", __filename, uuid)
+      const uuid = await this.$store.dispatch("createTask", this.payload)
+      console.debug("%s: createTask success: %O", __filename, uuid)
       this.$router.push('/task/' + uuid)
     },
+    // As this component will be used for editing, there will be a method for updateTask as well.
   }
 }
 </script>

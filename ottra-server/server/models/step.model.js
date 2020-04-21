@@ -2,6 +2,7 @@ const DB = require('./../infra/db')
 const uuidv4 = require('uuid/v4')
 
 const StepModel = {
+	// In use
 	createStep: async function(user_id, payload) {
 		console.debug("%s: createStep got payload: %O", __filename, payload)
 
@@ -14,7 +15,7 @@ const StepModel = {
 			SET s += { payload }
 			RETURN s { .*, dateTime: apoc.date.format(s.created) } AS Step`,
 			{
-				uuid: payload.uuid,
+				uuid: uuidv4(),
 				creator: user_id,
 				payload: payload
 			}, "Step"
@@ -49,26 +50,37 @@ const StepModel = {
 			{ todo_id }, "Steps"
 		)
 	},
-	getStepById: async function(step_id) {
+	// In use
+	getStepById: async function(user_id, step_id) {
+		console.debug("%s: getStepById called with id: %s", __filename, step_id)
 		return await DB.fetchRow(`
 			MATCH (s:Step { uuid: { step_id }})
-			OPTIONAL MATCH (s)-[:REQUIRES]->(e:Equipment)
-			WITH s, COLLECT(e.uuid) AS tools 
-			OPTIONAL MATCH (s)-[:VISUALAID]->(va:Document)
-			WITH s, tools, COLLECT(va.uuid) AS visualAidImages
-			OPTIONAL MATCH (s)-[:ATTACHMENT]->(a:Document)
-			WITH s, tools, visualAidImages, COLLECT(a.uuid) AS attachments
-			OPTIONAL MATCH (s)-[:INCLUDES]->(t:Task)
-			WITH s, tools, visualAidImages, attachments, t.uuid AS task
-			OPTIONAL MATCH (s)-[:AT]->(l:Location)
-			WITH s, tools, visualAidImages, attachments, task, l.uuid AS destination
-			OPTIONAL MATCH (s)-[:IN]->(r:Room)
-			WITH 
-				s, r.uuid AS stepLocation, destination, task, attachments, visualAidImages, tools
-			RETURN s { .*, stepLocation, destination, task, attachments, visualAidImages, tools } AS Step
-			
-		`, { step_id }, "Step")
-	}
+			RETURN s { .* } AS Step`, { step_id }, "Step")
+	},
+	// In use
+	getVisualAidImages: async function(step_id) {
+		const result = await DB.fetchAll(`
+			MATCH (s:Step { uuid: { step_id }})-[:VISUALAID]->(d:Document)
+			RETURN COLLECT(d.uuid) AS Images`, { step_id }, "Images")
+		console.debug("%s: getVisualAidImages will return: %O", __filename, result)
+		return result
+	},
+	// In use
+	getTools: async function(step_id) {
+		const result = await DB.fetchAll(`
+			MATCH (s:Step { uuid: { step_id }})-[:REQUIRES]->(e:Equipment)
+			RETURN COLLECT(e.uuid) AS Tools`, { step_id }, "Tools")
+		console.debug("%s: getTools will return: %O", __filename, result)
+		return result
+	},
+	// In use 
+	getAttachments: async function(step_id) {
+		const result = await DB.fetchAll(`
+			MATCH (s:Step { uuid: { step_id }})-[:ATTACHMENT]->(d:Document)
+			RETURN COLLECT(d.uuid) AS Attachments`, { step_id }, "Attachments")
+		console.debug("%s: getAttachments will return: %O", __filename, result)
+		return result
+	},
 }
 
 /* 	getTask: async function(user_id, task_id) {

@@ -45,10 +45,6 @@ const StepInternal = {
 			console.debug("%s: setStepValue payload: %O", __filename, payload)
 			commit("UPDATE_STEP", payload)
 		}, 
-		removeStep: function({ commit }, step_uuid) {
-			console.debug("%s: removeStep uuid: %s", __filename, step_uuid)
-			commit("DELETE_STEP", step_uuid)
-		}
 	}
 }
 

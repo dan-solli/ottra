@@ -15,12 +15,19 @@ export default {
 	updateTask(payload) { // Should be changed to patch.
 		return Repository.put(`${resource}`, payload)
 	},
-
 	getTaskSteps(task_uuid) {
 		return Repository.get(`${resource}/${task_uuid}/steps`)
 	},
+
 	// New (WIP) ones here after:
-	updateStepList(task_uuid, steps) {
+	saveStepList(task_uuid, steps) {
 		return Repository.put(`${resource}/${task_uuid}/steps`)
-	}
+	},
+	saveGoalImages(task_uuid, images) {
+		return Repository.put(`${resource}/${task_uuid}/gi`, { images: images })
+	},
+	saveGoodEnoughImages(task_uuid, images) {
+		return Repository.put(`${resource}/${task_uuid}/gei`, { images: images })
+	},
+
 };

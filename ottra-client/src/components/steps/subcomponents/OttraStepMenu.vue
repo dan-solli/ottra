@@ -31,12 +31,12 @@
 					<v-list-item-title>(*) Move down</v-list-item-title>
 				</v-list-item-content>
 			</v-list-item>
-			<v-list-item @click="deleteStep">
+			<v-list-item @click="removeStep">
 	      <v-list-item-icon>
 	        <v-icon>mdi-delete</v-icon>
 	      </v-list-item-icon>				
 	      <v-list-item-content>
-					<v-list-item-title>(*) Delete step</v-list-item-title>
+					<v-list-item-title>(*) Remove step</v-list-item-title>
 				</v-list-item-content>
 			</v-list-item>
 		</v-list>
@@ -72,7 +72,7 @@ export default {
 		moveDown: function() {
 			this.$emit('move-down')
 		},
-		deleteStep: function() {
+		removeStep: function() {
 			this.$emit('delete-step')
 		},
 	}

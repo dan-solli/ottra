@@ -70,13 +70,15 @@
                   </v-col>
                 </v-row>
 
+<!--
                 <v-row>
                   <v-col cols="12">
+                    WHY DO I EXIST?! FOR WHAT? WHEN? WHY?
                     <v-spacer></v-spacer>
                     <v-btn @click="saveTask">Save</v-btn>
                   </v-col>
                 </v-row>
-
+-->
                 <v-row>
                   <v-col cols="12">
                     <v-expansion-panels v-model="panelExpansions">
@@ -156,14 +158,10 @@ export default {
     },
     steps: function() {
       if (!this.task_uuid || !this.task.hasOwnProperty('uuid')) {
+        // TODO: Some loading symbol here, maybe...
         return []
       } else {
-        const taskData = this.getTaskById(this.task_uuid)
-        console.debug("%s: taskData for %s is %O", __filename, this.task_uuid, taskData)
-        const steps = taskData.steps
-        console.debug("%s: Task %s steps are: %O", __filename, this.task_uuid, steps)
-
-        return steps.map(function(f) {
+        return this.task.steps.map(function(f) {
           const step = this.getStepById(f)
           console.debug("%s: In map for f=%s gets %O", __filename, f, step)
           return step
@@ -174,7 +172,13 @@ export default {
   async mounted() {
     if (this.task_uuid) {
       this.task = Object.assign({}, this.getTaskById(this.task_uuid))
-      this.$store.dispatch("loadTaskSteps", this.task_uuid)
+
+      // This should not be necessary. When we load a task from backend, we sure as hell need
+      // to receive all steps completely hydrated. Loading and splitting the steps, substituting the
+      // uuid only is the responsibility of Vuex. And the problem of returning proper data is the 
+      // responsibility of backend. Not some extra dispatch here!
+
+      //this.$store.dispatch("loadTaskSteps", this.task_uuid)
     } 
 /*    
     else {
@@ -195,14 +199,21 @@ export default {
     closeDialog: function() {
       this.$router.push('/task')
     },
+/*    
+
+    This method should never be used. If you press edit on the task, we should return to CreateTask-view
+    with proper flagging, thus giving back the editable fields.
+
     saveTask: function() {
       console.debug("%s: saveTask, payload is: %O", __filename, this.task)
       this.$store.dispatch("updateTask", this.task)
       //this.$router.push('/task')
     },
+*/    
     addStep: async function(step_type) {
       if (!this.task_uuid) {
         console.error("%s: addStep called without task_uuid", __filename)
+        // Fucking impossible!
       } else {
         const step_uuid = await this.$store.dispatch("createNewStep", {
           step_type: step_type, 

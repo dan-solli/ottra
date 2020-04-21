@@ -4,17 +4,10 @@ import { RepositoryFactory } from '@/common/repos/RepositoryFactory'
 import { StepFactory } from '@/common/repos/StepFactory'
 
 const TaskRepo = RepositoryFactory.get('task')
-const DocRepo = RepositoryFactory.get('document')
-const StepRepo = RepositoryFactory.get('step')
 
 const Task = {
 	state: {
-		tasks: {
-			// Key is task_id, steps contain an array of step id
-		},
-		steps: {
-			// Key is step_id
-		},
+		tasks: { },
 	},
 	getters: {
 		getTasks: state => state.tasks,
@@ -24,21 +17,8 @@ const Task = {
 		getTaskDuration: (state) => (id) => {
 			return { hours: 0, minutes: 4, seconds: 23 }
 		},
-		getStepById: (state) => (step_id) => {
-			return state.steps[step_id]
-		},
 	},
 	mutations: {
-		SET_TASKS(state, payload) {
-			state.tasks = Object.assign({}, payload)
-		},
-		CLEAR_STORE(state) {
-			state.tasks = {}
-			state.steps = {}
-		},
-		REMOVE_TASK(state, uuid) {
-			Vue.delete(state.tasks, uuid)
-		},
 		ADD_TASK(state, payload) {
       Vue.set(state.tasks, payload.uuid, payload)
 		},
@@ -47,25 +27,111 @@ const Task = {
 				__filename, task_uuid, step_uuid)
 			state.tasks[task_uuid].steps.push(step_uuid)
 		},
+		REMOVE_STEP_FROM_TASK(state, { task_uuid, step_uuid }) {
+			// To be implemented, slice it out of the task-id's steps
+		},
+		CLEAR_STORE(state) {
+			state.tasks = {}
+		},
+		DELETE_TASK(state, uuid) {
+			Vue.delete(state.tasks, uuid)
+		},
+/*		
+		SET_TASKS(state, payload) {
+			state.tasks = Object.assign({}, payload)
+		},
 		ADD_STEP(state, payload) {
 			Vue.set(state.steps, payload.uuid, payload)
-		},
-		UPDATE_STEP(state, { step_uuid, key, val }) {
-			console.debug("%s: UPDATE_STEP: step_uuid %s gets key: %s and val: %O",
-				__filename, step_uuid, key, val)
-			const stepData = state.steps[step_uuid]
-			console.debug("%s: UPDATE_STEP: stepData is %O", __filename, stepData)
-			stepData[key] = val
-			Vue.set(state.steps, step_uuid, stepData)
 		},
 		DELETE_STEP(state, step_uuid) {
 			console.debug("%s: DELETE_STEP: uuid = %s", __filename, step_uuid)
 			Vue.delete(state.steps, step_uuid)
 		}
+*/		
 	},
 	actions: {
-		// Called by AddStepToTask-view when a new step is requested. 
-		// Does not save to backend.
+		createTask: async function({ dispatch, commit }, payload) {
+			console.debug("%s: createTask, payload is: %O", __filename, payload)
+			try {
+				var gei = [], gi = []
+				// Extract things that need to be handled separately.
+				if (payload.goodEnoughImages.length > 0) {
+					gei = [...payload.goodEnoughImages]
+				}
+				delete payload.goodEnoughImages
+				if (payload.goalImages.length > 0) {
+					gei = [...payload.goalImages]
+				}
+				delete payload.goalImages
+
+				const response = await TaskRepo.createTask(payload)
+				console.debug("%s: TaskRepo.createTask returns: %O", __filename, response.data)
+
+				const task_uuid = response.data.uuid
+
+				console.debug("%s: Promise.all(saveGoalImages, saveGoodEnoughImages)", __filename)
+				await Promise.all([ 
+					TaskRepo.saveGoalImages(task_uuid, gi),
+					TaskRepo.saveGoodEnoughImages(task_uuid, gei)
+				])
+
+				response.data.goodEnoughImages = [...gei]
+				response.data.goalImages = [...gi]
+				response.data.steps = []
+
+				commit("ADD_TASK", response.data)
+				console.debug("%s: createTask will return: %s", __filename, task_uuid)
+				return task_uuid
+			}
+			catch(err) {
+				console.error("%s: createTask failed: %s", __filename, err)
+			}
+		},
+		addStepToTask: async function({ state, commit, dispatch }, { task_uuid, step_uuid }) {
+			console.debug("%s: addStepToTask task_uuid = %s, step_uuid = %s", 
+				__filename, task_uuid, step_uuid)
+			commit("ADD_STEP_TO_TASK", { task_uuid, step_uuid })
+			await TaskRepo.saveStepList(task_uuid, state.tasks[task_uuid].steps)
+		},
+		deleteTask: async function({ commit, dispatch }, task_uuid) {
+			try {
+				console.debug("%s: deleteTask, payload is: %O", __filename, task_uuid)
+				const response = await TaskRepo.deleteTask(task_uuid)
+				commit("DELETE_TASK", task_uuid)
+				return response.data
+			} 
+			catch(err) {
+				console.error("%s: deleteTask failed: %O", __filename, err)
+			}
+		},
+		updateStepList: async function({ commit }, task_uuid) {
+			// Not implemented. 
+		},
+
+// Generics?
+
+		loadTasks: async function({ commit })	{
+			try {
+				const response = await TaskRepo.get()
+				console.debug("%s: loadTasks: Response is %O", __filename, response.data)
+
+				response.data.forEach(function(task) {
+					commit("ADD_TASK", task)
+				})
+			}
+			catch(err) {
+				console.error("%s: loadTasks failed: %O", __filename, err)
+			}
+		},
+		loadUserData: async function({ dispatch }) {
+			await dispatch("loadTasks")
+		},
+		clearStore({ commit }) {
+			commit("CLEAR_STORE")
+		}
+
+
+/*
 		newStep: async function({ commit }, step_type) {
 			try {
 				console.debug("%s: newStep, steptype is: %d", __filename, step_type)
@@ -79,15 +145,6 @@ const Task = {
 				console.error("%s: newStep failed: %O", __filename, err)
 			}
 		},
-		// Called by AddStepToTask-view right after a new step has been requested.
-		// Does not save to backend.
-		addStepToTask: async function({ commit, dispatch }, { task_uuid, step_uuid }) {
-			console.debug("%s: addStepToTask task_uuid = %s, step_uuid = %s", 
-				__filename, task_uuid, step_uuid)
-			commit("ADD_STEP_TO_TASK", { task_uuid, step_uuid })
-		},
-		// Called from AddStepToTask-view when the 'save' button is pressed.
-		// Saves to backend!
 		updateTask: async function({ commit }, payload) {
 			try {
 				console.debug("%s: updateTask, payload is: %O", __filename, payload)
@@ -106,13 +163,9 @@ const Task = {
 				console.error("%s: updateTask failed: %O", __filename, err)
 			}
 		},
-		// Called from CreateTask-view. 
-		// Saves to backend!
 		saveTask: async function({ commit, dispatch }, payload) {
 			try {
 				console.debug("%s: saveTask, payload is: %O", __filename, payload)
-
-				// TODO: Rename to createTask
 
 				const response = await TaskRepo.createTask(payload)
 				console.debug("%s: !!! TaskRepo.createTask returns: %O", __filename, response.data)
@@ -123,13 +176,9 @@ const Task = {
 				console.error("%s: saveTask failed: %O", __filename, err)
 			}
 		},
-		// Event-based update of a step while editing a form. Called from Mixin.
-		// Does not save to backend.
 		updateStep: async function({ commit }, { step_uuid, key, val }) {
 			commit("UPDATE_STEP", { step_uuid, key, val })
 		},
-		// Common method for saving a step, saves or updates depending on state of step.
-		// This should be split into two, most likely. 
 		saveStep: async function({ commit, dispatch }, step) {
 			console.debug("%s: saveStep called with %O", __filename, step)
 			if (step.saveStatus === false) {
@@ -145,8 +194,6 @@ const Task = {
 				}
 			}
 		},
-		// Called by action saveStep.
-		// Saves to backend, updates Vuex with result.
 		createStep: async function({ commit, dispatch }, step) {
 			console.debug("%s: createStep called with %O", __filename, step)
 			try {
@@ -164,20 +211,6 @@ const Task = {
 				console.error("%s: createStep failed: %s", __filename, err)
 			}
 		},
-		deleteTask: async function({ commit, dispatch }, task_uuid) {
-			try {
-				console.debug("%s: deleteTask, payload is: %O", __filename, task_uuid)
-				const response = await TaskRepo.deleteTask(task_uuid)
-				commit("REMOVE_TASK", task_uuid)
-				// TODO: Horrible solution, but easiest to accomplish current goal.
-				await dispatch("loadTasks")
-				return response.data
-			} 
-			catch(err) {
-				console.error("%s: deleteTask failed: %O", __filename, err)
-			}
-		},
-		// Currently not implemented. 
 		deleteStep: async function({ commit }, step_uuid) {
 			try {
 				console.debug("%s: deleteStep, uuid is: %s", __filename, step_uuid)
@@ -188,25 +221,6 @@ const Task = {
 			catch (err) {
 				console.error("%s: deleteStep failed: %s", err)
 			}
-		},
-		loadTasks: async function({ commit })	{
-			try {
-				const response = await TaskRepo.get()
-				console.debug("%s: loadTasks: Response is %O", __filename, response)
-
-				let new_tasks = {}
-
-				response.data.forEach(function(task) {
-					new_tasks[task.uuid] = task
-				})
-				commit("SET_TASKS", new_tasks)
-			}
-			catch(err) {
-				console.error("%s: loadTasks failed: %O", __filename, err)
-			}
-		},
-		loadUserData: async function({ dispatch }) {
-			await dispatch("loadTasks")
 		},
 		loadTaskSteps: async function({ commit }, task_uuid) {
 			try {
@@ -222,10 +236,6 @@ const Task = {
 				console.error("%s: loadTaskSteps failed: %s", __filename, err)
 			}
 		},
-		clearStore({ commit }) {
-			commit("CLEAR_STORE")
-		}
-/*		
 		saveStep: async function({ commit }, payload) {
 			try {
 				console.debug("%s: saveStep, payload is: %O", __filename, payload)
@@ -278,8 +288,85 @@ const Task = {
 		loadUserData: async function({ dispatch }) {
 			await dispatch("loadSteps")
 		},
-*/		
+		saveNewTask: async function({ dispatch }, payload) {
+			console.debug("%s: saveNewTask, payload is: %O", __filename, payload)
+			try {
+				const response = await TaskRepo.createTask(payload)
+				console.debug("%s: TaskRepo.createTask returns: %O", __filename, response.data)
+				await dispatch("setTask", response.data)
+				console.debug("%s: saveNewTask will return: %s", __filename, response.data.uuid)
+				return response.data.uuid
+			}
+			catch(err) {
+				console.error("%s: saveNewTask failed: %O", __filename, err)
+			}
+		},
+		updateTask: async function({ dispatch }, payload) {
+			console.debug("%s: updateTask, payload is: %O", __filename, payload)
+			try {
+				const response = await TaskRepo.updateTask(payload) // Should pass along list of steps.
+				console.debug("%s: TaskRepo.updateTask returns: %O", __filename, response.data)
+				await dispatch("setTask", response.data)
+			}
+			catch(err) {
+				console.error("%s: updateTask failed: %O", __filename, err)
+			}
+		},
+		deleteTask: async function({ dispatch }, task_uuid) {
+			console.debug("%s: deleteTask, task_uuid is: %s", __filename, task_uuid)
+			try {
+				const response = await TaskRepo.deleteTask(task_uuid)
+				console.debug("%s: TaskRepo.deleteTask returns: %O", __filename, response.data)
+				await dispatch("removeTask", task_uuid)
+			}
+			catch(err) {
+				console.error("%s: deleteTask failed: %O", __filename, err)
+			}
+		},
+		addStepToTask: async function({ dispatch, getters }, { task_uuid, step_uuid }) {
+			console.debug("%s: addStepToTask task_uuid = %s, step_uuid = %s", 
+				__filename, task_uuid, step_uuid)
+			try {
+				await dispatch("addStep", { task_uuid, step_uuid })
+				//await dispatch("updateTask", getters.getTaskById(task_uuid))
+				const response = await TaskRepo.updateStepList(task_uuid, getters.getTaskById(task_uuid).steps)
+				
 
+			}
+			catch(err) {
+				console.error("%s: addStepToTask failed: %O", __filename, err)
+			}
+		},
+		loadTasks: async function({ dispatch })	{
+			try {
+				const response = await TaskRepo.get()
+				console.debug("%s: loadTasks: Response is %O", __filename, response.data)
+
+				await response.data.forEach(async function(task) {
+					await dispatch("loadTaskSteps", task.uuid)
+					await dispatch("setTask", task)
+				})
+			}
+			catch(err) {
+				console.error("%s: loadTasks failed: %O", __filename, err)
+			}
+		},
+		loadTaskSteps: async function({ dispatch }, task_uuid) {
+			try {
+				const response = await TaskRepo.getTaskSteps(task_uuid)
+				console.debug("%s: loadTaskSteps return %O", __filename, response.data)
+
+				response.data.forEach(function (step) {
+					console.debug("%s: loadTaskSteps in loop: Var is: %O", __filename, step)
+					dispatch("setStep", step)
+				})		
+			}
+			catch (err) {
+				console.error("%s: loadTaskSteps failed: %s", __filename, err)
+			}
+		},
+
+*/		
 	},
 }
 
