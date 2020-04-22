@@ -6,6 +6,13 @@ const CommonService = {
 			__filename, src, dest, label, props)
 		return await CommonModel.createRelation(src, dest, label, props)
 	},
+	// In use
+	removeRelations: async function(src, list) {
+		list.forEach(async function (dest) {
+			await CommonModel.removeRelation(src, dest)
+		})
+		return { ok: true, data: list }
+	},
 }
 
 module.exports = CommonService

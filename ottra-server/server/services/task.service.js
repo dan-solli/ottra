@@ -109,8 +109,22 @@ const TaskService = {
 			return { ok: false, error: { code: 422, status: 'failure', message: "Failed to fetch steps" }}
 		}
 	},
+	// In use
 	updateStepList: async function(user_id, task_id, payload) {
-		return { ok: true, data: [] }
+		// Delete references to steps. 
+		const oldStepList = await TaskModel.getSteps(user_id, task_id)
+		console.debug("%s: updateStepList: oldStepList = %O", __filename, oldStepList)
+		if (oldStepList.ok) {
+			if (oldStepList.data.length > 0) {
+				await CommonService.removeRelations(task_id, oldStepList.data)
+			}
+		}
+		var order = 0
+		await payload.forEach(async function(dest) {
+			console.debug("%s: updateStepList: trying to create relation between %s and %s", __filename, task_id, dest)
+			await CommonService.createRelation(task_id, dest, "INCLUDES", { order : order++ })
+		})
+		return { ok: true, data: {} }
 	},
 	updateGoalImages: async function(user_id, task_id, payload) {
 		return { ok: true, data: [] }

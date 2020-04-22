@@ -26,7 +26,7 @@ const TaskModel = {
 	getTasks: async function(uuid) {
 		return await DB.fetchAll(`
 			MATCH (:User { uuid: { uuid }})-[:HAS]->(t:Task)
-			OPTIONAL MATCH (t)-[r:INCLUDE]->(s:Step)
+			OPTIONAL MATCH (t)-[r:INCLUDES]->(s:Step)
 			OPTIONAL MATCH (t)-[:GOODENOUGHIMAGE]->(dGE:Document)
 			OPTIONAL MATCH (t)-[:GOALIMAGE]->(dG:Document)
 			WITH t, s, r, 
@@ -55,13 +55,16 @@ const TaskModel = {
 								dateTime: apoc.date.format(t.created) } AS Task`,
 		{ user_id, task_id }, "Task")
 	},
+
+	// In use! 
 	getSteps: async function(user_id, task_id) {
 		return await DB.fetchAll(`
-			MATCH (Task { uuid: { task_id }})-[r:INCLUDE]->(s:Step)
+			MATCH (Task { uuid: { task_id }})-[r:INCLUDES]->(s:Step)
 			WITH s, r ORDER BY r.order
 			RETURN COLLECT(s.uuid) AS Steps`, { task_id }, "Steps"
 		)
 	},
+	// In use!
 	deleteTask: async function(user_id, task_uuid) {
     return await DB.fetchRow(`
       MATCH (t:Task { uuid: {task_uuid}, creator: {user_id} }) DETACH DELETE t`, 
