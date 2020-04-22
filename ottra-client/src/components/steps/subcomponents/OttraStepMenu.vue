@@ -73,7 +73,7 @@ export default {
 			this.$emit('move-down')
 		},
 		removeStep: function() {
-			this.$emit('delete-step')
+			this.$emit('remove-step')
 		},
 	}
 }

@@ -21,7 +21,7 @@ export default {
 
 	// New (WIP) ones here after:
 	saveStepList(task_uuid, steps) {
-		return Repository.put(`${resource}/${task_uuid}/steps`)
+		return Repository.put(`${resource}/${task_uuid}/steps`, steps)
 	},
 	saveGoalImages(task_uuid, images) {
 		return Repository.put(`${resource}/${task_uuid}/gi`, { images: images })

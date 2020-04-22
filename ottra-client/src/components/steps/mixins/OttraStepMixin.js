@@ -5,7 +5,8 @@ export const OttraStepMixin = {
 	props: [ 'value', 'task_uuid' ],
 	data: function () { 
 		return {
-			hasEdits: false
+			hasEdits: false,
+			editMode: true
 		}
 	},
 	methods: {

@@ -1,7 +1,7 @@
 <template>
 	<v-container>
 		<v-row>
-			<v-col v-if="value.editMode">
+			<v-col v-if="editMode">
         <v-autocomplete
         	:value="value.task"
 	        @input="val => { updateValue('task', val) }"
@@ -18,7 +18,7 @@
 		</v-row>
 
 		<v-row> <!-- Visual Aid Images -->
-			<v-col cols="5" v-if="value.editMode">
+			<v-col cols="5" v-if="editMode">
 	      <v-text-field 
 	        :value="attachmentUUIDToFilename(value.visualAidImages)" 
 	        @input="val => { updateValue('visualAidImages', val) }"
@@ -41,9 +41,9 @@
 		</v-row>
 
 
-		<v-row v-if="value.editMode"> <!-- Action button -->
+		<v-row v-if="editMode"> <!-- Action button -->
 			<v-col>
-				<v-btn text @click="saveStep">
+				<v-btn text @click="updateStep">
 					(*) Save 
 				</v-btn>
 			</v-col>

@@ -22,7 +22,7 @@ const DocumentModel = {
 		}
 
 		handleChild(theTree)
-		console.debug("%s: getAllDocuments yields: %O", __filename, resultData)
+		//console.debug("%s: getAllDocuments yields: %O", __filename, resultData)
 		return { ok: true, data: resultData }
 
 		function rewriteChild(child) {
@@ -47,7 +47,7 @@ const DocumentModel = {
 					})
 				} else {
 					const cPath = child.path + "/" + child.name
-					console.debug("%s: Empty directory for %s, creating such...", __filename, cPath) 
+					//console.debug("%s: Empty directory for %s, creating such...", __filename, cPath) 
 					resultData[cPath] = []
 				}
 			}

@@ -3,8 +3,8 @@
 		<v-row>
 			<v-col cols="2">
 				<OttraStepMenu
-					@delete-step="deleteThisStep"
-					v-model="value.editMode">
+					@remove-step="removeStep"
+					v-model="editMode">
 				</OttraStepMenu>
 				<OttraStepState 
 					v-model="value.saveState">
@@ -35,14 +35,16 @@ export default {
 			"getTaskById"
 		]),
 		showTaskDuration: function() {
+			if (!this.value.hasOwnProperty("task")) {
+				return ""
+			}
 			return this.getTaskDuration(this.value.task)
 		},
 		showSubject: function() {
-			if (this.value.task.length > 0) {
-				return this.getTaskById(this.value.task).subject
-			} else {
-				return 0
+			if (!this.value.hasOwnProperty("task")) {
+				return ""
 			}
+			return this.getTaskById(this.value.task).subject
 		}
 	}
 }

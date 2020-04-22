@@ -102,6 +102,7 @@ const Step = {
 		updateStep: async function({ dispatch }, payload) {
 			console.debug("%s: updateStep called with %O", __filename, payload)
 
+/*
 			try {
 				const response = await StepRepo.updateStep(payload)
 				console.debug("%s: updateStep response is: %O", __filename, response.data)
@@ -110,6 +111,7 @@ const Step = {
 			catch (err) {
 				console.error("%s: updateStep failed: %s", __filename, err)
 			}
+*/			
 		},
 		removeStep: async function({ commit, dispatch }, { task_uuid, step_uuid }) {
 			console.debug("%s: removeStep uuid: %s from task uuid: %s", 

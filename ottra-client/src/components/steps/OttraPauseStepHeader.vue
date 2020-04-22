@@ -3,8 +3,8 @@
 		<v-row>
 			<v-col cols="2">
 				<OttraStepMenu
-					@delete-step="deleteThisStep"
-					v-model="value.editMode">
+					@remove-step="removeStep"
+					v-model="editMode">
 				</OttraStepMenu>
 				<OttraStepState 
 					v-model="value.saveState">

@@ -87,10 +87,13 @@ const Task = {
 				console.error("%s: createTask failed: %s", __filename, err)
 			}
 		},
-		addStepToTask: async function({ state, commit, dispatch }, { task_uuid, step_uuid }) {
+		addStepToTask: async function({ state, commit }, { task_uuid, step_uuid }) {
 			console.debug("%s: addStepToTask task_uuid = %s, step_uuid = %s", 
 				__filename, task_uuid, step_uuid)
 			commit("ADD_STEP_TO_TASK", { task_uuid, step_uuid })
+			console.debug("%s: state.tasks[task_uuid = %s].steps are: %O", 
+				__filename, task_uuid, state.tasks[task_uuid].steps)
+
 			await TaskRepo.saveStepList(task_uuid, state.tasks[task_uuid].steps)
 		},
 		deleteTask: async function({ commit, dispatch }, task_uuid) {
