@@ -13,17 +13,17 @@ export default {
 		return Repository.delete(`${resource}`, { data: { uuid: step_uuid } } )
 	},
 	updateStep(payload) {
-		return Repository.patch(`${resource}`, payload)
+		return Repository.put(`${resource}`, payload)
 	},
 
 	// New (WIP) here after:
-	saveVisualAidImages(task_uuid, images) {
-		return Repository.put(`${resource}/${task_uuid}/vai`, { vai: images})
+	saveVisualAidImages(step_uuid, images) {
+		return Repository.put(`${resource}/${step_uuid}/vai`, { vai: images})
 	},
-	saveTools(task_uuid, tools) {
-		return Repository.put(`${resource}/${task_uuid}/tools`, { tools: tools })
+	saveTools(step_uuid, tools) {
+		return Repository.put(`${resource}/${step_uuid}/tools`, { tools: tools })
 	},
-	saveAttachments(task_uuid, attachments) {
-		return Repository.put(`${resource}/${task_uuid}/attachments`, { attachments: attachments })
+	saveAttachments(step_uuid, attachments) {
+		return Repository.put(`${resource}/${step_uuid}/attachments`, { attachments: attachments })
 	},
 };

@@ -22,7 +22,6 @@ export const STEP_TASK = 4
 
 const stepTypeData = {
 	base_step: {
-		//uuid: '',
     title: '',
     description: '',
     duration: '',

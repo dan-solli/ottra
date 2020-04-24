@@ -2,11 +2,17 @@ import OttraStepState from '@/components/OttraStepState'
 import OttraStepMenu from '@/components/steps/subcomponents/OttraStepMenu'
 
 export const OttraStepMixin = {
-	props: [ 'value', 'task_uuid' ],
+	props: {
+		value: Object,
+		task_uuid: String,
+		editMode: {
+			type: Boolean,
+			default: false
+		}
+	},
 	data: function () { 
 		return {
 			hasEdits: false,
-			editMode: true
 		}
 	},
 	methods: {

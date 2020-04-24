@@ -43,6 +43,11 @@ export default {
 			"getRoomByID"
 		]),
 		getRoomName: function() {
+/*			
+			if (this.value.hasOwnProperty('stepLocation') && this.value.stepLocation.length > 0)
+			const roomObject = this.$store.dispatch("fetchRoom", )
+*/
+
 			console.debug("%s: getRoomName is called", __filename)
 			if (this.value.hasOwnProperty('stepLocation')) {
 				console.debug("%s: Room has a stepLocation", __filename)

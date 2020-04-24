@@ -102,8 +102,25 @@ const Step = {
 		updateStep: async function({ dispatch }, payload) {
 			console.debug("%s: updateStep called with %O", __filename, payload)
 
-/*
 			try {
+				if (payload.visualAidImages.length > 0) {
+					await StepRepo.saveVisualAidImages(payload.uuid. payload.visualAidImages)
+				}
+				if (payload.stepType === STEP_INSTRUCTION ||
+					  payload.stepType === STEP_TRANSPORT) {
+					if (payload.attachments.length > 0) {
+						await StepRepo.saveAttachments(payload.uuid, payload.attachments)
+					}
+				}
+				if (payload.stepType === STEP_INSTRUCTION) {
+					if (payload.tools.length > 0) {
+						await StepRepo.saveTools(payload.uuid, payload.tools)
+					}
+				}
+				delete payload.visualAidImages
+				delete payload.attachments
+				delete payload.tools
+
 				const response = await StepRepo.updateStep(payload)
 				console.debug("%s: updateStep response is: %O", __filename, response.data)
 				commit("ADD_STEP", response.data)
@@ -111,7 +128,6 @@ const Step = {
 			catch (err) {
 				console.error("%s: updateStep failed: %s", __filename, err)
 			}
-*/			
 		},
 		removeStep: async function({ commit, dispatch }, { task_uuid, step_uuid }) {
 			console.debug("%s: removeStep uuid: %s from task uuid: %s", 
