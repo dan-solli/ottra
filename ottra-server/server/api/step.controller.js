@@ -19,6 +19,12 @@ r.get('/', [ autenUser('uuid').isUUID() ],
 	}
 )
 
+r.get('/:step_id', [ autenUser('uuid').isUUID() ],
+	async function(req, res) {
+		sendResponse(res, await StepService.getStepById(req.tokenData.uuid, req.params.step_id))
+	}
+)
+
 r.post('/', [ autenUser('uuid').isUUID() ],
 	async function(req, res) {
 		sendResponse(res, await StepService.createStep(req.tokenData.uuid, req.body))

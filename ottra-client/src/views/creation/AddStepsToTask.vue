@@ -13,8 +13,8 @@
         </template>
         <v-list dense>
 
-          <v-list-item v-for="(step, i) in stepTypes" :key="i" @click="addStep(step.type)">
-            <v-list-item-title>{{ step.description }}</v-list-item-title>
+          <v-list-item v-for="(step_item, i) in stepTypes" :key="i" @click="addStep(step_item.type)">
+            <v-list-item-title>{{ step_item.description }}</v-list-item-title>
           </v-list-item>
 
         </v-list>
@@ -79,7 +79,7 @@
                   </v-col>
                 </v-row>
 -->
-                <v-row>
+                <v-row v-if="!loading">
                   <v-col cols="12">
                     <v-expansion-panels v-model="panelExpansions">
                       <v-expansion-panel v-for="(step, i) in steps" :key="i">
@@ -99,6 +99,11 @@
                         </v-expansion-panel-content>
                       </v-expansion-panel>
                     </v-expansion-panels>
+                  </v-col>
+                </v-row>
+                <v-row v-else>
+                  <v-col cols="12">
+                    Loading 
                   </v-col>
                 </v-row>
               </v-container>
@@ -136,6 +141,7 @@ export default {
   },
   data: function() {
     return {
+      loading: true,
       hasEdits: false,
       panelExpansions: [],
       valid: '',
@@ -157,34 +163,25 @@ export default {
       return 'https://' + window.location.host + window.location.pathname
     },
     steps: function() {
-      if (!this.task_uuid || !this.task.hasOwnProperty('uuid')) {
-        // TODO: Some loading symbol here, maybe...
+      var list = []
+
+      console.debug("%s: computed.steps called", __filename)
+      if (!this.task_uuid || !this.task.hasOwnProperty('uuid') || this.loading) {
         return []
       } else {
-        return this.task.steps.map(function(f) {
-          const step = this.getStepById(f)
-          console.debug("%s: In map for f=%s gets %O", __filename, f, step)
-          return step
+        return this.task.steps.map(function(step_uuid) {
+          return this.getStepById(step_uuid)
         }, this)
       }
     },
   },
   async mounted() {
     if (this.task_uuid) {
+      this.loading = true
+      await this.$store.dispatch("fetchTask", this.task_uuid)
       this.task = Object.assign({}, this.getTaskById(this.task_uuid))
-
-      // This should not be necessary. When we load a task from backend, we sure as hell need
-      // to receive all steps completely hydrated. Loading and splitting the steps, substituting the
-      // uuid only is the responsibility of Vuex. And the problem of returning proper data is the 
-      // responsibility of backend. Not some extra dispatch here!
-
-      //this.$store.dispatch("loadTaskSteps", this.task_uuid)
+      this.loading = false
     } 
-/*    
-    else {
-      this.$router.push("/task")
-    }
-*/    
   },
   methods: {
     getHeaderComponent(type) {

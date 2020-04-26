@@ -110,9 +110,45 @@ const Task = {
 		updateStepList: async function({ commit }, task_uuid) {
 			// Not implemented. 
 		},
+		fetchTask: async function({ state, dispatch, commit }, task_uuid) {
+			console.debug("%s: fetchTask called with: %s", __filename, task_uuid)
+			if (!state.tasks.hasOwnProperty(task_uuid)) {
+				const response = await TaskRepo.getTask(task_uuid)
+				commit("ADD_TASK", response.data)
+			}
+			return await dispatch("hydrateTask", task_uuid)
+		},
+		hydrateTask: async function({ state, dispatch }, task_uuid) {
+			console.debug("%s: hydrateTask called with %s", __filename, task_uuid)
+			if (!task_uuid || !state.tasks.hasOwnProperty(task_uuid)) {
+				console.error("%s: hydrateTask cannot find task %s", __filename, task_uuid)
+			}
+			const task = state.tasks[task_uuid]
+			console.debug("%s: Task data is %O", __filename, task)
+			if (task.goodEnoughImages.length > 0) {
+				console.debug("%s: calling fetchDocument for GEI")
+				task.goodEnoughImages.forEach(async function (doc) {
+					await dispatch("fetchDocument", doc)
+				})
+			}
+			if (task.goalImages.length > 0) {
+				console.debug("%s: calling fetchDocument for GI")
+				task.goalImages.forEach(async function (doc) {
+					await dispatch("fetchDocument", doc)
+				})
+			}
+			if (task.steps.length > 0) {
+				console.debug("%s: calling fetchStep for GEI")
+				await Promise.all(task.steps.map(async function (step) {
+					console.debug("%s: In loop to call fetchStep for step_uuid %s", __filename, step)
+					await dispatch("fetchStep", { step_uuid: step })
+				}))
+			}
+		},
 
 // Generics?
 
+		// In use.
 		loadTasks: async function({ commit })	{
 			try {
 				const response = await TaskRepo.get()

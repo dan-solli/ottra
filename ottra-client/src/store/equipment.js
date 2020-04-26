@@ -36,6 +36,9 @@ const Equipment = {
 				console.error("%s: saveEquipment failed: %O", __filename, err)
 			}
 		},
+		fetchEquipment: async function({ dispatch, commit }, equipment_uuid) {
+			// hydrateEquipment
+		},
 		loadEquipment: async function({ commit })	{
 			try {
 				const response = await EquipmentRepo.get()

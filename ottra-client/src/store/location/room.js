@@ -37,6 +37,9 @@ const Room = {
         console.error("%s: createRoom failed: %s", __filename, err)
       }
     },
+    fetchRoom: async function({ dispatch }, room_uuid) {
+      // hydrateRoom
+    },
     loadRooms: async function({ commit }) {
       try {
         const response = await RoomRepo.getRooms()

@@ -43,6 +43,7 @@ const Step = {
 		},
 	},
 	actions: {
+		// In use
 		createNewStep: async function({ dispatch, commit }, { step_type, task_uuid }) {
 			console.debug("%s: createNewStep, steptype is: %d, task is: %s", __filename, step_type, task_uuid)
 			try {
@@ -90,6 +91,7 @@ const Step = {
 				console.error("%s: createNewStep failed: %O", __filename, err)
 			}
 		},
+		// In use
 		updateStepValue: async function({ commit }, payload) {
 			try {
 				console.debug("%s: updateStepValue payload: %O", __filename, payload)
@@ -99,6 +101,7 @@ const Step = {
 				console.error("%s: commit SET_STEP_VALUE failed: %O", __filename, err)
 			}
 		},
+		// In progress
 		updateStep: async function({ dispatch }, payload) {
 			console.debug("%s: updateStep called with %O", __filename, payload)
 
@@ -142,7 +145,70 @@ const Step = {
 		},
 		clearStore: async function({ commit }) {
 			commit("CLEAR_STORE")
-		}
+		},
+		fetchStep: async function({ state, dispatch, commit }, { step_uuid, force_fetch = false }) {
+			console.debug("%s: fetchStep uuid: %s", __filename, step_uuid)
+
+			try {
+				if (!force_fetch) {
+					console.debug("%s: fetchStep, not forced!", __filename)
+					if (state.steps.hasOwnProperty(step_uuid)) {
+						console.debug("%s: fetchStep - had info in state", __filename)
+						return state.steps[step_uuid]
+					} else {
+						console.debug("%s: fetchStep - data not found in state. Should fetch from backend.", __filename)
+						force_fetch = true
+					}
+				}
+				console.debug("%s: fetchStep halftime. uuid = %s, force_fetch = %O",
+					__filename, step_uuid, force_fetch)
+				if (force_fetch) {
+					console.debug("%s: fetchStep - fetching from backend", __filename)
+					const response = await StepRepo.getStep(step_uuid)
+					console.debug("%s: StepRepo.getStep returns %O", __filename, response.data)
+					commit("ADD_STEP", response.data)
+					await dispatch("hydrateStep", response.data.uuid)
+					return response.data
+				} else {
+					console.error("%s: fetchStep: Dunno why we ended up here...")
+				}
+			}
+			catch (err) {
+				console.error("%s: fetchStep failed: %s", __filename, err)
+			}
+		},
+		hydrateStep: async function({ state, dispatch }, step_uuid) {
+			console.debug("%s: Trying to hydrate step: %s", __filename, step_uuid)
+			if (!step_uuid || !state.steps.hasOwnProperty(step_uuid)) {
+				console.error("%s: hydrateStep cannot find step %s", __filename, step_uuid)
+			}
+			const step = state.steps[step_uuid]
+			if (step.hasOwnProperty("visualAidImages") && step.visualAidImages.length > 0) {
+				await Promise.all(step.visualAidImages.map(async function (doc) {
+					await dispatch("fetchDocument", doc)
+				}))
+			}
+			if (step.hasOwnProperty("attachments") && step.attachments.length > 0) {
+				await Promise.all(step.attachments.map(async function (doc) {
+					await dispatch("fetchDocument", doc)
+				}))
+			}
+			if (step.hasOwnProperty("tools") && step.tools.length > 0) {
+				await Promise.all(step.tools.map(async function (tool) {
+					await dispatch("fetchEquipment", tool)
+				}))
+			}
+			/* Too deep recursion problem? */
+			if (step.hasOwnProperty("task") && step.task.length > 0) {
+				await dispatch("fetchTask", step.task)
+			}
+			if (step.hasOwnProperty("destination") && step.destination.length > 0) {
+				await dispatch("fetchLocation", step.destination)
+			}
+			if (step.hasOwnProperty("stepLocation") && step.stepLocation.length > 0) {
+				await dispatch("fetchRoom", step.stepLocation)
+			}
+		},
 /*		
 		deleteStep: async function({ dispatch }, step_uuid) {
 			console.debug("%s: deleteStep, uuid is: %s", __filename, step_uuid)

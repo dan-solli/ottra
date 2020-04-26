@@ -6,6 +6,9 @@ export default {
 	get() {
 		return Repository.get(`${resource}`)
 	},
+	getStep(step_uuid) {
+		return Repository.get(`${resource}/${step_uuid}`)
+	},
 	createStep(payload) {
 		return Repository.post(`${resource}`, payload)
 	},

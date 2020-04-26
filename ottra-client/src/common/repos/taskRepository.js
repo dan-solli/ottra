@@ -6,6 +6,9 @@ export default {
 	get() {
 		return Repository.get(`${resource}`)
 	},
+	getTask(task_uuid) {
+		return Repository.get(`${resource}/${task_uuid}`)
+	},
 	createTask(payload) {
 		return Repository.post(`${resource}`, payload)
 	},

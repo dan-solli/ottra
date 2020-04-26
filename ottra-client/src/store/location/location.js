@@ -51,6 +51,9 @@ const Location = {
         console.error("%s: deleteLocation failed: %s", __filename, err)
       }
     },
+    fetchLocation: async function({ dispatch }, location_uuid) {
+      //hydrateLocation
+    },
     loadLocations: async function({ commit }) {
       try {
         const response = await LocationRepo.get()

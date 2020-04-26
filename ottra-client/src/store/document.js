@@ -82,6 +82,9 @@ const Document = {
         console.error("%s: DocumentRepo failed to get documents: %O", __filename, err)
       }      
     },
+    fetchDocument: async function({ dispatch }, doc_uuid) {
+      //dispatch("loadDocuments")
+    },
     createFolder: async function ({ commit, dispatch, state }, folderName) {
       try {
         // TODO: Should validate that folderName only contains [A-Za-z0-9-_.]
