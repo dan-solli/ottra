@@ -102,21 +102,24 @@ const Step = {
 			}
 		},
 		// In progress
-		updateStep: async function({ dispatch }, payload) {
+		updateStep: async function({ dispatch, commit }, payload) {
 			console.debug("%s: updateStep called with %O", __filename, payload)
 
 			try {
 				if (payload.visualAidImages.length > 0) {
-					await StepRepo.saveVisualAidImages(payload.uuid. payload.visualAidImages)
+					console.debug("%s: updateStep, calling saveVisualAidImages", __filename)
+					await StepRepo.saveVisualAidImages(payload.uuid, payload.visualAidImages)
 				}
 				if (payload.stepType === STEP_INSTRUCTION ||
 					  payload.stepType === STEP_TRANSPORT) {
 					if (payload.attachments.length > 0) {
+						console.debug("%s: updateStep, calling saveAttachments", __filename)
 						await StepRepo.saveAttachments(payload.uuid, payload.attachments)
 					}
 				}
 				if (payload.stepType === STEP_INSTRUCTION) {
 					if (payload.tools.length > 0) {
+						console.debug("%s: updateStep, calling saveTools", __filename)
 						await StepRepo.saveTools(payload.uuid, payload.tools)
 					}
 				}
@@ -124,6 +127,7 @@ const Step = {
 				delete payload.attachments
 				delete payload.tools
 
+				console.debug("Calling stepRepo.updateStep with payload: %O", __filename, payload)
 				const response = await StepRepo.updateStep(payload)
 				console.debug("%s: updateStep response is: %O", __filename, response.data)
 				commit("ADD_STEP", response.data)

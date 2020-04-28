@@ -8,9 +8,9 @@ const CommonService = {
 	},
 	// In use
 	removeRelations: async function(src, list) {
-		list.forEach(async function (dest) {
-			await CommonModel.removeRelation(src, dest)
-		})
+		await Promise.all(list.map(async function (dest) {
+			return await CommonModel.removeRelation(src, dest)
+		}))
 		return { ok: true, data: list }
 	},
 }

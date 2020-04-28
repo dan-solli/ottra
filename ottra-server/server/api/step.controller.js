@@ -38,17 +38,35 @@ r.delete("/", [ autenUser('uuid').isUUID() ],
 	}
 )
 
-r.patch("/", [ autenUser('uuid').isUUID() ],
+r.put("/", [ autenUser('uuid').isUUID() ],
 	async function(req, res) {
 		sendResponse(res, await StepService.updateStep(req.tokenData.uuid, req.body))
 	}
 )
 
-/*
-r.put("/", [ autenUser('uuid').isUUID() ],
+r.put('/:step_id/vai', [ autenUser('uuid').isUUID() ],
 	async function(req, res) {
-		sendResponse(res, await TodoService.updateTodo(req.tokenData.uuid, req.body))
+		sendResponse(res, 
+			await StepService.saveVisualAidImages(req.tokenData.uuid, 
+				req.params.step_id, req.body.vai))
 	}
 )
-*/
+
+r.put('/:step_id/tools', [ autenUser('uuid').isUUID() ],
+	async function(req, res) {
+		sendResponse(res, 
+			await StepService.saveTools(req.tokenData.uuid, 
+				req.params.step_id, req.body.tools))
+	}
+)
+
+r.put('/:step_id/attachments', [ autenUser('uuid').isUUID() ],
+	async function(req, res) {
+		sendResponse(res, 
+			await StepService.saveAttachments(req.tokenData.uuid, 
+				req.params.step_id, req.body.attachments))
+	}
+)
+
+
 module.exports = r

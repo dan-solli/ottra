@@ -1,5 +1,5 @@
 const StepModel = require('./../models/step.model')
-//const CommonService = require('./common.service')
+const CommonService = require('./common.service')
 
 const STEP_UNDEFINED = 0
 const STEP_INSTRUCTION = 1
@@ -67,6 +67,69 @@ const StepService = {
 			return StepService.getStepById(user_id, result.data.uuid)
 		} else {
 			return result
+		}
+	},
+	saveVisualAidImages: async function(user_id, step_uuid, vai) {
+		console.debug("%s: saveVisualAidImages got step_uuid: %s and vai: %O", 
+			__filename, step_uuid, vai)
+		try {
+			await CommonService.removeRelations(step_uuid, vai)
+			await Promise.all(vai.map(async function (img) {
+				return await CommonService.createRelation(step_uuid, img, "VISUALAID", {})
+			}))
+			return { ok: true, data: [] }		
+		}
+		catch (err) {
+			return { 
+				ok: false, 
+				error: { 
+					code: 500,
+					status: 'server failure',
+					message: err
+				}
+			}
+		}
+	},
+	saveTools: async function(user_id, step_uuid, tools) {
+		console.debug("%s: saveTools got step_uuid: %s and tools: %O", 
+			__filename, step_uuid, tools)
+		try {
+			await CommonService.removeRelations(step_uuid, tools)
+			await Promise.all(tools.map(async function (eq) {
+				return await CommonService.createRelation(step_uuid, eq, "REQUIRES", {})
+			}))
+			return { ok: true, data: [] }
+		}
+		catch (err) {
+			return { 
+				ok: false, 
+				error: { 
+					code: 500,
+					status: 'server failure',
+					message: err
+				}
+			}
+		}
+	},
+	saveAttachments: async function(user_id, step_uuid, attachments) {
+		console.debug("%s: saveAttachments got step_uuid: %s and attachments: %O", 
+			__filename, step_uuid, attachments)
+		try {
+			await CommonService.removeRelations(step_uuid, attachments)
+			await Promise.all(attachments.map(async function (doc) {
+				return await CommonService.createRelation(step_uuid, doc, "ATTACHMENT", {})
+			}))
+			return { ok: true, data: [] }
+		}
+		catch (err) {
+			return { 
+				ok: false, 
+				error: { 
+					code: 500,
+					status: 'server failure',
+					message: err
+				}
+			}
 		}
 	},
 }

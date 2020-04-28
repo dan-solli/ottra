@@ -6,16 +6,15 @@
 			</v-btn>
 		</template>
 		<v-list>
-			<v-list-item @click="toggleEditMode">
+			<v-list-item @click="$emit('edit-step')">
 	      <v-list-item-icon>
-	        <v-icon v-if="value">mdi-content-save</v-icon>
-	        <v-icon v-else>mdi-pencil</v-icon>
+	        <v-icon>mdi-pencil</v-icon>
 	      </v-list-item-icon>				
 	      <v-list-item-content>
-					<v-list-item-title>(*) {{ value ? "Save" : "Edit" }} step</v-list-item-title>
+					<v-list-item-title>(*) Edit step</v-list-item-title>
 				</v-list-item-content>
 			</v-list-item>
-			<v-list-item @click="moveUp">
+			<v-list-item @click="$emit('move-up')">
 	      <v-list-item-icon>
 	        <v-icon>mdi-arrow-up-bold</v-icon>
 	      </v-list-item-icon>				
@@ -23,7 +22,7 @@
 					<v-list-item-title>(*) Move up</v-list-item-title>
 				</v-list-item-content>
 			</v-list-item>
-			<v-list-item @click="moveUp">
+			<v-list-item @click="$emit('move-down')">
 	      <v-list-item-icon>
 	        <v-icon>>mdi-arrow-down-bold</v-icon>
 	      </v-list-item-icon>				
@@ -31,7 +30,7 @@
 					<v-list-item-title>(*) Move down</v-list-item-title>
 				</v-list-item-content>
 			</v-list-item>
-			<v-list-item @click="removeStep">
+			<v-list-item @click="$emit('remove-step')">
 	      <v-list-item-icon>
 	        <v-icon>mdi-delete</v-icon>
 	      </v-list-item-icon>				
@@ -45,37 +44,8 @@
 
 <script>
 export default {	
-	name: 'ottra-step-menu',
-	props: {
-		value: {
-			type: Boolean
-		}
-	},
-	computed: {
-		localValue: {
-			get() { this.value },
-			set(localValue) { this.$emit('input', localValue) }
-		}
-	},
-	methods: {
-		toggleEditMode: function() {
-			if (this.value) {
-				// Save it
-			} else {
-				// Edit it
-			}
-			this.localValue = !this.value
-		},
-		moveUp: function() {
-			this.$emit('move-up')
-		},
-		moveDown: function() {
-			this.$emit('move-down')
-		},
-		removeStep: function() {
-			this.$emit('remove-step')
-		},
-	}
+	name: 'ottra-step-menu'
+	// Methods here, talk directly to vuex? OR? We just got the step, but not the task. 
 }
 
 </script>

@@ -209,6 +209,12 @@ const router = new Router({
           name: 'new_step',
           props: true,
           component: CreateStep,
+        },
+        { 
+          path: '/step/:step_uuid',
+          name: 'edit_step',
+          props: true,
+          component: CreateStep,
         }
       ]
     },

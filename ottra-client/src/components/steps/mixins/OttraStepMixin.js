@@ -32,8 +32,15 @@ export const OttraStepMixin = {
 		updateStep: function() {
 			console.debug("%s: updateStep, payload is: %O", __filename, this.value)
 			this.$store.dispatch("updateStep", this.value)
+			console.debug("%s: emitting 'dirty' event", __filename)
 			this.$emit('dirty', false)
-			//this.$router.go(-1)
+			console.debug("%s: Pushing add_steps_to_task to router. Task-uuid is: %s", __filename, this.task_uuid)
+			this.$router.push({ 
+				name: 'add_steps_to_task', 
+				params: {
+					task_uuid: this.task_uuid
+				}
+			})
 		},
 		removeStep: function() {
 			console.debug("%s: removeStep called", __filename)
@@ -42,6 +49,22 @@ export const OttraStepMixin = {
 				step_uuid: this.value.uuid
 			})
 		},
+		editStep: function() {
+			console.debug("%s: editStep called", __filename)
+			this.$router.push({
+				name: 'edit_step', 
+				params: {
+					task_uuid: this.task_uuid,
+					step_uuid: this.value.uuid
+				}
+			})
+		},
+		moveUp: function() {
+			console.debug("%s: moveUp called", __filename)
+		},
+		moveDown: function() {
+			console.debug("%s: moveDown called", __filename)
+		}
 	},
 	components: {
 		OttraStepState,

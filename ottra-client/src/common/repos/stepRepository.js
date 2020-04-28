@@ -21,7 +21,7 @@ export default {
 
 	// New (WIP) here after:
 	saveVisualAidImages(step_uuid, images) {
-		return Repository.put(`${resource}/${step_uuid}/vai`, { vai: images})
+		return Repository.put(`${resource}/${step_uuid}/vai`, { vai: images })
 	},
 	saveTools(step_uuid, tools) {
 		return Repository.put(`${resource}/${step_uuid}/tools`, { tools: tools })

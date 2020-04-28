@@ -28,7 +28,7 @@
     		:is="getComponent(step.stepType)"
         v-model="step"
         edit-mode
-        :task-uuid="task_uuid"
+        :task_uuid="task_uuid"
         @dirty="val => { isDirty = val }">
     	</component>
 

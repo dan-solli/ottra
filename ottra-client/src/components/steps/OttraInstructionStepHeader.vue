@@ -3,7 +3,10 @@
 		<v-row>
 			<v-col cols="2">
 				<OttraStepMenu
-					@remove-step="removeStep"
+					v-on:edit-step="editStep"
+					v-on:move-up="moveUp"
+					v-on:move-down="moveDown"
+					v-on:remove-step="removeStep"
 					v-model="editMode">
 				</OttraStepMenu>
 				<OttraStepState 
@@ -63,7 +66,7 @@ export default {
 		getColor: function() {
 			return this.getThumbColor(this.value.energyExpense)
 		},		
-	}
+	},
 }
 
 </script>

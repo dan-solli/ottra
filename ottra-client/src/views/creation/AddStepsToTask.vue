@@ -86,6 +86,7 @@
                         <v-expansion-panel-header>
                           <component 
                             :is="getHeaderComponent(step.stepType)"
+                            :task_uuid="task_uuid"
                             v-model="steps[i]">
                           </component>
                         </v-expansion-panel-header>
@@ -93,6 +94,7 @@
                         <v-expansion-panel-content>
                           <component 
                             :is="getContentComponent(step.stepType)" 
+                            :task_uuid="task_uuid"
                             v-model="steps[i]">
                           </component>
                      
@@ -182,6 +184,10 @@ export default {
       this.task = Object.assign({}, this.getTaskById(this.task_uuid))
       this.loading = false
     } 
+  },
+  beforeRouteUpdate(to, from, next) {
+    console.debug("ROUTE: %s: beforeRouteUpdate called", __filename)
+    this.task_uuid = to.params.task_uuid
   },
   methods: {
     getHeaderComponent(type) {

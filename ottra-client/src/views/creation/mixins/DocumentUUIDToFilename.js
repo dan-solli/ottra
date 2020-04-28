@@ -7,7 +7,7 @@ export const DocumentMixin = {
 		])
 	},
 	methods: {
-		attachmentUUIDToFilename: function(attachment_arr) {
+		attachmentUUIDToFilename: function(attachment_arr = []) {
 			if (attachment_arr.length < 1) {
 				return ""
 			} else {
