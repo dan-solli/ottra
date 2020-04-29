@@ -14,7 +14,7 @@
 					<v-list-item-title>(*) Edit step</v-list-item-title>
 				</v-list-item-content>
 			</v-list-item>
-			<v-list-item @click="$emit('move-up')">
+			<v-list-item :disabled="step_position === 0" @click="$emit('move-up')">
 	      <v-list-item-icon>
 	        <v-icon>mdi-arrow-up-bold</v-icon>
 	      </v-list-item-icon>				
@@ -44,7 +44,8 @@
 
 <script>
 export default {	
-	name: 'ottra-step-menu'
+	name: 'ottra-step-menu',
+	props: [ 'step_position', 'value' ],
 	// Methods here, talk directly to vuex? OR? We just got the step, but not the task. 
 }
 

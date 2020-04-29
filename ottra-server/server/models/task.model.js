@@ -40,12 +40,14 @@ const TaskModel = {
 								steps: Steps, dateTime: apoc.date.format(t.created) }) AS Tasks`,
 		{ uuid: uuid }, "Tasks")
 	},
+	// In use!
 	getTask: async function(user_id, task_id) {
+		console.debug("%s: getTask called: task_id = %s", __filename, task_id)
 		return await DB.fetchAll(`
 			MATCH (u:User { uuid: { user_id }})-[:HAS]->(t:Task { uuid: { task_id }})
 			OPTIONAL MATCH (t)-[:GOODENOUGHIMAGE]->(dGE:Document)
 			OPTIONAL MATCH (t)-[:GOALIMAGE]->(dG:Document)
-			WITH t, 
+			WITH t,
 					COLLECT(dGE.uuid) AS GEI,
 					COLLECT(dG.uuid) AS GI
 			RETURN t { .*, 
@@ -58,6 +60,7 @@ const TaskModel = {
 
 	// In use! 
 	getSteps: async function(user_id, task_id) {
+		console.debug("%s: getSteps called: task_id = %s", __filename, task_id)
 		return await DB.fetchAll(`
 			MATCH (Task { uuid: { task_id }})-[r:INCLUDES]->(s:Step)
 			WITH s, r ORDER BY r.order

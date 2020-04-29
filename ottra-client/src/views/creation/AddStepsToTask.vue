@@ -87,6 +87,7 @@
                           <component 
                             :is="getHeaderComponent(step.stepType)"
                             :task_uuid="task_uuid"
+                            :step_position="i"
                             v-model="steps[i]">
                           </component>
                         </v-expansion-panel-header>
@@ -95,6 +96,7 @@
                           <component 
                             :is="getContentComponent(step.stepType)" 
                             :task_uuid="task_uuid"
+                            :step_position="i"
                             v-model="steps[i]">
                           </component>
                      
@@ -143,11 +145,10 @@ export default {
   },
   data: function() {
     return {
-      loading: true,
+      loading: false,
       hasEdits: false,
       panelExpansions: [],
       valid: '',
-      task: { },
       stepTypes: [
         { type: STEP_INSTRUCTION, description: "(*) Instruction" },
         { type: STEP_PAUSE, description: "(*) Pause" },
@@ -164,11 +165,20 @@ export default {
     QRCodeImage: function() {
       return 'https://' + window.location.host + window.location.pathname
     },
+    task: function() {
+      console.debug("%s: computed.task called", __filename)
+      return this.getTaskById(this.task_uuid)
+/*
+      if (!this.task_uuid || this.loading) {
+        return {}
+      } else {
+        return this.getTaskById(this.task_uuid)
+      }
+*/
+    },
     steps: function() {
-      var list = []
-
       console.debug("%s: computed.steps called", __filename)
-      if (!this.task_uuid || !this.task.hasOwnProperty('uuid') || this.loading) {
+      if (!this.task_uuid || this.loading) {
         return []
       } else {
         return this.task.steps.map(function(step_uuid) {
@@ -177,18 +187,42 @@ export default {
       }
     },
   },
+  async beforeRouteEnter(to, from, next) {
+    console.debug("%s: beforeRouteEnter has been called.", __filename)
+    console.debug("%s: beforeRouteEnter to = %O", __filename, to)
+    console.debug("%s: beforeRouteEnter from = %O", __filename, from)
+    next(async function(vm) {
+      console.debug("%s: In callback, task_uuid might be: %s", __filename, to.params.task_uuid)
+      vm.task_uuid = to.params.task_uuid
+      vm.loading = true
+      console.debug("%s: In callback, trying to save task_uuid: %s", __filename, vm.task_uuid)
+      await vm.$store.dispatch("fetchTask", { task_uuid: vm.task_uuid })
+      vm.loading = false
+    })
+  },
+  async beforeRouteUpdate(to, from, next) {
+    console.debug("%s: beforeRouteUpdate has been called.", __filename)
+    this.task_uuid = to.params.task_uuid
+    this.loading = true
+    await this.$store.dispatch("fetchTask", { task_uuid: this.task_uuid })
+    this.loading = false
+    next()
+  },
+/*  
   async mounted() {
     if (this.task_uuid) {
       this.loading = true
       await this.$store.dispatch("fetchTask", this.task_uuid)
-      this.task = Object.assign({}, this.getTaskById(this.task_uuid))
+      //this.task = Object.assign({}, this.getTaskById(this.task_uuid))
       this.loading = false
     } 
   },
   beforeRouteUpdate(to, from, next) {
     console.debug("ROUTE: %s: beforeRouteUpdate called", __filename)
     this.task_uuid = to.params.task_uuid
+    next()
   },
+*/  
   methods: {
     getHeaderComponent(type) {
       return StepFactory.getStepHeaderComponent(type)

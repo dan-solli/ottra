@@ -14,7 +14,21 @@ const TaskService = {
 		if (!user_id || !task_id) {
 			return { ok: false, error: { code: 404, status: 'failed', messages: "Missing parameters" }}
 		} else {
-			return await TaskModel.getTask(user_id, task_id)
+			try {
+				const [ task, steps ] = await Promise.all([
+					TaskModel.getTask(user_id, task_id),
+					TaskModel.getSteps(user_id, task_id)
+				])
+
+				console.debug("%s: getTask responses are task = %O, steps = %O",
+					__filename, task, steps)
+
+				task.data.steps = steps.data
+				return task
+			}
+			catch (err) {
+				console.error("%s: getTask failed: %s", __filename, err)
+			}
 		}
 	},
 	createTask: async function(user_id, payload) {
@@ -120,11 +134,11 @@ const TaskService = {
 			}
 		}
 		var order = 0
-		await payload.forEach(async function(dest) {
+		await Promise.all(payload.steps.map(async function(dest) {
 			console.debug("%s: updateStepList: trying to create relation between %s and %s", __filename, task_id, dest)
 			await CommonService.createRelation(task_id, dest, "INCLUDES", { order : order++ })
-		})
-		return { ok: true, data: {} }
+		}))
+		return await TaskModel.getSteps(user_id, task_id)
 	},
 	updateGoalImages: async function(user_id, task_id, payload) {
 		return { ok: true, data: [] }

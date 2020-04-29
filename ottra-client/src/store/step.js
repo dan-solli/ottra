@@ -136,11 +136,11 @@ const Step = {
 				console.error("%s: updateStep failed: %s", __filename, err)
 			}
 		},
-		removeStep: async function({ commit, dispatch }, { task_uuid, step_uuid }) {
-			console.debug("%s: removeStep uuid: %s from task uuid: %s", 
-				__filename, step_uuid, task_uuid)
+		removeStep: async function({ commit, dispatch }, { task_uuid, step_uuid, step_position }) {
+			console.debug("%s: removeStep uuid: %s from task uuid: %s (Pos: %d)", 
+				__filename, step_uuid, task_uuid, step_position)
 			try {
-				commit("REMOVE_STEP_FROM_TASK", { task_uuid, step_uuid })
+				commit("REMOVE_STEP_FROM_TASK", { task_uuid, step_uuid, step_position })
 				await dispatch("updateStepList", task_uuid)
 			}
 			catch (err) {
@@ -185,32 +185,39 @@ const Step = {
 			console.debug("%s: Trying to hydrate step: %s", __filename, step_uuid)
 			if (!step_uuid || !state.steps.hasOwnProperty(step_uuid)) {
 				console.error("%s: hydrateStep cannot find step %s", __filename, step_uuid)
-			}
-			const step = state.steps[step_uuid]
-			if (step.hasOwnProperty("visualAidImages") && step.visualAidImages.length > 0) {
-				await Promise.all(step.visualAidImages.map(async function (doc) {
-					await dispatch("fetchDocument", doc)
-				}))
-			}
-			if (step.hasOwnProperty("attachments") && step.attachments.length > 0) {
-				await Promise.all(step.attachments.map(async function (doc) {
-					await dispatch("fetchDocument", doc)
-				}))
-			}
-			if (step.hasOwnProperty("tools") && step.tools.length > 0) {
-				await Promise.all(step.tools.map(async function (tool) {
-					await dispatch("fetchEquipment", tool)
-				}))
-			}
-			/* Too deep recursion problem? */
-			if (step.hasOwnProperty("task") && step.task.length > 0) {
-				await dispatch("fetchTask", step.task)
-			}
-			if (step.hasOwnProperty("destination") && step.destination.length > 0) {
-				await dispatch("fetchLocation", step.destination)
-			}
-			if (step.hasOwnProperty("stepLocation") && step.stepLocation.length > 0) {
-				await dispatch("fetchRoom", step.stepLocation)
+			} else {
+				const step = state.steps[step_uuid]
+				if (step.hasOwnProperty("visualAidImages") && step.visualAidImages.length > 0) {
+					console.debug("%s: hydrateStep - hydrating visualAidImages", __filename)
+					await Promise.all(step.visualAidImages.map(async function (doc) {
+						await dispatch("fetchDocument", doc)
+					}))
+				}
+				if (step.hasOwnProperty("attachments") && step.attachments.length > 0) {
+					console.debug("%s: hydrateStep - hydrating attachments", __filename)
+					await Promise.all(step.attachments.map(async function (doc) {
+						await dispatch("fetchDocument", doc)
+					}))
+				}
+				if (step.hasOwnProperty("tools") && step.tools.length > 0) {
+					console.debug("%s: hydrateStep - hydrating tools", __filename)
+					await Promise.all(step.tools.map(async function (tool) {
+						await dispatch("fetchEquipment", tool)
+					}))
+				}
+				/* Too deep recursion problem? */
+				if (step.hasOwnProperty("task") && step.task.length > 0) {
+					console.debug("%s: hydrateStep - hydrating task", __filename)
+					await dispatch("fetchTask", step.task)
+				}
+				if (step.hasOwnProperty("destination") && step.destination.length > 0) {
+					console.debug("%s: hydrateStep - hydrating destination", __filename)
+					await dispatch("fetchLocation", step.destination)
+				}
+				if (step.hasOwnProperty("stepLocation") && step.stepLocation.length > 0) {
+					console.debug("%s: hydrateStep - hydrating stepLocation", __filename)
+					await dispatch("fetchRoom", step.stepLocation)
+				}
 			}
 		},
 /*		

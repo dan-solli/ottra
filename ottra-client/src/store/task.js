@@ -27,8 +27,8 @@ const Task = {
 				__filename, task_uuid, step_uuid)
 			state.tasks[task_uuid].steps.push(step_uuid)
 		},
-		REMOVE_STEP_FROM_TASK(state, { task_uuid, step_uuid }) {
-			// To be implemented, slice it out of the task-id's steps
+		REMOVE_STEP_FROM_TASK(state, { task_uuid, step_uuid, step_position }) {
+			state.tasks[task_uuid].steps.splice(step_position, 1)
 		},
 		CLEAR_STORE(state) {
 			state.tasks = {}
@@ -36,6 +36,9 @@ const Task = {
 		DELETE_TASK(state, uuid) {
 			Vue.delete(state.tasks, uuid)
 		},
+		SET_STEP_LIST(state, { task_uuid, stepList }) {
+			Vue.set(state.tasks, [task_uuid].steps, stepList)
+		}
 /*		
 		SET_TASKS(state, payload) {
 			state.tasks = Object.assign({}, payload)
@@ -107,16 +110,41 @@ const Task = {
 				console.error("%s: deleteTask failed: %O", __filename, err)
 			}
 		},
-		updateStepList: async function({ commit }, task_uuid) {
-			// Not implemented. 
-		},
-		fetchTask: async function({ state, dispatch, commit }, task_uuid) {
-			console.debug("%s: fetchTask called with: %s", __filename, task_uuid)
-			if (!state.tasks.hasOwnProperty(task_uuid)) {
-				const response = await TaskRepo.getTask(task_uuid)
-				commit("ADD_TASK", response.data)
+		updateStepList: async function({ commit, state }, task_uuid) {
+			console.debug("%s: updateStepList called for task: %s", __filename, task_uuid)
+			try {
+				const stepList = state.tasks[task_uuid].steps
+				const response = await TaskRepo.saveStepList(task_uuid, stepList)
+				console.debug("%s: TaskRepo.saveStepList returned: %O", __filename, response.data)
+				commit("SET_STEP_LIST", task_uuid, response.data)
+				return response.data
 			}
-			return await dispatch("hydrateTask", task_uuid)
+			catch (err) {
+				console.error("%s: updateStepList failed: %s", __filename, err)
+			}
+		},
+		fetchTask: async function({ state, dispatch, commit }, { task_uuid, force_fetch = false }) {
+			console.debug("%s: fetchTask called with: %s", __filename, task_uuid)
+			try {
+				if (!force_fetch) {
+					if (!state.tasks.hasOwnProperty(task_uuid)) {
+						return state.tasks[task_uuid]
+					} else {
+						console.debug("%s: fetchTask - data not found in state. Fetching from backend.", __filename)
+						force_fetch = true
+					}
+				}
+				if (force_fetch) {
+					console.debug("%s: fetchStep - fetching from backend", __filename)
+					const response = await TaskRepo.getTask(task_uuid)
+					commit("ADD_TASK", response.data)
+					await dispatch("hydrateTask", task_uuid)
+					return response.data
+				}
+			}
+			catch (err) {
+				console.error("%s: fetchTask failed: %s", __filename, err)				
+			}
 		},
 		hydrateTask: async function({ state, dispatch }, task_uuid) {
 			console.debug("%s: hydrateTask called with %s", __filename, task_uuid)
@@ -126,13 +154,15 @@ const Task = {
 			const task = state.tasks[task_uuid]
 			console.debug("%s: Task data is %O", __filename, task)
 			if (task.goodEnoughImages.length > 0) {
-				console.debug("%s: calling fetchDocument for GEI")
+				console.debug("%s: calling fetchDocument for GEI", __filename)
+				console.error("%s: Using forEach with await/async for goodEnoughImages", __filename)
 				task.goodEnoughImages.forEach(async function (doc) {
 					await dispatch("fetchDocument", doc)
 				})
 			}
 			if (task.goalImages.length > 0) {
-				console.debug("%s: calling fetchDocument for GI")
+				console.debug("%s: calling fetchDocument for GI", __filename)
+				console.error("%s: Using forEach with await/async for goalImages", __filename)
 				task.goalImages.forEach(async function (doc) {
 					await dispatch("fetchDocument", doc)
 				})
@@ -145,7 +175,45 @@ const Task = {
 				}))
 			}
 		},
+		moveStepUp: async function({ commit, dispatch, state }, 
+			{ task_uuid, step_uuid, step_position }) {
+			console.debug("%s: moveStepUp called on task %s, step %s, pos %d",
+				__filename, task_uuid, step_uuid, step_position)
+			try {
+				if (step_position > 0) {
+					let stepList = state.tasks[task_uuid].steps
+					console.debug("%s: moveStepUp: stepList is %O", __filename, stepList)
+					[ stepList[step_position], stepList[step_position-1]] = 
+					[ stepList[step_position-1], stepList[step_position]]
+					console.debug("%s: moveStepUp: stepList is now: %O", __filename, stepList)
+					await TaskRepo.saveStepList(task_uuid, stepList) 
+					commit("SET_STEP_LIST", task_uuid, stepList)
+				}
+			}
+			catch (err) {
+				console.error("%s: moveStepUp failed: %s", __filename, err)
+			}
+		},
+		moveStepDown: async function({ commit, state, dispatch }, 
+			{ task_uuid, step_uuid, step_position }) {
+			console.debug("%s: moveStepDown called on task %s, step %s, pos %d",
+				__filename, task_uuid, step_uuid, step_position)
 
+			try {
+				let stepList = state.tasks[task_uuid].steps
+				console.debug("%s: moveStepDown: stepList is %O", __filename, stepList)
+				if (stepList.length > step_position) {
+					[ stepList[step_position], stepList[step_position + 1]] = 
+					[ stepList[step_position + 1], stepList[step_position]]
+					console.debug("%s: moveStepDown: stepList is now: %O", __filename, stepList)
+					await TaskRepo.saveStepList(task_uuid, stepList) 
+					commit("SET_STEP_LIST", task_uuid, stepList)
+				}
+			}
+			catch (err) {
+				console.error("%s: moveStepDown failed: %s", __filename, err)
+			}
+		},
 // Generics?
 
 		// In use.

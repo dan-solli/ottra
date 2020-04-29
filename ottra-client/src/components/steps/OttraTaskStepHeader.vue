@@ -7,6 +7,7 @@
 					v-on:move-up="moveUp"
 					v-on:move-down="moveDown"
 					v-on:remove-step="removeStep"
+					:step_position="step_position"
 					v-model="editMode">
 				</OttraStepMenu>
 				<OttraStepState 

@@ -4,6 +4,10 @@ import OttraStepMenu from '@/components/steps/subcomponents/OttraStepMenu'
 export const OttraStepMixin = {
 	props: {
 		value: Object,
+		step_position: {
+			type: Number,
+			default: -1
+		},
 		task_uuid: String,
 		editMode: {
 			type: Boolean,
@@ -46,7 +50,8 @@ export const OttraStepMixin = {
 			console.debug("%s: removeStep called", __filename)
 			this.$store.dispatch("removeStep", {
 				task_uuid: this.task_uuid,
-				step_uuid: this.value.uuid
+				step_uuid: this.value.uuid,
+				step_position: this.step_position,
 			})
 		},
 		editStep: function() {
@@ -61,9 +66,19 @@ export const OttraStepMixin = {
 		},
 		moveUp: function() {
 			console.debug("%s: moveUp called", __filename)
+			this.$store.dispatch("moveStepUp", {
+				task_uuid: this.task_uuid,
+				step_uuid: this.value.uuid,
+				step_position: this.step_position,
+			})
 		},
 		moveDown: function() {
 			console.debug("%s: moveDown called", __filename)
+			this.$store.dispatch("moveStepDown", {
+				task_uuid: this.task_uuid,
+				step_uuid: this.value.uuid,
+				step_position: this.step_position,
+			})
 		}
 	},
 	components: {
