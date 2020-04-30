@@ -14,7 +14,7 @@ const r = express.Router()
 
 r.get("/location/:location_id", [ autenUser('uuid').isUUID() ], 
 	async function(req, res) {
-		sendResponse(res, await RoomService.getRoomsByLocation(req.param.location_id, req.tokenData.uuid))
+		sendResponse(res, await RoomService.getRoomsByLocation(req.params.location_id, req.tokenData.uuid))
 	}
 )
 
@@ -29,7 +29,7 @@ r.get("/:room_id", [
 		check('room_id').isUUID() 
 	],
 	async function(req, res) {
-		sendResponse(res, await RoomService.getRoomById(req.tokenData.uuid, req.param.room_id))
+		sendResponse(res, await RoomService.getRoomById(req.tokenData.uuid, req.params.room_id))
 	}
 )
 

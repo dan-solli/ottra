@@ -187,7 +187,11 @@ export default {
       }
     },
   },
-  async beforeRouteEnter(to, from, next) {
+  created() {
+    this.loadData()
+  },
+/*  
+  beforeRouteEnter(to, from, next) {
     console.debug("%s: beforeRouteEnter has been called.", __filename)
     console.debug("%s: beforeRouteEnter to = %O", __filename, to)
     console.debug("%s: beforeRouteEnter from = %O", __filename, from)
@@ -200,14 +204,19 @@ export default {
       vm.loading = false
     })
   },
+*/  
   async beforeRouteUpdate(to, from, next) {
     console.debug("%s: beforeRouteUpdate has been called.", __filename)
     this.task_uuid = to.params.task_uuid
+    await this.loadData()
+/*
     this.loading = true
     await this.$store.dispatch("fetchTask", { task_uuid: this.task_uuid })
     this.loading = false
+*/    
     next()
   },
+  
 /*  
   async mounted() {
     if (this.task_uuid) {
@@ -224,6 +233,14 @@ export default {
   },
 */  
   methods: {
+    loadData: async function() {
+      this.loading = true
+      await this.$store.dispatch("fetchTask", { 
+        task_uuid: this.task_uuid,
+        force_hydrate: true  
+      })
+      this.loading = false
+    },
     getHeaderComponent(type) {
       return StepFactory.getStepHeaderComponent(type)
     },

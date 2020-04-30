@@ -1,4 +1,4 @@
-const DB = require('./../infra/db')
+  const DB = require('./../infra/db')
 const uuidv4 = require('uuid/v4')
 
 const RoomModel = {

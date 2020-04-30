@@ -19,6 +19,12 @@ r.get("/", [ autenUser('uuid').isUUID() ],
 	}
 )
 
+r.get("/:loc_uuid", [ autenUser('uuid').isUUID() ], 
+	async function(req, res) {
+		sendResponse(res, await LocationService.getLocation(req.tokenData.uuid, req.params.loc_uuid))
+	}
+)
+
 r.delete("/", [ autenUser('uuid').isUUID() ],
 	async function(req, res) {
 		// There really should be some extra safeguard here. Only delete your own rooms etc.

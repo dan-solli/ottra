@@ -7,6 +7,9 @@ const LocationService = {
 	getLocations: async function(user_id) {
 		return await LocationModel.getLocations(user_id)
 	},
+	getLocation: async function(user_id, loc_id) {
+		return await LocationModel.getLocation(user_id, loc_id)
+	},
 	createLocation: async function(payload, user_id) {
 		try {
 			const weatherResult = await WeatherService.getWeather(WEATHER_FULL, payload.latitude, payload.longitude)

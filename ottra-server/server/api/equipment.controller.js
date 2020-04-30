@@ -41,11 +41,10 @@ r.post("/", [
 	}
 )
 
-r.get('/:eq_id', [
-		autenUser('uuid').isUUID(),
-		check('eq_id').isUUID() 
-	], async function(res, req) {
-		sendResponse(res, await EquipmentService.getEquipmentById(req.tokenData.uuid, req.param.eq_id))
+r.get('/:eq_id', [ autenUser('uuid').isUUID() ],
+	async function(req, res) {
+		console.debug("%s: GET /equipment/<uuid> called", __filename)
+		sendResponse(res, await EquipmentService.getEquipmentById(req.tokenData.uuid, req.params.eq_id))
 	}
 )
 

@@ -82,8 +82,15 @@ const Document = {
         console.error("%s: DocumentRepo failed to get documents: %O", __filename, err)
       }      
     },
-    fetchDocument: async function({ dispatch }, doc_uuid) {
+    fetchDocument: async function({ dispatch }, { doc_uuid, force_fetch = false }) {
+/*      
+      console.debug("%s: fetchDocument is called with %s", __filename, doc_uuid)
+      try {
+        const response = await DocumentRepo.getDocument(doc_uuid)
+        console.debug("%s: fetchDocument: Response is: %O", __filename, response.data)
+      }
       //dispatch("loadDocuments")
+*/      
     },
     createFolder: async function ({ commit, dispatch, state }, folderName) {
       try {

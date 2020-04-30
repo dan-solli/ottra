@@ -27,7 +27,12 @@ const RoomService = {
 		return await RoomModel.getRooms(user_id)
 	},
 	getRoomById: async function(user_id, room_id) {
-		return await RoomModel.getRoomById(user_id, room_id)
+		try {
+			return await RoomModel.getRoomById(user_id, room_id)
+		}
+		catch (err) {
+			return { ok: false, error: { code: 422, status: 'failed', message: err } }
+		}
 	}
 }
 

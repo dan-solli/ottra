@@ -123,11 +123,18 @@ const Task = {
 				console.error("%s: updateStepList failed: %s", __filename, err)
 			}
 		},
-		fetchTask: async function({ state, dispatch, commit }, { task_uuid, force_fetch = false }) {
+		fetchTask: async function({ state, dispatch, commit }, { 
+			task_uuid, 
+			force_fetch = false,
+			force_hydrate = false
+		}) {
 			console.debug("%s: fetchTask called with: %s", __filename, task_uuid)
 			try {
 				if (!force_fetch) {
-					if (!state.tasks.hasOwnProperty(task_uuid)) {
+					if (state.tasks.hasOwnProperty(task_uuid)) {
+						if (force_hydrate) {
+							await dispatch("hydrateTask", task_uuid)
+						}
 						return state.tasks[task_uuid]
 					} else {
 						console.debug("%s: fetchTask - data not found in state. Fetching from backend.", __filename)
@@ -157,14 +164,14 @@ const Task = {
 				console.debug("%s: calling fetchDocument for GEI", __filename)
 				console.error("%s: Using forEach with await/async for goodEnoughImages", __filename)
 				task.goodEnoughImages.forEach(async function (doc) {
-					await dispatch("fetchDocument", doc)
+					await dispatch("fetchDocument", { doc_uuid: doc })
 				})
 			}
 			if (task.goalImages.length > 0) {
 				console.debug("%s: calling fetchDocument for GI", __filename)
 				console.error("%s: Using forEach with await/async for goalImages", __filename)
 				task.goalImages.forEach(async function (doc) {
-					await dispatch("fetchDocument", doc)
+					await dispatch("fetchDocument", { doc_uuid: doc })
 				})
 			}
 			if (task.steps.length > 0) {

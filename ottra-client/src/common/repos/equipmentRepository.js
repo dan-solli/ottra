@@ -8,5 +8,8 @@ export default {
 	},
 	get() {
 		return Repository.get(`${equipment_resource}`)
+	},
+	getEquipment(eq_uuid) { 
+		return Repository.get(`${equipment_resource}/${eq_uuid}`)
 	}
 };

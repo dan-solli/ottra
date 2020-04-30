@@ -7,10 +7,10 @@ export default {
 	get() {
 		return Repository.get(`${loc_resource}`);
 	},
-/*
 	getLocation(uuid) {
 		return Repository.get(`${loc_resource}/${uuid}`);
 	},
+/*
 	getRooms(locationId) {
 		return Repository.get(`${loc_resource}/${locationId}/rooms`)
 	},

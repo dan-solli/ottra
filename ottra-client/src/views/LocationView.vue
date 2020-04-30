@@ -113,6 +113,9 @@ export default {
       return Object.values(this.getLocations)
     }
   },
+  created() {
+    this.$store.dispatch("loadLocations")  
+  },
   methods: {
     editItem (item) {
     },
