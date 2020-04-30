@@ -57,6 +57,7 @@
                     <v-text-field 
                       class="pr-2"
                       prepend-icon="mdi-calendar-repeat"
+                      persistent-hint
                       hint="(*) How many times per ..."
                       v-model="payload.recurranceNumber"
                       min="1"
