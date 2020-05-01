@@ -10,16 +10,13 @@
 					:step_position="step_position"
 					v-model="editMode">
 				</OttraStepMenu>
-				<OttraStepState 
-					v-model="value.saveState">
-				</OttraStepState>
 				<v-icon>{{ getTransportIcon(value.method) || 'mdi-train-car' }}</v-icon>
 			</v-col>
 			<v-col cols="4">
 		    {{ getTransportText(value.method) || '<(*) New transport>' }}
 			</v-col>
 			<v-col cols="3">
-				{{ value.destination }}
+				{{ getLocationByID(value.destination).name || '' }}
 			</v-col>
 			<v-col cols="3">
 				{{ value.duration }}
@@ -29,12 +26,20 @@
 </template>
 
 <script>
+
+import { mapGetters } from 'vuex'
+
 import { OttraStepMixin } from '@/components/steps/mixins/OttraStepMixin'
 import { OttraTransportMixin } from '@/components/steps/mixins/OttraTransportMixin'
 
 export default {
 	name: 'ottra-transport-step-header',
 	mixins: [ OttraStepMixin, OttraTransportMixin ],
+	computed: {
+		...mapGetters([ 
+			"getLocationByID",
+		])
+	}
 }
 
 </script>	

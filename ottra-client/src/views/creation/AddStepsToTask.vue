@@ -65,6 +65,15 @@
                 </v-row>
 
                 <v-row>
+                  <v-col cols="2">
+                    (*) Duration
+                  </v-col>
+                  <v-col cols="4">
+                    {{ getTaskDuration(task.uuid) | toHMS }}
+                  </v-col>
+                </v-row>
+
+                <v-row>
                   <v-col cols="12">
                     <qrcode-vue :value="QRCodeImage"></qrcode-vue>
                   </v-col>
@@ -157,10 +166,22 @@ export default {
       ]
     }
   },
+  filters: {
+    toHMS: function (value) {
+      if (!value) {
+        return ''
+      } else {
+        const hr = parseInt(value / 60)
+        const min = value % 60
+        return hr + ":" + min
+      }
+    }
+  },
   computed: {
     ...mapGetters([
       "getStepById",
       "getTaskById",
+      "getTaskDuration",
     ]),
     QRCodeImage: function() {
       return 'https://' + window.location.host + window.location.pathname
@@ -168,13 +189,6 @@ export default {
     task: function() {
       console.debug("%s: computed.task called", __filename)
       return this.getTaskById(this.task_uuid)
-/*
-      if (!this.task_uuid || this.loading) {
-        return {}
-      } else {
-        return this.getTaskById(this.task_uuid)
-      }
-*/
     },
     steps: function() {
       console.debug("%s: computed.steps called", __filename)
@@ -190,48 +204,12 @@ export default {
   created() {
     this.loadData()
   },
-/*  
-  beforeRouteEnter(to, from, next) {
-    console.debug("%s: beforeRouteEnter has been called.", __filename)
-    console.debug("%s: beforeRouteEnter to = %O", __filename, to)
-    console.debug("%s: beforeRouteEnter from = %O", __filename, from)
-    next(async function(vm) {
-      console.debug("%s: In callback, task_uuid might be: %s", __filename, to.params.task_uuid)
-      vm.task_uuid = to.params.task_uuid
-      vm.loading = true
-      console.debug("%s: In callback, trying to save task_uuid: %s", __filename, vm.task_uuid)
-      await vm.$store.dispatch("fetchTask", { task_uuid: vm.task_uuid })
-      vm.loading = false
-    })
-  },
-*/  
   async beforeRouteUpdate(to, from, next) {
     console.debug("%s: beforeRouteUpdate has been called.", __filename)
     this.task_uuid = to.params.task_uuid
     await this.loadData()
-/*
-    this.loading = true
-    await this.$store.dispatch("fetchTask", { task_uuid: this.task_uuid })
-    this.loading = false
-*/    
     next()
   },
-  
-/*  
-  async mounted() {
-    if (this.task_uuid) {
-      this.loading = true
-      await this.$store.dispatch("fetchTask", this.task_uuid)
-      //this.task = Object.assign({}, this.getTaskById(this.task_uuid))
-      this.loading = false
-    } 
-  },
-  beforeRouteUpdate(to, from, next) {
-    console.debug("ROUTE: %s: beforeRouteUpdate called", __filename)
-    this.task_uuid = to.params.task_uuid
-    next()
-  },
-*/  
   methods: {
     loadData: async function() {
       this.loading = true
@@ -247,23 +225,11 @@ export default {
     getContentComponent(type) {
       return StepFactory.getStepContentComponent(type)
     },
-
     startTour: function() {
     },
     closeDialog: function() {
       this.$router.push('/task')
     },
-/*    
-
-    This method should never be used. If you press edit on the task, we should return to CreateTask-view
-    with proper flagging, thus giving back the editable fields.
-
-    saveTask: function() {
-      console.debug("%s: saveTask, payload is: %O", __filename, this.task)
-      this.$store.dispatch("updateTask", this.task)
-      //this.$router.push('/task')
-    },
-*/    
     addStep: async function(step_type) {
       if (!this.task_uuid) {
         console.error("%s: addStep called without task_uuid", __filename)

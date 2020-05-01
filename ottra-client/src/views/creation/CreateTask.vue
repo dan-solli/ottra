@@ -189,6 +189,7 @@ export default {
   data: function() {
     return {
       valid: '',
+      dirty: false,
       payload: {
         subject: '',
         //uuid: '',

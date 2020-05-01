@@ -14,8 +14,27 @@ const Task = {
 		getTaskById: (state) => (id) => {
 			return state.tasks[id]
 		},
-		getTaskDuration: (state) => (id) => {
-			return { hours: 0, minutes: 4, seconds: 23 }
+		getTaskDuration: (state, getters) => (id) => {
+			if (!state.tasks[id].steps.length) {
+				return 262
+			} else {
+				return state.tasks[id].steps.reduce(function (acc, step_uuid, idx) {
+					const step = getters.getStepById(step_uuid)
+					if (!step) {
+						return 6000
+					}
+					console.debug("%s: getTaskDuration: in reduce[%d]", __filename, idx)
+					if (!step.hasOwnProperty('duration')) {
+						console.debug("%s: getTaskDuration: No duration in step %O", __filename, step)
+						return acc
+					} else {
+						var [ hr, min ] = step.duration.split(":")
+						console.debug("%s: From step, got duration %d:%d", __filename, hr, min)
+						return acc + parseInt(min) + parseInt(hr) * 60
+					}
+				}, 0)
+			}
+			return 263
 		},
 	},
 	mutations: {
@@ -37,7 +56,9 @@ const Task = {
 			Vue.delete(state.tasks, uuid)
 		},
 		SET_STEP_LIST(state, { task_uuid, stepList }) {
-			Vue.set(state.tasks, [task_uuid].steps, stepList)
+			Vue.set(state.tasks[task_uuid], "steps", stepList)
+			Vue.set(state.tasks, "ARGH", 1)
+			Vue.delete(state.tasks, "ARGH")
 		}
 /*		
 		SET_TASKS(state, payload) {
@@ -184,17 +205,15 @@ const Task = {
 		},
 		moveStepUp: async function({ commit, dispatch, state }, 
 			{ task_uuid, step_uuid, step_position }) {
-			console.debug("%s: moveStepUp called on task %s, step %s, pos %d",
-				__filename, task_uuid, step_uuid, step_position)
 			try {
 				if (step_position > 0) {
-					let stepList = state.tasks[task_uuid].steps
-					console.debug("%s: moveStepUp: stepList is %O", __filename, stepList)
-					[ stepList[step_position], stepList[step_position-1]] = 
-					[ stepList[step_position-1], stepList[step_position]]
-					console.debug("%s: moveStepUp: stepList is now: %O", __filename, stepList)
+					const stepList = state.tasks[task_uuid].steps
+					const tmpStep = stepList[step_position]
+					stepList[step_position] = stepList[step_position-1]
+					stepList[step_position-1] = tmpStep
+
 					await TaskRepo.saveStepList(task_uuid, stepList) 
-					commit("SET_STEP_LIST", task_uuid, stepList)
+					commit("SET_STEP_LIST", { task_uuid, stepList })
 				}
 			}
 			catch (err) {
@@ -211,10 +230,10 @@ const Task = {
 				console.debug("%s: moveStepDown: stepList is %O", __filename, stepList)
 				if (stepList.length > step_position) {
 					[ stepList[step_position], stepList[step_position + 1]] = 
-					[ stepList[step_position + 1], stepList[step_position]]
+					[ stepList[step_position + 1], stepList[step_position]];
 					console.debug("%s: moveStepDown: stepList is now: %O", __filename, stepList)
 					await TaskRepo.saveStepList(task_uuid, stepList) 
-					commit("SET_STEP_LIST", task_uuid, stepList)
+					commit("SET_STEP_LIST", { task_uuid, stepList })
 				}
 			}
 			catch (err) {

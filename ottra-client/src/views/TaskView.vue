@@ -87,7 +87,11 @@ export default {
         },
         deleteTask: function(item) {
             if (this.selectedTask) {
-                this.$store.dispatch("deleteTask", this.selectedTask.uuid)
+                const answer = window.confirm("(*) Do you really want to delete the task?")
+                if (answer) {
+                    this.$store.dispatch("deleteTask", this.selectedTask.uuid)
+                } 
+                this.selectedTask = 0
             }
         }
 	},

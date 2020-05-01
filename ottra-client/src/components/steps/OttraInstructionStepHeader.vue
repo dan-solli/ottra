@@ -10,9 +10,6 @@
 					:step_position="step_position"
 					v-model="editMode">
 				</OttraStepMenu>
-				<OttraStepState 
-					v-model="value.saveState">
-				</OttraStepState>
 				<v-icon>mdi-format-list-checkbox</v-icon>
 			</v-col>
 			<v-col cols="4">

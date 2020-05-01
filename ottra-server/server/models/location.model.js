@@ -56,7 +56,7 @@ const LocationModel = {
 	},
   getLocation: async function(user_id, loc_id) {
     return await DB.fetchRow(`
-      MATCH (u:User { uuid: {user_id} })-->(l:Location { uuid: {loc_id} }) 
+      MATCH (l:Location { uuid: {loc_id} }) 
       OPTIONAL MATCH (l)-->(r:Room)
       OPTIONAL MATCH (l)-[:ACCESS_KEY]->(k:Equipment)
       WITH COLLECT (r.uuid) as theRooms, 
@@ -64,7 +64,7 @@ const LocationModel = {
       RETURN l { .*, 
                   dateTime: apoc.date.format(l.created), 
                   rooms: theRooms,
-                  accessKeys: theKeys }) AS Locations`, { user_id, loc_id }, "Locations"
+                  accessKeys: theKeys } AS Location`, { loc_id }, "Location"
     )
   },
   deleteLocation: async function(user_id, location_id) {

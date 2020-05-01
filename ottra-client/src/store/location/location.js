@@ -53,14 +53,14 @@ const Location = {
     },
     fetchLocation: async function({ state, dispatch, commit }, 
       { location_uuid, force_fetch }) {
-      console.debug("%s: fetchStep uuid: %s", __filename, step_uuid)
+      console.debug("%s: fetchLocation uuid: %s", __filename, location_uuid)
 
       try {
         if (!force_fetch) {
           console.debug("%s: fetchLocation, not forced!", __filename)
-          if (state.locations.hasOwnProperty(loc_uuid)) {
+          if (state.locations.hasOwnProperty(location_uuid)) {
             console.debug("%s: fetchLocation - had info in state", __filename)
-            return state.locations[loc_uuid]
+            return state.locations[locaction_uuid]
           } else {
             console.debug("%s: fetchLocation - data not found in state. Should fetch from backend.", __filename)
             force_fetch = true
@@ -68,7 +68,7 @@ const Location = {
         }
         if (force_fetch) {
           console.debug("%s: fetchLocation - fetching from backend", __filename)
-          const response = await LocationRepo.getLocation(loc_uuid)
+          const response = await LocationRepo.getLocation(location_uuid)
           console.debug("%s: LocationRepo.getLocation returns %O", __filename, response.data)
           commit("ADD_LOCATION", response.data)
           await dispatch("hydrateLocation", response.data.uuid)
