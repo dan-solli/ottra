@@ -16,6 +16,8 @@
     "axios-auth-refresh": "^1.0.7",
     "core-js": "^2.6.11",
     "get-value": "^3.0.1",
+    "kind-of": "^6.0.3",
+    "minimist": "^1.2.5",
     "mixin-deep": "^2.0.1",
     "qrcode.vue": "^1.7.0",
     "sass": "^1.26.5",
