@@ -73,7 +73,6 @@
               </OttraWidget>
             </v-col>
 
-            <!-- TODO: Make new component. -->
             <v-col v-if="getNewTodoCount" md4>
               <OttraWidget type="plan">
                 <template slot="title">

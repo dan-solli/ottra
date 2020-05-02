@@ -95,7 +95,6 @@ export default {
 			if (url.substring(0,5) === 'blob:') {
 				return url
 			} else {
-				// TODO: Must replace this URL. Yikes.
 				return `https://192.168.1.200:8888/content/${this.getUserID}/${url}`
 			}
 		},

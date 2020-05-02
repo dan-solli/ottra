@@ -37,14 +37,6 @@
 						<v-divider class="mx-4" vertical></v-divider>
 
 						<OttraFolderBrowser></OttraFolderBrowser>
-<!--
-						<v-btn 
-							:disabled="!hasSelectedFiles" 
-							@click="moveFiles"
-							text>
-							<v-icon>mdi-file-move</v-icon>
-						</v-btn>
--->
 
 						<v-btn 
 							:disabled="!hasSelectedFiles"
@@ -305,8 +297,6 @@ export default {
 			if (doc.filename.substring(0,5) === 'blob:') {
 				return doc.filename
 			} else {
-				// TODO: Must replace this URL. Yikes.
-				// This should soak up the cwd. How?
 				return `https://192.168.1.200:8888/content/${this.getUserID}/${doc.path}/${doc.filename}`
 			}
 		},

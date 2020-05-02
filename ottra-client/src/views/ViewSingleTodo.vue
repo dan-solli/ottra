@@ -26,9 +26,6 @@
 
 					<v-layout>
 				    <v-flex xs12 sm6 md4>
-				    	<!-- TODO: Datepickern borde kontrollera hur tunga olika dagar är och visualisera -->
-				    	<!-- TODO: Faktum är att due-date kanske inte borde sättas här alls. I planeringsvyn
-				    							borde olika uppgifter planeras in... Hum! -->
 				      <v-menu
 				        ref="menu"
 				        v-model="menu"
