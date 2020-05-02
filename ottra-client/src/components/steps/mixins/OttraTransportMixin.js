@@ -6,7 +6,6 @@ export const TRANSPORT_BY_PLANE = 5
 export const TRANSPORT_BY_BICYCLE = 6
 export const TRANSPORT_BY_OTHER = 7
 
-// TODO: Need to refactor and streamline this shit. 
 export const OttraTransportMixin = {
 	data: function() {
 		return {

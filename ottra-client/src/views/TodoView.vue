@@ -13,7 +13,7 @@
 		<template v-slot:main-content>
 			<v-container fluid>
 				<v-row>
-					<v-col v-for="i in getTodos" :key="i.uuid" class="d-flex child-flex" cols="2">
+					<v-col v-for="i in getTodos" :key="i.uuid" class="d-flex child-flex" cols="3">
 						<OttraTodo :todo="i" view-mode="card"></OttraTodo>
 					</v-col>
 				</v-row>
