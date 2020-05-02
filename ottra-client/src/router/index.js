@@ -63,7 +63,7 @@ const router = new Router({
       meta: { noAuthRequired: true },
       component: LoginUser,
       beforeEnter: (to, from, next) => {
-        if (store.state.isAuthenticated) {
+        if (store.state.User.isAuthenticated) {
           next("/dashboard")
         } else {
           next()
@@ -76,7 +76,7 @@ const router = new Router({
       meta: { noAuthRequired: true },
       component: RegisterUser,
       beforeEnter: (to, from, next) => {
-        if (store.state.isAuthenticated) {
+        if (store.state.User.isAuthenticated) {
           next("/dashboard")
         } else {
           next()
