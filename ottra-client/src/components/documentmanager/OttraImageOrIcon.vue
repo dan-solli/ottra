@@ -95,7 +95,7 @@ export default {
 			if (url.substring(0,5) === 'blob:') {
 				return url
 			} else {
-				return `https://192.168.1.200:8888/content/${this.getUserID}/${url}`
+				return `${this.getServerPath}/${this.getUserID}/${url}`
 			}
 		},
 		clickImage: function(event) {
@@ -114,6 +114,7 @@ export default {
 		...mapGetters([
 			"getUserID",
 			"getSelectedFiles",
+			"getServerPath"
 		]),
 		viewActionButtons: function() {
 			return !this.readOnly

@@ -42,7 +42,8 @@ const Document = {
           }
         }
       }
-    }      
+    },
+    getServerPath: state => "https://192.168.1.200:8888/content",      
 	},
 	actions: {
     changeDir: async function ({ commit, state }, cwd) {

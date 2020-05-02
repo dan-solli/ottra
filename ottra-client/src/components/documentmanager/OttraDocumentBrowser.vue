@@ -228,7 +228,8 @@ export default {
 		...mapGetters([ 
 			"getDocuments",
 			"getUserID",
-			"getCWD"
+			"getCWD",
+			"getServerPath"
 		]),
 		hasSelectedFiles: function() {
 			return this.selectedFiles.length
@@ -297,7 +298,7 @@ export default {
 			if (doc.filename.substring(0,5) === 'blob:') {
 				return doc.filename
 			} else {
-				return `https://192.168.1.200:8888/content/${this.getUserID}/${doc.path}/${doc.filename}`
+				return `${this.getServerPath}/${this.getUserID}/${doc.path}/${doc.filename}`
 			}
 		},
 		clickImage: function(doc) {
