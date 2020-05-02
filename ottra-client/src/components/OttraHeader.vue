@@ -131,11 +131,23 @@
 			    	<span> {{ $t('ui.navbar.weather.tooltip') }} </span>
 					</v-tooltip>
 
+<!--
 		    	<v-tooltip v-if="isAuthenticated" bottom>
 		    		<template v-slot:activator="{ on }">
 					    <v-btn text to="/filebrowser" v-on="on">
 						    <v-icon>mdi-file-document-outline</v-icon>
 							</v-btn>		
+			    	</template>
+			    	<span> {{ $t('ui.navbar.filebrowser.tooltip') }} </span>
+					</v-tooltip>
+-->
+		    	<v-tooltip v-if="isAuthenticated" bottom>
+		    		<template v-slot:activator="{ on }">
+			    		<OttraDocumentBrowser 
+			    			v-bind:attach-document="false"
+			    			v-on="on"
+			    			v-model="documents">
+			    		</OttraDocumentBrowser>
 			    	</template>
 			    	<span> {{ $t('ui.navbar.filebrowser.tooltip') }} </span>
 					</v-tooltip>
@@ -170,11 +182,13 @@ import { mapGetters, mapActions } from "vuex";
 import { TODO_NEW } from '@/common/todo.types'
 
 import OttraNavigationDrawer from '@/components/OttraNavigationDrawer'
+import OttraDocumentBrowser from '@/components/documentmanager/OttraDocumentBrowser'
 
 export default {
   name: "ottra-navbar",
   components: {
-  	OttraNavigationDrawer
+  	OttraNavigationDrawer,
+  	OttraDocumentBrowser
   },
   computed: {
   		...mapGetters([ 
@@ -188,6 +202,7 @@ export default {
   },
   data() {
   	return {
+  		documents: [],
   		navigation_drawer: false,
       show_toolbar_extension: false,
       toggle_mode: null,
