@@ -14,6 +14,7 @@ const Storage = {
       Vue.set(state.storages, payload.uuid, payload)
     },
     SET_STORAGES(state, payload) {
+      console.debug("%s: SET_STORAGES: %O", __filename, payload)
       state.storages = Object.assign({}, payload)
     },
     CLEAR_STORE(state) {
@@ -24,6 +25,42 @@ const Storage = {
     getStorages: state => state.storages,
     getStorageByID: (state) => (id) => { 
       return state.storages[id]
+    },
+    getStorageTreeNodeById: (state, getters) => (id) => {
+      const node = state.storages[id]
+
+      var childNodes = []
+      if (node.storages.length > 0) {
+        childNodes = childNodes.concat(node.storages.map(function (n) {
+          return getters.getStorageTreeNodeById(n)
+        }))
+      }
+      if (node.equipment.length > 0) {
+        childNodes = childNodes.concat(node.equipment.map(function (n) {
+          return getters.getEquipmentTreeNodeById(n)
+        }))
+      }
+      if (node.accessKeys.length > 0) {
+        childNodes = childNodes.concat(node.accessKeys.map(function (n) {
+          return getters.getEquipmentTreeNodeById(n)
+        }))
+      }
+      return {
+        id: node.uuid,
+        name: node.name,
+        type: "storage",
+        icon: "mdi-package-variant",
+        children: childNodes,
+        parent: { ...node.location }
+      }
+    },
+    getStorageAutoCompleteNodeById: (state) => (id) => {
+      const node = state.storages[id]
+      return {
+        text: node.name,
+        value: node.uuid,
+        parent: { ...node.location }
+      }
     }
 	},
 	actions: {
@@ -65,7 +102,6 @@ const Storage = {
     loadStorages: async function({ commit }) {
       try {
         const response = await StorageRepo.getStorages()
-        console.debug("%s: loadStorages: Response is %O", __filename, response)
 
         let new_storages = {}
         response.data.forEach(function(item) {

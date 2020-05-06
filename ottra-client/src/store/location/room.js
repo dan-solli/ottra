@@ -13,6 +13,7 @@ const Room = {
       Vue.set(state.rooms, payload.uuid, payload)
     },
     SET_ROOMS(state, payload) {
+      console.debug("%s: SET_ROOMS payload = %O", __filename, payload)
       state.rooms = Object.assign({}, payload)
     },
     CLEAR_STORE(state) {
@@ -23,6 +24,42 @@ const Room = {
     getRooms: state => state.rooms,
     getRoomByID: (state) => (id) => { 
       return state.rooms[id]
+    },
+    getRoomTreeNodeById: (state, getters) => (id) => {
+      const node = state.rooms[id]
+
+      var childNodes = []
+      if (node.storages.length > 0) {
+        childNodes = childNodes.concat(node.storages.map(function (n) {
+          return getters.getStorageTreeNodeById(n)
+        }))
+      }
+      if (node.equipment.length > 0) {
+        childNodes = childNodes.concat(node.equipment.map(function (n) {
+          return getters.getEquipmentTreeNodeById(n)
+        }))
+      }
+      if (node.accessKeys.length > 0) {
+        childNodes = childNodes.concat(node.accessKeys.map(function (n) {
+          return getters.getEquipmentTreeNodeById(n)
+        }))
+      }
+      return {
+        id: node.uuid,
+        name: node.name,
+        type: "room",
+        icon: "mdi-floor-plan",
+        children: childNodes,
+        parent: { ...node.location }
+      }
+    },
+    getRoomAutoCompleteNodeById: (state) => (id) => {
+      const node = state.rooms[id]
+      return {
+        text: node.name,
+        value: node.uuid,
+        parent: { ...node.location }
+      }
     }
 	},
 	actions: {

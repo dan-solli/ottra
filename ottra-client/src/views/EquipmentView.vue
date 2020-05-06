@@ -92,7 +92,9 @@ export default {
       ],
     }
   },
-
+  async mounted() {
+    await this.$store.dispatch("loadEquipment")
+  },
   computed: {
     ...mapGetters([
       "getEquipment"

@@ -12,60 +12,49 @@
      
     </v-toolbar>
 
-    <v-treeview 
-      v-model="tree"
-      hoverable
-      dense 
-      :items="items"
-      :loadChildren="loadChildren">
-      <template v-slot:prepend="{ item }">
-        <v-icon> {{ item.icon }} </v-icon>
-      </template>
-      <template v-slot:append="{ item }">
-        <v-menu v-if="!item.type.includes('Equipment')" offset-y>
-          <template v-slot:activator="{ on }">
-            <v-btn test icon v-on="on">
-              <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item>
-              <v-list-item-title @click="addStorage(item)">
-                {{ $t('ui.tooltip.addstorage') }} 
-              </v-list-item-title>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-title @click="addEquipment(item)">
-                {{ $t('ui.tooltip.addequipment') }} 
-              </v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </template>
+    <OttraLocationTree></OttraLocationTree>
 
-      <template v-slot:label="{ item }">
-        {{ item.name }}
-      </template>
-    </v-treeview>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 
+import OttraLocationTree from '@/components/locations/OttraLocationTree'
+
 export default {
   name: 'storage-view',
+  components: {
+    OttraLocationTree,
+  },
   data: function() {
     return {
       rootNodes: [],
       tree: []
     }
   },
+
+/*  
+  async mounted() {
+    await Promise.all([
+      this.$store.dispatch("loadLocations"),
+      this.$store.dispatch("loadStorages"),
+      this.$store.dispatch("loadRooms"),
+      this.$store.dispatch("loadEquipment")
+    ])
+  },
+*/
+
+/*  
   computed: {
     ...mapGetters([
       "getStorages",
       "getEquipment",
-      "getRooms"
+      "getRooms",
+      "getLocations",
+      "getRoomByID",
+      "getStorageByID",
+      "getEquipmentByID"
     ]),
     storageAndEquipment: function() {
       return Object.values(this.getStorages).concat(Object.values(this.getEquipment))
@@ -86,8 +75,11 @@ export default {
       return this.rootNodes
     },
   }, 
+*/
+
   methods: {
     loadChildren(parent) {
+      console.debug("%s: loadChildren called with parent %O", __filename, parent)
       const offspring = this.getObjectsByParent(parent.id).map(function(item) {
         const struct = {
           id: item.uuid,
@@ -135,25 +127,4 @@ export default {
   }
 }
 
-/*
-Rooms are always top level items. They can include
-  - Equipment
-  - Storage
-
-Storage are intermediate to bottom level items. They can include
-  - Equipment
-  - Storage
-
-Equipment are always bottom level items. They cannot include anything.
-
-Pseudo-code:
-
-Add rooms as top-level items, give them an empty children: []
-Iterate over storages:
-  - Build an item, give empty children: []. 
-  - Add the structure to a lookup-map
-Iterate over equipment:
-  - Build an item, no children.
-  - Add the structure to a lookup-map
-*/
 </script>

@@ -13,6 +13,7 @@ const Location = {
       Vue.set(state.locations, payload.uuid, payload)
     },
     SET_LOCATIONS(state, payload) {
+      console.debug("%s: SET_LOCATIONS = %O", __filename, payload)
       state.locations = Object.assign({}, payload)
     },
     CLEAR_STORE(state) {
@@ -27,7 +28,41 @@ const Location = {
     getLocationByID: (state) => (id) => { 
       return state.locations[id]
     },
-	},
+    getLocationTreeNodeById: (state, getters) => (id) => {
+      if (!state.locations.hasOwnProperty(id)) {
+        return {}
+      }
+      const node = state.locations[id]
+
+      var childNodes = []
+      if (node.rooms.length > 0) {
+        childNodes = childNodes.concat(node.rooms.map(function (n) {
+          return getters.getRoomTreeNodeById(n)
+        }))
+      }
+      if (node.accessKeys.length > 0) {
+        childNodes = childNodes.concat(node.accessKeys.map(function (n) {
+          return getters.getEquipmentTreeNodeById(n)
+        }))
+      }
+      return {
+        id: node.uuid,
+        name: node.name,
+        type: "location",
+        icon: "mdi-map-marker-outline",
+        children: childNodes,
+        parent: null
+      }
+    },
+    getLocationAutoCompleteNodeById: (state) => (id) => {
+      const node = state.locations[id]
+      return {
+        text: node.name,
+        value: node.uuid,
+        parent: null
+      }
+    }
+  },
 	actions: {
     createLocation: async function({ commit }, payload) {
       console.debug("%s: createLocation: Payload is: %O", __filename, payload)

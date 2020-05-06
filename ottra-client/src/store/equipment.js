@@ -11,6 +11,27 @@ const Equipment = {
 	},
 	getters: {
 		getEquipment: state => state.equipment,
+		getEquipmentByID: (state) => (id) => {
+			return state.equipment[id]
+		},
+		getEquipmentTreeNodeById: (state) => (id) => {
+			const node = state.equipment[id]
+			return {
+				id: node.uuid,
+				name: node.name,
+				type: "equipment",
+				icon: "mdi-square-medium",
+				parent: { ...node.location }
+			}
+		},
+		getEquipmentAutoCompleteNodeById: (state) => (id) => {
+			const node = state.equipment[id]
+			return {
+				text: node.name,
+				value: node.uuid,
+				parent: { ...node.location }
+			}
+		}
 	},
 	mutations: {
 		SET_EQUIPMENT(state, payload) {

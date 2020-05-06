@@ -31,26 +31,14 @@ const StorageModel = {
   getStorages: async function(user_id) {
     return await DB.fetchAll(`
       MATCH (u:User { uuid: {user_id} })-[*0..15]->(n)-[:CONTAINS]->(s:Storage)
-      OPTIONAL MATCH (s)-[:CONTAINS]->(ss:Storage)
-      OPTIONAL MATCH (s)-[:HOLDS]->(e:Equipment)
-      OPTIONAL MATCH (s)-[:ACCESS_KEY]->(k:Equipment)
-      OPTIONAL MATCH (d:Document)-[:ATTACHMENT]->(s)
-      WITH COLLECT(ss.uuid) AS SubStorages, 
-           COLLECT(e.uuid) AS Equipments,
-           COLLECT(k.uuid) AS AccessKeys,
-           COLLECT(d.uuid) AS Documents, n, s
-      RETURN COLLECT(s { .*, 
-                 attachments: Documents,
-                 storages: SubStorages,
-                 equipment: Equipments,
-                 accessKeys: AccessKeys,
-                 dateTime: apoc.date.format(s.created), 
-                 type: LABELS(s),
-                 location: { uuid: n.uuid, type: LABELS(n) } }) 
-       AS Storages`, {
-        user_id
-      }, "Storages"
-    )
+      RETURN COLLECT(s { .*, dateTime: apoc.date.format(s.created), type: LABELS(s), 
+          location: { uuid: n.uuid, type: LABELS(n) },
+          equipment: [ (s)-[:HOLDS]->(e:Equipment) | e.uuid ],
+          storages: [ (s)-[:CONTAINS]->(ss:Storage) | ss.uuid ],
+          attachments: [ (s)<-[:ATTACHMENT]-(d:Document) | d.uuid ],
+          accessKeys: [ (s)-[:ACCESS_KEY]->(k:Equipment) | k.uuid ] 
+        }) AS Storages`, { user_id }, "Storages")
+
   },
   /* TODO: Refactor into fetching all storages and single out the single one. I know this will put
            a greater load into things, but I need something less verbose before I can accept the 

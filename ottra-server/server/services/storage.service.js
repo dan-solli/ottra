@@ -23,7 +23,9 @@ const StorageService = {
 		}
 	},
 	getStorages: async function(user_id) {
-		return await StorageModel.getStorages(user_id)
+		const storages = await StorageModel.getStorages(user_id)
+		//console.debug("%s: Returning storages: %O", __filename, storages)
+		return storages
 	},
 	getStorageById: async function(user_id, storage_id) {
 		return await StorageModel.getStorageById(user_id, storage_id)
