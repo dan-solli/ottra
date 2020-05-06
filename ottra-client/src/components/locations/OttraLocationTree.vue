@@ -1,4 +1,18 @@
 <template>
+
+	<v-card class="mx-auto">
+		<v-sheet class="mx-5 py-3">
+			<v-text-field
+				v-model="search"
+				label="(*) Search structural nodes"
+				flat
+				hide-details
+				clearable
+				clear-icon="mdi-close-circle-outline">
+			</v-text-field>
+		</v-sheet>
+		<v-card-text>
+
 	<v-treeview
 		v-model="tree"
 		hoverable
@@ -6,6 +20,7 @@
 		activatable
 		return-object
 		:items="items"
+		:search="search"
 		@update:active="selectedNode">
 
 		<template v-slot:prepend="{ item }">
@@ -46,6 +61,9 @@
 
   </v-treeview>
 
+  	</v-card-text>
+  </v-card>
+
 </template>
 
 <script>
@@ -56,6 +74,7 @@ export default {
 	data: function() {
 		return {
 			tree: [],
+			search: null,
 			loading: false
 		}
 	},
