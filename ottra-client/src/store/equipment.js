@@ -31,6 +31,15 @@ const Equipment = {
 				value: node.uuid,
 				parent: { ...node.location }
 			}
+		},
+		getEquipmentParent: (state, getters) => (id) => {
+			const node = state.equipment[id]
+			if (node.location.type[0] === "storage") {
+				return getters.getStorageByID(id)
+			} else if (node.location.type[0] === "room") {
+				return getters.getRoomByID(id)
+			}
+			return null
 		}
 	},
 	mutations: {

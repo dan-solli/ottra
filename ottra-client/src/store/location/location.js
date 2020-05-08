@@ -61,7 +61,10 @@ const Location = {
         value: node.uuid,
         parent: null
       }
-    }
+    },
+    getLocationParent: (state) => (id) => {
+      return null
+    },
   },
 	actions: {
     createLocation: async function({ commit }, payload) {

@@ -60,7 +60,14 @@ const Room = {
         value: node.uuid,
         parent: { ...node.location }
       }
-    }
+    },
+    getRoomParent: (state, getters) => (id) => {
+      const node = state.equipment[id]
+      if (node.location.type[0] === "room") {
+        return getters.getRoomByID(id)
+      }
+      return null
+    }   
 	},
 	actions: {
     createRoom: async function({ commit }, payload) {
