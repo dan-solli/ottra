@@ -63,7 +63,7 @@ const Storage = {
       }
     },
     getStorageParent: (state, getters) => (id) => {
-      const node = state.equipment[id]
+      const node = state.storages[id]
       if (node.location.type[0] === "storage") {
         return getters.getStorageByID(id)
       } else if (node.location.type[0] === "room") {
@@ -88,6 +88,56 @@ const Storage = {
       }
       catch (err) {
         console.error("%s: createStorage failed: %s", __filename, err)
+      }
+    },
+    fetchStorage: async function({ commit, dispatch, state }, 
+      { storage_uuid, force_fetch = false, force_hydrate = false }) {
+      console.debug("%s: fetchStorage uuid: %s", _filename, storage_uuid)
+
+      try {
+        if (!force_fetch) {
+          console.debug("%s: fetchStorage, not forced!", __filename)
+          if (state.storages.hasOwnProperty(storage_uuid)) {
+            console.debug("%s: fetchStorage - had info in state", __filename)
+            return state.storages[storage_uuid]
+          } else {
+            console.debug("%s: fetchStorage - data not found in state. Should fetch from backend.", __filename)
+            force_fetch = true
+          }
+        }
+        if (force_fetch) {
+          console.debug("%s: fetchStorage - fetching from backend", __filename)
+          const response = await StorageRepo.getStorage(storage_uuid)
+          console.debug("%s: StorageRepo.getStorage returns %O", __filename, response.data)
+          commit("ADD_STORAGE", response.data)
+          await dispatch("hydrateStorage", response.data.uuid)
+          return response.data
+        } else {
+          console.error("%s: fetchStorage: Dunno why we ended up here...")
+        }
+      }
+      catch (err) {
+        console.error("%s: fetchStorage failed: %s", __filename, err)
+      }
+    },
+    hydrateStorage: async function({ state, dispatch }, storage_uuid) {
+      console.debug("%s: Trying to hydrate storage: %s", __filename, storage_uuid)
+      if (!storage_uuid || !state.storages.hasOwnProperty(storage_uuid)) {
+        console.error("%s: hydrateStorage cannot find room %s", __filename, storage_uuid)
+      } else {
+        const storage = state.storages[storage_uuid]
+        if (storage.hasOwnProperty("visualAidImages") && storage.visualAidImages.length > 0) {
+          console.debug("%s: hydrateStorage - hydrating visualAidImages", __filename)
+          await Promise.all(storage.visualAidImages.map(async function (doc) {
+            await dispatch("fetchDocument", { doc_uuid: doc })
+          }))
+        }
+        if (storage.hasOwnProperty("attachments") && storage.attachments.length > 0) {
+          console.debug("%s: hydrateStorage - hydrating attachments", __filename)
+          await Promise.all(storage.attachments.map(async function (doc) {
+            await dispatch("fetchDocument", { doc_uuid: doc })
+          }))
+        }
       }
     },
     attachDocumentsToStorage: async function({ commit, dispatch }, payload) {
