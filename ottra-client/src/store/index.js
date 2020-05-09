@@ -33,6 +33,8 @@ import Task from './task'
 
 import Relation from './relations'
 
+import OttraConstant from './constants'
+
 /*
 import ActionModel from '@/store/models/action.model'
 import AddressModel from '@/store/models/address.model'
@@ -44,6 +46,8 @@ import RoomModel from '@/store/models/room.model'
 import StorageModel from '@/store/models/storage.model'
 //import UserModel from '@/store/models/user.model'
 */ 
+
+
 
 Vue.use(Vuex);
 
@@ -80,6 +84,7 @@ const OttraStore = new Vuex.Store({
 		Event,
 		Location,
 		Message,
+		OttraConstant,
 		Relation,
 		Room,
 		Step,

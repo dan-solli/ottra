@@ -27,7 +27,9 @@
                   <OttraImageOrIcon :doc="item"></OttraImageOrIcon>
           			</v-carousel-item>
           		</v-carousel>
-          		<v-img height="500" v-else-if="previewFiles.length === 1" :src="previewFiles[0]"></v-img>
+          		<v-img v-else-if="previewFiles.length === 1"
+                height="500"
+                :src="previewFiles[0].filename"></v-img>
           	</v-col>
           </v-row>
         </v-container>
@@ -70,9 +72,18 @@ export default {
 	},
 	computed: {
 		previewFiles: function() {
-			return this.files.map(function(f) {
-				return { mimetype: f.type, filename: window.URL.createObjectURL(f) }
+      var fakeUUID = 0
+      
+      console.debug("%s: selected files are: %O", __filename, this.files)
+      const images = this.files.map(function(f) {
+				return { 
+          mimetype: f.type, 
+          filename: window.URL.createObjectURL(f),
+          uuid: fakeUUID++
+        }
 			}) || []
+      console.debug("%s: previewFiles are about to return: %O", __filename, images)
+      return images
 		}
 	}
 }

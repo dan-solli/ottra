@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<v-card flat tile outlined 
-			v-if="viewMode == VIEWMODE_THUMBNAILS"
+			v-if="viewMode == getOC('VIEWMODE/THUMB')"
 			:id="doc.uuid"
 			@click="clickImage"
 			v-bind:class="[selected ? 'blue lighten-2' : '']">
@@ -36,8 +36,8 @@
 
 <script>
 
-import { mapGetters, mapActions } from 'vuex'
-import { VIEWMODE_THUMBNAILS, VIEWMODE_DETAILS } from '@/common/filebrowser.types'
+import { mapGetters } from 'vuex'
+//import { ViewModes } from '@/common/filebrowser.types'
 
 export default {
 	name: 'ottra-image-or-icon',
@@ -46,7 +46,10 @@ export default {
 		readOnly: Boolean,
 		showFilename: Boolean,
 		pickable: Boolean,
-		viewMode: Number,
+		viewMode: {
+			type: Number,
+			default: 1
+		}
 	},
 	data: function() {
 		return {
@@ -69,9 +72,6 @@ export default {
 			}
 		}
 	},
-	created: function() {
-		console.error("This component (%s) is deprecated it seems. But shouldn't.", "ottra-image-or-icon")
-	},
 	methods: {
 		isImage: function(item) {
 			if (!item) {
@@ -92,9 +92,13 @@ export default {
 			}
 		},
 		getProperURL: function(url) {
+			console.debug("%s: getProperURL called with %s", __filename, url)
 			if (url.substring(0,5) === 'blob:') {
+				console.debug("%s: getProperURL returns: %s", __filename, url)
 				return url
 			} else {
+				console.debug("%s: getProperURL returns: %s", __filename, 
+					`${this.getServerPath}/${this.getUserID}/${url}`)
 				return `${this.getServerPath}/${this.getUserID}/${url}`
 			}
 		},
@@ -114,7 +118,8 @@ export default {
 		...mapGetters([
 			"getUserID",
 			"getSelectedFiles",
-			"getServerPath"
+			"getServerPath",
+			"getOC"
 		]),
 		viewActionButtons: function() {
 			return !this.readOnly
