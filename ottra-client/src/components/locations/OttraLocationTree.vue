@@ -4,7 +4,7 @@
 		<v-sheet class="mx-5 py-3">
 			<v-text-field
 				v-model="search"
-				label="(*) Search structural nodes"
+				:label="$t('ui.component.locationtree.searchlabel')"
 				flat
 				hide-details
 				clearable

@@ -4,25 +4,33 @@
 			<template v-slot:activator="{ on }">
 				<v-btn v-on="on"> 0 </v-btn>
 			</template>
-			<span>(*) No priority</span>
+			<span>
+				{{ $t('ui.strategy.default.nopriority') }}
+			</span>
 		</v-tooltip>
 		<v-tooltip bottom>
 			<template v-slot:activator="{ on }">
 				<v-btn v-on="on" class="red lighten-1"> ! </v-btn>
 			</template>
-			<span>(*) Important</span>
+			<span>
+				{{ $t('ui.strategy.default.important') }}
+			</span>
 		</v-tooltip>
 		<v-tooltip bottom>
 			<template v-slot:activator="{ on }">
 				<v-btn v-on="on" class="red darken-2"> !! </v-btn>
 			</template>
-			<span>(*) Very important</span>
+			<span>
+				{{ $t('ui.strategy.default.veryimportant') }}
+			</span>
 		</v-tooltip>
 		<v-tooltip bottom>
 			<template v-slot:activator="{ on }">
 				<v-btn v-on="on" class="red darken-4"> !!! </v-btn>
 			</template>
-			<span>(*) Critical</span>
+			<span>
+				{{ $t('ui.strategy.default.critical') }}
+			</span>
 		</v-tooltip>
 	</v-btn-toggle>
 </template>

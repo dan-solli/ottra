@@ -7,13 +7,15 @@
     </template>
     <v-card>
       <v-card-title>
-        <span class="headline"> (*) New folder </span>
+        <span class="headline"> {{ $t('ui.dialog.documentbrowser.newfolder') }} </span>
       </v-card-title>
       <v-card-text>
         <v-container>
           <v-row>
             <v-col cols="12">
-              <v-text-field v-model="folderName" label="New folder name"></v-text-field>
+              <v-text-field 
+                v-model="folderName" 
+                :label="$t('ui.dialog.documentbrowser.newfolderlabel')"></v-text-field>
              </v-col>
           </v-row>
         </v-container>

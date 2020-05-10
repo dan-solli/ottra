@@ -13,7 +13,7 @@
 				<v-icon>{{ getTransportIcon(value.method) || 'mdi-train-car' }}</v-icon>
 			</v-col>
 			<v-col cols="4">
-		    {{ getTransportText(value.method) || '<(*) New transport>' }}
+		    {{ getTransportText(value.method) || $t('ui.component.step.newtransport') }}
 			</v-col>
 			<v-col cols="3">
 				{{ getLocationByID(value.destination).name || '' }}

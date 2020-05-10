@@ -87,7 +87,7 @@ export default {
         },
         deleteTask: function(item) {
             if (this.selectedTask) {
-                const answer = window.confirm("(*) Do you really want to delete the task?")
+                const answer = window.confirm($t('ui.confirm.delete'))
                 if (answer) {
                     this.$store.dispatch("deleteTask", this.selectedTask.uuid)
                 } 

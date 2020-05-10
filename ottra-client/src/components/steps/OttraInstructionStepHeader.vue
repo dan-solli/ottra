@@ -13,7 +13,7 @@
 				<v-icon>mdi-format-list-checkbox</v-icon>
 			</v-col>
 			<v-col cols="4">
-		    {{ value.title || '<(*) New step>' }}
+		    {{ value.title || $t('ui.component.step.newstep') }}
 			</v-col>
 			<v-col cols="3">
 		    {{ getRoomName }}

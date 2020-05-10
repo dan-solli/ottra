@@ -8,7 +8,7 @@
           prepend-icon="mdi-clipboard-list-outline"
           outlined
           :items="taskItems"
-          label="(*) Task">
+          :label="$t('ui.component.task.heading')">
         </v-autocomplete>
 
 			</v-col>
@@ -22,7 +22,7 @@
 	      <v-text-field 
 	        :value="attachmentUUIDToFilename(value.visualAidImages)" 
 	        @input="val => { updateValue('visualAidImages', val) }"
-	        label="(*) Visual Aid Images" 
+	        :label="$t('ui.component.step.visualaidimageslabel')" 
 	        type="text"
 	        disabled
 	        append-icon="mdi-iframe-variable-outline" 
@@ -44,7 +44,7 @@
 		<v-row v-if="editMode"> <!-- Action button -->
 			<v-col>
 				<v-btn text @click="updateStep">
-					(*) Save 
+					{{ $t('ui.text.save') }} 
 				</v-btn>
 			</v-col>
 		</v-row>

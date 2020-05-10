@@ -13,7 +13,7 @@
 				<v-icon>mdi-clipboard-list-outline</v-icon>
 			</v-col>
 			<v-col cols="7">
-		    {{ showSubject || '<(*) New task>' }}
+		    {{ showSubject || $t('ui.view.taskview.newtask') }}
 			</v-col>
 			<v-col cols="3">
 				{{ showTaskDuration }} 

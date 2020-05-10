@@ -11,7 +11,9 @@
 	        <v-icon>mdi-pencil</v-icon>
 	      </v-list-item-icon>				
 	      <v-list-item-content>
-					<v-list-item-title>(*) Edit step</v-list-item-title>
+					<v-list-item-title> 
+						{{ $t('ui.component.step.menu.editstep') }} 
+					</v-list-item-title>
 				</v-list-item-content>
 			</v-list-item>
 			<v-list-item :disabled="step_position === 0" @click="$emit('move-up')">
@@ -19,7 +21,9 @@
 	        <v-icon>mdi-arrow-up-bold</v-icon>
 	      </v-list-item-icon>				
 	      <v-list-item-content>
-					<v-list-item-title>(*) Move up</v-list-item-title>
+					<v-list-item-title>
+						{{ $t('ui.component.step.menu.moveup') }}
+					</v-list-item-title>
 				</v-list-item-content>
 			</v-list-item>
 			<v-list-item @click="$emit('move-down')">
@@ -27,7 +31,9 @@
 	        <v-icon>>mdi-arrow-down-bold</v-icon>
 	      </v-list-item-icon>				
 	      <v-list-item-content>
-					<v-list-item-title>(*) Move down</v-list-item-title>
+					<v-list-item-title>
+						{{ $t('ui.component.step.menu.movedown') }}
+					</v-list-item-title>
 				</v-list-item-content>
 			</v-list-item>
 			<v-list-item @click="$emit('remove-step')">
@@ -35,7 +41,9 @@
 	        <v-icon>mdi-delete</v-icon>
 	      </v-list-item-icon>				
 	      <v-list-item-content>
-					<v-list-item-title>(*) Remove step</v-list-item-title>
+					<v-list-item-title>
+						{{ $t('ui.component.step.menu.moveup') }}
+					</v-list-item-title>
 				</v-list-item-content>
 			</v-list-item>
 		</v-list>

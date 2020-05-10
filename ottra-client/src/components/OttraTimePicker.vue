@@ -43,11 +43,11 @@ export default {
 			//type: String
 		},
 		timeLabel: {
-			default: '(*) Time',
+			default: function() { return this.$t('ui.text.time') },
 			type: String,
 		},
 		timeHint: {
-			default: '(*) Time',
+			default: function() { return this.$t('ui.text.time') },
 			type: String,
 		},
 	},

@@ -78,19 +78,19 @@ export default {
 			type: Boolean
 		},
 		dateLabel: {
-			default: '(*) Date',
+			default: function() { return this.$t('ui.text.date') },
 			type: String,
 		},
 		dateHint: {
-			default: '(*) Date',
+			default: function() { return this.$t('ui.text.date') },
 			type: String,
 		},
 		timeLabel: {
-			default: '(*) Time',
+			default: function() { return this.$t('ui.text.time') },
 			type: String,
 		},
 		timeHint: {
-			default: '(*) Time',
+			default: function() { return this.$t('ui.text.time') },
 			type: String,
 		},
 	},

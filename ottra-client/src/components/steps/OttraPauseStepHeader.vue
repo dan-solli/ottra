@@ -13,7 +13,7 @@
 				<v-icon>mdi-bell-sleep</v-icon>
 			</v-col>
 			<v-col cols="7">
-		    {{ value.title || '<(*) New pause>' }}
+		    {{ value.title || $t('ui.component.step.newpause') }}
 			</v-col>
 			<v-col cols="3">
 				{{ value.duration }}

@@ -6,10 +6,10 @@
 	  :menu-props="{ maxHeight: '400' }"
 	  item-text="name"
 	  item-value="uuid"
-	  label="(*) Access Key"
+	  :label="$t('ui.component.accessequipment.listlabel')"
 	  multiple
 	  chips
-	  hint="(*) Equipment needed to access"
+	  :hint="$t('ui.component.accessequipment.listhint')"
 	  persistent-hint>
 	</v-select>
 </template>

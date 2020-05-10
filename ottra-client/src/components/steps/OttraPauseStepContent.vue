@@ -5,7 +5,7 @@
         <v-text-field 
 	        :value="value.title" 
 	        @input="val => { updateValue('title', val) }"
-          label="(*) Title" 
+          :label="$t('ui.text.title')" 
           type="text"
           prepend-icon="mdi-page-layout-header"
           required>
@@ -23,8 +23,8 @@
 	        @input="val => { updateValue('description', val) }"
           prepend-icon="mdi-comment"
           outlined
-          hint="(*) Describe the step here"
-          label="(*) Description">
+          :hint="$t('ui.component.step.descriptionhint')"
+          label="$t('ui.component.step.descriptionlabel')">
         </v-textarea>
 			</v-col>
 			<v-col v-else>
@@ -37,8 +37,8 @@
 				<OttraTimePicker
 					:value="value.duration"
 	        @input="val => { updateValue('duration', val) }"
-					time-label="(*) Pause length"
-					time-hint="(*) Pause length">
+					:time-label="$t('ui.component.step.pauselengthlabel')"
+					:time-hint="$t('ui.component.step.pauselengthhint')">
 				</OttraTimePicker>
 			</v-col>
 			<v-col v-else>
@@ -51,7 +51,7 @@
 	      <v-text-field 
 	        :value="attachmentUUIDToFilename(value.visualAidImages)" 
 	        @input="val => { updateValue('visualAidImages', val) }"
-	        label="(*) Visual Aid Images" 
+	        :label="$t('ui.component.step.visualaidimageslabel')" 
 	        type="text"
 	        disabled
 	        append-icon="mdi-iframe-variable-outline" 
@@ -73,7 +73,7 @@
 		<v-row v-if="editMode"> <!-- Action button -->
 			<v-col>
 				<v-btn text @click="updateStep">
-					(*) Save 
+					{{ $t('ui.text.save') }}
 				</v-btn>
 			</v-col>
 		</v-row>

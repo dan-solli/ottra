@@ -39,11 +39,11 @@ export default {
 			default: '',
 		},
 		dateLabel: {
-			default: '(*) Date',
+			default: function() { return this.$t('ui.text.date') },
 			type: String,
 		},
 		dateHint: {
-			default: '(*) Date',
+			default: function() { return this.$t('ui.text.date') },
 			type: String,
 		},
 	},

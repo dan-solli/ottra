@@ -2,7 +2,7 @@
   <v-switch 
   	prepend-icon="mdi-apple-keyboard-option"
   	v-model="localValue" 
-  	label="(*) Is this step optional?" 
+  	:label="$t('ui.component.step.optionalsteplabel')" 
   	required>
   </v-switch>
 </template>

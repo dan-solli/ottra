@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      (*) Create new step 
+      {{ $t('ui.view.createstep.title') }}
       <v-spacer></v-spacer>
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">

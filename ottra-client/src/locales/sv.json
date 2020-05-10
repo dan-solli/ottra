@@ -221,5 +221,70 @@
 	"ui.view.taskview.heading": "Ändra uppgift",
 	"ui.view.taskview.newtask": "Ny uppgift",
 
-	"ui.domobj.todo.subject": "Namn"
+	"ui.domobj.todo.subject": "Namn",
+
+	"ui.dialog.documentbrowser.newfolder": "Ny folder",
+	"ui.dialog.documentbrowser.newfolderlabel": "Nytt foldernamn",
+	"ui.dialog.folderbrowser.folders": "Foldrar",
+	"ui.dialog.documentbrowser.sortoptions.recentfirst": "Senast först",
+	"ui.dialog.documentbrowser.sortoptions.oldestfirst": "Äldst först",
+	"ui.dialog.documentbrowser.sortoptions.biggestfirst": "Störst först",
+	"ui.dialog.documentbrowser.sortoptions.smallestfirst": "Minst först",
+
+	"ui.component.locationtree.searchlabel": "Sök noder",
+	"ui.component.accessequipment.listlabel": "Nyckel",
+	"ui.component.accessequipment.listhint": "Nyckel för att komma åt område",
+
+	"ui.text.time": "Tid",
+	"ui.text.title": "Titel",
+	"ui.component.step.descriptionlabel": "Beskrivning",
+	"ui.component.step.descriptionhint": "Beskriv steget här",
+	"ui.component.step.steplocationlabel": "I vilket rum",
+	"ui.text.duration": "Hur lång tid",
+
+	"ui.component.step.requiredtoolslabel": "Nödvändiga verktyg",
+	"ui.component.step.visualaidimageslabel": "Bildstöd",
+	"ui.component.step.attachmentslabel": "Bilagor",
+	"ui.component.step.newstep": "Nytt steg",	
+	"ui.component.step.pauselengthlabel": "Pauslängd",
+	"ui.component.step.pauselengthhint": "Pauslängd",
+	"ui.component.step.newpause": "Ny paus",
+	"ui.component.step.newtransport": "Ny transport",
+	"ui.component.step.destinationlabel": "Mål",
+	"ui.component.step.transportmethod": "Transportsätt",
+	"ui.component.step.transporttime": "Färdtid",
+
+	"ui.component.step.menu.editstep": "Ändra steg",
+	"ui.component.step.menu.moveup": "Flytta upp",
+	"ui.component.step.menu.movedown": "Flytta ned",
+	"ui.component.step.menu.removestep": "Ta bort step",
+	"ui.component.step.optionalsteplabel": "Är steget frivilligt?",
+
+	"ui.strategy.default.nopriority": "Oprioriterat",
+	"ui.strategy.default.important": "Viktigt",
+	"ui.strategy.default.veryimportant": "Mycket viktigt",
+	"ui.strategy.default.critical": "Kritiskt",
+
+	"ui.view.addstepstotask.addstep": "Lägg till steg",
+
+	"ui.component.step.steptype.instruction": "Instruktion",
+	"ui.component.step.steptype.pause": "Paus",
+	"ui.component.step.steptype.transport": "Transport",
+	"ui.component.step.steptype.task": "Uppgift",
+
+	"ui.view.createstep.title": "Skapa nytt steg",
+	"ui.view.createstorage.attachmentslabel": "Bilagor",
+	"ui.view.createtask.title": "Skapa nytt uppdrag",
+	"ui.view.createtask.recurrancerepeathint": "Hur många gånger per ...",
+
+	"ui.view.createtask.priority.tooltip.nopriority": "Ingen prioritet. Det är bra om det blir gjort.",
+	"ui.view.createtask.priority.tooltip.lowpriority": "Låg prioritet. Om det inte görs blir det ganska negativa konsekvenser.",
+	"ui.view.createtask.priority.tooltip.midpriority": "Mellan prioritet. Om det inte görs blir det negativa konsekvenser",
+	"ui.view.createtask.priority.tooltip.highpriority": "Hög prioritet. Om det inte görs blir det väldigt negativa konsekvenser.",
+	"ui.view.createtask.priority.tooltip.highestpriority": "Högsta prioritet. Närmast katastrofala konsekvenser om det inte blir gjort.",
+
+	"ui.view.createtask.goodenoughimageslabel": "Bra-nog bilder",
+	"ui.view.createtask.goalimageslabel": "Målbilder",
+
+	"ui.confirm.delete": "Vill du verkligen radera denna (*) FIXTHIS"
 }

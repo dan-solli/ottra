@@ -8,7 +8,7 @@
       <v-menu offset-y >
         <template v-slot:activator="{ on }">
           <v-btn class="mr-3" text v-on="on">
-            (*) Add step
+            {{ $t('ui.view.addstepstotask') }}
           </v-btn>
         </template>
         <v-list dense>
@@ -159,10 +159,14 @@ export default {
       panelExpansions: [],
       valid: '',
       stepTypes: [
-        { type: STEP_INSTRUCTION, description: "(*) Instruction" },
-        { type: STEP_PAUSE, description: "(*) Pause" },
-        { type: STEP_TRANSPORT, description: "(*) Transport" },
-        { type: STEP_TASK, description: "(*) Task" },
+        { type: STEP_INSTRUCTION, 
+          description: this.$t('ui.component.step.steptype.instruction') },
+        { type: STEP_PAUSE, 
+          description: this.$t('ui.component.step.steptype.pause') },
+        { type: STEP_TRANSPORT, 
+          description: this.$t('ui.component.step.steptype.transport') },
+        { type: STEP_TASK, 
+          description: this.$t('ui.component.step.steptype.task') },
       ]
     }
   },

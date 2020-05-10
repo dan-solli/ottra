@@ -5,7 +5,7 @@
 	      <v-text-field 
 	        :value="value.title" 
 	        @input="val => { updateValue('title', val) }"
-	        label="(*) Title" 
+	        :label="$t('ui.text.title')" 
 	        type="text"
 	        prepend-icon="mdi-page-layout-header"
 	        append-icon="mdi-iframe-variable-outline" 
@@ -25,8 +25,8 @@
 	        prepend-icon="mdi-comment"
 	        append-icon="mdi-iframe-variable-outline" 
 	        outlined
-	        hint="(*) Describe the step here"
-	        label="(*) Description">
+	        :hint="$t('ui.component.step.descriptionhint')"
+	        :label="$t('ui.component.step.descriptionlabel')"
 	      </v-textarea>
 			</v-col>
 			<v-col v-else>
@@ -50,7 +50,7 @@
 	        :value="value.stepLocation" 
 	        @input="val => { updateValue('stepLocation', val) }"
 		    	prepend-icon="mdi-floor-plan"
-		      label="(*) Which room"
+		      :label="$t('ui.component.step.steplocationlabel')"
 		      :items="roomList"
 		      item-text="name"
 		      item-value="uuid"
@@ -66,8 +66,8 @@
 				<OttraTimePicker 
 					:value="value.duration"
 	        @input="val => { updateValue('duration', val) }"
-					time-hint="(*) Duration"
-					time-label="(*) Duration">
+					:time-hint="$t('ui.text.duration')"
+					:time-label="$t('ui.text.duration')">
 				</OttraTimePicker>
 			</v-col>
 			<v-col v-else>
@@ -93,7 +93,7 @@
 	        :value="value.tools" 
 	        @input="val => { updateValue('tools', val) }"
 		    	prepend-icon="mdi-hammer"
-		      label="(*) Necessary tools"
+		      :label="$t('ui.component.step.requiredtoolslabel')"
 		      :items="toolList"
 		      item-text="name"
 		      item-value="uuid"
@@ -112,7 +112,7 @@
 	      <v-text-field 
 	        :value="attachmentUUIDToFilename(value.visualAidImages)" 
 	        @input="val => { updateValue('visualAidImages', val) }"
-	        label="(*) Visual Aid Images" 
+	        :label="$t('ui.component.step.visualaidimageslabel')" 
 	        type="text"
 	        disabled
 	        append-icon="mdi-iframe-variable-outline" 
@@ -132,7 +132,7 @@
 	      <v-text-field 
 	        :value="attachmentUUIDToFilename(value.attachments)" 
 	        @input="val => { updateValue('attachments', val) }"
-	        label="(*) Attachments" 
+	        :label="$t('ui.component.step.attachmentslabel')" 
 	        type="text"
 	        disabled
 	        append-icon="mdi-iframe-variable-outline" 
@@ -152,7 +152,7 @@
 		<v-row v-if="editMode"> <!-- Action button -->
 			<v-col>
 				<v-btn text @click="updateStep">
-					(*) Save 
+					{{ $t('ui.text.save') }}
 				</v-btn>
 			</v-col>
 		</v-row>

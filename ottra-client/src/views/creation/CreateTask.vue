@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      (*) Create new task 
+      {{ $t('ui.view.createtask.title') }} 
       <v-spacer></v-spacer>
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
@@ -58,7 +58,7 @@
                       class="pr-2"
                       prepend-icon="mdi-calendar-repeat"
                       persistent-hint
-                      hint="(*) How many times per ..."
+                      :hint="$t('ui.view.createtask.recurrancerepeathint')"
                       v-model="payload.recurranceNumber"
                       min="1"
                       max="10000"
@@ -85,35 +85,45 @@
                         <template v-slot:activator="{ on }">
                           <v-btn @click.native.stop v-on="on">5</v-btn> 
                         </template>
-                        <span> (*) No priority. It would be nice if the task could be completed. No big deal if it is not </span>
+                        <span> 
+                          {{ $t('ui.view.createtask.priority.tooltip.nopriority') }}
+                        </span>
                       </v-tooltip>
 
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on }">
                           <v-btn @click.native.stop v-on="on">4</v-btn> 
                         </template>
-                        <span> (*) Low priority. The task should be completed or it will be inconvenient or filthy. </span>
+                        <span>
+                          {{ $t('ui.view.createtask.priority.tooltip.lowpriority') }}
+                        </span>
                       </v-tooltip>
 
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on }">
                           <v-btn @click.native.stop v-on="on">3</v-btn> 
                         </template>
-                        <span> (*) Mid priority. The task should be completed or it will be bad. </span>
+                        <span>
+                          {{ $t('ui.view.createtask.priority.tooltip.midpriority') }}
+                        </span>
                       </v-tooltip>
 
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on }">
                           <v-btn @click.native.stop v-on="on">2</v-btn> 
                         </template>
-                        <span> (*) High priority. The task has to be completed or the consequences will be dire. </span>
+                        <span>
+                          {{ $t('ui.view.createtask.priority.tooltip.highpriority') }}
+                        </span>
                       </v-tooltip>
 
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on }">
                           <v-btn @click.native.stop v-on="on">1</v-btn> 
                         </template>
-                        <span> (*) Highest priority. The task has to be completed or the consequences will be extremely dire. </span>
+                        <span>
+                          {{ $t('ui.view.createtask.priority.tooltip.highestpriority') }}
+                        </span>
                       </v-tooltip>
 
                     </v-btn-toggle>
@@ -124,7 +134,7 @@
                   <v-col cols="5">
                     <v-text-field 
                       :value="attachmentUUIDToFilename(payload.goodEnoughImages)" 
-                      label="(*) Good enough images" 
+                      :label="$t('ui.view.createtask.goodenoughimageslabel')" 
                       type="text"
                       disabled
                       prepend-icon="mdi-bullseye" 
@@ -141,7 +151,7 @@
                   <v-col cols="5">
                     <v-text-field 
                       :value="attachmentUUIDToFilename(payload.goalImages)" 
-                      label="(*) Goal Images" 
+                      :label="$t('ui.view.createtask.goalimageslabel')" 
                       type="text"
                       disabled
                       prepend-icon="mdi-bullseye-arrow" 

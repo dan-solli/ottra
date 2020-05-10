@@ -64,11 +64,16 @@
 						<v-divider vertical class="mx-4"></v-divider>
 
 
-						<v-text-field v-model="searchFilter" solo flat 
-								:label="$t('ui.text.search')" hide-details prepend-inner-icon="mdi-magnify"
-								clearable 
-								@click:clear="resetFilter"
-								clear-icon="mdi-close-circle-outline">
+						<v-text-field
+							v-model="searchFilter"
+							solo 
+							flat 
+							:label="$t('ui.text.search')"
+							hide-details
+							prepend-inner-icon="mdi-magnify"
+							clearable 
+							@click:clear="resetFilter"
+							clear-icon="mdi-close-circle-outline">
 						</v-text-field>
 
 						<v-divider class="mx-0" vertical></v-divider>
@@ -204,12 +209,12 @@ export default {
 			},
 			sortOrder: 3,
 			sortOrderItems: [
-				{ text: "(*) A-Z", value: 1 },
-				{ text: "(*) Z-A", value: 2 },
-				{ text: "(*) Recent first", value: 3 },
-				{ text: "(*) Oldest first", value: 4 },
-				{ text: "(*) Biggest first", value: 5 },
-				{ text: "(*) Smallest first", value: 6 },
+				{ text: "A-Z", value: 1 },
+				{ text: "Z-A", value: 2 },
+				{ text: this.$t('ui.dialog.documentbrowser.sortoptions.recentfirst'), value: 3 },
+				{ text: this.$t('ui.dialog.documentbrowser.sortoptions.oldestfirst'), value: 4 },
+				{ text: this.$t('ui.dialog.documentbrowser.sortoptions.biggestfirst'), value: 5 },
+				{ text: this.$t('ui.dialog.documentbrowser.sortoptions.smallestfirst'), value: 6 },
 			],
 		}
 	},

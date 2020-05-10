@@ -22,7 +22,7 @@
         <v-text-field 
 	        :value="value.title" 
 	        @input="val => { updateValue('title', val) }"
-          label="(*) Title" 
+          :label="$t('ui.text.title')" 
           type="text"
           prepend-icon="mdi-page-layout-header" 
           required>
@@ -40,8 +40,8 @@
 	        @input="val => { updateValue('description', val) }"
           prepend-icon="mdi-comment"
           outlined
-          hint="(*) Describe the step here"
-          label="(*) Description">
+          :hint="$t('ui.component.step.descriptionhint')"
+          :label="$t('ui.component.step.descriptionlabel')">
         </v-textarea>
 			</v-col>
 			<v-col v-else>
@@ -57,7 +57,7 @@
           prepend-icon="mdi-map-marker-question-outline"
           outlined
           :items="destinationItems"
-          label="(*) Destination">
+          :label="$t('ui.component.step.destinationlabel')">
         </v-autocomplete>
 
 			</v-col>
@@ -74,7 +74,7 @@
           prepend-icon="mdi-train-car"
           outlined
           :items="transportItems"
-          label="(*) Means of transport">
+          :label="$t('ui.component.step.transportmethod')">
         </v-autocomplete>
 
 			</v-col>
@@ -88,7 +88,7 @@
 				<OttraTimePicker 
 					:value="value.duration"
 	        @input="val => { updateValue('duration', val) }"
-					time-label="(*) Transport time (will be calculated)">
+					:time-label="$t('ui.component.step.transporttime')">
 				</OttraTimePicker>
 			</v-col>
 			<v-col v-else>
@@ -101,7 +101,7 @@
 	      <v-text-field 
 	        :value="attachmentUUIDToFilename(value.visualAidImages)" 
 	        @input="val => { updateValue('visualAidImages', val) }"
-	        label="(*) Visual Aid Images" 
+	        :label="$t('ui.component.step.visualaidimageslabel')" 
 	        type="text"
 	        disabled
 	        append-icon="mdi-iframe-variable-outline" 
@@ -121,7 +121,7 @@
 	      <v-text-field 
 	        :value="attachmentUUIDToFilename(value.attachments)" 
 	        @input="val => { updateValue('attachments', val) }"
-	        label="(*) Attachments" 
+	        :label="$t('ui.component.step.attachmentslabel')" 
 	        type="text"
 	        disabled
 	        append-icon="mdi-iframe-variable-outline" 
@@ -140,7 +140,7 @@
 		<v-row v-if="editMode"> <!-- Action button -->
 			<v-col>
 				<v-btn text @click="updateStep">
-					(*) Save 
+					{{ $t('ui.text.save') }}
 				</v-btn>
 			</v-col>
 		</v-row>
@@ -181,6 +181,7 @@ export default {
 	data: function() {
 		return {
 			stepOptions: [],
+			// The stuff below is deprecated and won't be translated.
 			buttons: [
 				{
 					icon: "mdi-map-marker-question-outline",

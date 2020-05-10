@@ -69,7 +69,7 @@
                     <v-col cols="5">
 
                       <v-text-field 
-                        label="(*) Attachments" 
+                        :label="$t('ui.view.createstorage.attachmentslabel')" 
                         type="text"
                         disabled
                         prepend-icon="mdi-tooltip-image-outline"

@@ -10,7 +10,7 @@
     </template>
     <v-card>
       <v-card-title>
-        <span class="headline"> (*) Folders </span>
+        <span class="headline"> {{ $t('ui.dialog.folderbrowser.folders') }}  </span>
       </v-card-title>
       <v-card-text>
         <v-container>

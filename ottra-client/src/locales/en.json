@@ -229,7 +229,73 @@
 	"ui.view.taskview.heading": "Tasks",
 	"ui.view.taskview.newtask": "New task",
 
+	
 
+
+	"ui.dialog.documentbrowser.newfolder": "New folder",
+	"ui.dialog.documentbrowser.newfolderlabel": "New folder name",
+	"ui.dialog.folderbrowser.folders": "Folders",
+	"ui.dialog.documentbrowser.sortoptions.recentfirst": "Recent first",
+	"ui.dialog.documentbrowser.sortoptions.oldestfirst": "Oldest first",
+	"ui.dialog.documentbrowser.sortoptions.biggestfirst": "Biggest first",
+	"ui.dialog.documentbrowser.sortoptions.smallestfirst": "Smallest first",
+
+	"ui.component.locationtree.searchlabel": "Search structural nodes",
+	"ui.component.accessequipment.listlabel": "Access key",
+	"ui.component.accessequipment.listhint": "Equipment used to access area",
+
+	"ui.text.time": "Time",
+	"ui.text.title": "Title",
+	"ui.component.step.descriptionlabel": "Description",
+	"ui.component.step.descriptionhint": "Describe the step here",
+	"ui.component.step.steplocationlabel": "Which room",
+	"ui.text.duration": "Duration",
+	"ui.component.step.requiredtoolslabel": "Required tools",
+	"ui.component.step.visualaidimageslabel": "Visual Aid Images",
+	"ui.component.step.attachmentslabel": "Attachments",
+	"ui.component.step.newstep": "New Step",	
+	"ui.component.step.pauselengthlabel": "Pause length",
+	"ui.component.step.pauselengthhint": "Pause length",
+	"ui.component.step.newpause": "New pause",
+	"ui.component.step.newtransport": "New transport",
+	"ui.component.step.destinationlabel": "Destination",
+	"ui.component.step.transportmethod": "Method of transport",
+	"ui.component.step.transporttime": "Estimated time of transport",
+
+	"ui.component.step.menu.editstep": "Edit step",
+	"ui.component.step.menu.moveup": "Move up",
+	"ui.component.step.menu.movedown": "Move down",
+	"ui.component.step.menu.removestep": "Remove step",
+	"ui.component.step.optionalsteplabel": "Is this step optional?",
+
+	"ui.strategy.default.nopriority": "No priority",
+	"ui.strategy.default.important": "Important",
+	"ui.strategy.default.veryimportant": "Very important",
+	"ui.strategy.default.critical": "Critical",
+
+	"ui.view.addstepstotask.addstep": "Add Step",
+
+	"ui.component.step.steptype.instruction": "Instruction",
+	"ui.component.step.steptype.pause": "Pause",
+	"ui.component.step.steptype.transport": "Transport",
+	"ui.component.step.steptype.task": "Task",
+
+	"ui.view.createstep.title": "Create new step",
+	"ui.view.createstorage.attachmentslabel": "Attachments",
+	"ui.view.createtask.title": "Create new task",
+	"ui.view.createtask.recurrancerepeathint": "How many times per ...",
+
+	"ui.view.createtask.priority.tooltip.nopriority": "No priority. It would be nice if the task could be completed. No big deal if it is not.",
+	"ui.view.createtask.priority.tooltip.lowpriority": "Low priority. The task should be completed or it will be inconvenient.",
+	"ui.view.createtask.priority.tooltip.midpriority": "Mid priority. The task should be completed or it will be bad.",
+	"ui.view.createtask.priority.tooltip.highpriority": "High priority. The task has to be completed or the consequences will be dire.",
+	"ui.view.createtask.priority.tooltip.highestpriority": "Highest priority. The task has to be completed or the consequences will be extremely dire.",
+
+	"ui.view.createtask.goodenoughimageslabel": "Good-enough Images",
+	"ui.view.createtask.goalimageslabel": "Goal Images",
+
+	"ui.confirm.delete": "Do you really want to delete this (*) FIXTHIS",
+	
   "flurb": "flurb",
   "message": "hello i18n !!"
 }
