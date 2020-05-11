@@ -22,7 +22,8 @@ const vuetify_opts = {
 	},
 	lang: {
 		locales: { vuetify_sv, vuetify_en },
-		current: 'vuetify_' + (navigator.language.split('-')[0] || 'en')
+		current: 'vuetify_' + (navigator.language.split('-')[0] || 'en'),
+		t: (key, ...params) => i18n.t(key, params)
 	}
 }
 

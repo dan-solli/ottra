@@ -16,8 +16,10 @@ function loadLocaleMessages () {
   return messages
 }
 
+const localLocale = navigator.language.split('-')[0] || 'en'
+
 export default new VueI18n({
-  locale: navigator.language.split('-')[0] || 'en',
+  locale: localLocale,
   fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en',
-  messages: loadLocaleMessages()
+  messages: loadLocaleMessages() 
 })

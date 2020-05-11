@@ -1,5 +1,5 @@
 <template>
-	  <div>
+	<div>
     <v-toolbar flat color="white" class="elevation-1 mt-4">
       <v-toolbar-title>
         {{ $t('ui.view.taskview.heading') }}

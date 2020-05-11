@@ -286,5 +286,9 @@
 	"ui.view.createtask.goodenoughimageslabel": "Bra-nog bilder",
 	"ui.view.createtask.goalimageslabel": "Målbilder",
 
-	"ui.confirm.delete": "Vill du verkligen radera denna (*) FIXTHIS"
+	"ui.confirm.delete": "Vill du verkligen radera denna (*) FIXTHIS",
+
+	"ui.mode.plan.view.base.heading": "Planera och schemalägg",
+	"ui.view.planview.plan.heading": "Planera",
+	"ui.view.planview.schedule.heading": "Schemalägg"
 }

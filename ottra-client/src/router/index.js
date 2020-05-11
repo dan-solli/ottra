@@ -38,6 +38,10 @@ import CreateTask from './../views/creation/CreateTask'
 import AddStepsToTask from '@/views/creation/AddStepsToTask'
 import CreateStep from './../views/creation/CreateStep'
 
+import PlanBaseView from '@/views/plan/PlanBaseView'
+import PlanView from '@/views/plan/PlanView'
+import ScheduleView from '@/views/plan/ScheduleView'
+
 import store from '../store'
 
 Vue.use(Router);
@@ -216,6 +220,25 @@ const router = new Router({
           props: true,
           component: CreateStep,
         }
+      ]
+    },
+    {
+      path: '/plan',
+      name: 'base_plan',
+      component: PlanBaseView,
+      children: [
+        {
+          path: '/planview',
+          name: 'plan_view',
+          props: true,
+          component: PlanView,
+        },
+        {
+          path: '/schedule',
+          name: 'schedule_view',
+          props: true,
+          component: ScheduleView,
+        },
       ]
     },
     {

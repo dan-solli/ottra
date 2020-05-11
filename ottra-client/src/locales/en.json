@@ -295,6 +295,12 @@
 	"ui.view.createtask.goalimageslabel": "Goal Images",
 
 	"ui.confirm.delete": "Do you really want to delete this (*) FIXTHIS",
+
+	"ui.mode.plan.view.base.heading": "Plan and schedule",
+	"ui.view.planview.plan.heading": "Plan",
+	"ui.view.planview.schedule.heading": "Schedule",
+
+
 	
   "flurb": "flurb",
   "message": "hello i18n !!"
