@@ -1,26 +1,11 @@
 <template>
   <v-card>
-    <v-card-title>
-      {{ $t('ui.view.createstorage.heading') }} 
-      <v-spacer></v-spacer>
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn v-on="on" text icon @click="startTour">
-            <v-icon>help_outline</v-icon>
-          </v-btn>
-        </template>
-        {{ $t('ui.tooltip.starttour') }}
-      </v-tooltip>
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn v-on="on" text icon @click="closeDialog">
-            <v-icon>clear</v-icon>
-          </v-btn>
-        </template>
-        {{ $t('ui.text.close') }}                  
-      </v-tooltip>
 
-    </v-card-title>
+      <OttraCreationFormToolbar
+        @start-tour="startTour"
+        @close-dialog="closeDialog">
+        {{ $t('ui.view.createstorage.heading') }}     
+      </OttraCreationFormToolbar>
 
     <v-card-text>
 
@@ -115,10 +100,9 @@
 import { required, minLength } from 'vuelidate/lib/validators'
 import { mapGetters } from 'vuex'
 
-import OttraHorizDocumentPicker from '@/components/documentmanager/OttraHorizDocumentPicker.vue'
-import OttraFileUploadButtonAndDialog from '@/components/documentmanager/OttraFileUploadButtonAndDialog.vue'
 import OttraDocumentBrowser from '@/components/documentmanager/OttraDocumentBrowser'
 import OttraAccessEquipment from '@/components/locations/subcomponents/OttraAccessEquipment'
+import OttraCreationFormToolbar from '@/views/creation/components/OttraCreationFormToolbar'
 
 import { DocumentMixin } from '@/views/creation/mixins/DocumentUUIDToFilename'
 
@@ -127,10 +111,9 @@ export default {
   props: [ 'container_uuid'],
   mixins: [ DocumentMixin ],
   components: {
-    OttraHorizDocumentPicker,
     OttraDocumentBrowser,     
-    OttraFileUploadButtonAndDialog,
-    OttraAccessEquipment
+    OttraAccessEquipment,
+    OttraCreationFormToolbar
   },
   data: function() {
     return {
@@ -171,26 +154,7 @@ export default {
     ...mapGetters([
       "getRooms",
       "getStorages",
-//      "findFileByUUID"
     ]),
-/*    
-    viewAttachmentsInTextField: {
-      get() {
-        if (this.payload.attachments.length < 1) {
-          console.debug("No attachments found")
-          return ""
-        } else {
-          return this.payload.attachments.map(function(f) {
-            return this.findFileByUUID(f).original_filename
-          }, this).join(", ")
-        }
-        return ""
-      },
-      set(val) {
-        // Not needed?
-      },
-    },
-*/    
     containers: function() {
       // This one has to be a bit smarter
       const rooms = Object.values(this.getRooms)

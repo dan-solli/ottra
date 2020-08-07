@@ -22,9 +22,18 @@
 					<v-expansion-panel>
 						<v-expansion-panel-header>(*) Unplanned todos</v-expansion-panel-header>
 						<v-expansion-panel-content>
-							<div v-for="todo in todoList" :key="todo.uuid">
-								{{ todo.subject }}
-							</div>
+
+							<v-list dense>
+								<v-list-item v-for="todo in todoList" :key="todo.uuid">
+									<v-list-item-icon>
+										<v-icon>mdi-calendar-plus</v-icon>
+									</v-list-item-icon>
+									<v-list-item-content>
+										<v-list-item-title v-text="todo.subject"></v-list-item-title>
+									</v-list-item-content>
+								</v-list-item>
+							</v-list>
+
 						</v-expansion-panel-content>
 					</v-expansion-panel>
 					<v-expansion-panel>
@@ -33,9 +42,18 @@
 							<v-container fluid>
 								<v-row>
 									<v-col cols="3">
-										<div v-for="task in taskList" :key="task.uuid">
-											{{ task.subject }}
-										</div>
+
+										<v-list dense>
+											<v-list-item v-for="task in taskList" :key="task.uuid">
+												<v-list-item-icon>
+													<v-icon>mdi-calendar-plus</v-icon>
+												</v-list-item-icon>
+												<v-list-item-content>
+													<v-list-item-title v-text="task.subject"></v-list-item-title>
+												</v-list-item-content>
+											</v-list-item>
+										</v-list>
+
 									</v-col>
 									<v-col cols="9">
 										Room for a card here
