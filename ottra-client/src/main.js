@@ -67,6 +67,10 @@ Vue.use(VuetifyToast, {
 
 Vue.use(require('vue-shortkey'))
 
+import {gcal} from './common/repos/gcal'
+gcal.initialize()
+
+
 
 router.beforeEach(async function(to, from, next) {
 	if (to.meta.noAuthRequired) {
